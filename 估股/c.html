@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script type="text/javascript">
+            
+            //初始化value值
+			var values;
+            //计算公式字符串
+            var strequ;
+            //计算公式computerf=new Function(strequ)
+            var computerf;
+            //当前默认曲线股价Id
+            var countId = "";
+            //调整曲线后的值
+			var countV = "";
+            
+			var jsonobjs;
+			var jsonbackup;
+                        
+            //初始化各变量
+            function initData(jsondata)
+            {
+            	this.jsonobjs = eval('(' + jsondata + ')');
+            	this.jsonbackup=jsonobjs;
+            	this.values=jsonobjs.modelData.values;               
+            	this.strequ = jsonobjs.modelData.computeldentifiers;
+            	this.computerf=new Function(strequ);
+            	
+                initGGid();
+				return returnMainIds();
+
+            }
+            	
+            //返回主业务调整参数数据
+            function returnMainIds()
+            {
+            	ws=jsonobjs.modelData.divisionData;
+            	rtnstr="[";
+            	for(var i in ws)
+            	{
+            		for ( var j in ws[i].topForcasts) 
+            		{
+	            		var para = ws[i].topForcasts[j].split('/');
+	            		chartdata=jsonobjs.modelData.driverData[para[0]].chartData["0"].array;
+	            		if(chartdata.length>1)
+	            		{
+	            			rtnstr+="{\"name\":\""+ws[i].name+"\",";
+		            		rtnstr+="\"chartlength\":\""+chartdata.length+"\",";
+		            		rtnstr+="\"id\":\""+para[0]+"\"},";
+	            		}
+					}						
+            	}
+            	rtnstr+="]";
+                return rtnstr;
+            }
+            
+            //返回一组调整参数数据
+            function returnChartData(driverid)
+            {
+            	chartdata=jsonobjs.modelData.driverData[driverid].chartData["0"].array;
+
+            	rtnstr="[";
+            	for(i=0;i<chartdata.length;i++)
+            	{
+            		rtnstr+="{\"h\":"+chartdata[i].h+",";
+            		rtnstr+="\"id\":\""+chartdata[i].id+"\",";
+            		rtnstr+="\"v\":"+chartdata[i].v+",";
+            		rtnstr+="\"y\":\""+chartdata[i].y+"\"},";
+            	}
+            	rtnstr+="]";
+                return rtnstr;
+            }
+            
+            //估股价
+			function initGGid() 
+			{
+					var ayal = jsonobjs.info.AyalyseItemId;
+					var moldelAy = jsonobjs.modelData.driverData[ayal].chartData["0"].array;
+					for (var hi = 0; hi < moldelAy.length; hi ++) 
+					{
+						var h = moldelAy[hi].h;
+						if(h == false) 
+						{
+							//当前默认曲线股价值
+							countV = moldelAy[hi].v;
+							//当前默认曲线id
+							countId = moldelAy[hi].id;
+							break;
+						}
+					}
+			}   
+				
+			//根据传入的数据重新计算估股价
+            function chartCalu(jsondata) 
+            {            
+	            var sValue = eval('(' + jsondata + ')');
+	            var strtmp="";
+				for ( var i = 0; i < sValue.length; i++) {
+					values[sValue[i].id] = sValue[i].v;
+					strtmp+=sValue[i].v;
+					strtmp+=sValue[i].id;
+				}
+				computerf();
+                return values[countId];
+			}
+            
+            //test
+            function testCalc(jsondata)
+            {
+            	var jsonobjs = eval('(' + jsondata + ')');
+            	this.values=jsonobjs.modelData.values;
+            	this.strequ = jsonobjs.modelData.computeldentifiers;
+            	this.computerf=new Function(strequ);
+            	values["1398.13"]=0.3;
+            	
+            	computerf();
+            	tmpdata=jsonobjs.info;
+            	var tmpstr;
+            	for(i=0;i<tmpdata.length;i++)
+            	{tmpstr+="\r\n"+tmpdata[i];}
+             }        
+            
+            //test 
+            //to get some values
+            function getChartDataStr(driverid)
+            {
+            	var moldelAy = jsonData.modelData.driverData[driverid].chartData["0"].array;
+            }
+            
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

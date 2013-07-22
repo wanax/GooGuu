@@ -1,0 +1,162 @@
+//
+//  XYZAppDelegate.m
+//  welcom_demo_1
+//
+//  Created by chaoxiao zhuang on 13-1-10.
+//  Copyright (c) 2013年 Pony Finance. All rights reserved.
+//
+
+#import "XYZAppDelegate.h"
+#import "tipViewController.h"
+#import "ConcernedViewController.h"
+#import "ClientCenterViewController.h"
+#import "DBLite.h"
+#import "ConcernedViewController.h"
+#import "GooNewsViewController.h"
+#import "MyGooguuViewController.h"
+#import "FinanceToolsViewController.h"
+#import "UniverseViewController.h"
+#import "ChartViewController.h"
+#import "Company.h"
+
+
+@implementation XYZAppDelegate
+
+@synthesize window;
+@synthesize tabBarController;
+@synthesize scrollView;
+@synthesize pageControl;
+
+@synthesize comInfo;
+
+- (void)dealloc
+{
+    [comInfo release];
+    [scrollView release];
+    [tabBarController release];
+    [pageControl release];
+    [window release];
+    [super dealloc];
+}
+
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+    //增加标识，用于判断是否是第一次启动应用...
+
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    }
+
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+        //用户初次使用进入使用引导界面
+        tipViewController * startView = [[tipViewController alloc]init];
+        self.window.rootViewController = startView;
+        [startView release];
+        DBLite *tool=[[DBLite alloc] init];
+        [tool openSQLiteDB];
+        [tool initDB];
+        [tool closeDB];
+        [tool initDBData];
+        [tool release];
+    }else {
+       
+        UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"rank"] tag:1];      
+        UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"uptrend.png"] tag:2];        
+        UITabBarItem *barItem3=[[UITabBarItem alloc] initWithTitle:@"金融工具" image:[UIImage imageNamed:@"hammer.png"] tag:3];
+        UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"个人中心" image:[UIImage imageNamed:@"user.png"] tag:4];
+        UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"股票列表" image:[UIImage imageNamed:@"paper-message.png"] tag:5];
+        
+        //股票关注
+        MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
+        myGooGuu.tabBarItem=barItem2;
+        UINavigationController *myGooGuuNavController=[[UINavigationController alloc] initWithRootViewController:myGooGuu];
+       
+        
+        //金融工具
+        /*FinanceToolsViewController *toolsViewController=[[FinanceToolsViewController alloc] init];
+        toolsViewController.tabBarItem=barItem3;*/
+
+        
+        //客户设置
+        ClientCenterViewController *clientView=[[ClientCenterViewController alloc] init];
+        clientView.tabBarItem=barItem4;
+        UINavigationController *clientCenterNav=[[UINavigationController alloc] initWithRootViewController:clientView];
+        
+        
+        //估股新闻
+        GooNewsViewController *gooNewsViewController=[[GooNewsViewController alloc] init];
+        gooNewsViewController.tabBarItem=barItem;
+        UINavigationController *gooNewsNavController=[[UINavigationController alloc] initWithRootViewController:gooNewsViewController];
+        
+        
+        //股票列表
+        UniverseViewController *universeViewController=[[UniverseViewController alloc] init];
+        universeViewController.tabBarItem=barItem5;
+        UINavigationController *universeNav=[[UINavigationController alloc] initWithRootViewController:universeViewController];
+        
+        
+        
+        
+        
+        self.tabBarController = [[UITabBarController alloc] init];
+
+        self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,myGooGuuNavController,universeNav, clientCenterNav ,nil];
+        
+        self.window.backgroundColor=[UIColor clearColor];       
+        self.window.rootViewController = self.tabBarController;
+
+        
+        [barItem release];
+        [barItem2 release];
+        [barItem3 release];
+        [barItem4 release];
+        [barItem5 release];
+
+        [myGooGuu release];
+        [clientView release];
+        [gooNewsViewController release];
+        [universeViewController release];
+        //[toolsViewController release];
+        
+        [myGooGuuNavController release];
+        [clientCenterNav release];
+        [gooNewsNavController release];
+        [universeNav release];
+    }
+
+    
+    [self.window makeKeyAndVisible];
+    
+    return YES;
+}
+
+/*-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    
+    //return UIInterfaceOrientationMaskAllButUpsideDown;
+}*/
+
+
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+
+@end
