@@ -18,6 +18,8 @@
 #import "Utiles.h"
 #import "LoginView.h"
 #import "MBProgressHUD.h"
+#import "PrettyTabBarViewController.h"
+#import "User.h"
 
 @interface ClientLoginViewController ()
 
@@ -31,7 +33,7 @@
 - (void)dealloc
 {   
     [loginView release];loginView=nil;
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 
@@ -70,9 +72,8 @@
 {
     [super viewDidLoad];
     isGoIn=NO;
+
 }
-
-
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     
@@ -96,13 +97,17 @@
         NSString *name=@"mxchenry@163.com";
         NSString *pwd=@"123456";
         
-        DBLite *tool=[[DBLite alloc] init];
-        [tool checkUser:[name lowercaseString] and:[Utiles md5:pwd] WithBlock:^(NSString* isLogin,NSString *token){
-            
-            if([isLogin isEqualToString:@"1"]){
-                [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"UserToken"];
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[name lowercaseString],@"username",[Utiles md5:pwd],@"password",@"googuu",@"from", nil];
+        [Utiles getNetInfoWithPath:@"Login" andParams:params besidesBlock:^(id info){
 
-                NSLog(@"%@",token);
+            if([[info objectForKey:@"status"] isEqualToString:@"1"]){
+             
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginKeeping" object:nil];
+                [[NSUserDefaults standardUserDefaults] setObject:[info objectForKey:@"token"] forKey:@"UserToken"];
+                NSDictionary *userInfo=[NSDictionary dictionaryWithObjectsAndKeys:name,@"username",pwd,@"password", nil];
+                [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"UserInfo"];
+                
+                NSLog(@"%@",[info objectForKey:@"token"]);
                 isGoIn=YES;
                 [self viewDisMiss];
                 [textField resignFirstResponder];
@@ -110,10 +115,10 @@
                 [hud hide:YES];
                 [hud release];
             }else {
+                NSLog(@"%@",[info objectForKey:@"msg"]);
             }
             
         }];
-        [tool release];
         
         [textField resignFirstResponder];
     }

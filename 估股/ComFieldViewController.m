@@ -15,6 +15,7 @@
 #import "AnalysisReportViewController.h"
 #import "MHTabBarController.h"
 #import "ContainerViewController.h"
+#import "PrettyToolbar.h"
 
 @interface ComFieldViewController ()
 
@@ -101,8 +102,7 @@
 -(void)addToolBar{
     
     [self.view setBackgroundColor:[UIColor grayColor]];
-    top=[[UIToolbar alloc] initWithFrame:CGRectMake(0,0,320,37)];
-    top.tintColor=[Utiles colorWithHexString:@"#57BECF"];
+    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,37)];
     UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
     myToolBarItems=[[NSMutableArray alloc] init];
     [myToolBarItems addObject:back];

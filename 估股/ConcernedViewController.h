@@ -22,7 +22,7 @@
 }
 
 @property (nonatomic,retain) NSString *type;
-
+@property BOOL nibsRegistered;
 @property (nonatomic,retain) ClientLoginViewController *loginViewController;
 @property (nonatomic,retain) UITableView *customTableView;
 

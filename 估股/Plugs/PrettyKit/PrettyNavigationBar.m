@@ -41,7 +41,7 @@
 #define default_gradient_start_color    [UIColor colorWithHex:0x53A4DE]
 #define default_top_line_color          [UIColor colorWithHex:0x84B7D5]
 #define default_bottom_line_color       [UIColor colorWithHex:0x186399]
-#define default_tint_color              [UIColor colorWithHex:0x3D89BF]
+#define default_tint_color              [UIColor colorWithHex:0x9bcd9b]
 #define default_roundedcorner_color     [UIColor blackColor]
 
 - (void)dealloc {

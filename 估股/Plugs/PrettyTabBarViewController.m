@@ -7,6 +7,7 @@
 //
 
 #import "PrettyTabBarViewController.h"
+#import "PrettyTabBar.h"
 
 @interface PrettyTabBarViewController ()
 
@@ -21,6 +22,11 @@
         // Custom initialization
     }
     return self;
+}
+
+-(id)init{
+    [self setValue:[[[PrettyTabBar alloc] init] autorelease] forKeyPath:@"tabBar"];
+    return [super init];
 }
 
 - (void)viewDidLoad

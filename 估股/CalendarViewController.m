@@ -76,20 +76,23 @@
                                 @"2013",@"year",@"07",@"month",@"googuu",@"from",
                                 nil];
         [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){
-            
-            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-            NSMutableArray *dates=[[NSMutableArray alloc] init];
-            self.eventArr=[resObj objectForKey:@"data"];
-            for(id obj in self.eventArr){
-                [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
+            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                NSMutableArray *dates=[[NSMutableArray alloc] init];
+                self.eventArr=[resObj objectForKey:@"data"];
+                for(id obj in self.eventArr){
+                    [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
+                }
+                [calendarView markDates:dates];
+                self.dateDic=[[NSMutableDictionary alloc] init];
+                for(id key in self.eventArr){
+                    [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
+                }
+                [dates release];
+            }else{
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
-            [calendarView markDates:dates];
-            self.dateDic=[[NSMutableDictionary alloc] init];
-            for(id key in self.eventArr){
-                [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
-            }
-            [dates release];
-            
+          
         }];
     }
 }

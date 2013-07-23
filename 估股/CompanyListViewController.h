@@ -21,7 +21,8 @@ typedef enum {
     SHSE=8,//上海
     SHSZSE=12,//沪深
     NASDAQ=16,//纳斯达克
-    NANY=18//美股
+    NANY=18,//美股
+    ALL=31
     
 } MarketType;
 

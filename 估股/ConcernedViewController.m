@@ -16,6 +16,7 @@
 #import "MHTabBarController.h"
 #import "Utiles.h"
 #import "ComFieldViewController.h"
+#import "PrettyTabBarViewController.h"
 
 @interface ConcernedViewController ()
 
@@ -29,6 +30,7 @@
 @synthesize loginViewController;
 @synthesize customTableView;
 @synthesize type;
+@synthesize nibsRegistered;
 
 @synthesize comInfoList;
 
@@ -67,7 +69,7 @@
 {
     [super viewDidLoad];
     self.title=@"小马财经";
-    
+    nibsRegistered=NO;
     self.navigationController.navigationBarHidden=YES;
     
     self.comInfoList=[[NSMutableArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"",@"googuuprice",@"",@"marketprice",@"",@"market",@"",@"companyname", nil],nil];
@@ -120,8 +122,14 @@
                             [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",@"googuu",@"from",
                             nil];
     [Utiles postNetInfoWithPath:self.type andParams:params besidesBlock:^(id obj){
-        self.comInfoList=[NSMutableArray arrayWithArray:[obj objectForKey:@"data"]];
-        [customTableView reloadData];
+        if(![[obj objectForKey:@"status"] isEqualToString:@"0"]){
+            self.comInfoList=[NSMutableArray arrayWithArray:[obj objectForKey:@"data"]];
+            [customTableView reloadData];
+        }else{
+            [Utiles ToastNotification:[obj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            self.comInfoList=[NSMutableArray arrayWithCapacity:0];
+        }
+        
     }];
     [self.customTableView reloadData];
     
@@ -151,13 +159,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     //股票栏目
-    static BOOL nibsRegistered;
     static NSString *CustomCellIdentifier = @"CustomCellIdentifier";
-    if([self.type isEqualToString:@"AttentionData"]){
-        nibsRegistered = NO;
-    }else if([self.type isEqualToString:@"SavedData"]){
-        nibsRegistered = NO;
-    }
 
     if (!nibsRegistered) {
         UINib *nib = [UINib nibWithNibName:@"CustomCell" bundle:nil];

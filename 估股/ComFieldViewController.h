@@ -13,6 +13,7 @@
 @class AnalysisReportViewController;
 @class GuestCommentViewController;
 @class MHTabBarController;
+@class PrettyToolbar;
 
 @interface ComFieldViewController : UIViewController
 
@@ -21,7 +22,7 @@
 @property (strong, nonatomic) AnalysisReportViewController *viewController3;
 @property (strong, nonatomic) GuestCommentViewController *viewController4;
 @property (nonatomic,retain) MHTabBarController* tabBarController;
-@property (nonatomic,retain) UIToolbar *top;
+@property (nonatomic,retain) PrettyToolbar *top;
 @property (nonatomic,retain) NSMutableArray *myToolBarItems;
 
 @end

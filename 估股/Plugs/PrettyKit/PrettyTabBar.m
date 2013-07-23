@@ -30,9 +30,9 @@
 #import "PrettyTabBar.h"
 #import "PrettyDrawing.h"
 
-#define default_gradient_start_color [UIColor colorWithHex:0x444444]
-#define default_gradient_end_color [UIColor colorWithHex:0x060606]
-#define default_separator_line_color [UIColor colorWithHex:0x666666]
+#define default_gradient_start_color [UIColor colorWithHex:0x4f372d]
+#define default_gradient_end_color [UIColor colorWithHex:0x4f372d]
+#define default_separator_line_color [UIColor colorWithHex:0x4f372d]
 
 @implementation PrettyTabBar
 @synthesize gradientStartColor, gradientEndColor, separatorLineColor;

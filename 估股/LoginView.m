@@ -42,6 +42,9 @@
         cancel.userInteractionEnabled = YES;
         UIImageView *backCancel=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"button_delete_green"]];
         backCancel.frame=CGRectMake(-15,-15,60,60);
+        cancel.layer.cornerRadius = 5;
+        cancel.layer.borderColor = [Utiles colorWithHexString:@"#00a0b0"].CGColor;
+        cancel.layer.borderWidth = 3;
         [cancel addSubview:backCancel];
         
 

@@ -56,14 +56,20 @@
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
         
         logoutButton.hidden=NO;
-        DBLite *tool=[[DBLite alloc] init];
-        [tool userToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"] Todo:@"/m/userinfo" WithBlock:^(id resObj){
-            id userInfo=[resObj objectForKey:@"data"];
-            [userNameLabel setText:[userInfo objectForKey:@"nickname"]];
-            [userIdLabel setText:[userInfo objectForKey:@"userid"]];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",@"googuu",@"from",
+                                nil];
+        [Utiles postNetInfoWithPath:@"UserInfo" andParams:params besidesBlock:^(id resObj){
+           if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+               id userInfo=[resObj objectForKey:@"data"];
+               [userNameLabel setText:[userInfo objectForKey:@"nickname"]];
+               [userIdLabel setText:[userInfo objectForKey:@"userid"]];
+           }else{
+               [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+           }
+            
             
         }];
-        [tool release];
         
     }else{
         logoutButton.hidden=YES;
@@ -110,22 +116,24 @@
     
     NSString *token= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"];
     if(token){
-        
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
-        DBLite *tool=[[DBLite alloc] init];
-        [tool userToken:token Todo:@"/m/logout" WithBlock:^(id info){
-            
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                token, @"token",@"googuu",@"from",
+                                nil];
+        [Utiles postNetInfoWithPath:@"LogOut" andParams:params besidesBlock:^(id info){
+           
             if([[info objectForKey:@"status"] isEqualToString:@"1"]){
                 NSLog(@"logout success");
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"LogOut" object:nil];
                 logoutButton.hidden=YES;
                 userNameLabel.text=@"";
                 userIdLabel.text=@"";
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserInfo"];
             }else if([[info objectForKey:@"status"] isEqualToString:@"0"]){
-                NSLog(@"logout failed");
+                NSLog(@"logout failed:%@",[info objectForKey:@"msg"]);
             }
             
         }];
-        [tool release];
         
     }else{
         NSLog(@"logout failed");
@@ -164,18 +172,22 @@
                                 nil];
         [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){
            
-            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-            NSMutableArray *dates=[[NSMutableArray alloc] init];
-            self.eventArr=[resObj objectForKey:@"data"];
-            for(id obj in self.eventArr){
-                [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
+            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                NSMutableArray *dates=[[NSMutableArray alloc] init];
+                self.eventArr=[resObj objectForKey:@"data"];
+                for(id obj in self.eventArr){
+                    [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
+                }
+                [calendarView markDates:dates];
+                self.dateDic=[[NSMutableDictionary alloc] init];
+                for(id key in self.eventArr){
+                    [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
+                }
+                [dates release];
+            }else{
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
-            [calendarView markDates:dates];
-            self.dateDic=[[NSMutableDictionary alloc] init];
-            for(id key in self.eventArr){
-                [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
-            }
-            [dates release];
             
         }];
         

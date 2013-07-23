@@ -17,6 +17,7 @@
 #import "ConcernedViewController.h"
 #import "ClientCenterViewController.h"
 #import "DBLite.h"
+#import "PrettyTabBarViewController.h"
 
 @interface tipViewController ()
 
@@ -185,7 +186,7 @@
     
     
     
-    delegate.tabBarController = [[[UITabBarController alloc] init] autorelease];
+    delegate.tabBarController = [[[PrettyTabBarViewController alloc] init] autorelease];
     
     delegate.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,myGooGuuNavController,toolsViewController, clientCenterNav ,nil];
     

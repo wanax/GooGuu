@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LogOut</key>
+	<string>/m/logout</string>
+	<key>Login</key>
+	<string>/m/login</string>
+	<key>UserInfo</key>
+	<string>/m/userinfo</string>
 	<key>QueryAllCompany</key>
 	<string>/m/queryAllCompany</string>
 	<key>DailyStock</key>

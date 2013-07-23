@@ -63,6 +63,7 @@
     CompanyListViewController *nextController=[[CompanyListViewController alloc] init];
     nextController.comType=@"全部";
     nextController.isShowSearchBar=YES;
+    nextController.type=ALL;
     
     if(![self.navigationController.topViewController isKindOfClass:[CompanyListViewController class]]){
         @try{

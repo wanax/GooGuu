@@ -18,6 +18,9 @@
 #import "UniverseViewController.h"
 #import "ChartViewController.h"
 #import "Company.h"
+#import "PrettyNavigationController.h"
+#import "PrettyTabBarViewController.h"
+#import "Utiles.h"
 
 
 @implementation XYZAppDelegate
@@ -26,11 +29,12 @@
 @synthesize tabBarController;
 @synthesize scrollView;
 @synthesize pageControl;
-
+@synthesize loginTimer;
 @synthesize comInfo;
 
 - (void)dealloc
 {
+    [loginTimer release];
     [comInfo release];
     [scrollView release];
     [tabBarController release];
@@ -73,7 +77,7 @@
         //股票关注
         MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
         myGooGuu.tabBarItem=barItem2;
-        UINavigationController *myGooGuuNavController=[[UINavigationController alloc] initWithRootViewController:myGooGuu];
+        PrettyNavigationController *myGooGuuNavController=[[PrettyNavigationController alloc] initWithRootViewController:myGooGuu];
        
         
         //金融工具
@@ -84,25 +88,25 @@
         //客户设置
         ClientCenterViewController *clientView=[[ClientCenterViewController alloc] init];
         clientView.tabBarItem=barItem4;
-        UINavigationController *clientCenterNav=[[UINavigationController alloc] initWithRootViewController:clientView];
+        PrettyNavigationController *clientCenterNav=[[PrettyNavigationController alloc] initWithRootViewController:clientView];
         
         
         //估股新闻
         GooNewsViewController *gooNewsViewController=[[GooNewsViewController alloc] init];
         gooNewsViewController.tabBarItem=barItem;
-        UINavigationController *gooNewsNavController=[[UINavigationController alloc] initWithRootViewController:gooNewsViewController];
+        PrettyNavigationController *gooNewsNavController=[[PrettyNavigationController alloc] initWithRootViewController:gooNewsViewController];
         
         
         //股票列表
         UniverseViewController *universeViewController=[[UniverseViewController alloc] init];
         universeViewController.tabBarItem=barItem5;
-        UINavigationController *universeNav=[[UINavigationController alloc] initWithRootViewController:universeViewController];
+        PrettyNavigationController *universeNav=[[PrettyNavigationController alloc] initWithRootViewController:universeViewController];
         
         
         
         
         
-        self.tabBarController = [[UITabBarController alloc] init];
+        self.tabBarController = [[PrettyTabBarViewController alloc] init];
 
         self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,myGooGuuNavController,universeNav, clientCenterNav ,nil];
         
@@ -126,12 +130,59 @@
         [clientCenterNav release];
         [gooNewsNavController release];
         [universeNav release];
+
     }
 
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginKeeping" object:nil];
+        loginTimer = [NSTimer scheduledTimerWithTimeInterval: 41400// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
+                                                      target: self
+                                                    selector: @selector(handleTimer:)
+                                                    userInfo: nil
+                                                     repeats: YES];
+    }
+    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginKeeping:) name:@"LoginKeeping" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelLoginKeeping:) name:@"LogOut" object:nil];
     
     [self.window makeKeyAndVisible];
-    
+
     return YES;
+}
+-(void)loginKeeping:(NSNotification*)notification{
+
+    loginTimer = [NSTimer scheduledTimerWithTimeInterval: 41400// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
+                                                  target: self
+                                                selector: @selector(handleTimer:)
+                                                userInfo: nil
+                                                 repeats: YES];
+}
+-(void)cancelLoginKeeping:(NSNotification*)notification{
+    [loginTimer invalidate];
+}
+
+
+- (void) handleTimer: (NSTimer *) timer{
+    
+    NSUserDefaults *userDeaults=[NSUserDefaults standardUserDefaults];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[[userDeaults objectForKey:@"UserInfo"] objectForKey:@"username"] lowercaseString],@"username",[Utiles md5:[[userDeaults objectForKey:@"UserInfo"] objectForKey:@"password"]],@"password",@"googuu",@"from", nil];
+    [Utiles getNetInfoWithPath:@"Login" andParams:params besidesBlock:^(id resObj){
+    
+        if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+            NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"UserToke"];
+            [userDefaults setObject:[resObj objectForKey:@"token"] forKey:@"UserToken"];
+            
+            NSLog(@"%@",[resObj objectForKey:@"token"]);
+
+        }else {
+            NSLog(@"%@",[resObj objectForKey:@"msg"]);
+        }
+        
+    }];
+    
+    
 }
 
 /*-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{

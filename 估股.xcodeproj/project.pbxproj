@@ -12,9 +12,6 @@
 		AE2E91A6179D061A0049B28E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E91A5179D061A0049B28E /* CoreGraphics.framework */; };
 		AE2E91AC179D061A0049B28E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE2E91AA179D061A0049B28E /* InfoPlist.strings */; };
 		AE2E91AE179D061A0049B28E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E91AD179D061A0049B28E /* main.m */; };
-		AE2E91B4179D061A0049B28E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E91B3179D061A0049B28E /* Default.png */; };
-		AE2E91B6179D061A0049B28E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E91B5179D061A0049B28E /* Default@2x.png */; };
-		AE2E91B8179D061A0049B28E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E91B7179D061A0049B28E /* Default-568h@2x.png */; };
 		AE2E925D179D06890049B28E /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E91C1179D06890049B28E /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE2E925E179D06890049B28E /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E91C3179D06890049B28E /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE2E925F179D06890049B28E /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E91C5179D06890049B28E /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -372,6 +369,8 @@
 		AE2E950B179D19A40049B28E /* GCDiscreetNotificationView.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9222179D06890049B28E /* GCDiscreetNotificationView.h */; };
 		AE2E950E179D1A5B0049B28E /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */; };
 		AE2E950F179D1A5B0049B28E /* libiOSJavaScriptCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */; };
+		AE2E951B179D32390049B28E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951A179D32390049B28E /* icon.png */; };
+		AE2E951D179D325F0049B28E /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951C179D325E0049B28E /* apple.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -383,9 +382,6 @@
 		AE2E91AB179D061A0049B28E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE2E91AD179D061A0049B28E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AE2E91AF179D061A0049B28E /* 估股-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "估股-Prefix.pch"; sourceTree = "<group>"; };
-		AE2E91B3179D061A0049B28E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		AE2E91B5179D061A0049B28E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		AE2E91B7179D061A0049B28E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		AE2E91C0179D06890049B28E /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		AE2E91C1179D06890049B28E /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		AE2E91C2179D06890049B28E /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -764,6 +760,8 @@
 		AE2E9449179D14CC0049B28E /* MHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHTabBarController.m; sourceTree = "<group>"; };
 		AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiOSJavaScriptCore.a; sourceTree = "<group>"; };
+		AE2E951A179D32390049B28E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		AE2E951C179D325E0049B28E /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -855,6 +853,8 @@
 		AE2E91A8179D061A0049B28E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AE2E951C179D325E0049B28E /* apple.png */,
+				AE2E951A179D32390049B28E /* icon.png */,
 				AE2E942C179D13D40049B28E /* c.html */,
 				AE2E942D179D13D40049B28E /* cal.html */,
 				AE2E942E179D13D40049B28E /* configure.plist */,
@@ -870,9 +870,6 @@
 				AE2E91AA179D061A0049B28E /* InfoPlist.strings */,
 				AE2E91AD179D061A0049B28E /* main.m */,
 				AE2E91AF179D061A0049B28E /* 估股-Prefix.pch */,
-				AE2E91B3179D061A0049B28E /* Default.png */,
-				AE2E91B5179D061A0049B28E /* Default@2x.png */,
-				AE2E91B7179D061A0049B28E /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1477,9 +1474,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE2E91AC179D061A0049B28E /* InfoPlist.strings in Resources */,
-				AE2E91B4179D061A0049B28E /* Default.png in Resources */,
-				AE2E91B6179D061A0049B28E /* Default@2x.png in Resources */,
-				AE2E91B8179D061A0049B28E /* Default-568h@2x.png in Resources */,
 				AE2E92E5179D08B30049B28E /* UserCell.xib in Resources */,
 				AE2E92E6179D08B30049B28E /* MainWindow.xib in Resources */,
 				AE2E92E7179D08B30049B28E /* CustomCell.xib in Resources */,
@@ -1602,6 +1596,8 @@
 				AE2E9437179D13D40049B28E /* mzl.uujmenlv-512x512.png in Resources */,
 				AE2E9438179D13D40049B28E /* pageDot@2x.png in Resources */,
 				AE2E9439179D13D40049B28E /* welcome1.png in Resources */,
+				AE2E951B179D32390049B28E /* icon.png in Resources */,
+				AE2E951D179D325F0049B28E /* apple.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1913,6 +1909,8 @@
 		AE2E91BC179D061A0049B28E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
 				INFOPLIST_FILE = "估股/估股-Info.plist";
@@ -1933,6 +1931,8 @@
 		AE2E91BD179D061A0049B28E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
 				INFOPLIST_FILE = "估股/估股-Info.plist";

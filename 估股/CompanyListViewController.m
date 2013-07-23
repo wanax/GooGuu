@@ -64,12 +64,8 @@
     
     [super viewDidLoad];
     nibsRegistered = NO;
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:type],@"market", nil];
-    [Utiles getNetInfoWithPath:@"QueryAllCompany" andParams:params besidesBlock:^(id resObj){
-       
-        self.comList=resObj;
-        [self.table reloadData];
-    }];
+
+    [self getCompanyList];
 
     if(self.isShowSearchBar){
         table=[[UITableView alloc] initWithFrame:CGRectMake(0,40,320,330)];
@@ -106,17 +102,34 @@
 #pragma mark -
 #pragma mark Init Methods
 
+-(void)getCompanyList{
+ 
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:type],@"market", nil];
+    [Utiles getNetInfoWithPath:@"QueryAllCompany" andParams:params besidesBlock:^(id resObj){
+        
+        self.comList=resObj;
+        [self.table reloadData];
+    }];
+    
+}
+     
 -(void)getConcernStocksCode{
 
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from", nil];
     [Utiles postNetInfoWithPath:@"AttentionData" andParams:params besidesBlock:^(id resObj){
-       
-        self.concernStocksCodeArr=[[NSMutableArray alloc] init];
-        NSArray *temp=[resObj objectForKey:@"data"];
-        for(id obj in temp){
-            [concernStocksCodeArr addObject:[NSString stringWithFormat:@"%@",[obj objectForKey:@"stockcode"]]];
+        if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+            self.concernStocksCodeArr=[[NSMutableArray alloc] init];
+            NSArray *temp=[resObj objectForKey:@"data"];
+            for(id obj in temp){
+                [concernStocksCodeArr addObject:[NSString stringWithFormat:@"%@",[obj objectForKey:@"stockcode"]]];
+            }
+            [self.table reloadData];
+        }else{
+            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            self.concernStocksCodeArr=[[NSMutableArray alloc] init];
         }
-        [self.table reloadData];
+        
+        
         
     }];
     
@@ -352,7 +365,7 @@
 
 
 - (void)doneLoadingTableViewData{
-    
+    [self getCompanyList];
     [self getConcernStocksCode];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.table];
     _reloading = NO;

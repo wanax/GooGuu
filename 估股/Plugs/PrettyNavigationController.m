@@ -7,6 +7,7 @@
 //
 
 #import "PrettyNavigationController.h"
+#import "PrettyNavigationBar.h"
 
 @interface PrettyNavigationController ()
 
@@ -21,6 +22,11 @@
         // Custom initialization
     }
     return self;
+}
+
+-(id)initWithRootViewController:(UIViewController *)rootViewController{
+    [self setValue:[[[PrettyNavigationBar alloc] init] autorelease] forKeyPath:@"navigationBar"];
+    return [super initWithRootViewController:rootViewController];
 }
 
 - (void)viewDidLoad
