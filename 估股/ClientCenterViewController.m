@@ -15,6 +15,7 @@
 #import "JSONKit.h"
 #import "MBProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Reachability.h"
 
 
 
@@ -82,16 +83,12 @@
 {
     [super viewDidLoad];
     [self setTitle:@"个人中心"];
+
     
+    self.view.backgroundColor=[Utiles colorWithHexString:@"#19d2b2"];
+
     
-    
-    self.view.backgroundColor=[Utiles colorWithHexString:@"#7EEBE9"];
-    
-    VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
-    calendar.delegate=self;
-    [self.view addSubview:calendar];
-    
-    UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(setting:)];
+    UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(setting:)];
     self.navigationItem.rightBarButtonItem=setting;
     
     logoutButton=[UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -112,10 +109,13 @@
   
 }
 
+
+
 -(void)logout:(id)sender{
     
     NSString *token= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"];
     if(token){
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 token, @"token",@"googuu",@"from",
                                 nil];
@@ -153,66 +153,21 @@
 }
 
 
-- (void)didReceiveMemoryWarning
+
+
+
+-(void)reachabilityChanged:(NSNotification*)note
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark -
-#pragma mark Calendar Delegate Methods
-
--(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated {
-    if (month==[[NSDate date] month]) {
-       
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",
-                                @"2013",@"year",@"07",@"month",@"googuu",@"from",
-                                nil];
-        [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){
-           
-            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
-                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-                NSMutableArray *dates=[[NSMutableArray alloc] init];
-                self.eventArr=[resObj objectForKey:@"data"];
-                for(id obj in self.eventArr){
-                    [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
-                }
-                [calendarView markDates:dates];
-                self.dateDic=[[NSMutableDictionary alloc] init];
-                for(id key in self.eventArr){
-                    [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
-                }
-                [dates release];
-            }else{
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-            }
-            
-        }];
-        
-
-    }
-}
-
--(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date {
-
-    NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"dd"];
-    NSString *currentDateStr = [dateFormat stringFromDate:date];
+    Reachability * reach = [note object];
     
-    if ([[self.dateDic allKeys] containsObject:currentDateStr]){
-        NSString *msg=[[NSString alloc] init];
-        for(id obj in [self.dateDic objectForKey:currentDateStr]){
-            msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
-        }
-        UIAlertView *tip=[[UIAlertView alloc] initWithTitle:@"今天事件" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [tip show];
-        [tip release];
+    if([reach isReachable])
+    {
+        //NSLog(@"Reachable");
     }
-    
-    [dateFormat release];
-
+    else
+    {
+        //NSLog(@"NReachable");
+    }
 }
 
 
@@ -232,6 +187,11 @@
 }
 
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 
 

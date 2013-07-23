@@ -57,6 +57,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [self getConcernStocksCode];
+    [self.table reloadData];
 }
 
 
@@ -127,10 +128,7 @@
         }else{
             [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             self.concernStocksCodeArr=[[NSMutableArray alloc] init];
-        }
-        
-        
-        
+        }        
     }];
     
 }
@@ -190,17 +188,25 @@
         cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"];
         cell.stockNameLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
         cell.concernBt.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:11.0f];
-        if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){            
-            [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];
-            [cell.concernBt setBackgroundColorString:@"#34C3C1" forState:UIControlStateNormal];
-            [cell.concernBt setTag:row+1];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+            if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){
+                [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];
+                [cell.concernBt setBackgroundColorString:@"#34C3C1" forState:UIControlStateNormal];
+                [cell.concernBt setTag:row+1];
+            }else{
+                [cell.concernBt setTitle:@"添加关注" forState:UIControlStateNormal];
+                [cell.concernBt setBackgroundColorString:@"#F21E83" forState:UIControlStateNormal];
+                [cell.concernBt setTag:row+1];
+            }
+            
+            [cell.concernBt addTarget:self action:@selector(cellBtClick:) forControlEvents:UIControlEventTouchDown];
+            [cell.concernBt setHidden:NO];
         }else{
-            [cell.concernBt setTitle:@"添加关注" forState:UIControlStateNormal];
-            [cell.concernBt setBackgroundColorString:@"#F21E83" forState:UIControlStateNormal];
-            [cell.concernBt setTag:row+1];            
+            [cell.concernBt setHidden:YES];
         }
-      
-        [cell.concernBt addTarget:self action:@selector(cellBtClick:) forControlEvents:UIControlEventTouchDown];
+        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+        backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
+        [cell setBackgroundView:backView];
   
     }@catch (NSException *e) {
         NSLog(@"%@",e);

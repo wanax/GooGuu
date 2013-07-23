@@ -205,7 +205,9 @@
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
     }
-  
+    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+    backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
+    [cell setBackgroundView:backView];
     return cell;
 }
 

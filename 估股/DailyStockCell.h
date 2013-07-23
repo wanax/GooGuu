@@ -11,5 +11,12 @@
 @interface DailyStockCell : UITableViewCell
 
 @property (nonatomic,retain) IBOutlet UIImageView *dailyStockImg;
+@property (nonatomic,retain) IBOutlet UILabel *companyNameLabel;
+@property (nonatomic,retain) IBOutlet UILabel *communityPriceLabel;
+@property (nonatomic,retain) IBOutlet UILabel *gooGuuPriceLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketPriceLabel;
+@property (nonatomic,retain) IBOutlet UILabel *tradeLabel;
+@property (nonatomic,retain) IBOutlet UILabel *outLookLabel;
 
 @end

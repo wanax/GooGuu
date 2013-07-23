@@ -21,6 +21,7 @@
 #import "PrettyNavigationController.h"
 #import "PrettyTabBarViewController.h"
 #import "Utiles.h"
+#import "Reachability.h"
 
 
 @implementation XYZAppDelegate
@@ -142,6 +143,20 @@
                                                      repeats: YES];
     }
     
+    // Allocate a reachability object
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    
+    // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
+    reach.reachableOnWWAN = NO;
+    
+    // Here we set up a NSNotification observer. The Reachability that caused the notification
+    // is passed in the object parameter
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    [reach startNotifier];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginKeeping:) name:@"LoginKeeping" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelLoginKeeping:) name:@"LogOut" object:nil];
@@ -150,6 +165,23 @@
 
     return YES;
 }
+
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability * reach = [note object];
+    
+    if([reach isReachable])
+    {
+        NSLog(@"Reachable");
+    }
+    else
+    {
+        NSLog(@"NReachable");
+    }
+}
+
+
+
 -(void)loginKeeping:(NSNotification*)notification{
 
     loginTimer = [NSTimer scheduledTimerWithTimeInterval: 41400// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用

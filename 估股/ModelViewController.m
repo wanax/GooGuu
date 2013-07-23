@@ -41,7 +41,7 @@
 
     
 	// Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#FBE6C2"]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
 
     chartViewController=[[ChartViewController alloc] init];
     chartViewController.view.frame=CGRectMake(0,0,480,320);

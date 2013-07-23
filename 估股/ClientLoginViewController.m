@@ -20,6 +20,9 @@
 #import "MBProgressHUD.h"
 #import "PrettyTabBarViewController.h"
 #import "User.h"
+#import "GooGuuContainerViewController.h"
+#import "MHTabBarController.h"
+#import "ConcernedViewController.h"
 
 @interface ClientLoginViewController ()
 
@@ -114,6 +117,13 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO ;
                 [hud hide:YES];
                 [hud release];
+                NSArray *controllers=self.parentViewController.childViewControllers;
+                for(id obj in controllers){
+                    if([obj isKindOfClass:[GooGuuContainerViewController class]]){
+                        ConcernedViewController *test= (ConcernedViewController *)[[(GooGuuContainerViewController *)obj tabBarController] selectedViewController];
+                        [test viewDidAppear:YES];
+                    }
+                }
             }else {
                 NSLog(@"%@",[info objectForKey:@"msg"]);
             }

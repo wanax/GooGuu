@@ -11,9 +11,23 @@
 @implementation DailyStockCell
 
 @synthesize dailyStockImg;
+@synthesize communityPriceLabel;
+@synthesize companyNameLabel;
+@synthesize gooGuuPriceLabel;
+@synthesize marketLabel;
+@synthesize tradeLabel;
+@synthesize marketPriceLabel;
+@synthesize outLookLabel;
 
 - (void)dealloc
 {
+    [outLookLabel release];outLookLabel=nil;
+    [communityPriceLabel release];communityPriceLabel=nil;
+    [companyNameLabel release];companyNameLabel=nil;
+    [gooGuuPriceLabel release];gooGuuPriceLabel=nil;
+    [marketPriceLabel release];marketPriceLabel=nil;
+    [tradeLabel release];tradeLabel=nil;
+    [marketLabel release];marketLabel=nil;
     [dailyStockImg release];
     [super dealloc];
 }

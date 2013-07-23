@@ -43,6 +43,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.commentField.returnKeyType=UIReturnKeyGo;
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     if(self.type==CompanyType){
         UIButton *back=[UIButton buttonWithType:UIButtonTypeRoundedRect];
         back.frame=CGRectMake(30,150,60,40);

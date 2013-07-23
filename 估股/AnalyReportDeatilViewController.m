@@ -8,6 +8,7 @@
 
 #import "AnalyReportDeatilViewController.h"
 #import "UILabel+VerticalAlign.h"
+#import "Utiles.h"
 
 @interface AnalyReportDeatilViewController ()
 
@@ -41,6 +42,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.titleLabel.text=@"here";
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     [self.briefLabel alignTop];
 }
 

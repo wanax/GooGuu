@@ -58,7 +58,7 @@
     id comInfo=delegate.comInfo;
     NSString *url=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companypicurl"]];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 350.0f, 2400.0f)];
     
     

@@ -44,7 +44,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
 
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[delegate.comInfo objectForKey:@"stockcode"],@"stockcode", nil];
     [Utiles postNetInfoWithPath:@"CompanyAnalyReportURL" andParams:params besidesBlock:^(id obj){

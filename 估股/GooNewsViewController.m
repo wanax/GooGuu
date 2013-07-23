@@ -31,16 +31,18 @@
 
 
 @synthesize customTableView;
-@synthesize newList;
+@synthesize newArrList;
 @synthesize imageUrl;
+@synthesize companyInfo;
 
 @synthesize hud;
 
 - (void)dealloc
 {
+    [companyInfo release];companyInfo=nil;
     [hud release];hud=nil;
     [customTableView release];customTableView=nil;
-    [newList release];newList=nil;
+    [newArrList release];newArrList=nil;
     [imageUrl release];imageUrl=nil;
     [super dealloc];
 }
@@ -98,16 +100,16 @@
 
 -(void)addGooGuuNews{
 
-    NSString *arId=[[self.newList lastObject] objectForKey:@"articleid"];
+    NSString *arId=[[self.newArrList lastObject] objectForKey:@"articleid"];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:arId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:params besidesBlock:^(id resObj){
 
         NSMutableArray *exNews=[resObj objectForKey:@"data"];
-        NSMutableArray *temp=[NSMutableArray arrayWithArray:self.newList];
+        NSMutableArray *temp=[NSMutableArray arrayWithArray:self.newArrList];
         for(id obj in exNews){
             [temp addObject:obj];
         }
-        self.newList=temp;
+        self.newArrList=temp;
         [self.customTableView reloadData];
         [self.customTableView.infiniteScrollingView stopAnimating];
         
@@ -120,7 +122,7 @@
    
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:nil besidesBlock:^(id news){
        
-        self.newList=[news objectForKey:@"data"];
+        self.newArrList=[news objectForKey:@"data"];
         
         [hud hide:YES];
         [self.customTableView reloadData];
@@ -131,6 +133,12 @@
     [Utiles getNetInfoWithPath:@"DailyStock" andParams:nil besidesBlock:^(id obj){
         
         self.imageUrl=[NSString stringWithFormat:@"%@",[obj objectForKey:@"comanylogourl"]];
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[obj objectForKey:@"stockcode"],@"stockcode", nil];
+        [Utiles getNetInfoWithPath:@"QueryCompany" andParams:params besidesBlock:^(id resObj){
+           
+            self.companyInfo=resObj;
+            [self.customTableView reloadData];
+        }];
         [self.customTableView reloadData];
     }];
 }
@@ -145,7 +153,11 @@
 #pragma mark Table Data Source Methods
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 86.0;
+    if(indexPath.section==0){
+        return 113;
+    }else{
+        return 86.0;
+    }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -157,7 +169,7 @@
     if(section==0){
         return 1;
     }else if(section==1){
-        return [self.newList count];
+        return [self.newArrList count];
     }
     return 0;
 }
@@ -186,6 +198,19 @@
                                
                            }];
         }
+        NSNumber *marketPrice=[self.companyInfo objectForKey:@"marketprice"];
+        NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
+        float outLook=fabsf(([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue]);
+        cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",marketPrice];
+        cell.companyNameLabel.text=[self.companyInfo objectForKey:@"companyname"];
+        cell.marketLabel.text=[self.companyInfo objectForKey:@"market"];
+        cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
+        cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
+        cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
+        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+        backView.backgroundColor=[Utiles colorWithHexString:@"#edc951"];
+        [cell setBackgroundView:backView];
+        [backView release];backView=nil;
       
         return cell;
         
@@ -205,7 +230,7 @@
         }
         
         int row=[indexPath row];
-        id model=[newList objectAtIndex:row];
+        id model=[newArrList objectAtIndex:row];
         
         cell.title=[model objectForKey:@"title"];
         cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
@@ -213,7 +238,7 @@
         cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:@"#FEF8F8"];
+        backView.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
         
@@ -236,9 +261,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
     if(indexPath.section==0){
-        //NSLog(@"here");
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else if(indexPath.section==1){
-        NSString *artId=[NSString stringWithFormat:@"%@",[[self.newList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
+        NSString *artId=[NSString stringWithFormat:@"%@",[[self.newArrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
         GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
         articleViewController.articleId=artId;
         articleViewController.title=@"研究报告";

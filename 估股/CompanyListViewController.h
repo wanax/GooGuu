@@ -34,7 +34,6 @@ typedef enum {
     __strong UIActivityIndicatorView *_activityIndicatorView;
 
 }
-
 @property MarketType type;
 @property BOOL nibsRegistered;
 @property (nonatomic,retain) NSString *comType;

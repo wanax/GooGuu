@@ -24,8 +24,9 @@
 
 @property (nonatomic,retain) CustomTableView *customTableView;
 
-@property (nonatomic,retain) NSMutableArray *newList;
+@property (nonatomic,retain) NSMutableArray *newArrList;
 @property (nonatomic,retain) NSString *imageUrl;
+@property (nonatomic,retain) id companyInfo;
 
 @property (nonatomic,retain) MBProgressHUD *hud;
 
