@@ -198,7 +198,7 @@
         }
         NSNumber *marketPrice=[self.companyInfo objectForKey:@"marketprice"];
         NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
-        float outLook=fabsf(([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue]);
+        float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
         cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",marketPrice];
         cell.companyNameLabel.text=[self.companyInfo objectForKey:@"companyname"];
         cell.marketLabel.text=[self.companyInfo objectForKey:@"market"];

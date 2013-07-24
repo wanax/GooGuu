@@ -23,6 +23,10 @@
 @synthesize gPriceLabel;
 @synthesize priceLabel;
 
+@synthesize gooGuuPriceLabel;
+@synthesize marketPriceLabel;
+@synthesize percentLabel;
+
 @synthesize topImg;
 @synthesize bottomImg;
 @synthesize name;
@@ -32,6 +36,9 @@
 
 - (void)dealloc
 {
+    [percentLabel release];
+    [gooGuuPriceLabel release];
+    [marketPriceLabel release];
     [topImageView release];
     [bottomImageView release];
     [nameLabel release];

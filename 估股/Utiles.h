@@ -25,7 +25,7 @@
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
 
-
++ (BOOL) isBlankString:(NSString *)string;
 
 
 

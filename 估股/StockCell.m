@@ -13,8 +13,22 @@
 @synthesize stockNameLabel;
 @synthesize concernBt;
 
+@synthesize belongLabel;
+@synthesize gPriceLabel;
+@synthesize priceLabel;
+
+@synthesize gooGuuPriceLabel;
+@synthesize marketPriceLabel;
+@synthesize percentLabel;
+
 - (void)dealloc
 {
+    [percentLabel release];
+    [gooGuuPriceLabel release];
+    [marketPriceLabel release];
+    [belongLabel release];
+    [gPriceLabel release];
+    [priceLabel release];
     [stockNameLabel release];
     [concernBt release];
     [super dealloc];

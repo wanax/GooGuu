@@ -164,6 +164,10 @@
     return [self.comList count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 62.0;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString * StockCellIdentifier =
@@ -205,9 +209,35 @@
         }else{
             [cell.concernBt setHidden:YES];
         }
+        NSNumber *gPriceStr=[comInfo objectForKey:@"googuuprice"];
+        float g=[gPriceStr floatValue];
+        cell.gPriceLabel.text=[NSString stringWithFormat:@"%.2f",g];
+        NSNumber *priceStr=[comInfo objectForKey:@"marketprice"];
+        float p = [priceStr floatValue];
+        cell.priceLabel.text=[NSString stringWithFormat:@"%.2f",p];
+        cell.belongLabel.text=[comInfo objectForKey:@"market"];
+        float outLook=(g-p)/p;
+        cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
+        if(outLook>0){
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]].CGColor;
+        }else if(outLook==0){
+            cell.percentLabel.backgroundColor=[UIColor whiteColor];
+        }else if(outLook<0){
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]].CGColor;
+        }
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
         [cell setBackgroundView:backView];
+        cell.gooGuuPriceLabel.layer.cornerRadius = 5;
+        cell.gooGuuPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#EAC117"].CGColor;
+        cell.gooGuuPriceLabel.layer.borderWidth = 1;
+        cell.marketPriceLabel.layer.cornerRadius = 5;
+        cell.marketPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#599653"].CGColor;
+        cell.marketPriceLabel.layer.borderWidth = 1;
+        cell.percentLabel.layer.cornerRadius = 5;        
+        cell.percentLabel.layer.borderWidth = 1;
   
     }@catch (NSException *e) {
         NSLog(@"%@",e);
