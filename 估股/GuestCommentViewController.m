@@ -20,6 +20,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "ComFieldViewController.h"
 #import "AddCommentViewController.h"
+#import "PrettyKit.h"
 
 @interface GuestCommentViewController ()
 
@@ -69,7 +70,7 @@
     NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
     [arr addObject:wanSay];
     
-    UIToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
+    PrettyToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
     [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
     [wanSay release];
     [self.table reloadData];

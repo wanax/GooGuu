@@ -268,6 +268,7 @@
         ArticleCommentViewController *articleCommentViewController=[[ArticleCommentViewController alloc] init];
         articleCommentViewController.articleId=artId;
         articleCommentViewController.title=@"评论";
+        articleCommentViewController.type=News;
         MHTabBarController *container=[[MHTabBarController alloc] init];
         NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
         container.viewControllers=controllers;

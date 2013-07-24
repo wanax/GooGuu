@@ -55,6 +55,7 @@
     viewController1 = [[IntroductionViewController alloc] init];
     viewController2 = [[ModelViewController alloc] init];
     viewController3 = [[AnalysisReportViewController alloc] init];
+    UINavigationController *analyNav=[[UINavigationController alloc] initWithRootViewController:viewController3];
     viewController4 = [[GuestCommentViewController alloc] init];
     
     viewController1.title=@"公司图解";
@@ -71,6 +72,7 @@
     
     [self.view addSubview:tabBarController.view];
     [self addChildViewController:tabBarController];
+    [analyNav release];
 }
 
 - (void)didReceiveMemoryWarning

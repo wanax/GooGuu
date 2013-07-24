@@ -13,6 +13,8 @@
 #import "MHTabBarController.h"
 #import "UIImageView+AFNetworking.h"
 #import "AddCommentViewController.h"
+#import "PrettyKit.h"
+#import "AnalyDetailViewController.h"
 
 @interface ArticleCommentViewController ()
 
@@ -23,6 +25,7 @@
 @synthesize articleId;
 @synthesize cusTable;
 @synthesize commentArr;
+@synthesize type;
 
 - (void)dealloc
 {
@@ -41,15 +44,40 @@
     return self;
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    
+    if(self.type==StockCompany){
+        NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+        [arr removeLastObject];
+        UIToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
+        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+    }
+    
+}
+
 -(void)viewDidAppear:(BOOL)animated{
-    UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:nil target:self action:@selector(wanSay:)];
-    self.parentViewController.navigationItem.rightBarButtonItem=wanSay;
-    CATransition *transition=[CATransition animation];
-    transition.duration=0.4f;
-    transition.fillMode=kCAFillModeForwards;
-    transition.type=kCATruncationMiddle;
-    transition.subtype=kCATransitionFromRight;
-    [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
+    
+    if(self.type==News){
+        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+        self.parentViewController.navigationItem.rightBarButtonItem=wanSay;
+        CATransition *transition=[CATransition animation];
+        transition.duration=0.4f;
+        transition.fillMode=kCAFillModeForwards;
+        transition.type=kCATruncationMiddle;
+        transition.subtype=kCATransitionFromRight;
+        [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
+    }else{
+        NSAssert(self.type==StockCompany,@"Analy Report");
+        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+        NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+        [arr addObject:wanSay];
+        
+        PrettyToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
+        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+        [wanSay release];
+        [self.cusTable reloadData];
+    }
+    
     [self getComment];
     
 }
@@ -57,10 +85,20 @@
 -(void)wanSay:(id)sender{
     AddCommentViewController *addCommentViewController=[[AddCommentViewController alloc] initWithNibName:@"AddCommentView" bundle:nil];
     addCommentViewController.articleId=self.articleId;
-    addCommentViewController.type=ArticleType;
-    [(UINavigationController *)self.parentViewController.parentViewController pushViewController:addCommentViewController animated:YES];
+    
+    if(self.type==News){
+        addCommentViewController.type=NewsType;
+        [(UINavigationController *)self.parentViewController.parentViewController pushViewController:addCommentViewController animated:YES];
+    }else{
+        NSAssert(self.type==StockCompany,@"Should be articel");
+        addCommentViewController.type=ArticleType;
+        [self presentViewController:addCommentViewController animated:YES completion:nil];
+    }
+    
     [addCommentViewController release];
 }
+
+
 
 - (void)viewDidLoad
 {
@@ -71,6 +109,17 @@
     self.cusTable.dataSource=self;
     self.cusTable.delegate=self;
     [self.view addSubview:cusTable];
+    if(_refreshHeaderView == nil)
+    {
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.cusTable.bounds.size.height, self.view.frame.size.width, self.cusTable.bounds.size.height)];
+        
+        view.delegate = self;
+        [self.cusTable addSubview:view];
+        _refreshHeaderView = view;
+        
+        [view release];
+    }
+    [_refreshHeaderView refreshLastUpdatedDate];
     
     [self getComment];
     
@@ -94,6 +143,7 @@
         self.commentArr=resObj;
         
         [self.cusTable reloadData];
+        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.cusTable];
     }];
     
 }
@@ -166,6 +216,57 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+
+#pragma mark -
+#pragma mark - Table Header View Methods
+
+
+- (void)doneLoadingTableViewData{
+    
+    
+    [self getComment];
+    [self.cusTable reloadData];
+    
+    _reloading = NO;
+    
+    //[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.customTableView];
+    
+}
+
+
+#pragma mark –
+#pragma mark UIScrollViewDelegate Methods
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    
+}
+
+#pragma mark –
+#pragma mark EGORefreshTableHeaderDelegate Methods
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    
+    [_activityIndicatorView startAnimating];
+    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:1.0];
+    
+}
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+    
+    
+    return _reloading; // should return if data source model is reloading
+    
+}
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+    
+    return [NSDate date]; // should return date data source was last changed
+    
+}
 
 
 

@@ -16,6 +16,7 @@
 #import <AddressBook/AddressBook.h>
 #import "ModelViewController.h"
 #import "MHTabBarController.h"
+#import "MBProgressHUD.h"
 
 @interface ChartViewController ()
 
@@ -348,7 +349,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     NSString *clientUrl = @"http://www.googuu.net/services/data/companyModel/getData.do?stockCode=03331";
     
-    
+    [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:clientUrl]];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -393,6 +394,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [graph reloadData];
+        [MBProgressHUD hideHUDForView:self.hostView animated:YES];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Failure: %@", error);
@@ -561,7 +563,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         if([tapGr state]==UIGestureRecognizerStateChanged&&[self isNearByThePoint:now]){
           
             //[reverseDic removeAllObjects];
-            coordinate.x=(int)(coordinate.x+0.5);
+            coordinate.x=(int)(coordinate.x+0.5)>=23?22:(int)coordinate.x;
+            coordinate.x=(int)(coordinate.x+0.5)<=11?12:(int)coordinate.x;
+            NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
             
             if(linkage){
 
@@ -605,7 +609,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
     //NSLog(@"%@",arg1);
     NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
-    [self.priceLabel setText:re1];
+    [self.priceLabel setText:[re1 substringWithRange:NSMakeRange(0,5)]];
 }
 
 

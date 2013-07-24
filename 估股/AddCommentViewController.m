@@ -44,7 +44,7 @@
 	// Do any additional setup after loading the view.
     self.commentField.returnKeyType=UIReturnKeyGo;
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
-    if(self.type==CompanyType){
+    if(self.type==CompanyType||self.type==ArticleType){
         UIButton *back=[UIButton buttonWithType:UIButtonTypeRoundedRect];
         back.frame=CGRectMake(30,150,60,40);
         [back setTitle:@"取消" forState:UIControlStateNormal];
@@ -72,11 +72,16 @@
                 [Utiles ToastNotification:@"发布失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
         }];        
-    }else if(self.type==ArticleType){
+    }else{
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid",textField.text,@"msg",[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",nil];
         [Utiles postNetInfoWithPath:@"ContentrReply" andParams:params besidesBlock:^(id resObj){
             if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
-                [(UINavigationController *)self.parentViewController popViewControllerAnimated:YES];
+                if(self.type==NewsType){
+                   [(UINavigationController *)self.parentViewController popViewControllerAnimated:YES]; 
+                }else if(self.type==ArticleType){
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                
             }else{
                 [Utiles ToastNotification:@"发布失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }

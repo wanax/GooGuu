@@ -13,10 +13,23 @@
 
 @class ArticleCommentModel;
 
+//此页面两个部分公用
+typedef enum {
+    
+    News,//估股新闻展示分析报告
+    StockCompany//股票公司展示分析报告
+    
+} AnalyArticleType;
+
 @interface ArticleCommentViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate,UIScrollViewDelegate>{
     BOOL nibsRegistered;
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;//主要是记录是否在刷新中
+    
+    __strong UIActivityIndicatorView *_activityIndicatorView;
 }
 
+@property  AnalyArticleType type;
 @property (nonatomic,retain) UITableView *cusTable;
 @property (nonatomic,retain) NSString *articleId;
 @property (nonatomic,retain) id commentArr;

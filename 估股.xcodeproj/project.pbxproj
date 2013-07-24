@@ -51,7 +51,6 @@
 		AE2E92E6179D08B30049B28E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92DE179D08B30049B28E /* MainWindow.xib */; };
 		AE2E92E7179D08B30049B28E /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92DF179D08B30049B28E /* CustomCell.xib */; };
 		AE2E92E8179D08B30049B28E /* GooNewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92E0179D08B30049B28E /* GooNewsCell.xib */; };
-		AE2E92E9179D08B30049B28E /* AnalyReportDeatilView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92E1179D08B30049B28E /* AnalyReportDeatilView.xib */; };
 		AE2E92EA179D08B30049B28E /* StockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92E2179D08B30049B28E /* StockCell.xib */; };
 		AE2E92EB179D08B30049B28E /* AddCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92E3179D08B30049B28E /* AddCommentView.xib */; };
 		AE2E92EC179D08B30049B28E /* DailyStockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE2E92E4179D08B30049B28E /* DailyStockCell.xib */; };
@@ -217,8 +216,6 @@
 		AE2E9473179D15540049B28E /* AnalysisReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9408179D0A880049B28E /* AnalysisReportViewController.m */; };
 		AE2E9474179D15540049B28E /* ContainerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9409179D0A880049B28E /* ContainerViewController.h */; };
 		AE2E9475179D15540049B28E /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E940A179D0A880049B28E /* ContainerViewController.m */; };
-		AE2E9476179D15540049B28E /* AnalyReportDeatilViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E940B179D0A880049B28E /* AnalyReportDeatilViewController.h */; };
-		AE2E9477179D15540049B28E /* AnalyReportDeatilViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E940C179D0A880049B28E /* AnalyReportDeatilViewController.m */; };
 		AE2E9478179D15540049B28E /* StockCell.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93F1179D0A810049B28E /* StockCell.h */; };
 		AE2E9479179D15540049B28E /* StockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93F2179D0A810049B28E /* StockCell.m */; };
 		AE2E947A179D15540049B28E /* UserCell.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93F3179D0A810049B28E /* UserCell.h */; };
@@ -409,6 +406,8 @@
 		AE368F36179F693D000AF7BD /* UIButton+WebCache.h in Sources */ = {isa = PBXBuildFile; fileRef = AE368F06179F68E4000AF7BD /* UIButton+WebCache.h */; };
 		AE368F37179F693D000AF7BD /* UIImageView+WebCache.h in Sources */ = {isa = PBXBuildFile; fileRef = AE368F08179F68E4000AF7BD /* UIImageView+WebCache.h */; };
 		AE368F38179F693D000AF7BD /* UIImageView+Addition.h in Sources */ = {isa = PBXBuildFile; fileRef = AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */; };
+		AE368F3B179F81A7000AF7BD /* AnalyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */; };
+		AE368F3E179F85B4000AF7BD /* AnalyDetailContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -576,7 +575,6 @@
 		AE2E92DE179D08B30049B28E /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		AE2E92DF179D08B30049B28E /* CustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCell.xib; sourceTree = "<group>"; };
 		AE2E92E0179D08B30049B28E /* GooNewsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GooNewsCell.xib; sourceTree = "<group>"; };
-		AE2E92E1179D08B30049B28E /* AnalyReportDeatilView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnalyReportDeatilView.xib; sourceTree = "<group>"; };
 		AE2E92E2179D08B30049B28E /* StockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StockCell.xib; sourceTree = "<group>"; };
 		AE2E92E3179D08B30049B28E /* AddCommentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCommentView.xib; sourceTree = "<group>"; };
 		AE2E92E4179D08B30049B28E /* DailyStockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DailyStockCell.xib; sourceTree = "<group>"; };
@@ -748,8 +746,6 @@
 		AE2E9408179D0A880049B28E /* AnalysisReportViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnalysisReportViewController.m; sourceTree = "<group>"; };
 		AE2E9409179D0A880049B28E /* ContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
 		AE2E940A179D0A880049B28E /* ContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
-		AE2E940B179D0A880049B28E /* AnalyReportDeatilViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyReportDeatilViewController.h; sourceTree = "<group>"; };
-		AE2E940C179D0A880049B28E /* AnalyReportDeatilViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnalyReportDeatilViewController.m; sourceTree = "<group>"; };
 		AE2E940D179D0A920049B28E /* NSDictionary+MutableDeepCopy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+MutableDeepCopy.h"; sourceTree = "<group>"; };
 		AE2E940E179D0A920049B28E /* NSDictionary+MutableDeepCopy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+MutableDeepCopy.m"; sourceTree = "<group>"; };
 		AE2E940F179D0A920049B28E /* DBLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBLite.h; sourceTree = "<group>"; };
@@ -838,6 +834,10 @@
 		AE368F08179F68E4000AF7BD /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		AE368F09179F68E4000AF7BD /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		AE368F0B179F68E4000AF7BD /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = MWPhotoBrowser.bundle; path = "估股/Plugs/MWPhotoBrowser/MWPhotoBrowser.bundle"; sourceTree = "<group>"; };
+		AE368F39179F81A7000AF7BD /* AnalyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyDetailViewController.h; sourceTree = "<group>"; };
+		AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailViewController.m; sourceTree = "<group>"; };
+		AE368F3C179F85B3000AF7BD /* AnalyDetailContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyDetailContainerViewController.h; sourceTree = "<group>"; };
+		AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailContainerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1199,7 +1199,6 @@
 				AE2E92DE179D08B30049B28E /* MainWindow.xib */,
 				AE2E92DF179D08B30049B28E /* CustomCell.xib */,
 				AE2E92E0179D08B30049B28E /* GooNewsCell.xib */,
-				AE2E92E1179D08B30049B28E /* AnalyReportDeatilView.xib */,
 				AE2E92E2179D08B30049B28E /* StockCell.xib */,
 				AE2E92E3179D08B30049B28E /* AddCommentView.xib */,
 				AE2E92E4179D08B30049B28E /* DailyStockCell.xib */,
@@ -1456,8 +1455,10 @@
 				AE2E9408179D0A880049B28E /* AnalysisReportViewController.m */,
 				AE2E9409179D0A880049B28E /* ContainerViewController.h */,
 				AE2E940A179D0A880049B28E /* ContainerViewController.m */,
-				AE2E940B179D0A880049B28E /* AnalyReportDeatilViewController.h */,
-				AE2E940C179D0A880049B28E /* AnalyReportDeatilViewController.m */,
+				AE368F39179F81A7000AF7BD /* AnalyDetailViewController.h */,
+				AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */,
+				AE368F3C179F85B3000AF7BD /* AnalyDetailContainerViewController.h */,
+				AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */,
 			);
 			name = CompanyDetailController;
 			sourceTree = "<group>";
@@ -1610,7 +1611,6 @@
 				AE2E92E6179D08B30049B28E /* MainWindow.xib in Resources */,
 				AE2E92E7179D08B30049B28E /* CustomCell.xib in Resources */,
 				AE2E92E8179D08B30049B28E /* GooNewsCell.xib in Resources */,
-				AE2E92E9179D08B30049B28E /* AnalyReportDeatilView.xib in Resources */,
 				AE2E92EA179D08B30049B28E /* StockCell.xib in Resources */,
 				AE2E92EB179D08B30049B28E /* AddCommentView.xib in Resources */,
 				AE2E92EC179D08B30049B28E /* DailyStockCell.xib in Resources */,
@@ -1894,8 +1894,6 @@
 				AE2E9473179D15540049B28E /* AnalysisReportViewController.m in Sources */,
 				AE2E9474179D15540049B28E /* ContainerViewController.h in Sources */,
 				AE2E9475179D15540049B28E /* ContainerViewController.m in Sources */,
-				AE2E9476179D15540049B28E /* AnalyReportDeatilViewController.h in Sources */,
-				AE2E9477179D15540049B28E /* AnalyReportDeatilViewController.m in Sources */,
 				AE2E9478179D15540049B28E /* StockCell.h in Sources */,
 				AE2E9479179D15540049B28E /* StockCell.m in Sources */,
 				AE2E947A179D15540049B28E /* UserCell.h in Sources */,
@@ -2004,6 +2002,8 @@
 				AE368F1E179F68E4000AF7BD /* SDWebImagePrefetcher.m in Sources */,
 				AE368F1F179F68E4000AF7BD /* UIButton+WebCache.m in Sources */,
 				AE368F20179F68E4000AF7BD /* UIImageView+WebCache.m in Sources */,
+				AE368F3B179F81A7000AF7BD /* AnalyDetailViewController.m in Sources */,
+				AE368F3E179F85B4000AF7BD /* AnalyDetailContainerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

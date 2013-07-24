@@ -9,11 +9,20 @@
 //  2013-05-08 | Wanax | 股票详细页-股票分析
 
 #import <UIKit/UIKit.h>
+#import "EGORefreshTableHeaderView.h"
 
+@class CustomTableView;
 
-@interface AnalysisReportViewController : UIViewController
-
-
-
+@interface AnalysisReportViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,EGORefreshTableHeaderDelegate>{
+    
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;//主要是记录是否在刷新中
+    
+    __strong UIActivityIndicatorView *_activityIndicatorView;
+    
+}
+@property  BOOL nibsRegistered;
+@property (nonatomic,retain) NSMutableArray *analyReportList;
+@property (nonatomic,retain) UITableView *customTableView;
 
 @end
