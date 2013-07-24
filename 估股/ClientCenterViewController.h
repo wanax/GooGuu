@@ -18,11 +18,21 @@
     
 }
 
-@property (nonatomic,retain) UIButton *logoutButton;
-@property (nonatomic,retain) UILabel *userNameLabel;
-@property (nonatomic,retain) UILabel *userIdLabel;
+@property (nonatomic,retain) IBOutlet UILabel *userNameLabel;
+@property (nonatomic,retain) IBOutlet UIButton *logoutBt;
 
 @property (nonatomic,retain) NSMutableArray *eventArr;
 @property (nonatomic,retain) NSMutableDictionary *dateDic;
+
+
+
+-(IBAction)logoutBtClick:(id)sender;
+
+
+
+
+
+
+
 
 @end

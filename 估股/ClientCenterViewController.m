@@ -26,20 +26,19 @@
 
 @implementation ClientCenterViewController
 
-@synthesize logoutButton;
-@synthesize userIdLabel;
 @synthesize userNameLabel;
+@synthesize logoutBt;
+
 
 @synthesize eventArr=_eventArr;
 @synthesize dateDic=_dateDic;
 
 - (void)dealloc
 {
+    [logoutBt release];
     [_dateDic release];
     [_eventArr release];
     [userNameLabel release];
-    [userIdLabel release];
-    [logoutButton release];
     [super dealloc];
 }
 
@@ -56,7 +55,7 @@
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
         
-        logoutButton.hidden=NO;
+        logoutBt.hidden=NO;
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",@"googuu",@"from",
                                 nil];
@@ -64,7 +63,6 @@
            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
                id userInfo=[resObj objectForKey:@"data"];
                [userNameLabel setText:[userInfo objectForKey:@"nickname"]];
-               [userIdLabel setText:[userInfo objectForKey:@"userid"]];
            }else{
                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
            }
@@ -73,7 +71,7 @@
         }];
         
     }else{
-        logoutButton.hidden=YES;
+        logoutBt.hidden=YES;
     }
     
 }
@@ -90,19 +88,6 @@
     UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(setting:)];
     self.navigationItem.rightBarButtonItem=setting;
     
-    logoutButton=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-    logoutButton.frame=CGRectMake(20,300,60,40);
-    [logoutButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:logoutButton];
-    
-    userNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(90,300,80,40)];
-    userNameLabel.textAlignment=NSTextAlignmentCenter;
-    userIdLabel=[[UILabel alloc] initWithFrame:CGRectMake(180,300,120,40)];
-    userNameLabel.layer.cornerRadius = 6;
-    userIdLabel.layer.cornerRadius=6;
-    [self.view addSubview:userNameLabel];
-    [self.view addSubview:userIdLabel];
     
     [setting release];
   
@@ -110,7 +95,7 @@
 
 
 
--(void)logout:(id)sender{
+-(void)logoutBtClick:(id)sender{
     
     NSString *token= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"];
     if(token){
@@ -123,9 +108,8 @@
             if([[info objectForKey:@"status"] isEqualToString:@"1"]){
                 NSLog(@"logout success");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LogOut" object:nil];
-                logoutButton.hidden=YES;
+                logoutBt.hidden=YES;
                 userNameLabel.text=@"";
-                userIdLabel.text=@"";
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserInfo"];
             }else if([[info objectForKey:@"status"] isEqualToString:@"0"]){

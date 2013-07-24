@@ -408,6 +408,7 @@
 		AE368F38179F693D000AF7BD /* UIImageView+Addition.h in Sources */ = {isa = PBXBuildFile; fileRef = AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */; };
 		AE368F3B179F81A7000AF7BD /* AnalyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */; };
 		AE368F3E179F85B4000AF7BD /* AnalyDetailContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */; };
+		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -838,6 +839,7 @@
 		AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailViewController.m; sourceTree = "<group>"; };
 		AE368F3C179F85B3000AF7BD /* AnalyDetailContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyDetailContainerViewController.h; sourceTree = "<group>"; };
 		AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailContainerViewController.m; sourceTree = "<group>"; };
+		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1202,6 +1204,7 @@
 				AE2E92E2179D08B30049B28E /* StockCell.xib */,
 				AE2E92E3179D08B30049B28E /* AddCommentView.xib */,
 				AE2E92E4179D08B30049B28E /* DailyStockCell.xib */,
+				AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */,
 			);
 			path = NibFile;
 			sourceTree = "<group>";
@@ -1734,6 +1737,7 @@
 				AE368F18179F68E4000AF7BD /* LICENSE in Resources */,
 				AE368F19179F68E4000AF7BD /* README.md in Resources */,
 				AE368F21179F68E4000AF7BD /* MWPhotoBrowser.bundle in Resources */,
+				AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2078,8 +2082,8 @@
 		AE2E91BC179D061A0049B28E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
 				INFOPLIST_FILE = "估股/估股-Info.plist";
@@ -2093,6 +2097,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1EB36AAF-8668-4D2B-8429-38CF35CA5E06";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1EB36AAF-8668-4D2B-8429-38CF35CA5E06";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2100,8 +2106,8 @@
 		AE2E91BD179D061A0049B28E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
 				INFOPLIST_FILE = "估股/估股-Info.plist";
@@ -2115,6 +2121,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1EB36AAF-8668-4D2B-8429-38CF35CA5E06";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1EB36AAF-8668-4D2B-8429-38CF35CA5E06";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
