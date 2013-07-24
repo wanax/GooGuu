@@ -60,8 +60,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [Utiles showHUD:@"Loading..." andView:self.view andHUD:hud];
     
     [self getGooGuuNews];
     
@@ -88,7 +86,7 @@
         [view release];
     }
     [_refreshHeaderView refreshLastUpdatedDate];
-
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 
@@ -99,7 +97,7 @@
 #pragma mark Net Get JSON Data
 
 -(void)addGooGuuNews{
-
+    
     NSString *arId=[[self.newArrList lastObject] objectForKey:@"articleid"];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:arId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:params besidesBlock:^(id resObj){
@@ -119,13 +117,13 @@
 
 //网络获取数据
 - (void)getGooGuuNews{
-   
+    
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:nil besidesBlock:^(id news){
        
         self.newArrList=[news objectForKey:@"data"];
-        
-        [hud hide:YES];
+       
         [self.customTableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.customTableView];
         
     }];

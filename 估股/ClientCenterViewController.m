@@ -83,7 +83,6 @@
 {
     [super viewDidLoad];
     [self setTitle:@"个人中心"];
-
     
     self.view.backgroundColor=[Utiles colorWithHexString:@"#19d2b2"];
 

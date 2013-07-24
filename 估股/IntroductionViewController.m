@@ -13,6 +13,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "XYZAppDelegate.h"
 #import "MHTabBarController.h"
+#import "UIImageView+Addition.h"
 
 @interface IntroductionViewController ()
 
@@ -20,8 +21,15 @@
 
 @implementation IntroductionViewController
 
-
+@synthesize photos;
 @synthesize imageView;
+
+- (void)dealloc
+{
+    [photos release];
+    [imageView release];
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,12 +38,6 @@
         // Custom initialization
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [imageView release];
-    [super dealloc];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -58,24 +60,36 @@
     id comInfo=delegate.comInfo;
     NSString *url=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companypicurl"]];
     
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 350.0f, 2400.0f)];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#E2DCC7"]];
+   
+    MWPhoto *photo;
+    photo = [MWPhoto photoWithURL:[NSURL URLWithString:url]];
+    NSString *legend=[NSString stringWithFormat:@"%@-%@%@\n                                                                                 The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.",[comInfo objectForKey:@"market"],[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"trade"]];
+    photo.caption = legend;
+    NSMutableArray *tempPhotos = [[NSMutableArray alloc] init];
+    [tempPhotos addObject:photo];
+    self.photos=tempPhotos;
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];   
+    browser.displayActionButton = YES;
     
-    
-    if(url.length>10){
-        [imageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil];
-        UIPanGestureRecognizer *panGest=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-        [imageView addGestureRecognizer:panGest];
-        imageView.userInteractionEnabled = YES;
-        [self.view insertSubview:imageView atIndex:0];
-    }else{
-        [Utiles ToastNotification:@"暂无数据" andView:self.view andLoading:NO andIsBottom:NO andIsHide:NO];
-    }
+    [self.view addSubview:browser.view];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
     
+}
+
+#pragma mark - MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return self.photos.count;
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
+    if (index < self.photos.count)
+        return [self.photos objectAtIndex:index];
+    return nil;
 }
 
 -(void)panView:(UIPanGestureRecognizer *)tap{

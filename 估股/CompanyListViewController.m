@@ -97,7 +97,7 @@
         [view release];
     }
     [_refreshHeaderView refreshLastUpdatedDate];
-  
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 #pragma mark -
@@ -110,6 +110,7 @@
         
         self.comList=resObj;
         [self.table reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
 }

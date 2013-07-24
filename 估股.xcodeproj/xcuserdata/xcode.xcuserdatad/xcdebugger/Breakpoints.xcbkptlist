@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/CompanyListViewController.m"
-         timestampString = "396264146.464301"
+         timestampString = "396321822.940637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "245"
-         endingLineNumber = "245"
+         startingLineNumber = "246"
+         endingLineNumber = "246"
          landmarkName = "-NetAction:andCode:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/CompanyListViewController.m"
-         timestampString = "396257948.699754"
+         timestampString = "396321822.940637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "185"
-         endingLineNumber = "185"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396234550.900355"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "71"
-         endingLineNumber = "71"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396234550.900355"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "121"
-         endingLineNumber = "121"
+         startingLineNumber = "122"
+         endingLineNumber = "122"
          landmarkName = "-getComList"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,20 +125,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396236021.31888"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396236021.31888"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "162"
@@ -151,11 +138,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396236021.31888"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
+         startingLineNumber = "163"
+         endingLineNumber = "163"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/ConcernedViewController.m"
+         timestampString = "396321757.20263"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "179"
+         endingLineNumber = "179"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/CompanyListViewController.m"
-         timestampString = "396257948.699754"
+         timestampString = "396321822.940637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "186"
-         endingLineNumber = "186"
+         startingLineNumber = "187"
+         endingLineNumber = "187"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -240,11 +240,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ClientCenterViewController.m"
-         timestampString = "396257325.339172"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
+         startingLineNumber = "116"
+         endingLineNumber = "116"
          landmarkName = "-logout:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -253,11 +253,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ClientCenterViewController.m"
-         timestampString = "396257325.339172"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "129"
-         endingLineNumber = "129"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
          landmarkName = "-logout:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -344,11 +344,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ConcernedViewController.m"
-         timestampString = "396257384.401937"
+         timestampString = "396321757.20263"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
+         startingLineNumber = "65"
+         endingLineNumber = "65"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -357,11 +357,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/CompanyListViewController.m"
-         timestampString = "396257948.699754"
+         timestampString = "396321822.940637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "190"
-         endingLineNumber = "190"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -396,11 +396,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/GooNewsViewController.m"
-         timestampString = "396260673.688424"
+         timestampString = "396321108.2879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "136"
-         endingLineNumber = "136"
+         startingLineNumber = "134"
+         endingLineNumber = "134"
          landmarkName = "-getGooGuuNews"
          landmarkType = "5">
       </FileBreakpoint>
@@ -409,11 +409,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/GooNewsViewController.m"
-         timestampString = "396260669.198868"
+         timestampString = "396321108.2879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "139"
-         endingLineNumber = "139"
+         startingLineNumber = "137"
+         endingLineNumber = "137"
          landmarkName = "-getGooGuuNews"
          landmarkType = "5">
       </FileBreakpoint>
@@ -422,11 +422,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/GooNewsViewController.m"
-         timestampString = "396263362.88878"
+         timestampString = "396321108.2879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "210"
-         endingLineNumber = "210"
+         startingLineNumber = "208"
+         endingLineNumber = "208"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -435,11 +435,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/GooNewsViewController.m"
-         timestampString = "396262212.543208"
+         timestampString = "396321108.2879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "140"
-         endingLineNumber = "140"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
          landmarkName = "-getGooGuuNews"
          landmarkType = "5">
       </FileBreakpoint>
@@ -448,12 +448,64 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/GooNewsViewController.m"
-         timestampString = "396263013.172926"
+         timestampString = "396321108.2879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "200"
-         endingLineNumber = "200"
+         startingLineNumber = "198"
+         endingLineNumber = "198"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/GooNewsViewController.m"
+         timestampString = "396321111.604573"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "120"
+         endingLineNumber = "120"
+         landmarkName = "-getGooGuuNews"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/Plugs/MBProgressHUD.m"
+         timestampString = "396321591.18151"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "219"
+         endingLineNumber = "219"
+         landmarkName = "+showHUDAddedTo:animated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/IntroductionViewController.m"
+         timestampString = "396323908.673207"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
+         landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/IntroductionViewController.m"
+         timestampString = "396324124.932233"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
+         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

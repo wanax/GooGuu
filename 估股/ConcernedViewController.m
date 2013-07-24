@@ -17,6 +17,7 @@
 #import "Utiles.h"
 #import "ComFieldViewController.h"
 #import "PrettyTabBarViewController.h"
+#import "MBProgressHUD.h"
 
 @interface ConcernedViewController ()
 
@@ -95,7 +96,7 @@
         [view release];
     }
     [_refreshHeaderView refreshLastUpdatedDate];
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 -(void)panView:(UIPanGestureRecognizer *)tap{
@@ -129,7 +130,7 @@
             [Utiles ToastNotification:[obj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             self.comInfoList=[NSMutableArray arrayWithCapacity:0];
         }
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     [self.customTableView reloadData];
     

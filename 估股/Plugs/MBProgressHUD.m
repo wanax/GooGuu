@@ -216,7 +216,7 @@
 
 + (MBProgressHUD *)showHUDAddedTo:(UIView *)view animated:(BOOL)animated {
 	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
-	[view addSubview:hud];
+    [view insertSubview:hud atIndex:view.subviews.count+1];
 	[hud show:animated];
 #if __has_feature(objc_arc)
 	return hud;
