@@ -17,15 +17,17 @@
 @implementation StockContainerViewController
 
 @synthesize hkListViewController;
-@synthesize csiListViewController;
+@synthesize szListViewController;
 @synthesize usListViewController;
+@synthesize shListViewController;
 @synthesize tabBarController;
 
 - (void)dealloc
 {
     [tabBarController release];
     [hkListViewController release];
-    [csiListViewController release];
+    [szListViewController release];
+    [shListViewController release];
     [usListViewController release];
     [super dealloc];
 }
@@ -46,25 +48,30 @@
     
     hkListViewController = [[CompanyListViewController alloc] init];
     usListViewController = [[CompanyListViewController alloc] init];
-    csiListViewController = [[CompanyListViewController alloc] init];
+    szListViewController = [[CompanyListViewController alloc] init];
+    shListViewController = [[CompanyListViewController alloc] init];
 
     hkListViewController.comType=@"港交所";
     usListViewController.comType=@"美股";
-    csiListViewController.comType=@"沪深";
+    szListViewController.comType=@"深市";
+    shListViewController.comType=@"沪市";
     
     hkListViewController.title=@"港交所";
     usListViewController.title=@"美股";
-    csiListViewController.title=@"沪深";
+    szListViewController.title=@"深市";
+    shListViewController.title=@"沪市";
     
     hkListViewController.type=HK;
     usListViewController.type=NANY;
-    csiListViewController.type=SHSZSE;
+    szListViewController.type=SZSE;
+    shListViewController.type=SHSE;
     
     hkListViewController.isShowSearchBar=NO;
     usListViewController.isShowSearchBar=NO;
-    csiListViewController.isShowSearchBar=NO;
+    szListViewController.isShowSearchBar=NO;
+    shListViewController.isShowSearchBar=NO;
   
-	NSArray *viewControllers = [NSArray arrayWithObjects:hkListViewController, usListViewController,csiListViewController, nil];
+	NSArray *viewControllers = [NSArray arrayWithObjects:hkListViewController, usListViewController,szListViewController,shListViewController, nil];
 	tabBarController = [[MHTabBarController alloc] init];
     
 	tabBarController.viewControllers = viewControllers;

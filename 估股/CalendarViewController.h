@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VRGCalendarView.h"
 
+@class NIAttributedLabel;
+
 @interface CalendarViewController : UIViewController<VRGCalendarViewDelegate>{
     
     NSMutableArray *_eventArr;

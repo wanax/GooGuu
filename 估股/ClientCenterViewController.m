@@ -16,6 +16,7 @@
 #import "MBProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Reachability.h"
+#import "UIButton+BGColor.h"
 
 
 
@@ -28,6 +29,7 @@
 
 @synthesize userNameLabel;
 @synthesize logoutBt;
+@synthesize avatar;
 
 
 @synthesize eventArr=_eventArr;
@@ -35,6 +37,7 @@
 
 - (void)dealloc
 {
+    [avatar release];
     [logoutBt release];
     [_dateDic release];
     [_eventArr release];
@@ -82,10 +85,13 @@
     [super viewDidLoad];
     [self setTitle:@"个人中心"];
     
-    self.view.backgroundColor=[Utiles colorWithHexString:@"#19d2b2"];
-
+    self.view.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
+    [self.logoutBt setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
     
-    UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(setting:)];
+    avatar.layer.cornerRadius=5;
+    avatar.layer.borderWidth=2;
+    
+    UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleBordered target:self action:@selector(setting:)];
     self.navigationItem.rightBarButtonItem=setting;
     
     

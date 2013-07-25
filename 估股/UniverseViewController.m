@@ -40,6 +40,10 @@
     [self addChildViewController:content];
     
     self.theSearchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
+    
+    [[self.theSearchBar.subviews objectAtIndex:0] removeFromSuperview];
+    self.theSearchBar.backgroundColor = [UIColor grayColor];
+    
     self.theSearchBar.delegate=self;
     [self.view addSubview:self.theSearchBar];
     [content release];

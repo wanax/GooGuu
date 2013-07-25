@@ -71,6 +71,8 @@
     if(self.isShowSearchBar){
         table=[[UITableView alloc] initWithFrame:CGRectMake(0,40,320,330)];
         search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
+        [[self.search.subviews objectAtIndex:0] removeFromSuperview];
+        self.search.backgroundColor = [UIColor grayColor];
         search.delegate=self;
         [self.view addSubview:search];
     }else{

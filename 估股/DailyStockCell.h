@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NIAttributedLabel.h"
 
 @interface DailyStockCell : UITableViewCell
 
@@ -18,6 +19,6 @@
 @property (nonatomic,retain) IBOutlet UILabel *marketPriceLabel;
 @property (nonatomic,retain) IBOutlet UILabel *tradeLabel;
 @property (nonatomic,retain) IBOutlet UILabel *outLookLabel;
-@property (nonatomic,retain) IBOutlet UILabel *backGroundLabel;
+@property (nonatomic,retain) IBOutlet NIAttributedLabel *backGroundLabel;
 
 @end

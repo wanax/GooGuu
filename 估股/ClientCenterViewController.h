@@ -20,6 +20,7 @@
 
 @property (nonatomic,retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic,retain) IBOutlet UIButton *logoutBt;
+@property (nonatomic,retain) IBOutlet UIImageView *avatar;
 
 @property (nonatomic,retain) NSMutableArray *eventArr;
 @property (nonatomic,retain) NSMutableDictionary *dateDic;

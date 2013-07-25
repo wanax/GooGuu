@@ -14,7 +14,8 @@
 @interface StockContainerViewController : UIViewController
 
 @property (nonatomic,retain) CompanyListViewController *hkListViewController;
-@property (nonatomic,retain) CompanyListViewController *csiListViewController;
+@property (nonatomic,retain) CompanyListViewController *szListViewController;
+@property (nonatomic,retain) CompanyListViewController *shListViewController;
 @property (nonatomic,retain) CompanyListViewController *usListViewController;
 @property (nonatomic,retain) MHTabBarController *tabBarController;
 

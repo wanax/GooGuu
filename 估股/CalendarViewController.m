@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "MHTabBarController.h"
 #import "UILabel+VerticalAlign.h"
+#import "NIAttributedLabel.h"
 
 @interface CalendarViewController ()
 
@@ -58,7 +59,9 @@
     dateIndicator.numberOfLines = 0;
     dateIndicator.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
     dateIndicator.textColor=[UIColor whiteColor];
+
     [self.view addSubview:dateIndicator];
+    
     
     messageLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,322,320,120)];
     messageLabel.backgroundColor=[Utiles colorWithHexString:@"#892D24"];
@@ -141,6 +144,7 @@
             msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
         }
         messageLabel.text=msg;
+        
         [messageLabel alignTop];
     }
    

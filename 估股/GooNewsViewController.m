@@ -20,6 +20,7 @@
 #import "DailyStockCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "SVPullToRefresh.h"
+#import "NimbusAttributedLabel.h"
 
 
 @interface GooNewsViewController ()
@@ -216,6 +217,10 @@
             cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
             cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
         }
+        cell.backGroundLabel.underlineStyle = kCTUnderlineStyleSingle;
+        cell.backGroundLabel.underlineStyleModifier = kCTUnderlinePatternDashDot;
+        cell.backGroundLabel.strokeWidth = 3.0;
+        cell.backGroundLabel.strokeColor = [UIColor blackColor];
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor"]];
         [cell setBackgroundView:backView];

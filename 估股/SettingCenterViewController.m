@@ -13,6 +13,7 @@
 #import "ClientLoginViewController.h"
 #import "XYZAppDelegate.h"
 #import "PrettyKit.h"
+#import "Utiles.h"
 
 @interface SettingCenterViewController ()
 
@@ -48,6 +49,7 @@
     self.navigationController.navigationBarHidden=NO;
     
     centerTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,320,400) style:UITableViewStyleGrouped];
+    centerTableView.backgroundColor=[Utiles colorWithHexString:@"#F2F2EF"];
     centerTableView.delegate=self;
     centerTableView.dataSource=self;
     
