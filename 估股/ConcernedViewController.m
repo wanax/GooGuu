@@ -132,7 +132,6 @@
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-    [self.customTableView reloadData];
     
 }
 
@@ -191,17 +190,17 @@
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         if(outLook>0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]].CGColor;
         }else if(outLook==0){
             cell.percentLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
         }
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor"]];
         [cell setBackgroundView:backView];
         cell.gooGuuPriceLabel.layer.cornerRadius = 5;
         cell.gooGuuPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#EAC117"].CGColor;

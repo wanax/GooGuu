@@ -105,6 +105,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     nibsRegistered=NO;
+
+    
     self.cusTable=[[UITableView alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
     self.cusTable.dataSource=self;
     self.cusTable.delegate=self;
@@ -122,7 +124,7 @@
     [_refreshHeaderView refreshLastUpdatedDate];
     
     [self getComment];
-    
+  
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];

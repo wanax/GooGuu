@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    self.title=@"股票列表";
+    self.title=@"股票搜索";
     // Do any additional setup after loading the view.
     StockContainerViewController *content=[[StockContainerViewController alloc] init];
     content.view.frame=CGRectMake(0,20,320,480);

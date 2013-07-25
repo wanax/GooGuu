@@ -73,7 +73,7 @@
         UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"uptrend.png"] tag:2];        
         UITabBarItem *barItem3=[[UITabBarItem alloc] initWithTitle:@"金融工具" image:[UIImage imageNamed:@"hammer.png"] tag:3];
         UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"个人中心" image:[UIImage imageNamed:@"user.png"] tag:4];
-        UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"股票列表" image:[UIImage imageNamed:@"paper-message.png"] tag:5];
+        UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"股票搜索" image:[UIImage imageNamed:@"paper-message.png"] tag:5];
         
         //股票关注
         MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];

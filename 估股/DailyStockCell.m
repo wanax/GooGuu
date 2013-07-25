@@ -18,9 +18,11 @@
 @synthesize tradeLabel;
 @synthesize marketPriceLabel;
 @synthesize outLookLabel;
+@synthesize backGroundLabel;
 
 - (void)dealloc
 {
+    [backGroundLabel release];backGroundLabel=nil;
     [outLookLabel release];outLookLabel=nil;
     [communityPriceLabel release];communityPriceLabel=nil;
     [companyNameLabel release];companyNameLabel=nil;

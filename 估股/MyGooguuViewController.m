@@ -108,7 +108,7 @@
     [self setTitle:@"我的估股"];
     
     GooGuuContainerViewController *test=[[GooGuuContainerViewController alloc] init];
-    test.view.frame=CGRectMake(0,-20,320,480);
+    test.view.frame=CGRectMake(0,-21,320,480);
 
     [self.view addSubview:test.view];
     [self addChildViewController:test];

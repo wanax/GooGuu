@@ -90,9 +90,9 @@
     [hud show:YES];
 }
 
-+ (NSString *)getConfigureInfo:(NSString *)key{
++ (NSString *)getConfigureInfoFrom:(NSString *)fileName andKey:(NSString *)key{
     
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"configure" ofType:@"plist"];
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"plist"];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
     return [[dictionary objectForKey:key] autorelease];
     
@@ -101,8 +101,8 @@
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfo:@"GooGuuBaseURL"]]];
-    [getAction getPath:[Utiles getConfigureInfo:url] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+    AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
+    [getAction getPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
         
         id resObj=[operation.responseString objectFromJSONString];
         if(block){
@@ -117,8 +117,8 @@
 
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfo:@"GooGuuBaseURL"]]];
-    [postAction postPath:[Utiles getConfigureInfo:url] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+    AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
+    [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
         
         id resObj=[operation.responseString objectFromJSONString];
         if(block){

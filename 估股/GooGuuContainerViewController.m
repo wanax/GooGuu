@@ -49,6 +49,7 @@
     saveModelViewControler = [[ConcernedViewController alloc] init];
     saveModelViewControler.type=@"SavedData";
     calendarViewController=[[CalendarViewController alloc] init];
+    calendarViewController.view.frame=CGRectMake(0,100,320,600);
     concernedViewController.title=@"已关注";
     saveModelViewControler.title=@"已保存";
     calendarViewController.title=@"投资日历";

@@ -53,12 +53,12 @@ static const NSInteger TAG_OFFSET = 1000;
 	[button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
 
     button.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
-	UIImage *image = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+	UIImage *image = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
 	[button setBackgroundImage:image forState:UIControlStateNormal];
 	[button setBackgroundImage:image forState:UIControlStateHighlighted];
 	
-	[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateNormal];
+	[button setTitleColor:[Utiles colorWithHexString:@"#C86125"] forState:UIControlStateNormal];
+	//[button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateNormal];
 }
 
 - (void)deselectTabButton:(UIButton *)button
@@ -70,8 +70,8 @@ static const NSInteger TAG_OFFSET = 1000;
 	[button setBackgroundImage:image forState:UIControlStateNormal];
 	[button setBackgroundImage:image forState:UIControlStateHighlighted];
 
-	[button setTitleColor:[UIColor colorWithRed:175/255.0f green:85/255.0f blue:58/255.0f alpha:1.0f] forState:UIControlStateNormal];
-	[button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	//[button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
 - (void)removeTabButtons
@@ -153,7 +153,8 @@ static const NSInteger TAG_OFFSET = 1000;
 	//[self.view addSubview:contentContainerView];
     [self.view insertSubview:contentContainerView atIndex:0];
 
-	indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MHTabBarIndicator"]];
+    NSString *imgName=[NSString stringWithFormat:@"MHTabBarIndicator%d",_viewControllers.count];
+	indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
 	[self.view addSubview:indicatorImageView];
 
 	[self reloadTabButtons];

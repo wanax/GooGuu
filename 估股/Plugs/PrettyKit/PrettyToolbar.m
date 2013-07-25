@@ -30,11 +30,11 @@
 @synthesize shadowOpacity, gradientEndColor, gradientStartColor, topLineColor, bottomLineColor;
 
 #define default_shadow_opacity 0.5
-#define default_gradient_end_color      [UIColor colorWithHex:0x297CB7]
-#define default_gradient_start_color    [UIColor colorWithHex:0x53A4DE]
-#define default_top_line_color          [UIColor colorWithHex:0x84B7D5]
-#define default_bottom_line_color       [UIColor colorWithHex:0x186399]
-#define default_tint_color              [UIColor colorWithHex:0x9bcd9b]
+#define default_gradient_end_color      [UIColor colorWithHex:0xC96125]
+#define default_gradient_start_color    [UIColor colorWithHex:0xC96125]
+#define default_top_line_color          [UIColor colorWithHex:0xC96125]
+#define default_bottom_line_color       [UIColor colorWithHex:0xC96125]
+#define default_tint_color              [UIColor colorWithHex:0xC86125]
 
 - (void)dealloc {
     self.gradientStartColor = nil;

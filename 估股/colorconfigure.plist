@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GooGuuNewsContentTextColor</key>
+	<string>#82807A</string>
+	<key>GooGuuNewsTitleTextColor</key>
+	<string>#423520</string>
+	<key>NormalCellColor</key>
+	<string>#F3EFE1</string>
+	<key>DailyStockCellBackGroundColor</key>
+	<string>#D0C0A1</string>
+	<key>TopNavigationBarColor</key>
+	<string>#C96125</string>
+	<key>BottomTabBarColor</key>
+	<string>#423520</string>
+	<key>RiseColor</key>
+	<string>#CC2A36</string>
+	<key>FallColor</key>
+	<string>#599653</string>
+</dict>
+</plist>

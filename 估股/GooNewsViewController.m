@@ -63,7 +63,8 @@
     
     [self getGooGuuNews];
     
-    self.title=@"小马新闻";
+    self.navigationController.navigationBar.tintColor=[Utiles colorWithHexString:@"#C86125"];
+    self.title=@"估股动态";
     
    	customTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
     
@@ -205,8 +206,18 @@
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
+        cell.outLookLabel.layer.cornerRadius=5.0;
+        if(outLook>0){
+            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]];
+            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]].CGColor;
+        }else if(outLook==0){
+            cell.outLookLabel.backgroundColor=[UIColor whiteColor];
+        }else if(outLook<0){
+            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
+            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
+        }
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:@"#edc951"];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor"]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
       
@@ -236,7 +247,7 @@
         cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor"]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
         

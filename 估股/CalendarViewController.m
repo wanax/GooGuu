@@ -11,6 +11,7 @@
 #import "DBLite.h"
 #import "MBProgressHUD.h"
 #import "MHTabBarController.h"
+#import "UILabel+VerticalAlign.h"
 
 @interface CalendarViewController ()
 
@@ -20,9 +21,13 @@
 
 @synthesize eventArr=_eventArr;
 @synthesize dateDic=_dateDic;
+@synthesize dateIndicator;
+@synthesize messageLabel;
 
 - (void)dealloc
 {
+    [messageLabel release];
+    [dateIndicator release];
     [_dateDic release];
     [_eventArr release];
     [super dealloc];
@@ -46,9 +51,24 @@
     calendar.delegate=self;
     [self.view addSubview:calendar];
     calendar.userInteractionEnabled=YES;
+    self.view.userInteractionEnabled=YES;
+    
+    dateIndicator=[[UILabel alloc] initWithFrame:CGRectMake(0,292,320,30)];
+    dateIndicator.backgroundColor=[Utiles colorWithHexString:@"#7B140E"];
+    dateIndicator.numberOfLines = 0;
+    dateIndicator.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
+    dateIndicator.textColor=[UIColor whiteColor];
+    [self.view addSubview:dateIndicator];
+    
+    messageLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,322,320,120)];
+    messageLabel.backgroundColor=[Utiles colorWithHexString:@"#892D24"];
+    messageLabel.numberOfLines =5;
+    messageLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    messageLabel.textColor=[UIColor whiteColor];
+    [self.view addSubview:messageLabel];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
-    [calendar addGestureRecognizer:pan];
+    [self.view addGestureRecognizer:pan];
     [pan release];
 }
 
@@ -57,6 +77,14 @@
     if(change.x>100){
         [(MHTabBarController *)self.parentViewController setSelectedIndex:1 animated:YES];
     }
+    if(tap.state==UIGestureRecognizerStateChanged){
+        
+        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-2300),320,2600);
+        
+    }else if(tap.state==UIGestureRecognizerStateEnded){
+        standard=self.view.frame.origin;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,11 +97,12 @@
 #pragma mark Calendar Delegate Methods
 
 -(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated {
-    if (month==[[NSDate date] month]) {
-
+    if (month==[[NSDate date] month]){
+        id dateNow=[NSDate date];
+        
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",
-                                @"2013",@"year",@"07",@"month",@"googuu",@"from",
+                                [NSString stringWithFormat:@"%d",[dateNow year]],@"year",[NSString stringWithFormat:@"0%d",[dateNow month]],@"month",@"googuu",@"from",
                                 nil];
         [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){
             if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
@@ -102,15 +131,17 @@
     NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"dd"];
     NSString *currentDateStr = [dateFormat stringFromDate:date];
-
+    [dateFormat setDateFormat:@"YYYY/MM/dd"];
+    NSString *pointerDate=[NSString stringWithFormat:@"%@相关信息",[dateFormat stringFromDate:date]];
+    dateIndicator.text=pointerDate;
+    messageLabel.text=@"";
     if ([[self.dateDic allKeys] containsObject:currentDateStr]){
         NSString *msg=[[NSString alloc] init];
         for(id obj in [self.dateDic objectForKey:currentDateStr]){
-            msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
+            msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
         }
-        UIAlertView *tip=[[UIAlertView alloc] initWithTitle:@"今天事件" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [tip show];
-        [tip release];
+        messageLabel.text=msg;
+        [messageLabel alignTop];
     }
    
     [dateFormat release];

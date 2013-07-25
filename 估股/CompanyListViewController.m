@@ -65,7 +65,7 @@
     
     [super viewDidLoad];
     nibsRegistered = NO;
-
+    self.title=@"股票搜索";
     [self getCompanyList];
 
     if(self.isShowSearchBar){
@@ -219,13 +219,13 @@
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         if(outLook>0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"RiseColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]].CGColor;
         }else if(outLook==0){
             cell.percentLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfo:@"FallColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
         }
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];

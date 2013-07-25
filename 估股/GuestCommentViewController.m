@@ -99,7 +99,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor redColor]];
     
-    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,400)];
+    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,383)];
     self.table.delegate=self;
     self.table.dataSource=self;
     
