@@ -46,38 +46,42 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     
-    if(self.type==StockCompany){
-        NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-        [arr removeLastObject];
-        UIToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
-        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        if(self.type==StockCompany){
+            NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+            [arr removeLastObject];
+            UIToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
+            [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+        }
     }
-    
+  
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    if(self.type==News){
-        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-        self.parentViewController.navigationItem.rightBarButtonItem=wanSay;
-        CATransition *transition=[CATransition animation];
-        transition.duration=0.4f;
-        transition.fillMode=kCAFillModeForwards;
-        transition.type=kCATruncationMiddle;
-        transition.subtype=kCATransitionFromRight;
-        [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
-    }else{
-        NSAssert(self.type==StockCompany,@"Analy Report");
-        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-        NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-        [arr addObject:wanSay];
-        
-        PrettyToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
-        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
-        [wanSay release];
-        [self.cusTable reloadData];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        if(self.type==News){
+            UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+            self.parentViewController.navigationItem.rightBarButtonItem=wanSay;
+            CATransition *transition=[CATransition animation];
+            transition.duration=0.4f;
+            transition.fillMode=kCAFillModeForwards;
+            transition.type=kCATruncationMiddle;
+            transition.subtype=kCATransitionFromRight;
+            [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
+        }else{
+            NSAssert(self.type==StockCompany,@"Analy Report");
+            UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+            NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+            [arr addObject:wanSay];
+            
+            PrettyToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
+            [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+            [wanSay release];
+            [self.cusTable reloadData];
+        }
     }
-    
+  
     [self getComment];
     
 }

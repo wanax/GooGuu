@@ -253,11 +253,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/MyGooguuViewController.m"
-         timestampString = "396254620.52533"
+         timestampString = "396494716.25959"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "83"
-         endingLineNumber = "83"
+         startingLineNumber = "82"
+         endingLineNumber = "82"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -577,19 +577,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ArticleCommentViewController.m"
-         timestampString = "396341904.129468"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
-         landmarkName = "-viewDidAppear:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
          timestampString = "396339483.453855"
          startingColumnNumber = "9223372036854775807"
@@ -630,11 +617,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ArticleCommentViewController.m"
-         timestampString = "396341904.129468"
+         timestampString = "396494914.444715"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "86"
-         endingLineNumber = "86"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "-wanSay:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -649,19 +636,6 @@
          startingLineNumber = "66"
          endingLineNumber = "66"
          landmarkName = "-textFieldShouldReturn:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ArticleCommentViewController.m"
-         timestampString = "396341904.129468"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "50"
-         endingLineNumber = "50"
-         landmarkName = "-viewDidDisappear:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -747,11 +721,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ArticleCommentViewController.m"
-         timestampString = "396412514.289969"
+         timestampString = "396494914.444715"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
+         startingLineNumber = "111"
+         endingLineNumber = "111"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -779,6 +753,19 @@
          startingLineNumber = "103"
          endingLineNumber = "103"
          landmarkName = "-calendarView:switchedToMonth:targetHeight:animated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/ArticleCommentViewController.m"
+         timestampString = "396494937.652893"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
+         landmarkName = "-viewDidDisappear:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

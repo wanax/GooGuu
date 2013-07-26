@@ -97,6 +97,21 @@
     return [[dictionary objectForKey:key] autorelease];
     
 }
++(void)setConfigureInfoTo:(NSString *)fileName forKey:(NSString *)key andContent:(NSString *)content{
+    
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"plist"];
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
+    [dictionary setObject:content forKey:key];
+    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *path = [paths objectAtIndex:0];
+    //得到完整的文件名
+    NSString *fileNameStr=[NSString stringWithFormat:@"%@.plist",fileName];
+    NSString *realPath=[path stringByAppendingPathComponent:fileNameStr];
+    [dictionary writeToFile:realPath atomically:YES];
+    [dictionary release];
+
+    
+}
 
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{

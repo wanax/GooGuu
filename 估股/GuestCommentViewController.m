@@ -57,24 +57,29 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
 
-    NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-    [arr removeLastObject];
-    UIToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];    
-    [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+        [arr removeLastObject];
+        UIToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
+        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+    }
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
 
-    UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-    
-    NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-    [arr addObject:wanSay];
-    
-    PrettyToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
-    [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
-    [wanSay release];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+        
+        NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
+        [arr addObject:wanSay];
+        
+        PrettyToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
+        [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];
+        [wanSay release];
+        
+    }
     [self.table reloadData];
-  
 }
 
 -(void)wanSay:(id)sender{
