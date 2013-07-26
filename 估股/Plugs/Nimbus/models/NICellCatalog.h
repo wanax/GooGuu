@@ -16,7 +16,7 @@
 
 #import "NICellFactory.h"
 
-typedef CGFloat (^NICellDrawRectBlock)(CGRect rect, id object, UITableViewCell* cell);
+typedef CGFloat (^NICellDrawRectBlock)(CGRect rect, id object, NICellObject* cell);
 
 /**
  * An object that will draw the contents of the cell using a provided block.
