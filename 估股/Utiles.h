@@ -23,13 +23,15 @@
 + (void)showHUD:(NSString *)text andView:(UIView *)view andHUD:(MBProgressHUD *)hud;
 + (void)ToastNotification:(NSString *)text andView:(UIView *)view andLoading:(BOOL)isLoading andIsBottom:(BOOL)isBottom andIsHide:(BOOL)isHide;
 
-+(NSString *)getConfigureInfoFrom:(NSString *)fileName andKey:(NSString *)key;
++ (NSString *)getConfigureInfoFrom:(NSString *)fileName andKey:(NSString *)key inUserDomain:(BOOL)isIn;
 +(void)setConfigureInfoTo:(NSString *)fileName forKey:(NSString *)key andContent:(NSString *)content;
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
 
 + (BOOL) isBlankString:(NSString *)string;
+
++(BOOL)stringToBool:(NSString *)string;
 
 
 

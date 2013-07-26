@@ -85,39 +85,44 @@
 {
     [view addSubview:hud];
     hud.labelText = text;
-    //    hud.dimBackground = YES;
+    //hud.dimBackground = YES;
     hud.square = YES;
     [hud show:YES];
 }
 
-+ (NSString *)getConfigureInfoFrom:(NSString *)fileName andKey:(NSString *)key{
++ (NSString *)getConfigureInfoFrom:(NSString *)fileName andKey:(NSString *)key inUserDomain:(BOOL)isIn{
     
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"plist"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
+    NSDictionary *dictionary=nil;
+    if(isIn){
+        NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory , NSUserDomainMask , YES );
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* filePath = [NSString stringWithFormat:@"%@/%@.plist",documentsDirectory,fileName];
+        dictionary = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    }else{
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"plist"];
+        dictionary = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
+    }
+ 
     return [[dictionary objectForKey:key] autorelease];
-    
+  
 }
 +(void)setConfigureInfoTo:(NSString *)fileName forKey:(NSString *)key andContent:(NSString *)content{
-    
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"plist"];
-    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
-    [dictionary setObject:content forKey:key];
-    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *path = [paths objectAtIndex:0];
-    //得到完整的文件名
-    NSString *fileNameStr=[NSString stringWithFormat:@"%@.plist",fileName];
-    NSString *realPath=[path stringByAppendingPathComponent:fileNameStr];
-    [dictionary writeToFile:realPath atomically:YES];
-    [dictionary release];
 
-    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory , NSUserDomainMask , YES );
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@.plist",documentsDirectory,fileName];
+    NSMutableDictionary *dTmp=[[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+    [dTmp setValue:content forKey:key];
+    [dTmp writeToFile:filePath atomically: YES];
+    [dTmp release];
+  
 }
 
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
-    [getAction getPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+    AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
+    [getAction getPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
         
         id resObj=[operation.responseString objectFromJSONString];
         if(block){
@@ -132,8 +137,8 @@
 
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
-    [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+    AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
+    [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
         
         id resObj=[operation.responseString objectFromJSONString];
         if(block){
@@ -163,7 +168,17 @@
     return NO;
 }
 
-
++(BOOL)stringToBool:(NSString *)string{
+    
+    BOOL tag;
+    if([string isEqualToString:@"1"]){
+        tag=YES;
+    }else {
+        tag=NO;
+    }
+    return tag;
+    
+}
 
 
 

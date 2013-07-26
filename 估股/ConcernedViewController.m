@@ -189,18 +189,22 @@
         cell.belong=[com objectForKey:@"market"];
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
+        NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
+        NSString *fallColorStr=[NSString stringWithFormat:@"FallColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
+        NSString *riseColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:riseColorStr inUserDomain:NO];
+        NSString *fallColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:fallColorStr inUserDomain:NO];
         if(outLook>0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:riseColor].CGColor;
         }else if(outLook==0){
             cell.percentLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
-            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
+            cell.percentLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
+            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
         }
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor"]];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];
         cell.gooGuuPriceLabel.layer.cornerRadius = 5;
         cell.gooGuuPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#EAC117"].CGColor;

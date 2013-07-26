@@ -222,7 +222,7 @@
 //登录验证用户
 -(void)checkUser:(NSString *)name and:(NSString *)pwd WithBlock:(void (^)(NSString *, NSString *))block{
     
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc]initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc]initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
     [httpClient getPath:@"/m/login"
              parameters:@{@"username":name, @"password":pwd,@"from":@"googuu"}
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -244,7 +244,7 @@
 
 -(void)userToken:(NSString *)token Todo:(NSString *)url WithBlock:(void (^)(id))block{
 
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL"]]];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             token, @"token",@"googuu",@"from",

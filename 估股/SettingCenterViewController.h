@@ -15,12 +15,6 @@
 @class NITableViewModel;
 @class NIRadioGroup;
 
-// This enumeration is used in the radio group mapping.
-typedef enum {
-    RadioOption1,
-    RadioOption2,
-    RadioOption3,
-} RadioOptions;
 
 // This enumeration is used in the sub radio group mapping.
 typedef enum {
@@ -34,12 +28,8 @@ typedef enum {
 @property (nonatomic,retain) UIToolbar *top;
 
 @property (nonatomic, readwrite, retain) NITableViewModel* model;
+@property (nonatomic, readwrite, retain) NITableViewActions* actions;
 
-// A radio group object allows us to easily maintain radio group-style interactions in a table view.
-@property (nonatomic, readwrite, retain) NIRadioGroup* radioGroup;
-
-// Each radio group object maintains a specific set of table objects, so in order to have multiple
-// radio groups you need to instantiate multiple radio group objects.
 @property (nonatomic, readwrite, retain) NIRadioGroup* subRadioGroup;
 
 

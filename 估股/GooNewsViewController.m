@@ -203,26 +203,31 @@
         float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
         cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",marketPrice];
         cell.companyNameLabel.text=[self.companyInfo objectForKey:@"companyname"];
-        cell.marketLabel.text=[self.companyInfo objectForKey:@"market"];
+        cell.marketLabel.text=[NSString stringWithFormat:@"%@.%@",[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
+        
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         cell.outLookLabel.layer.cornerRadius=5.0;
+        NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
+        NSString *fallColorStr=[NSString stringWithFormat:@"FallColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
+        NSString *riseColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:riseColorStr inUserDomain:NO];
+        NSString *fallColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:fallColorStr inUserDomain:NO];
         if(outLook>0){
-            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]];
-            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"RiseColor"]].CGColor;
+            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
+            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:riseColor].CGColor;
         }else if(outLook==0){
             cell.outLookLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
-            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]];
-            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"FallColor"]].CGColor;
+            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
+            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
         }
         cell.backGroundLabel.underlineStyle = kCTUnderlineStyleSingle;
         cell.backGroundLabel.underlineStyleModifier = kCTUnderlinePatternDashDot;
         cell.backGroundLabel.strokeWidth = 3.0;
         cell.backGroundLabel.strokeColor = [UIColor blackColor];
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor"]];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
       
@@ -252,7 +257,7 @@
         cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor"]];
+        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
         
