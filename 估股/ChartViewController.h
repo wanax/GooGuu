@@ -19,9 +19,9 @@
 //绘图空间与绘图view顶部的距离
 #define GRAPAHTOPPAD 0.0f
 //绘图view与self.view顶部距离
-#define HOSTVIEWTOPPAD 40.0f
+#define HOSTVIEWTOPPAD 0.0f
 //绘图view与self.view底部距离
-#define HOSTVIEWBOTTOMPAD 90.0f
+#define HOSTVIEWBOTTOMPAD 0.0f
 
 
 //x轴起点
@@ -37,7 +37,7 @@
 //x轴屏幕范围内大坐标间距
 #define XINTERVALLENGTH 3.0
 //x轴坐标的原点（x轴在y轴上的坐标）
-#define XORTHOGONALCOORDINATE -0.1
+#define XORTHOGONALCOORDINATE 0.0
 //x轴每两个大坐标间小坐标个数
 #define XTICKSPERINTERVAL 2
 

@@ -17,6 +17,7 @@
 #import "ModelViewController.h"
 #import "MHTabBarController.h"
 #import "MBProgressHUD.h"
+#import "XYZAppDelegate.h"
 
 @interface ChartViewController ()
 
@@ -112,28 +113,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     self.dividingPoints=[[NSMutableArray alloc] init];
     self.forecastDefaultPoints=[[NSMutableArray alloc] init];
     self.standard=[[NSMutableArray alloc] init];
-    
     reverseDic=[[NSMutableDictionary alloc] init];
-    NSUInteger i;
-    for(i=3;i<NUM;i++){
-        id x=[NSNumber numberWithFloat:0];
-        id y=[NSNumber numberWithFloat:3];
-        [reverseDic setObject:y forKey:[NSString stringWithFormat:@"%.0f",[x floatValue]]];
-        [self.forecastPoints addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:x,@"x",y,@"y",nil]];
-    }
-    
-    
-    for(i=0;i<3;i++){
-        id x=[NSNumber numberWithFloat:0];
-        id y=[NSNumber numberWithFloat:0];
-        [self.hisPoints addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:x,@"x",y,@"y",nil]];
-    }
-    
-    for(i=0;i<10;i++){
-        id x=[NSNumber numberWithFloat:12.0];
-        id y=[NSNumber numberWithFloat:0.1*i];
-        [self.dividingPoints addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:x,@"x",y,@"y",nil]];
-    }
+
     
     //初始化图形视图
     @try {
@@ -141,7 +122,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         CPTTheme *theme=[CPTTheme themeNamed:kCPTDarkGradientTheme];
         [graph applyTheme:theme];
         
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD) ];
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,0,480,320) ];
         [self.view addSubview:hostView];
         
         [hostView setHostedGraph : graph ];
@@ -361,33 +342,33 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
-    
-    NSString *clientUrl = @"http://www.googuu.net/services/data/companyModel/getData.do?stockCode=03331";
-    
+
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:clientUrl]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSLog(@"%@",[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"CompanyModel" inUserDomain:NO]);
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
-        self.jsonForChart=[operation responseString];
+        self.jsonForChart=[resObj JSONString];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
         
         //获取股票种类
-        NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonForChart];        
+        NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonForChart];
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-
+        
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-
+        
         self.industryClass=[re objectFromJSONString];
-
+        
         //获取对应折线信息,将历史数据与预测数据分组
         [self.hisPoints removeAllObjects];
         [self.forecastDefaultPoints removeAllObjects];
         [self.forecastPoints removeAllObjects];
         //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
         [self.reverseDic removeAllObjects];
-        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",@"1362"];
+        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[self.industryClass objectAtIndex:0] objectForKey:@"id"]];
         re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         id charData=[re objectFromJSONString];
@@ -411,13 +392,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [graph reloadData];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Failure: %@", error);
+        
     }];
-    [operation start];
-    
-    
+
     
 }
 
@@ -691,7 +668,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //[self.navigationController.navigationBar setHidden:YES];
         //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
     } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(20,40,480,320);
+        //self.hostView.frame=CGRectMake(20,40,480,320);
     }
 }
 
