@@ -368,6 +368,7 @@
 		AE2E950F179D1A5B0049B28E /* libiOSJavaScriptCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */; };
 		AE2E951B179D32390049B28E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951A179D32390049B28E /* icon.png */; };
 		AE2E951D179D325F0049B28E /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951C179D325E0049B28E /* apple.png */; };
+		AE31AB9D17A6000A007E903F /* calu.html in Resources */ = {isa = PBXBuildFile; fileRef = AE31AB9C17A6000A007E903F /* calu.html */; };
 		AE368E97179F5F3E000AF7BD /* UIImageView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368E96179F5F3E000AF7BD /* UIImageView+Addition.m */; };
 		AE368E9A179F682F000AF7BD /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE368E99179F682E000AF7BD /* MessageUI.framework */; };
 		AE368F0F179F68E4000AF7BD /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368EE3179F68E4000AF7BD /* MWCaptionView.m */; };
@@ -946,6 +947,7 @@
 		AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiOSJavaScriptCore.a; sourceTree = "<group>"; };
 		AE2E951A179D32390049B28E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		AE2E951C179D325E0049B28E /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
+		AE31AB9C17A6000A007E903F /* calu.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = calu.html; sourceTree = "<group>"; };
 		AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addition.h"; sourceTree = "<group>"; };
 		AE368E96179F5F3E000AF7BD /* UIImageView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addition.m"; sourceTree = "<group>"; };
 		AE368E99179F682E000AF7BD /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1482,6 +1484,7 @@
 		AE2E91A8179D061A0049B28E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AE31AB9C17A6000A007E903F /* calu.html */,
 				AE2E951C179D325E0049B28E /* apple.png */,
 				AE2E951A179D32390049B28E /* icon.png */,
 				AE2E942C179D13D40049B28E /* c.html */,
@@ -2874,6 +2877,7 @@
 				AE6B96E317A0F51200DBE0C6 /* MHTabBarIndicator4.png in Resources */,
 				AE6B96E517A1117100DBE0C6 /* dotline.png in Resources */,
 				AE75B91017A211B30046901F /* userconfigure.plist in Resources */,
+				AE31AB9D17A6000A007E903F /* calu.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -51,7 +51,7 @@
 //退回主菜单
 -(void)back:(id)sender{
     
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    //XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     
     //viewController1.imageView.frame=CGRectMake(0,0,320,2600);
     
@@ -59,7 +59,7 @@
      [UIView setAnimationDuration:0.8f];
      [UIView setAnimationCurve:UIViewAnimationCurveLinear];
      [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:delegate.window cache:YES];
-     [UIView commitAnimations];*/
+     [UIView commitAnimations];
     
     CATransition *animation = [CATransition animation];
     animation.duration = 0.5f;
@@ -71,7 +71,9 @@
     animation=nil;
     
     [self removeFromParentViewController];
-    [self.view removeFromSuperview];
+    [self.view removeFromSuperview];*/
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self.navigationController popToViewController:self animated:YES];
 }
 
 
@@ -88,7 +90,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
     ContainerViewController *content=[[ContainerViewController alloc] init];
     content.view.frame=CGRectMake(0,17,self.view.frame.size.width,self.view.frame.size.height);
     [self.view addSubview:content.view];
@@ -121,7 +122,23 @@
 }
 
 
+-(NSUInteger)supportedInterfaceOrientations{
+    
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] supportedInterfaceOrientations];
+    }else{
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+}
 
+- (BOOL)shouldAutorotate
+{
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] shouldAutorotate];
+    }else{
+        return NO;
+    }
+}
 
 
 

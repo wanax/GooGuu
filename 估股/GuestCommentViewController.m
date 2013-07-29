@@ -71,6 +71,8 @@
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
         UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
         
+        self.parentViewController.parentViewController.navigationController.navigationItem.rightBarButtonItem=wanSay;
+        
         NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
         [arr addObject:wanSay];
         
@@ -278,6 +280,14 @@
     
 }
 
+-(NSUInteger)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 
 
 

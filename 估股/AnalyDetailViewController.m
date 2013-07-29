@@ -70,6 +70,15 @@
     
 }
 
+-(NSUInteger)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 
 
 - (void)didReceiveMemoryWarning

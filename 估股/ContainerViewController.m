@@ -82,8 +82,15 @@
 }
 
 
+-(NSUInteger)supportedInterfaceOrientations{
+  
+    return [self.tabBarController selectedViewController].supportedInterfaceOrientations;
+}
 
+- (BOOL)shouldAutorotate{
 
+    return self.tabBarController.selectedViewController.shouldAutorotate;
+}
 
 
 

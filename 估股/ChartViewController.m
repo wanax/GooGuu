@@ -103,7 +103,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"calu" ofType:@"html"];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
 
     
@@ -226,6 +226,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self.view addSubview:barButton];
     [barButton release];
     
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(320,0,80,40);
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    backButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    backButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+    [backButton addTarget:self action:@selector(backTo:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:backButton];
+    [backButton release];
+    
     [self addScatterChart:scatterButton];
     
     //手势添加
@@ -236,15 +245,21 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 }
 
--(void)addBarChart:(id)sender{
-    UIButton *bt=(UIButton *)sender;
+-(void)backTo:(UIButton *)bt{
+    
+    bt.showsTouchWhenHighlighted=YES;
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+-(void)addBarChart:(UIButton *)bt{
+
     bt.showsTouchWhenHighlighted=YES;
     
     if(![graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
-        
-        
+
         // First bar plot
-        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:51/255 green:204/255 blue:255/255 alpha:1.0] horizontalBars:NO];
+        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:105/255.0 green:195/255.0 blue:228/255.0 alpha:1.0] horizontalBars:NO];
         barPlot.baseValue  = CPTDecimalFromString(@"0");
         barPlot.dataSource = self;
         barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
@@ -257,8 +272,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
    
 }
 
--(void)addScatterChart:(id)sender{
-    UIButton *bt=(UIButton *)sender;
+-(void)addScatterChart:(UIButton *)bt{
+
     bt.showsTouchWhenHighlighted=YES;
     
     linkage=YES;
@@ -363,6 +378,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
 
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+
         self.industryClass=[re objectFromJSONString];
 
         //获取对应折线信息,将历史数据与预测数据分组
@@ -481,7 +497,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        //num=[[self.forecastPoints objectAtIndex:index] valueForKey:key];
         
         if([key isEqualToString:@"x"]){
             num=[[self.forecastPoints objectAtIndex:index] valueForKey:@"y"];
@@ -492,7 +507,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DEFAULT_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        //num=[[self.forecastPoints objectAtIndex:index] valueForKey:key];
         
         if([key isEqualToString:@"x"]){
             num=[[self.forecastDefaultPoints objectAtIndex:index] valueForKey:@"y"];
@@ -563,8 +577,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         if([tapGr state]==UIGestureRecognizerStateChanged&&[self isNearByThePoint:now]){
           
             //[reverseDic removeAllObjects];
-            coordinate.x=(int)(coordinate.x+0.5)>=23?22:(int)coordinate.x;
-            coordinate.x=(int)(coordinate.x+0.5)<=11?12:(int)coordinate.x;
+            coordinate.x=(int)(coordinate.x+0.5);
+            coordinate.x=(int)(coordinate.x+0.5);
+            
+            coordinate.x=coordinate.x>=23?22:coordinate.x;
+            coordinate.x=coordinate.x<=11?12:coordinate.x;
+            
             NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
             
             if(linkage){
@@ -604,14 +622,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)setStockPrice{
 
     NSString *jsonPrice=[self.forecastPoints JSONString];
-    //NSLog(@"%@",jsonPrice);
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
-    //NSLog(@"%@",arg1);
+    //传入数据注意格式调用，html文件的key值应与此key值对应
     NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
-    [self.priceLabel setText:[re1 substringWithRange:NSMakeRange(0,5)]];
+    [self.priceLabel setText:[re1 substringWithRange:NSMakeRange(0, 5)]];
 }
-
 
 
 //判断手指触摸点是否在折点旁边
@@ -672,26 +688,21 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     //NSLog(@"chart willAnimateRotationToInterfaceOrientation");
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
-        self.view.transform = CGAffineTransformMakeRotation(0);
-
+        //[self.navigationController.navigationBar setHidden:YES];
+        //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
     } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.navigationController.navigationBarHidden=YES;
         self.hostView.frame=CGRectMake(20,40,480,320);
-        self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
-
     }
 }
 
 -(NSUInteger)supportedInterfaceOrientations{
-    //NSLog(@"chart supportedInterfaceOrientations");
-    return UIInterfaceOrientationMaskLandscape;
+
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (BOOL)shouldAutorotate
 {
-    //NSLog(@"chart shouldAutorotate");
-    return YES;
+    return NO;
 }
 
 

@@ -11,6 +11,7 @@
 #import "ModelViewController.h"
 #import "Utiles.h"
 #import "ChartViewController.h"
+#import "UIButton+BGColor.h"
 
 @interface ModelViewController ()
 
@@ -38,17 +39,41 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    
+  
 	// Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
-    chartViewController=[[ChartViewController alloc] init];
-    chartViewController.view.frame=CGRectMake(0,0,480,320);
-    [self.view addSubview:chartViewController.view];
-    [self addChildViewController:chartViewController];
-    [self setTitle:@"model"];
+    UIButton *bt1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bt1.frame = CGRectMake(10, 20, 300, 50);
+    [bt1 setTitle:@"查看模型金融模型" forState: UIControlStateNormal];
+    [bt1 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
+    [bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    bt1.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    bt1.tag = 1;
+    [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bt1];
+    UIButton *bt2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bt2.frame = CGRectMake(10, 75, 300, 50);
+    [bt2 setTitle:@"调整模型参数" forState: UIControlStateNormal];
+    [bt2 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
+    [bt2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    bt2.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    bt2.tag = 2;
+    [bt2 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bt2];
 
+}
+
+-(void)buttonClicked:(UIButton *)bt{
+    
+    if(bt.tag==1){
+        NSLog(@"1");
+    }else if(bt.tag==2){
+        chartViewController=[[ChartViewController alloc] init];
+        chartViewController.view.frame=CGRectMake(0,0,480,320);
+        [self presentViewController:chartViewController animated:YES completion:nil];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,17 +83,20 @@
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    //NSLog(@"model willAnimateRotationToInterfaceOrientation");
+
     [self.chartViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 -(NSUInteger)supportedInterfaceOrientations{
-    //NSLog(@"model supportedInterfaceOrientations");
+
+    if([self isKindOfClass:NSClassFromString(@"ModelViewController")])
+        return UIInterfaceOrientationMaskPortrait;
+
     return [self.chartViewController supportedInterfaceOrientations];
 }
 
 - (BOOL)shouldAutorotate{
-    //NSLog(@"model shouldAutorotate");
+
     return [self.chartViewController shouldAutorotate];
 }
 

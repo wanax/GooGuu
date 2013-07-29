@@ -18,6 +18,7 @@
 
 //返回最上层的子Controller的supportedInterfaceOrientations
 - (NSUInteger)supportedInterfaceOrientations{
+
     return self.topViewController.supportedInterfaceOrientations;
 }
 

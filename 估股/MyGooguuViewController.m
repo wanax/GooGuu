@@ -106,23 +106,15 @@
     [super viewDidLoad];
     [self setTitle:@"我的估股"];
     
-    GooGuuContainerViewController *test=[[GooGuuContainerViewController alloc] init];
-    test.view.frame=CGRectMake(0,-21,320,480);
+    GooGuuContainerViewController *content=[[GooGuuContainerViewController alloc] init];
+    content.view.frame=CGRectMake(0,-21,320,480);
 
-    [self.view addSubview:test.view];
-    [self addChildViewController:test];
+    [self.view addSubview:content.view];
+    [self addChildViewController:content];
     
     
 }
 
-
-
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return NO;
-}
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
@@ -133,11 +125,22 @@
 }
 
 -(NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] supportedInterfaceOrientations];
+    }else{
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    
 }
 
 - (BOOL)shouldAutorotate{
-    return NO;
+
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] shouldAutorotate];
+    }else{
+        return NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning

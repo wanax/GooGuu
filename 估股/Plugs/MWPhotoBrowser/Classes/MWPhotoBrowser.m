@@ -1155,4 +1155,27 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	[self dismissModalViewControllerAnimated:YES];
 }
 
+
+-(NSUInteger)supportedInterfaceOrientations{
+    //NSLog(@"browser supportedInterfaceOrientations");
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate
+{
+    //NSLog(@"chart shouldAutorotate");
+    return YES;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 @end

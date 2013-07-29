@@ -54,7 +54,7 @@
     nibsRegistered=NO;
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
-    [[self.navigationController navigationBar] setHidden:YES];
+    //[[self.navigationController navigationBar] setHidden:YES];
     [self getAnalyrePort];
     customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
     
@@ -250,7 +250,14 @@
 
 
 
+-(NSUInteger)supportedInterfaceOrientations{
+  
+    return UIInterfaceOrientationMaskPortrait;
+}
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 
 
 

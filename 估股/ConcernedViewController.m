@@ -17,6 +17,7 @@
 #import "Utiles.h"
 #import "ComFieldViewController.h"
 #import "PrettyTabBarViewController.h"
+#import "PrettyNavigationController.h"
 #import "MBProgressHUD.h"
 
 @interface ConcernedViewController ()
@@ -71,7 +72,6 @@
     [super viewDidLoad];
     self.title=@"小马财经";
     nibsRegistered=NO;
-    self.navigationController.navigationBarHidden=YES;
     
     self.comInfoList=[[NSMutableArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"",@"googuuprice",@"",@"marketprice",@"",@"market",@"",@"companyname", nil],nil];
     
@@ -279,9 +279,9 @@
     
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
     com.view.frame=CGRectMake(0,20,320,480);
-    [delegate.window addSubview:com.view];
+    [self presentViewController:com animated:YES completion:nil];
     
-    CATransition *animation = [CATransition animation];
+    /*CATransition *animation = [CATransition animation];
     animation.duration = 0.5f;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
     animation.fillMode = kCAFilterLinear;
@@ -289,8 +289,8 @@
     animation.subtype = kCATransitionFromTop;
     [[com.view layer] addAnimation:animation forKey:@"animation"];
     animation=nil;
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-   
+    */
+   [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
@@ -344,7 +344,7 @@
 
 
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+/*-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     //NSLog(@"concern didRotateFromInterfaceOrientation");
 }
 
@@ -353,22 +353,16 @@
     //NSLog(@"concern willAnimateRotationToInterfaceOrientation");
     XYZAppDelegate *delegate1=[[UIApplication sharedApplication] delegate];
     [[delegate1.tabBarController.childViewControllers objectAtIndex:5] willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
-
-
-
-
+}*/
 
 
 -(NSUInteger)supportedInterfaceOrientations{
-    //NSLog(@"concern supportedInterfaceOrientations");
     
-    XYZAppDelegate *delegate1=[[UIApplication sharedApplication] delegate];
-    return [delegate1.tabBarController.childViewControllers count]==6?[[delegate1.tabBarController.childViewControllers objectAtIndex:5] supportedInterfaceOrientations]:NO;
+    //NSLog(@"concern supportedInterfaceOrientations");
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 - (BOOL)shouldAutorotate{
-    //NSLog(@"concern shouldAutorotate");
 
     return NO;
 }

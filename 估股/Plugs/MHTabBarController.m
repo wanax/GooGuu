@@ -351,4 +351,14 @@ static const NSInteger TAG_OFFSET = 1000;
 	[self setSelectedIndex:sender.tag - TAG_OFFSET animated:YES];
 }
 
+- (BOOL)shouldAutorotate{
+    return self.selectedViewController.shouldAutorotate;
+}
+
+//返回最上层的子Controller的supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations{
+    return self.selectedViewController.supportedInterfaceOrientations;
+}
+
+
 @end
