@@ -135,22 +135,19 @@
     }
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        
+        [self handleTimer:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginKeeping" object:nil];
-        loginTimer = [NSTimer scheduledTimerWithTimeInterval: 41400// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
+        loginTimer = [NSTimer scheduledTimerWithTimeInterval: 7000// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
                                                       target: self
                                                     selector: @selector(handleTimer:)
                                                     userInfo: nil
                                                      repeats: YES];
     }
-    
-    // Allocate a reachability object
     Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
-    // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
     reach.reachableOnWWAN = NO;
     
-    // Here we set up a NSNotification observer. The Reachability that caused the notification
-    // is passed in the object parameter
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
@@ -184,7 +181,7 @@
 
 -(void)loginKeeping:(NSNotification*)notification{
 
-    loginTimer = [NSTimer scheduledTimerWithTimeInterval: 41400// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
+    loginTimer = [NSTimer scheduledTimerWithTimeInterval: 7000// 当函数正在调用时，及时间隔时间到了 也会忽略此次调用
                                                   target: self
                                                 selector: @selector(handleTimer:)
                                                 userInfo: nil

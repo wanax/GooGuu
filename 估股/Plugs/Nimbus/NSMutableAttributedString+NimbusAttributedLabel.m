@@ -105,6 +105,7 @@ NI_FIX_CATEGORY_BUG(NSMutableAttributedStringNimbusAttributedLabel)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setFont:(UIFont*)font range:(NSRange)range {
+    font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
   if (nil != font) {
     [self removeAttribute:(NSString*)kCTFontAttributeName range:range];
 
@@ -119,7 +120,7 @@ NI_FIX_CATEGORY_BUG(NSMutableAttributedStringNimbusAttributedLabel)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setFont:(UIFont*)font {
-  [self setFont:font range:NSMakeRange(0, self.length)];
+  [self setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f] range:NSMakeRange(0, self.length)];
 }
 
 

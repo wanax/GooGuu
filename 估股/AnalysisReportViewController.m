@@ -31,9 +31,11 @@
 @synthesize analyReportList;
 @synthesize customTableView;
 @synthesize nibsRegistered;
+@synthesize readingMarksDic;
 
 - (void)dealloc
 {
+    [readingMarksDic release];
     [customTableView release];
     [analyReportList release];
     [super dealloc];
@@ -48,13 +50,18 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [self.customTableView reloadData];
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     nibsRegistered=NO;
-	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
-    //[[self.navigationController navigationBar] setHidden:YES];
+    self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     [self getAnalyrePort];
     customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
     
@@ -153,10 +160,11 @@
     id model=[analyReportList objectAtIndex:row];
     
     cell.title=[model objectForKey:@"title"];
-    cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
+    cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
     cell.content=[model objectForKey:@"brief"];
     cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
-    
+    cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
     UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
     backView.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
     [cell setBackgroundView:backView];
@@ -170,7 +178,22 @@
     
 }
 
+#pragma mark -
+#pragma mark General Methods
 
+-(void)setReadingMark:(GooNewsCell *)cell andTitle:(NSString *)title{
+    
+    if(readingMarksDic){
+        if ([[readingMarksDic allKeys] containsObject:title]) {
+            cell.readMarkImg.image=[UIImage imageNamed:@"readed"];
+        }else{
+            cell.readMarkImg.image=[UIImage imageNamed:@"unread"];
+        }
+    }else{
+        cell.readMarkImg.image=[UIImage imageNamed:@"unread"];
+    }
+    
+}
 
 
 #pragma mark -
@@ -186,6 +209,9 @@
     [self presentViewController:detail animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [detail release];
+    
+    [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.analyReportList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
+    self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     
 }
 

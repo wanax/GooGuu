@@ -34,7 +34,7 @@
     self.title=@"估值模型";
     // Do any additional setup after loading the view.
     StockContainerViewController *content=[[StockContainerViewController alloc] init];
-    content.view.frame=CGRectMake(0,-19,320,480);
+    content.view.frame=CGRectMake(0,-20,320,480);
     
     [self.view addSubview:content.view];
     [self addChildViewController:content];

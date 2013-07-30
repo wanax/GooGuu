@@ -80,7 +80,7 @@
 
 - (UIFont *) fontFromLabel:(UILabel *)label 
 {
-    UIFont *font = label.font;
+    UIFont *font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
     
     
     /* If the font hasn't been changed, the first time it's accessed the font
@@ -89,7 +89,7 @@
     {
         if (label == self.cell.textLabel) 
         {
-            font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
+            font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
         }
         
         else if (label == self.cell.detailTextLabel) 
@@ -106,7 +106,7 @@
                 default:
                     break;
             }
-            font = [UIFont systemFontOfSize:fontSize];
+            font =[UIFont fontWithName:@"Heiti SC" size:15.0f];
         }
     }
     
@@ -118,7 +118,7 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx);
 
-    UIFont *font = [self fontFromLabel:label];
+    UIFont *font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
     
     if (!self.cell.shadowOnlyOnSelected || selected) 
     {

@@ -89,10 +89,10 @@ CGSize NISizeOfStringWithLabelProperties(NSString *string, CGSize constrainedToS
   CGSize size = CGSizeZero;
 
   if (numberOfLines == 1) {
-    size = [string sizeWithFont:font forWidth:constrainedToSize.width lineBreakMode:lineBreakMode];
+    size = [string sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0f] forWidth:constrainedToSize.width lineBreakMode:lineBreakMode];
 
   } else {
-    size = [string sizeWithFont:font constrainedToSize:constrainedToSize lineBreakMode:lineBreakMode];
+    size = [string sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0f] constrainedToSize:constrainedToSize lineBreakMode:lineBreakMode];
     if (numberOfLines > 0) {
       size.height = MIN(size.height, numberOfLines * lineHeight);
     }

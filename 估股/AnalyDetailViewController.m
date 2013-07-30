@@ -43,7 +43,7 @@
 	// Do any additional setup after loading the view.
     AnalyDetailContainerViewController *container=[[AnalyDetailContainerViewController alloc] init];
     container.articleId=self.articleId;
-    container.view.frame=CGRectMake(0,17,self.view.frame.size.width,self.view.frame.size.height);
+    container.view.frame=CGRectMake(0,24,self.view.frame.size.width,self.view.frame.size.height);
     [self.view addSubview:container.view];
     [self addChildViewController:container];
     
@@ -53,7 +53,7 @@
 -(void)addToolBar{
     
     [self.view setBackgroundColor:[UIColor grayColor]];
-    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,37)];
+    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
     UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
     myToolBarItems=[[NSMutableArray alloc] init];
     [myToolBarItems addObject:back];

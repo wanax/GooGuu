@@ -269,11 +269,12 @@ static const CGFloat kDatePickerTextFieldRightMargin = 5;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.textLabel setAdjustsFontSizeToFitWidth:YES];
+        [self.textLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
         if ([self.textLabel respondsToSelector:@selector(minimumScaleFactor)]) {
           self.textLabel.minimumScaleFactor = 0.5;
         } else {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < NIIOS_6_0
-          [self.textLabel setMinimumFontSize:10.0f];
+          [self.textLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
 #endif
         }
     }
@@ -321,7 +322,8 @@ static const CGFloat kDatePickerTextFieldRightMargin = 5;
     _textField = [[UITextField alloc] init];
     [_textField setTag:self.element.elementID];
     [_textField setAdjustsFontSizeToFitWidth:YES];
-    [_textField setMinimumFontSize:10.0f];
+    [_textField setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
+    //[_textField setMinimumFontSize:10.0f];
     [_textField addTarget:self action:@selector(textFieldDidChangeValue) forControlEvents:UIControlEventAllEditingEvents];
     [self.contentView addSubview:_textField];
 
@@ -685,10 +687,10 @@ static const CGFloat kDatePickerTextFieldRightMargin = 5;
 
     _dateField = [[UITextField alloc] init];
     _dateField.delegate = self;
-    _dateField.font = [UIFont systemFontOfSize:16.0f];
+    [_dateField setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
     _dateField.minimumFontSize = 10.0f;
     _dateField.backgroundColor = [UIColor clearColor];
-    _dateField.adjustsFontSizeToFitWidth = YES;
+    //_dateField.adjustsFontSizeToFitWidth = YES;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < NIIOS_6_0
     _dateField.textAlignment = UITextAlignmentRight;
 #else
@@ -859,10 +861,11 @@ static const CGFloat kDatePickerTextFieldRightMargin = 5;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
   self.dumbDateField.delegate = self.dateField.delegate;
-  self.dumbDateField.font = self.dateField.font;
+  self.dumbDateField.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+  [self.dumbDateField setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
   self.dumbDateField.minimumFontSize = self.dateField.minimumFontSize;
   self.dumbDateField.backgroundColor = self.dateField.backgroundColor;
-  self.dumbDateField.adjustsFontSizeToFitWidth = self.dateField.adjustsFontSizeToFitWidth;
+  //self.dumbDateField.adjustsFontSizeToFitWidth = self.dateField.adjustsFontSizeToFitWidth;
   self.dumbDateField.textAlignment = self.dateField.textAlignment;
   self.dumbDateField.textColor = self.dateField.textColor;
 

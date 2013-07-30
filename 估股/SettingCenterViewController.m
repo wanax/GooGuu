@@ -41,7 +41,7 @@
 NICellDrawRectBlock drawTextBlock = ^CGFloat(CGRect rect, id object, NICellObject *cell) {
     
     NSString* text = [object objectForKey:@"title"];
-    UIFont* titleFont = [UIFont fontWithName:@"Courier" size:16.0f];
+    UIFont* titleFont = [UIFont fontWithName:@"Courier" size:15.0f];
     [text drawAtPoint:CGPointMake(10, 13) withFont:titleFont];
     [[UIColor grayColor] set];
     NSString *subTitle=[NSString stringWithFormat:@"%@",[object objectForKey:@"subtitle"]];

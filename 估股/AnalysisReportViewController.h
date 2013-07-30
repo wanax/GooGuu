@@ -24,5 +24,6 @@
 @property  BOOL nibsRegistered;
 @property (nonatomic,retain) NSMutableArray *analyReportList;
 @property (nonatomic,retain) UITableView *customTableView;
+@property (nonatomic,retain) NSDictionary *readingMarksDic;
 
 @end

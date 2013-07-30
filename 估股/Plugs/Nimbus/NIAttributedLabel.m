@@ -434,15 +434,15 @@ CGSize NISizeOfAttributedStringConstrainedToSize(NSAttributedString *attributedS
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setFont:(UIFont *)font {
-  [super setFont:font];
+  [super setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
 
-  [self.mutableAttributedString setFont:font];
+  [self.mutableAttributedString setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setFont:(UIFont *)font range:(NSRange)range {
-  [self.mutableAttributedString setFont:font range:range];
+  [self.mutableAttributedString setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f] range:range];
 
   [self attributedTextDidChange];
 }
@@ -1746,7 +1746,7 @@ CGFloat ImageDelegateGetWidthCallback(void* refCon) {
   if (NIIsStringWithAnyText(label.text)) {
     attributedString = [[NSMutableAttributedString alloc] initWithString:label.text];
 
-    [attributedString setFont:label.font];
+    [attributedString setFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]];
     [attributedString setTextColor:label.textColor];
 
     CTTextAlignment textAlignment = [self alignmentFromUITextAlignment:label.textAlignment];

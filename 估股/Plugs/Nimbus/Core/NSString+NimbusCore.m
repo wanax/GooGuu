@@ -47,7 +47,7 @@ NI_FIX_CATEGORY_BUG(NSStringNimbusCore)
 - (CGFloat)heightWithFont:(UIFont*)font
        constrainedToWidth:(CGFloat)width
             lineBreakMode:(NSLineBreakMode)lineBreakMode {
-  return [self sizeWithFont:font
+  return [self sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0f]
           constrainedToSize:CGSizeMake(width, CGFLOAT_MAX)
               lineBreakMode:lineBreakMode].height;
 }
