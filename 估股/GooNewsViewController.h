@@ -28,6 +28,8 @@
 @property (nonatomic,retain) NSString *imageUrl;
 @property (nonatomic,retain) id companyInfo;
 
+@property (nonatomic,retain) NSDictionary *readingMarksDic;
+
 @property (nonatomic,retain) MBProgressHUD *hud;
 
 - (void)reloadTableViewDataSource;

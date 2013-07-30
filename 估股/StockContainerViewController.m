@@ -77,6 +77,7 @@
 	tabBarController.viewControllers = viewControllers;
     
     [self.view addSubview:tabBarController.view];
+    [self addChildViewController:tabBarController];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,7 +86,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSUInteger)supportedInterfaceOrientations{
 
+    return [[self.tabBarController selectedViewController] supportedInterfaceOrientations];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [[self.tabBarController selectedViewController] shouldAutorotate];
+}
 
 
 

@@ -143,7 +143,7 @@
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     [delegate.window addSubview:delegate.tabBarController.view];
     if(isGoIn){
-        [delegate.tabBarController setSelectedIndex:1];
+        [delegate.tabBarController setSelectedIndex:2];
     }else if(!isGoIn){
         [delegate.tabBarController setSelectedIndex:0];
     }

@@ -69,10 +69,11 @@
     NSMutableArray *tempPhotos = [[NSMutableArray alloc] init];
     [tempPhotos addObject:photo];
     self.photos=tempPhotos;
-    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];   
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    browser.view.frame=CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height);
     browser.displayActionButton = YES;
     
-    [self.view addSubview:browser.view];
+    [self.view insertSubview:browser.view atIndex:1];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
@@ -95,7 +96,9 @@
 -(void)panView:(UIPanGestureRecognizer *)tap{
     CGPoint change=[tap translationInView:self.view];
     if(change.x<-100){
-        [(MHTabBarController *)self.parentViewController setSelectedIndex:1 animated:YES];
+        [(MHTabBarController *)self.parentViewController setSelectedIndex:2 animated:YES];
+    }else if(change.x>100){
+        [(MHTabBarController *)self.parentViewController setSelectedIndex:0 animated:YES];
     }
 }
 

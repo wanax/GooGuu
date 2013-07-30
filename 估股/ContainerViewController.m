@@ -65,7 +65,7 @@
     
     
     
-    NSArray *viewControllers = [NSArray arrayWithObjects:viewController1, viewController2,viewController3,viewController4, nil];
+    NSArray *viewControllers = [NSArray arrayWithObjects:viewController2, viewController1,viewController3,viewController4, nil];
 	tabBarController = [[MHTabBarController alloc] init];
     
 	tabBarController.viewControllers = viewControllers;

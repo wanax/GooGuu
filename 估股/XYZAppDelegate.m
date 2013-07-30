@@ -69,11 +69,11 @@
         [tool release];
     }else {
        
-        UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"rank"] tag:1];      
-        UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"uptrend.png"] tag:2];        
+        UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"googuuNewsBar"] tag:1];      
+        UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"myGooGuuBar"] tag:2];        
         UITabBarItem *barItem3=[[UITabBarItem alloc] initWithTitle:@"金融工具" image:[UIImage imageNamed:@"hammer.png"] tag:3];
-        UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"个人中心" image:[UIImage imageNamed:@"user.png"] tag:4];
-        UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"股票搜索" image:[UIImage imageNamed:@"paper-message.png"] tag:5];
+        UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"功能设置" image:[UIImage imageNamed:@"moreAboutBar"] tag:4];
+        UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"估值模型" image:[UIImage imageNamed:@"companyListBar"] tag:5];
         
         //股票关注
         MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
@@ -109,7 +109,7 @@
         
         self.tabBarController = [[PrettyTabBarViewController alloc] init];
 
-        self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,myGooGuuNavController,universeNav, clientCenterNav ,nil];
+        self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,universeNav,myGooGuuNavController, clientCenterNav ,nil];
         
         self.window.backgroundColor=[UIColor clearColor];       
         self.window.rootViewController = self.tabBarController;

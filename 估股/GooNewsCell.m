@@ -12,12 +12,16 @@
 
 @synthesize titleLabel;
 @synthesize contentLabel;
+@synthesize timeDiferLabel;
+@synthesize readMarkImg;
 
 @synthesize title;
 @synthesize content;
 
 - (void)dealloc
 {
+    [readMarkImg release];readMarkImg=nil;
+    [timeDiferLabel release];timeDiferLabel=nil;
     [title release];title=nil;
     [content release];content=nil;
     

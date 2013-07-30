@@ -346,7 +346,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSLog(@"%@",[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"CompanyModel" inUserDomain:NO]);
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
@@ -520,79 +519,64 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     CGPoint now=[tapGr locationInView:self.view];
     
     CGPoint change=[tapGr translationInView:self.view];
-    
 
-    if(change.x<-FINGERCHANGEDISTANCE){
-        
-        [(MHTabBarController *)self.parentViewController.parentViewController setSelectedIndex:2 animated:YES];
-        
-    }else if(change.x>FINGERCHANGEDISTANCE){
-        
-        [(MHTabBarController *)self.parentViewController.parentViewController setSelectedIndex:0 animated:YES];
-        
+    CGPoint coordinate=[self CoordinateTransformRealToAbstract:now];
+    
+    if(tapGr.state==UIGestureRecognizerStateBegan){
+        [self.standard removeAllObjects];
+        for(id obj in self.forecastPoints){
+            [self.standard addObject:[obj objectForKey:@"v"]];
+        }
+
+    }else if(tapGr.state==UIGestureRecognizerStateEnded){
+        [self.standard removeAllObjects];
+
+        for(id obj in self.forecastPoints){
+            double v = [[obj objectForKey:@"v"] doubleValue];
+            [self.standard addObject:[NSNumber numberWithDouble:v]];
+        }
     }
-
-    
-    else{
-        CGPoint coordinate=[self CoordinateTransformRealToAbstract:now];
+    //手势变化并且接近折点旁边
+    if([tapGr state]==UIGestureRecognizerStateChanged&&[self isNearByThePoint:now]){
+      
+        //[reverseDic removeAllObjects];
+        coordinate.x=(int)(coordinate.x+0.5);
+        coordinate.x=(int)(coordinate.x+0.5);
         
-        if(tapGr.state==UIGestureRecognizerStateBegan){
-            [self.standard removeAllObjects];
-            for(id obj in self.forecastPoints){
-                [self.standard addObject:[obj objectForKey:@"v"]];
-            }
+        coordinate.x=coordinate.x>=23?22:coordinate.x;
+        coordinate.x=coordinate.x<=11?12:coordinate.x;
+        
+        NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
+        
+        if(linkage){
 
-        }else if(tapGr.state==UIGestureRecognizerStateEnded){
-            [self.standard removeAllObjects];
-
+            //NSLog(@"%@",[self.forecastPoints JSONString]);
+            double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
+            //double l5 = [[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] doubleValue];
+            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-[self.hisPoints count])] objectForKey:@"y"] doubleValue]);
+            int i=0;
             for(id obj in self.forecastPoints){
                 double v = [[obj objectForKey:@"v"] doubleValue];
-                [self.standard addObject:[NSNumber numberWithDouble:v]];
-            }
-        }
-        //手势变化并且接近折点旁边
-        if([tapGr state]==UIGestureRecognizerStateChanged&&[self isNearByThePoint:now]){
-          
-            //[reverseDic removeAllObjects];
-            coordinate.x=(int)(coordinate.x+0.5);
-            coordinate.x=(int)(coordinate.x+0.5);
-            
-            coordinate.x=coordinate.x>=23?22:coordinate.x;
-            coordinate.x=coordinate.x<=11?12:coordinate.x;
-            
-            NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
-            
-            if(linkage){
-
-                //NSLog(@"%@",[self.forecastPoints JSONString]);
-                double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
-                //double l5 = [[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] doubleValue];
-                double l7 = 2 / ([[[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-[self.hisPoints count])] objectForKey:@"y"] doubleValue]);
-                int i=0;
-                for(id obj in self.forecastPoints){
-                    double v = [[obj objectForKey:@"v"] doubleValue];
-                    v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i++));
-                    [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
-                }
-                
-                [self setStockPrice];
-                [graph reloadData];
-                
-            }else{
-                
-                double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
-                double v=[[self.standard objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] doubleValue]+changeD;
-                [[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
-                
-                [self setStockPrice];
-                [graph reloadData];
-                
+                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i++));
+                [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
             }
             
+            [self setStockPrice];
+            [graph reloadData];
+            
+        }else{
+            
+            double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
+            double v=[[self.standard objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] doubleValue]+changeD;
+            [[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+            
+            [self setStockPrice];
+            [graph reloadData];
+            
         }
+        
     }
-   
-    
+
 }
 
 
@@ -668,7 +652,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //[self.navigationController.navigationBar setHidden:YES];
         //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
     } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        //self.hostView.frame=CGRectMake(20,40,480,320);
+        self.hostView.frame=CGRectMake(0,40,480,320);
     }
 }
 

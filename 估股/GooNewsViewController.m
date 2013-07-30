@@ -35,11 +35,13 @@
 @synthesize newArrList;
 @synthesize imageUrl;
 @synthesize companyInfo;
+@synthesize readingMarksDic;
 
 @synthesize hud;
 
 - (void)dealloc
 {
+    [readingMarksDic release];readingMarksDic=nil;
     [companyInfo release];companyInfo=nil;
     [hud release];hud=nil;
     [customTableView release];customTableView=nil;
@@ -57,6 +59,9 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [self.customTableView reloadData];
+}
 
 - (void)viewDidLoad
 {
@@ -66,6 +71,7 @@
     
     self.navigationController.navigationBar.tintColor=[Utiles colorWithHexString:@"#C86125"];
     self.title=@"估股动态";
+    self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     
    	customTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
     
@@ -189,7 +195,7 @@
         }
         if(self.imageUrl){
             [cell.dailyStockImg setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.imageUrl]]
-                  placeholderImage:[UIImage imageNamed:@"pumpkin.png"]
+                  placeholderImage:[UIImage imageNamed:@"defaultCompanyLogo"]
                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
                                cell.dailyStockImg.image=image;
                                
@@ -208,19 +214,21 @@
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
-        cell.outLookLabel.layer.cornerRadius=5.0;
+        //cell.outLookLabel.layer.cornerRadius=5.0;
+        //cell.outLookTextLabel.layer.cornerRadius=5.0;
+        cell.outLookTextLabel.textColor=[UIColor grayColor];
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *fallColorStr=[NSString stringWithFormat:@"FallColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *riseColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:riseColorStr inUserDomain:NO];
         NSString *fallColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:fallColorStr inUserDomain:NO];
         if(outLook>0){
             cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
-            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:riseColor].CGColor;
+            cell.outLookTextLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
         }else if(outLook==0){
             cell.outLookLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
             cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
-            cell.outLookLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
+            cell.outLookTextLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
         }
         cell.backGroundLabel.underlineStyle = kCTUnderlineStyleSingle;
         cell.backGroundLabel.underlineStyleModifier = kCTUnderlinePatternDashDot;
@@ -252,9 +260,11 @@
         id model=[newArrList objectAtIndex:row];
         
         cell.title=[model objectForKey:@"title"];
-        cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+        [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
+        cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
         cell.content=[model objectForKey:@"concise"];
         cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
+        cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]];
@@ -271,6 +281,22 @@
 
 }
 
+#pragma mark -
+#pragma mark General Methods
+
+-(void)setReadingMark:(GooNewsCell *)cell andTitle:(NSString *)title{
+    
+    if(readingMarksDic){
+        if ([[readingMarksDic allKeys] containsObject:title]) {
+            cell.readMarkImg.image=[UIImage imageNamed:@"readed"];
+        }else{
+            cell.readMarkImg.image=[UIImage imageNamed:@"unread"];
+        }
+    }else{
+        cell.readMarkImg.image=[UIImage imageNamed:@"unread"];
+    }
+    
+}
 
 
 
@@ -293,6 +319,9 @@
         MHTabBarController *container=[[MHTabBarController alloc] init];
         NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
         container.viewControllers=controllers;
+        
+        [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.newArrList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
+        self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
         
         [self.navigationController pushViewController:container animated:YES];
         

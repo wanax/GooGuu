@@ -31,21 +31,21 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    self.title=@"股票搜索";
+    self.title=@"估值模型";
     // Do any additional setup after loading the view.
     StockContainerViewController *content=[[StockContainerViewController alloc] init];
-    content.view.frame=CGRectMake(0,20,320,480);
+    content.view.frame=CGRectMake(0,-19,320,480);
     
     [self.view addSubview:content.view];
     [self addChildViewController:content];
     
-    self.theSearchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
+    /*self.theSearchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
     
     [[self.theSearchBar.subviews objectAtIndex:0] removeFromSuperview];
     self.theSearchBar.backgroundColor = [UIColor grayColor];
     
     self.theSearchBar.delegate=self;
-    [self.view addSubview:self.theSearchBar];
+    [self.view addSubview:self.theSearchBar];*/
     [content release];
 }
 
@@ -82,13 +82,23 @@
 
 
 
-- (BOOL)shouldAutorotate
-{
-    return NO;
+-(NSUInteger)supportedInterfaceOrientations{
+    
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] supportedInterfaceOrientations];
+    }else{
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
 }
 
-
-
+- (BOOL)shouldAutorotate
+{
+    if([[self childViewControllers] count]>0){
+        return [[self.childViewControllers objectAtIndex:0] shouldAutorotate];
+    }else{
+        return NO;
+    }
+}
 
 
 

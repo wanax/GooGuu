@@ -12,6 +12,7 @@
 #import "Utiles.h"
 #import "ChartViewController.h"
 #import "UIButton+BGColor.h"
+#import "MHTabBarController.h"
 
 @interface ModelViewController ()
 
@@ -61,7 +62,18 @@
     bt2.tag = 2;
     [bt2 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bt2];
+    
+    UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
+    [self.view addGestureRecognizer:pan];
+    [pan release];
 
+}
+
+-(void)panView:(UIPanGestureRecognizer *)tap{
+    CGPoint change=[tap translationInView:self.view];
+    if(change.x<-100){
+        [(MHTabBarController *)self.parentViewController setSelectedIndex:1 animated:YES];
+    }
 }
 
 -(void)buttonClicked:(UIButton *)bt{

@@ -10,8 +10,9 @@
 
 #define FINGERCHANGEDISTANCE 100.0
 
-@interface GooGuuArticleViewController : UIViewController
+@interface GooGuuArticleViewController : UIViewController<UIWebViewDelegate>
 
 @property (nonatomic,retain) NSString *articleId;
+@property (nonatomic,retain) UIWebView *articleWeb;
 
 @end

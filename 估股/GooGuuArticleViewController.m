@@ -19,9 +19,11 @@
 @implementation GooGuuArticleViewController
 
 @synthesize articleId;
+@synthesize articleWeb;
 
 - (void)dealloc
 {
+    [articleWeb release];
     [articleId release];
     [super dealloc];
 }
@@ -58,9 +60,10 @@
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"ArticleURL" andParams:params besidesBlock:^(id article){
 
-        UIWebView *articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width, self.view.bounds.size.height)];
+        articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width, self.view.bounds.size.height)];
+        articleWeb.delegate=self;
         [articleWeb loadHTMLString:[article objectForKey:@"content"] baseURL:nil];
-        articleWeb.scalesPageToFit=YES;
+        //articleWeb.scalesPageToFit=YES;
         [hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
         [self.view addSubview:articleWeb];
@@ -71,6 +74,21 @@
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
+    
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    
+    NSLog(@"web loaded finished");
+    //文章文字大小
+    NSString *botySise=[[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.fontSize='%dpx'",12];
+    NSString *imgSize=[[NSString alloc] initWithFormat:@"var temp = document.getElementsByTagName(\"img\");\
+                       for (var i = 0; i < temp.length; i ++) {\
+                           temp[i].style.width = '300px';\
+                           temp[i].style.height = '200px';\
+                       }"];
+    [articleWeb stringByEvaluatingJavaScriptFromString:botySise];
+    [articleWeb stringByEvaluatingJavaScriptFromString:imgSize];
     
 }
 

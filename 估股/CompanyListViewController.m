@@ -65,7 +65,7 @@
     
     [super viewDidLoad];
     nibsRegistered = NO;
-    self.title=@"股票搜索";
+    self.title=@"估值模型";
     [self getCompanyList];
 
     if(self.isShowSearchBar){
@@ -76,7 +76,7 @@
         search.delegate=self;
         [self.view addSubview:search];
     }else{
-        table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,290)];
+        table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,330)];
     }
    
     table.dataSource=self;
@@ -150,9 +150,15 @@
             }else if(change.x>FINGERCHANGEDISTANCE){
                 [(MHTabBarController *)self.parentViewController setSelectedIndex:0 animated:YES];
             }
-        }else if([self.comType isEqualToString:@"沪深"]){
-            if(change.x>FINGERCHANGEDISTANCE){
+        }else if([self.comType isEqualToString:@"深市"]){
+            if(change.x<-FINGERCHANGEDISTANCE){
+                [(MHTabBarController *)self.parentViewController setSelectedIndex:3 animated:YES];
+            }else if(change.x>FINGERCHANGEDISTANCE){
                 [(MHTabBarController *)self.parentViewController setSelectedIndex:1 animated:YES];
+            }
+        }else if([self.comType isEqualToString:@"沪市"]){
+            if(change.x>FINGERCHANGEDISTANCE){
+                [(MHTabBarController *)self.parentViewController setSelectedIndex:2 animated:YES];
             }
         }
     }
@@ -319,16 +325,16 @@
     
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
     com.view.frame=CGRectMake(0,20,320,480);
-    [delegate.window addSubview:com.view];
+    [self presentViewController:com animated:YES completion:nil];
     
-    CATransition *animation = [CATransition animation];
+    /*CATransition *animation = [CATransition animation];
     animation.duration = 0.5f;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
     animation.fillMode = kCAFilterLinear;
     animation.type = kCATransitionPush;
     animation.subtype = kCATransitionFromTop;
     [[com.view layer] addAnimation:animation forKey:@"animation"];
-    animation=nil;
+    animation=nil;8*/
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     [search resignFirstResponder];
@@ -452,6 +458,15 @@
     return [NSDate date]; // should return date data source was last changed
     
 }
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
 
 
 

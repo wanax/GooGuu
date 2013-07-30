@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *contentLabel;
+@property (nonatomic,retain) IBOutlet UILabel *timeDiferLabel;
+@property (nonatomic,retain) IBOutlet UIImageView *readMarkImg;
 
 @property (nonatomic,retain) NSString *title;
 @property (nonatomic,retain) NSString *content;
