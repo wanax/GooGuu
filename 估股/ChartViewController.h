@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
+#import "NIDropDown.h"
 
 
 //数据点个数
@@ -24,31 +25,31 @@
 #define HOSTVIEWBOTTOMPAD 0.0f
 
 
-//x轴起点
-#define XRANGEBEGIN 9.0
-//x轴在屏幕可视范围内的范围
-#define XRANGELENGTH 14.0
-//y轴起点
-#define YRANGEBEGIN -0.3
-//y轴在屏幕可视范围内的范围
-#define YRANGELENGTH 0.9
-
-
-//x轴屏幕范围内大坐标间距
-#define XINTERVALLENGTH 3.0
-//x轴坐标的原点（x轴在y轴上的坐标）
-#define XORTHOGONALCOORDINATE 0.0
-//x轴每两个大坐标间小坐标个数
-#define XTICKSPERINTERVAL 2
-
-#define YINTERVALLENGTH 0.1
-#define YORTHOGONALCOORDINATE 11.0
-#define YTICKSPERINTERVAL 2
-
 #define FINGERCHANGEDISTANCE 100.0
 
 
-@interface ChartViewController : UIViewController<CPTPieChartDataSource,UIWebViewDelegate>{
+@interface ChartViewController : UIViewController<CPTPieChartDataSource,UIWebViewDelegate,NIDropDownDelegate>{
+    //x轴起点
+    float XRANGEBEGIN;
+    //x轴在屏幕可视范围内的范围
+    float XRANGELENGTH;
+    //y轴起点
+    float YRANGEBEGIN;
+    //y轴在屏幕可视范围内的范围
+    float YRANGELENGTH;
+    
+    //x轴屏幕范围内大坐标间距
+    float XINTERVALLENGTH;
+    //x轴坐标的原点（x轴在y轴上的坐标）
+    float XORTHOGONALCOORDINATE;
+    //x轴每两个大坐标间小坐标个数
+    float XTICKSPERINTERVAL;
+        
+    float YINTERVALLENGTH;
+    float YORTHOGONALCOORDINATE;
+    float YTICKSPERINTERVAL;
+    
+
     CPTXYGraph * graph ;
     //可调整当前数据线
     NSMutableArray *_forecastPoints;
@@ -64,6 +65,7 @@
     NSArray *_industryClass;
     
     NSMutableArray *_standard;
+    NIDropDown *dropDown;
     
 }
 //预测曲线
@@ -97,7 +99,9 @@
 //js引擎上下文
 //@property (nonatomic) JSGlobalContextRef context;
 //绘图view
+@property (nonatomic,retain) CPTXYGraph * graph ;
 @property (nonatomic,retain) CPTGraphHostingView *hostView;
+@property (nonatomic,retain) CPTXYPlotSpace *plotSpace;
 
 //坐标转换方法，实际坐标转化相对坐标
 - (CGPoint)CoordinateTransformRealToAbstract:(CGPoint)point;

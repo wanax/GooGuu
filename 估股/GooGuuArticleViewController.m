@@ -78,8 +78,7 @@
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
-    
-    NSLog(@"web loaded finished");
+
     //文章文字大小
     NSString *botySise=[[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.fontSize='%dpx'",12];
     NSString *imgSize=[[NSString alloc] initWithFormat:@"var temp = document.getElementsByTagName(\"img\");\

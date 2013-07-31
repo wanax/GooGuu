@@ -186,7 +186,7 @@
         NSNumber *priceStr=[com objectForKey:@"marketprice"];
         float p = [priceStr floatValue];
         cell.price=[NSString stringWithFormat:@"%.2f",p];
-        cell.belong=[com objectForKey:@"market"];
+        cell.belong=[NSString stringWithFormat:@"%@.%@",[com objectForKey:@"stockcode"],[com objectForKey:@"marketname"]];
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];

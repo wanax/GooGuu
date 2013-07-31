@@ -336,6 +336,7 @@
 		AE368F3B179F81A7000AF7BD /* AnalyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */; };
 		AE368F3E179F85B4000AF7BD /* AnalyDetailContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
+		AE628EAD17A8F41F005A513E /* NIDropDown.m in Sources */ = {isa = PBXBuildFile; fileRef = AE628EAC17A8F41F005A513E /* NIDropDown.m */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
 		AE6B96E217A0F51200DBE0C6 /* MHTabBarIndicator3.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */; };
 		AE6B96E317A0F51200DBE0C6 /* MHTabBarIndicator4.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */; };
@@ -849,6 +850,8 @@
 		AE368F3C179F85B3000AF7BD /* AnalyDetailContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyDetailContainerViewController.h; sourceTree = "<group>"; };
 		AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailContainerViewController.m; sourceTree = "<group>"; };
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
+		AE628EAB17A8F41F005A513E /* NIDropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIDropDown.h; sourceTree = "<group>"; };
+		AE628EAC17A8F41F005A513E /* NIDropDown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIDropDown.m; sourceTree = "<group>"; };
 		AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator2.png; sourceTree = "<group>"; };
 		AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator3.png; sourceTree = "<group>"; };
 		AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator4.png; sourceTree = "<group>"; };
@@ -1379,6 +1382,8 @@
 		AE2E91BE179D06890049B28E /* Plugs */ = {
 			isa = PBXGroup;
 			children = (
+				AE628EAB17A8F41F005A513E /* NIDropDown.h */,
+				AE628EAC17A8F41F005A513E /* NIDropDown.m */,
 				AE6B987B17A11E3100DBE0C6 /* Nimbus */,
 				AE368EE0179F68E4000AF7BD /* MWPhotoBrowser */,
 				AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */,
@@ -2941,6 +2946,7 @@
 				AEFB4C7517A89C830044176B /* LabelSwitchCell.m in Sources */,
 				AEFB4C7817A8B5DA0044176B /* StockRiseDownColorSettingViewController.m in Sources */,
 				AEFB4C7B17A8C08C0044176B /* AboutUsAndCopyrightViewController.m in Sources */,
+				AE628EAD17A8F41F005A513E /* NIDropDown.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

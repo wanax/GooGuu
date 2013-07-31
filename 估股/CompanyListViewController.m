@@ -25,6 +25,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "JSONKit.h"
 #import "MBProgressHUD.h"
+#import "SVPullToRefresh.h"
 
 @interface CompanyListViewController ()
 
@@ -68,6 +69,7 @@
     self.title=@"估值模型";
     [self getCompanyList];
 
+
     if(self.isShowSearchBar){
         table=[[UITableView alloc] initWithFrame:CGRectMake(0,40,320,330)];
         search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
@@ -85,6 +87,11 @@
     [self.view addSubview:table];
     [self getConcernStocksCode];
     
+    
+    [self.table addInfiniteScrollingWithActionHandler:^{
+        [self addCompany];
+    }];
+    
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
@@ -100,6 +107,27 @@
     }
     [_refreshHeaderView refreshLastUpdatedDate];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+}
+
+#pragma mark -
+#pragma mark Net Get JSON Data
+
+-(void)addCompany{
+
+    NSString *updateTime=[[self.comList lastObject] objectForKey:@"updatetime"];   
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:type],@"market",updateTime,@"updatetime", nil];
+    
+    [Utiles getNetInfoWithPath:@"QueryAllCompany" andParams:params besidesBlock:^(id resObj){
+        
+        NSMutableArray *temp=[NSMutableArray arrayWithArray:self.comList];
+        for(id obj in resObj){
+            [temp addObject:obj];
+        }
+        self.comList=temp;
+        [self.table reloadData];
+        [self.table.infiniteScrollingView stopAnimating];
+    }];
+    
 }
 
 #pragma mark -
@@ -270,24 +298,18 @@
     NSString *title=[cellBt currentTitle];
     NSString *stockCode=[[self.comList objectAtIndex:cellBt.tag-1] objectForKey:@"stockcode"];
     if([title isEqualToString:@"取消关注"]){
-
-        [cellBt setTitle:@"添加关注" forState:UIControlStateNormal];
-        [cellBt setBackgroundColorString:@"#F21E83" forState:UIControlStateNormal];
-        
-        [self NetAction:@"DeleteAttention" andCode:stockCode];
+     
+        [self NetAction:@"DeleteAttention" andCode:stockCode withBt:cellBt];
  
     }else if([title isEqualToString:@"添加关注"]){
 
-        [cellBt setTitle:@"取消关注" forState:UIControlStateNormal];
-        [cellBt setBackgroundColorString:@"#34C3C1" forState:UIControlStateNormal];
-        
-        [self NetAction:@"AddAttention" andCode:stockCode];
+        [self NetAction:@"AddAttention" andCode:stockCode withBt:cellBt];
       
     }
     
 }
 
--(Boolean)NetAction:(NSString *)url andCode:(NSString *)stockCode{
+-(Boolean)NetAction:(NSString *)url andCode:(NSString *)stockCode withBt:(UIButton *)cellBt{
     __block Boolean tag;
 
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
@@ -296,14 +318,19 @@
 
         if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
             [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        }else if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+            if([url isEqualToString:@"AddAttention"]){
+                [self.concernStocksCodeArr addObject:stockCode];
+                [cellBt setTitle:@"取消关注" forState:UIControlStateNormal];
+                [cellBt setBackgroundColorString:@"#34C3C1" forState:UIControlStateNormal];
+            }else if([url isEqualToString:@"DeleteAttention"]){
+                [self.concernStocksCodeArr removeObject:stockCode];
+                [cellBt setTitle:@"添加关注" forState:UIControlStateNormal];
+                [cellBt setBackgroundColorString:@"#F21E83" forState:UIControlStateNormal];
+            }
+            tag=YES;
+            [self.table reloadData];
         }
-        if([url isEqualToString:@"AddAttention"]){
-            [self.concernStocksCodeArr addObject:stockCode];
-        }else if([url isEqualToString:@"DeleteAttention"]){
-            [self.concernStocksCodeArr removeObject:stockCode];
-        }
-        tag=YES;
-        [self.table reloadData];
         
     }];
 

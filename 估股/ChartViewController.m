@@ -44,6 +44,8 @@
 @synthesize industryClass=_industryClass;
 //@synthesize context;
 @synthesize hostView;
+@synthesize plotSpace;
+@synthesize graph;
 @synthesize reverseDic;
 
 @synthesize webView;
@@ -58,6 +60,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    [graph release];graph=nil;
+    [plotSpace release];plotSpace=nil;
     [hostView release];hostView=nil;
     [reverseDic release];reverseDic=nil;
     
@@ -101,6 +105,19 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [super viewDidLoad];
     linkage=YES;
     
+    XRANGEBEGIN=9.0;
+    XRANGELENGTH=14.0;
+    YRANGEBEGIN=-0.3;
+    YRANGELENGTH=0.9;
+    
+    XINTERVALLENGTH=3.0;
+    XORTHOGONALCOORDINATE=0.0;
+    XTICKSPERINTERVAL=2;
+    
+    YINTERVALLENGTH= 0.1;
+    YORTHOGONALCOORDINATE =11.0;
+    YTICKSPERINTERVAL =2;
+    
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
     
@@ -119,12 +136,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTDarkGradientTheme];
+        CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
         [graph applyTheme:theme];
         
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,0,480,320) ];
         [self.view addSubview:hostView];
-        
         [hostView setHostedGraph : graph ];
     }
     @catch (NSException *exception) {
@@ -143,6 +159,63 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     graph . plotAreaFrame . paddingBottom = 00.0 ;
     
     graph.title=@"股票估值";
+    //绘制图形空间
+    plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
+    [self addXYAxis];
+    
+    
+    priceLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,160,40)];
+    priceLabel.text=@"here";
+    [self.view addSubview:priceLabel];
+    
+    UIButton *scatterButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    scatterButton.frame=CGRectMake(160,0,80,40);
+    [scatterButton setTitle:@"联动" forState:UIControlStateNormal];
+    scatterButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    scatterButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+    [scatterButton addTarget:self action:@selector(addScatterChart:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:scatterButton];
+    [scatterButton release];
+    
+    UIButton *barButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    barButton.frame=CGRectMake(240,0,80,40);
+    [barButton setTitle:@"点动" forState:UIControlStateNormal];
+    barButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    barButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+    [barButton addTarget:self action:@selector(addBarChart:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:barButton];
+    [barButton release];
+    
+    UIButton *selectIndustryButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    selectIndustryButton.frame=CGRectMake(320,0,80,40);
+    [selectIndustryButton setTitle:@"行业选择" forState:UIControlStateNormal];
+    selectIndustryButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    selectIndustryButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+    [selectIndustryButton addTarget:self action:@selector(selectIndustry:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:selectIndustryButton];
+    [selectIndustryButton release];
+    
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(400,0,80,40);
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    backButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    backButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+    [backButton addTarget:self action:@selector(backTo:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:backButton];
+    [backButton release];
+    
+    [self addScatterChart:scatterButton];
+    
+    //手势添加
+    UIPanGestureRecognizer *panGr=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(viewPan:)];
+    [hostView addGestureRecognizer:panGr];
+    [panGr release];
+    
+
+}
+
+-(void)addXYAxis{
+    
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
     textStyle.fontSize                = 16.0f;
@@ -150,10 +223,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     graph.titleTextStyle           = textStyle;
     graph.titleDisplacement        = CGPointMake(0.0f, -20.0f);
     graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
-    
-    
-    //绘制图形空间
-    CPTXYPlotSpace *plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
+  
     //plotSpace.allowsUserInteraction=YES;
     
     //设置x，y坐标范围
@@ -184,46 +254,30 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     y.minorTicksPerInterval=YTICKSPERINTERVAL;
     y.minorTickLineStyle = lineStyle;
     
-    
-    priceLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,160,40)];
-    priceLabel.text=@"here";
-    [self.view addSubview:priceLabel];
-    
-    UIButton *scatterButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    scatterButton.frame=CGRectMake(160,0,80,40);
-    [scatterButton setTitle:@"联动" forState:UIControlStateNormal];
-    scatterButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    scatterButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [scatterButton addTarget:self action:@selector(addScatterChart:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:scatterButton];
-    [scatterButton release];
-    
-    UIButton *barButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    barButton.frame=CGRectMake(240,0,80,40);
-    [barButton setTitle:@"点动" forState:UIControlStateNormal];
-    barButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    barButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [barButton addTarget:self action:@selector(addBarChart:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:barButton];
-    [barButton release];
-    
-    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(320,0,80,40);
-    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    backButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    backButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [backButton addTarget:self action:@selector(backTo:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:backButton];
-    [backButton release];
-    
-    [self addScatterChart:scatterButton];
-    
-    //手势添加
-    UIPanGestureRecognizer *panGr=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(viewPan:)];
-    [hostView addGestureRecognizer:panGr];
-    [panGr release];
-    
+}
 
+-(void)selectIndustry:(id)sender {
+    NSArray * arr = [[NSArray alloc] init];
+    arr = [NSArray arrayWithObjects:@"Hello 0", @"Hello 1", nil];
+    if(dropDown == nil) {
+        CGFloat f = 200;
+        dropDown = [[NIDropDown alloc]showDropDown:sender :&f :arr];
+        dropDown.delegate = self;
+    }
+    else {
+        [dropDown hideDropDown:sender];
+        [self rel];
+    }
+}
+
+- (void) niDropDownDelegateMethod: (NIDropDown *) sender {
+    NSLog(@"here");
+    [self rel];
+}
+
+-(void)rel{
+    [dropDown release];
+    dropDown = nil;
 }
 
 -(void)backTo:(UIButton *)bt{
@@ -367,7 +421,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.forecastPoints removeAllObjects];
         //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
         [self.reverseDic removeAllObjects];
-        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[self.industryClass objectAtIndex:0] objectForKey:@"id"]];
+        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[self.industryClass objectAtIndex:4] objectForKey:@"id"]];
         re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         id charData=[re objectFromJSONString];
@@ -386,6 +440,29 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             
         }
         [mutableObj release];
+        NSComparator cmptr = ^(id obj1, id obj2){
+            if ([obj1 floatValue] > [obj2 floatValue]) {
+                return (NSComparisonResult)NSOrderedDescending;
+            }
+            
+            if ([obj1 floatValue] < [obj2 floatValue]) {
+                return (NSComparisonResult)NSOrderedAscending;
+            }
+            return (NSComparisonResult)NSOrderedSame;
+        };
+        NSMutableArray *tempArr=[[NSMutableArray alloc] init];
+        for(id obj in self.hisPoints){
+            [tempArr addObject:[obj objectForKey:@"v"]];
+        }
+        for(id obj in self.forecastPoints){
+            [tempArr addObject:[obj objectForKey:@"v"]];
+        }
+        NSArray *sortArr=[tempArr sortedArrayUsingComparator:cmptr];
+        YRANGEBEGIN=[[sortArr objectAtIndex:0] floatValue]-0.5;
+        YRANGELENGTH=[[sortArr lastObject] floatValue]-[[sortArr objectAtIndex:0] floatValue]+0.5;
+        XORTHOGONALCOORDINATE=YRANGEBEGIN+0.5;
+        YINTERVALLENGTH=YRANGELENGTH/5;
+        [self addXYAxis];
         [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
         [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
