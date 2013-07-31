@@ -35,6 +35,9 @@
 
 + (NSString *)intervalSinceNow: (NSString *) theDate;
 
++(NSString *)getCatchSize;
++(void)deleteSandBoxContent;
+
 
 
 

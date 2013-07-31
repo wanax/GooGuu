@@ -227,10 +227,45 @@
     return timeString;
 }
 
++(NSString *)getCatchSize{
+    
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    float folderSize = 0;
+    if([fileManager fileExistsAtPath:path]){
+        
+        NSEnumerator *childFilesEnumerator = [[fileManager subpathsOfDirectoryAtPath:path error:nil] objectEnumerator];
+        
+        NSString *fileName;
+        
+        while((fileName = [childFilesEnumerator nextObject]) != nil){
+            
+            NSString *fileAbsolutePath = [path stringByAppendingPathComponent:fileName];
+            folderSize += [fileManager attributesOfItemAtPath:fileAbsolutePath error:nil].fileSize;
+        }
+    }
+    return [NSString stringWithFormat:@"%.2f",folderSize/1000];
+}
 
-
-
-
++(void)deleteSandBoxContent{
+    
+    NSString *extension = @"plist";
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+    NSEnumerator *e = [contents objectEnumerator];
+    NSString *filename;
+    while ((filename = [e nextObject])) {
+        
+        if ([[filename pathExtension] isEqualToString:extension]) {
+            
+            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+        }
+    }
+    
+}
 
 
 

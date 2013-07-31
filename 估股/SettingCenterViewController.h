@@ -23,14 +23,9 @@ typedef enum {
     SubRadioOption3,
 } SubRadioOptions;
 
-@interface SettingCenterViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource,NIRadioGroupDelegate,UITextFieldDelegate>
+@interface SettingCenterViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,retain) UIToolbar *top;
-
-@property (nonatomic, readwrite, retain) NITableViewModel* model;
-@property (nonatomic, readwrite, retain) NITableViewActions* actions;
-
-@property (nonatomic, readwrite, retain) NIRadioGroup* subRadioGroup;
+@property (nonatomic,retain) UITableView *customTabel;
 
 
 

@@ -484,6 +484,13 @@
 		AE75BAB817A21DC30046901F /* PrettyGridTableViewCell.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9235179D06890049B28E /* PrettyGridTableViewCell.h */; };
 		AE75BAB917A21DC30046901F /* PrettyGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9236179D06890049B28E /* PrettyGridTableViewCell.m */; };
 		AE75BABB17A220750046901F /* userconfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE75BABA17A220750046901F /* userconfigure.plist */; };
+		AEFB4C6D17A89A790044176B /* DoubleLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEFB4C6C17A89A790044176B /* DoubleLabelCell.xib */; };
+		AEFB4C7017A89AF00044176B /* DoubleLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C6F17A89AF00044176B /* DoubleLabelCell.m */; };
+		AEFB4C7217A89C2D0044176B /* LabelSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEFB4C7117A89C2D0044176B /* LabelSwitchCell.xib */; };
+		AEFB4C7517A89C830044176B /* LabelSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C7417A89C830044176B /* LabelSwitchCell.m */; };
+		AEFB4C7817A8B5DA0044176B /* StockRiseDownColorSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C7717A8B5DA0044176B /* StockRiseDownColorSettingViewController.m */; };
+		AEFB4C7B17A8C08C0044176B /* AboutUsAndCopyrightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */; };
+		AEFB4C7D17A8C0C20044176B /* AboutUsAndCopyrightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEFB4C7C17A8C0C20044176B /* AboutUsAndCopyrightView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1216,6 +1223,17 @@
 		AE75BA5A17A21ACE0046901F /* VRGCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRGCalendarView.h; sourceTree = "<group>"; };
 		AE75BA5B17A21ACE0046901F /* VRGCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRGCalendarView.m; sourceTree = "<group>"; };
 		AE75BABA17A220750046901F /* userconfigure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = userconfigure.plist; sourceTree = "<group>"; };
+		AEFB4C6C17A89A790044176B /* DoubleLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleLabelCell.xib; sourceTree = "<group>"; };
+		AEFB4C6E17A89AF00044176B /* DoubleLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleLabelCell.h; sourceTree = "<group>"; };
+		AEFB4C6F17A89AF00044176B /* DoubleLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleLabelCell.m; sourceTree = "<group>"; };
+		AEFB4C7117A89C2D0044176B /* LabelSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelSwitchCell.xib; sourceTree = "<group>"; };
+		AEFB4C7317A89C830044176B /* LabelSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelSwitchCell.h; sourceTree = "<group>"; };
+		AEFB4C7417A89C830044176B /* LabelSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelSwitchCell.m; sourceTree = "<group>"; };
+		AEFB4C7617A8B5DA0044176B /* StockRiseDownColorSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StockRiseDownColorSettingViewController.h; sourceTree = "<group>"; };
+		AEFB4C7717A8B5DA0044176B /* StockRiseDownColorSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockRiseDownColorSettingViewController.m; sourceTree = "<group>"; };
+		AEFB4C7917A8C08C0044176B /* AboutUsAndCopyrightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsAndCopyrightViewController.h; sourceTree = "<group>"; };
+		AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsAndCopyrightViewController.m; sourceTree = "<group>"; };
+		AEFB4C7C17A8C0C20044176B /* AboutUsAndCopyrightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutUsAndCopyrightView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1601,6 +1619,7 @@
 		AE2E92DC179D08A10049B28E /* NibFile */ = {
 			isa = PBXGroup;
 			children = (
+				AEFB4C6B17A89A4F0044176B /* SettingNibFile */,
 				AE2E92DD179D08B30049B28E /* UserCell.xib */,
 				AE2E92DE179D08B30049B28E /* MainWindow.xib */,
 				AE2E92DF179D08B30049B28E /* CustomCell.xib */,
@@ -1609,6 +1628,7 @@
 				AE2E92E3179D08B30049B28E /* AddCommentView.xib */,
 				AE2E92E4179D08B30049B28E /* DailyStockCell.xib */,
 				AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */,
+				AEFB4C7C17A8C0C20044176B /* AboutUsAndCopyrightView.xib */,
 			);
 			path = NibFile;
 			sourceTree = "<group>";
@@ -1707,6 +1727,10 @@
 				AE2E93DF179D0A590049B28E /* ClientLoginViewController.m */,
 				AE2E93E0179D0A590049B28E /* SettingCenterViewController.h */,
 				AE2E93E1179D0A590049B28E /* SettingCenterViewController.m */,
+				AEFB4C7617A8B5DA0044176B /* StockRiseDownColorSettingViewController.h */,
+				AEFB4C7717A8B5DA0044176B /* StockRiseDownColorSettingViewController.m */,
+				AEFB4C7917A8C08C0044176B /* AboutUsAndCopyrightViewController.h */,
+				AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */,
 			);
 			name = ClientCenter;
 			sourceTree = "<group>";
@@ -1769,6 +1793,10 @@
 				AE2E93FA179D0A810049B28E /* GooNewsCell.m */,
 				AE2E93FB179D0A810049B28E /* DailyStockCell.h */,
 				AE2E93FC179D0A810049B28E /* DailyStockCell.m */,
+				AEFB4C6E17A89AF00044176B /* DoubleLabelCell.h */,
+				AEFB4C6F17A89AF00044176B /* DoubleLabelCell.m */,
+				AEFB4C7317A89C830044176B /* LabelSwitchCell.h */,
+				AEFB4C7417A89C830044176B /* LabelSwitchCell.m */,
 			);
 			name = CustomCell;
 			sourceTree = "<group>";
@@ -2447,6 +2475,15 @@
 			path = "Vurig Calendar";
 			sourceTree = "<group>";
 		};
+		AEFB4C6B17A89A4F0044176B /* SettingNibFile */ = {
+			isa = PBXGroup;
+			children = (
+				AEFB4C6C17A89A790044176B /* DoubleLabelCell.xib */,
+				AEFB4C7117A89C2D0044176B /* LabelSwitchCell.xib */,
+			);
+			name = SettingNibFile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2578,6 +2615,9 @@
 				AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */,
 				AE15105917A7A758007B9E66 /* addConcernBt.png in Resources */,
 				AE15105A17A7A758007B9E66 /* cancelConcernBt.png in Resources */,
+				AEFB4C6D17A89A790044176B /* DoubleLabelCell.xib in Resources */,
+				AEFB4C7217A89C2D0044176B /* LabelSwitchCell.xib in Resources */,
+				AEFB4C7D17A8C0C20044176B /* AboutUsAndCopyrightView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2897,6 +2937,10 @@
 				AE75B90C17A20C0B0046901F /* NIRadioGroupController.m in Sources */,
 				AE75B90D17A20C0B0046901F /* NITableViewActions.m in Sources */,
 				AE75B90E17A20C0B0046901F /* NITableViewModel.m in Sources */,
+				AEFB4C7017A89AF00044176B /* DoubleLabelCell.m in Sources */,
+				AEFB4C7517A89C830044176B /* LabelSwitchCell.m in Sources */,
+				AEFB4C7817A8B5DA0044176B /* StockRiseDownColorSettingViewController.m in Sources */,
+				AEFB4C7B17A8C08C0044176B /* AboutUsAndCopyrightViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
