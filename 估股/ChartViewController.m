@@ -18,6 +18,10 @@
 #import "MHTabBarController.h"
 #import "MBProgressHUD.h"
 #import "XYZAppDelegate.h"
+#import "DemoTableViewController.h"
+#import "TSPopoverController.h"
+#import "PrettyNavigationController.h"
+#import "CQMFloatingController.h"
 
 @interface ChartViewController ()
 
@@ -50,6 +54,7 @@
 
 @synthesize webView;
 @synthesize priceLabel;
+
 
 static NSString * FORECAST_DATALINE_IDENTIFIER =@"forecast_dataline_identifier";
 static NSString * FORECAST_DEFAULT_DATALINE_IDENTIFIER =@"forecast_default_dataline_identifier";
@@ -139,8 +144,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
         [graph applyTheme:theme];
         
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,0,480,320) ];
-        [self.view addSubview:hostView];
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280) ];
+        [self.view insertSubview:hostView atIndex:1];
         [hostView setHostedGraph : graph ];
     }
     @catch (NSException *exception) {
@@ -191,9 +196,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [selectIndustryButton setTitle:@"行业选择" forState:UIControlStateNormal];
     selectIndustryButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
     selectIndustryButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [selectIndustryButton addTarget:self action:@selector(selectIndustry:) forControlEvents:UIControlEventTouchDown];
+    [selectIndustryButton addTarget:self action:@selector(selectIndustry:forEvent:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:selectIndustryButton];
     [selectIndustryButton release];
+    
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(400,0,80,40);
@@ -213,6 +219,37 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
 
 }
+
+
+-(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
+    
+    /*DemoTableViewController *tableViewController = [[DemoTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    tableViewController.view.frame = CGRectMake(0,0, 320, 400);
+    PrettyNavigationController *tabNav=[[PrettyNavigationController alloc] initWithRootViewController:tableViewController];
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    delegate.popoverController = [[TSPopoverController alloc] initWithContentViewController:tabNav];
+    
+    delegate.popoverController.cornerRadius = 2;
+    delegate.popoverController.titleText = @"";
+    delegate.popoverController.popoverBaseColor =[Utiles colorWithHexString:@"#009ec5"];
+    delegate.popoverController.popoverGradient= NO;
+    [delegate.popoverController showPopoverWithTouch:event andSuperView:self.view];*/
+    
+    DemoTableViewController *demoViewController = [[[DemoTableViewController alloc] init] autorelease];
+	
+	// 2. Get shared floating controller
+	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
+    floatingController.frameSize=CGSizeMake(280,280);
+    floatingController.frameColor=[UIColor blueColor];
+	
+	// 3. Show floating controller with specified content
+	[floatingController presentWithContentViewController:demoViewController
+												animated:YES];
+
+    
+}
+
+
 
 -(void)addXYAxis{
     
@@ -256,29 +293,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
 }
 
--(void)selectIndustry:(id)sender {
-    NSArray * arr = [[NSArray alloc] init];
-    arr = [NSArray arrayWithObjects:@"Hello 0", @"Hello 1", nil];
-    if(dropDown == nil) {
-        CGFloat f = 200;
-        dropDown = [[NIDropDown alloc]showDropDown:sender :&f :arr];
-        dropDown.delegate = self;
-    }
-    else {
-        [dropDown hideDropDown:sender];
-        [self rel];
-    }
-}
 
-- (void) niDropDownDelegateMethod: (NIDropDown *) sender {
-    NSLog(@"here");
-    [self rel];
-}
-
--(void)rel{
-    [dropDown release];
-    dropDown = nil;
-}
 
 -(void)backTo:(UIButton *)bt{
     
@@ -307,100 +322,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
    
 }
 
--(void)addScatterChart:(UIButton *)bt{
 
-    bt.showsTouchWhenHighlighted=YES;
-    
-    linkage=YES;
-    if([graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
-        [graph removePlot:barPlot];
-    }
-    
-    if(!([graph plotWithIdentifier:FORECAST_DATALINE_IDENTIFIER]&&[graph plotWithIdentifier:FORECAST_DEFAULT_DATALINE_IDENTIFIER])){
-     
-        //y. labelingPolicy = CPTAxisLabelingPolicyNone ;
-        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
-        //修改折线图线段样式,创建可调整数据线段
-        forecastLinePlot=[[[CPTScatterPlot alloc] init] autorelease];
-        lineStyle.miterLimit=2.0f;
-        lineStyle.lineWidth=2.0f;
-        lineStyle.lineColor=[CPTColor whiteColor];
-        forecastLinePlot.dataLineStyle=lineStyle;
-        forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
-        forecastLinePlot.dataSource=self;//需实现委托
-        
-        //创建默认对比数据线
-        lineStyle.lineColor=[CPTColor grayColor];
-        forecastDefaultLinePlot = [[CPTScatterPlot alloc] init];
-        forecastDefaultLinePlot.dataLineStyle = lineStyle;
-        forecastDefaultLinePlot.identifier = FORECAST_DEFAULT_DATALINE_IDENTIFIER;
-        forecastDefaultLinePlot.dataSource = self;
-        
-        
-        //创建历史数据线段
-        lineStyle.lineColor=[CPTColor redColor];
-        historyLinePlot = [[CPTScatterPlot alloc] init];
-        historyLinePlot.dataLineStyle = lineStyle;
-        historyLinePlot.identifier = HISTORY_DATALINE_IDENTIFIER;
-        historyLinePlot.dataSource = self;
-        
-        
-        //创建分隔线段
-        lineStyle.lineColor=[CPTColor grayColor];
-        dividingLinePlot = [[CPTScatterPlot alloc] init];
-        dividingLinePlot.dataLineStyle = lineStyle;
-        dividingLinePlot.identifier =DIVIDING_DATALINE_IDENTIFIER;
-        dividingLinePlot.dataSource = self;
-        
-        
-        // Add plot symbols: 表示数值的符号的形状
-        //
-        CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
-        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0];
-        symbolLineStyle.lineWidth = 2.0;
-        
-        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-        //plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0]];
-        plotSymbol.lineStyle     = symbolLineStyle;
-        plotSymbol.size          = CGSizeMake(1.8, 1.8);
-        
-        forecastLinePlot.plotSymbol = plotSymbol;
-        historyLinePlot.plotSymbol=plotSymbol;
-        
-        
-        // Animate in the new plot: 淡入动画
-        forecastLinePlot.opacity = 0.0f;
-        historyLinePlot.opacity=0.0f;
-        CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeInAnimation.duration            = 3.0f;
-        fadeInAnimation.removedOnCompletion = NO;
-        fadeInAnimation.fillMode            = kCAFillModeForwards;
-        fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
-        [forecastLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        [historyLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        [dividingLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        
-        [graph addPlot:forecastLinePlot];
-        [graph addPlot:forecastDefaultLinePlot];    
-        [graph addPlot:historyLinePlot];
-        [graph addPlot:dividingLinePlot];
-        
-        
-        [forecastDefaultLinePlot release];
-        [forecastLinePlot release];
-        [historyLinePlot release];
-        [dividingLinePlot release];
-        
-    }
- 
-}
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
 
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:@"03331",@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
         self.jsonForChart=[resObj JSONString];
@@ -621,7 +550,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         coordinate.x=(int)(coordinate.x+0.5);
         
         coordinate.x=coordinate.x>=23?22:coordinate.x;
-        coordinate.x=coordinate.x<=11?12:coordinate.x;
+        coordinate.x=coordinate.x<=12?13:coordinate.x;
         
         NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
         
@@ -630,7 +559,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             //NSLog(@"%@",[self.forecastPoints JSONString]);
             double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
             //double l5 = [[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] doubleValue];
-            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-[self.hisPoints count])] objectForKey:@"y"] doubleValue]);
+            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:(coordinate.x+2-XRANGEBEGIN-[self.hisPoints count])] objectForKey:@"y"] doubleValue]);
             int i=0;
             for(id obj in self.forecastPoints){
                 double v = [[obj objectForKey:@"v"] doubleValue];
@@ -716,6 +645,94 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
 }
 
+-(void)addScatterChart:(UIButton *)bt{
+    
+    bt.showsTouchWhenHighlighted=YES;
+    
+    linkage=YES;
+    if([graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
+        [graph removePlot:barPlot];
+    }
+    
+    if(!([graph plotWithIdentifier:FORECAST_DATALINE_IDENTIFIER]&&[graph plotWithIdentifier:FORECAST_DEFAULT_DATALINE_IDENTIFIER])){
+        
+        //y. labelingPolicy = CPTAxisLabelingPolicyNone ;
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+        //修改折线图线段样式,创建可调整数据线段
+        forecastLinePlot=[[[CPTScatterPlot alloc] init] autorelease];
+        lineStyle.miterLimit=2.0f;
+        lineStyle.lineWidth=2.0f;
+        lineStyle.lineColor=[CPTColor whiteColor];
+        forecastLinePlot.dataLineStyle=lineStyle;
+        forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
+        forecastLinePlot.dataSource=self;//需实现委托
+        
+        //创建默认对比数据线
+        lineStyle.lineColor=[CPTColor grayColor];
+        forecastDefaultLinePlot = [[CPTScatterPlot alloc] init];
+        forecastDefaultLinePlot.dataLineStyle = lineStyle;
+        forecastDefaultLinePlot.identifier = FORECAST_DEFAULT_DATALINE_IDENTIFIER;
+        forecastDefaultLinePlot.dataSource = self;
+        
+        
+        //创建历史数据线段
+        lineStyle.lineColor=[CPTColor redColor];
+        historyLinePlot = [[CPTScatterPlot alloc] init];
+        historyLinePlot.dataLineStyle = lineStyle;
+        historyLinePlot.identifier = HISTORY_DATALINE_IDENTIFIER;
+        historyLinePlot.dataSource = self;
+        
+        
+        //创建分隔线段
+        lineStyle.lineColor=[CPTColor grayColor];
+        dividingLinePlot = [[CPTScatterPlot alloc] init];
+        dividingLinePlot.dataLineStyle = lineStyle;
+        dividingLinePlot.identifier =DIVIDING_DATALINE_IDENTIFIER;
+        dividingLinePlot.dataSource = self;
+        
+        
+        // Add plot symbols: 表示数值的符号的形状
+        //
+        CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
+        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0];
+        symbolLineStyle.lineWidth = 2.0;
+        
+        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+        //plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0]];
+        plotSymbol.lineStyle     = symbolLineStyle;
+        plotSymbol.size          = CGSizeMake(1.8, 1.8);
+        
+        forecastLinePlot.plotSymbol = plotSymbol;
+        historyLinePlot.plotSymbol=plotSymbol;
+        
+        
+        // Animate in the new plot: 淡入动画
+        forecastLinePlot.opacity = 0.0f;
+        historyLinePlot.opacity=0.0f;
+        CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeInAnimation.duration            = 3.0f;
+        fadeInAnimation.removedOnCompletion = NO;
+        fadeInAnimation.fillMode            = kCAFillModeForwards;
+        fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
+        [forecastLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
+        [historyLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
+        [dividingLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
+        
+        [graph addPlot:forecastLinePlot];
+        [graph addPlot:forecastDefaultLinePlot];
+        [graph addPlot:historyLinePlot];
+        [graph addPlot:dividingLinePlot];
+        
+        
+        [forecastDefaultLinePlot release];
+        [forecastLinePlot release];
+        [historyLinePlot release];
+        [dividingLinePlot release];
+        
+    }
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -724,7 +741,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    //NSLog(@"chart willAnimateRotationToInterfaceOrientation");
+    NSLog(@"chart willAnimateRotationToInterfaceOrientation");
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //[self.navigationController.navigationBar setHidden:YES];
         //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
@@ -740,7 +757,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return YES;
 }
 
 

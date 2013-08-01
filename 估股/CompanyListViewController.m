@@ -363,7 +363,7 @@
     animation.type = kCATransitionPush;
     animation.subtype = kCATransitionFromTop;
     [[com.view layer] addAnimation:animation forKey:@"animation"];
-    animation=nil;8*/
+    animation=nil;*/
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     [search resignFirstResponder];

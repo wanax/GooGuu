@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "TSPopoverController.h"
 
 @class ConcernedViewController;
 @class Company;
@@ -17,7 +17,7 @@
     IBOutlet UIWindow *window;
     NSString *_stockCode;
 }
-
+@property (nonatomic,retain) TSPopoverController *popoverController;
 @property (nonatomic,retain) UIScrollView *scrollView;
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic,retain)  PrettyTabBarViewController *tabBarController;
@@ -25,5 +25,18 @@
 @property (retain,nonatomic) UIPageControl * pageControl;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSTimer *loginTimer;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @end

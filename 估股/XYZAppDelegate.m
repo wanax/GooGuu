@@ -22,6 +22,7 @@
 #import "PrettyTabBarViewController.h"
 #import "Utiles.h"
 #import "Reachability.h"
+#import "ChartViewController.h"
 
 
 @implementation XYZAppDelegate
@@ -32,9 +33,11 @@
 @synthesize pageControl;
 @synthesize loginTimer;
 @synthesize comInfo;
+@synthesize popoverController;
 
 - (void)dealloc
 {
+    [popoverController release];
     [loginTimer release];
     [comInfo release];
     [scrollView release];

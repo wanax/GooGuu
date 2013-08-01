@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
-#import "NIDropDown.h"
 
+@class CQMFloatingController;
 
 //数据点个数
 #define NUM 10
@@ -28,7 +28,7 @@
 #define FINGERCHANGEDISTANCE 100.0
 
 
-@interface ChartViewController : UIViewController<CPTPieChartDataSource,UIWebViewDelegate,NIDropDownDelegate>{
+@interface ChartViewController : UIViewController<CPTPieChartDataSource,UIWebViewDelegate>{
     //x轴起点
     float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
@@ -65,7 +65,6 @@
     NSArray *_industryClass;
     
     NSMutableArray *_standard;
-    NIDropDown *dropDown;
     
 }
 //预测曲线
@@ -102,6 +101,7 @@
 @property (nonatomic,retain) CPTXYGraph * graph ;
 @property (nonatomic,retain) CPTGraphHostingView *hostView;
 @property (nonatomic,retain) CPTXYPlotSpace *plotSpace;
+
 
 //坐标转换方法，实际坐标转化相对坐标
 - (CGPoint)CoordinateTransformRealToAbstract:(CGPoint)point;
