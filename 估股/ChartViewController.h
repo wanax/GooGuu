@@ -11,6 +11,7 @@
 #import "CorePlot-CocoaTouch.h"
 
 @class CQMFloatingController;
+@class ModelClassViewController;
 
 //数据点个数
 #define NUM 10
@@ -30,7 +31,7 @@
 #define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL]
 
 
-@interface ChartViewController : UIViewController<CPTPieChartDataSource,UIWebViewDelegate>{
+@interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,UIWebViewDelegate>{
     //x轴起点
     float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
@@ -90,7 +91,8 @@
 @property (nonatomic) BOOL linkage;
 
 //行业分类
-@property (nonatomic,retain) NSArray *industryClass;
+@property (nonatomic,retain) id industryClass;
+@property (nonatomic,retain) ModelClassViewController *modelClassViewController;
 
 @property (nonatomic,retain) UIWebView *webView;
 @property (nonatomic,retain) UILabel *priceLabel;

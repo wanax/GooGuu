@@ -13,6 +13,7 @@
 @class CustomTableView;
 @class MBProgressHUD;
 
+
 @interface GooNewsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,EGORefreshTableHeaderDelegate>{
     
     EGORefreshTableHeaderView *_refreshHeaderView;

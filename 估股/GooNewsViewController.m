@@ -30,7 +30,6 @@
 @implementation GooNewsViewController
 
 
-
 @synthesize customTableView;
 @synthesize newArrList;
 @synthesize imageUrl;
@@ -304,7 +303,6 @@
 #pragma mark Table Delegate Methods
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
     if(indexPath.section==0){
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else if(indexPath.section==1){

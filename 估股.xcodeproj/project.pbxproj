@@ -343,6 +343,7 @@
 		AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E617AA419A0060640E /* DrawChartTool.m */; };
 		AE4CF0E917AA48CF0060640E /* c.html in Resources */ = {isa = PBXBuildFile; fileRef = AE4CF0E817AA48CF0060640E /* c.html */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
+		AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
 		AE6B96E217A0F51200DBE0C6 /* MHTabBarIndicator3.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */; };
 		AE6B96E317A0F51200DBE0C6 /* MHTabBarIndicator4.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */; };
@@ -878,6 +879,8 @@
 		AE4CF0E617AA419A0060640E /* DrawChartTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawChartTool.m; sourceTree = "<group>"; };
 		AE4CF0E817AA48CF0060640E /* c.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = c.html; sourceTree = "<group>"; };
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
+		AE51B8D717AB528000A09D1E /* ModelClassGrade2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClassGrade2ViewController.h; sourceTree = "<group>"; };
+		AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClassGrade2ViewController.m; sourceTree = "<group>"; };
 		AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator2.png; sourceTree = "<group>"; };
 		AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator3.png; sourceTree = "<group>"; };
 		AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator4.png; sourceTree = "<group>"; };
@@ -1990,6 +1993,8 @@
 			children = (
 				AE4CF0DE17AA3CC20060640E /* ModelClassViewController.h */,
 				AE4CF0DF17AA3CC20060640E /* ModelClassViewController.m */,
+				AE51B8D717AB528000A09D1E /* ModelClassGrade2ViewController.h */,
+				AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */,
 				AE4CF0E217AA3DF30060640E /* FinancalModelChartViewController.h */,
 				AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */,
 				AE4CF0E517AA419A0060640E /* DrawChartTool.h */,
@@ -3053,6 +3058,7 @@
 				AE4CF0E017AA3CC20060640E /* ModelClassViewController.m in Sources */,
 				AE4CF0E417AA3DF30060640E /* FinancalModelChartViewController.m in Sources */,
 				AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */,
+				AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

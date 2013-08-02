@@ -21,10 +21,8 @@
             	this.values=jsonobjs.model.values;
             	this.strequ = jsonobjs.model.equation;
             	this.computerf=new Function(strequ);
-            	
-            	initGGid();
-				returnInfo();
-				returnDragableChartList();
+
+				return returnDragableChartList();
             }
 			
             //金融数据所需信息
@@ -204,14 +202,10 @@
             function chartCalu(jsondata) 
             {            
 	            var sValue = eval('(' + jsondata + ')');
-	            var strtmp="";
 				for ( var i = 0; i < sValue.length; i++) {
-					values[sValue[i].id] = sValue[i].value;
-					strtmp+=sValue[i].value;
-					strtmp+=sValue[i].id;
+					values[sValue[i].id] = sValue[i].v;
 				}
 				//values["1398.13"]=0.3;
-				//values["1398.14"]=0.3;
 				computerf();
 				return rtnstr;
 			}
@@ -232,6 +226,6 @@
             
         </script>
     </head>
-    <body onload="javascript:webcalc.initJson()">
+    <body>
     </body>
 </html>

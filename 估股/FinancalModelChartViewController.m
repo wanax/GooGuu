@@ -19,6 +19,7 @@
 #import "PrettyNavigationController.h"
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
+#import "ModelClassViewController.h"
 
 @interface FinancalModelChartViewController ()
 
@@ -36,9 +37,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 @synthesize graph;
 @synthesize hostView;
 @synthesize plotSpace;
+@synthesize modelClassViewController;
 
 - (void)dealloc
 {
+    [modelClassViewController release];modelClassViewController=nil;
     [hostView release];hostView=nil;
     [points release];points=nil;
     [jsonForChart release];jsonForChart=nil;
@@ -62,6 +65,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor blackColor]];
+    self.modelClassViewController=[[ModelClassViewController alloc] init];
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
@@ -88,6 +92,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
         CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
         [graph applyTheme:theme];
+        graph.cornerRadius  = 0.0f;
         
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280) ];
         [self.view addSubview:hostView];
@@ -105,27 +110,29 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     graph.title=@"金融模型";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
+    //plotSpace.allowsUserInteraction=YES;
     
     DrawXYAxis;
-
+    [self initBarPlot];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
+    [tool addButtonToView:self.view withTitle:@"行业选择" frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
     [tool addButtonToView:self.view withTitle:@"返回" frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
     [tool release];
-  
-    barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:105/255.0 green:195/255.0 blue:228/255.0 alpha:1.0] horizontalBars:NO];
-    barPlot.baseValue  = CPTDecimalFromString(@"0");
-    barPlot.dataSource = self;
-    barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
-    barPlot.identifier = BAR_IDENTIFIER;
-    barPlot.barWidthsAreInViewCoordinates=0.1f;
-    [graph addPlot:barPlot];
-    [barPlot release];
     
 }
 
 #pragma mark -
 #pragma Button Clicked Methods
+
+-(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
+
+	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
+    floatingController.frameSize=CGSizeMake(280,280);
+    floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
+	[floatingController presentWithContentViewController:modelClassViewController
+												animated:YES];
+}
 
 -(void)backTo:(UIButton *)bt{
     
@@ -135,12 +142,20 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 }
 
 #pragma mark -
+#pragma mark ModelClassGrade2 Methods Delegate
+-(void)modelClassChanged:(NSString *)value{
+    
+    NSLog(@"here");
+    
+}
+
+#pragma mark -
 #pragma mark Web Didfinished CallBack
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
-    [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
+    //[MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
@@ -148,15 +163,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
         
-        //获取股票种类
+        //获取金融模型种类
         NSString *arg=[[NSString alloc] initWithFormat:@"initFinancialData(\"%@\")",self.jsonForChart];
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        NSLog(@"%@",re);
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        
-        NSString *resData=[re objectFromJSONString];
-        
-        
+        self.modelClassViewController.jsonData=[re objectFromJSONString];
         
         
     }];
@@ -164,11 +175,16 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
 }
 
+#pragma mark -
+#pragma mark Bar Methods Delegate
+-(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx{
+    
+}
 
 
 
 #pragma mark -
-#pragma mark Line Data Source Delegate
+#pragma mark Bar Data Source Delegate
 
 //散点数据源委托实现
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
@@ -198,6 +214,24 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     return num;
 }
 
+
+-(void)initBarPlot{
+    barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0] horizontalBars:NO];
+    barPlot.baseValue  = CPTDecimalFromString(@"0");;
+    barPlot. dataSource = self ;
+    barPlot.delegate=self;
+    // 柱子的起始基线：即最下沿的 y 坐标
+    barPlot. baseValue = CPTDecimalFromString ( @"0" );
+    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
+    // 图形向右偏移： 0.25
+    barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
+    // 在 SDK 中， barCornerRadius 被 cornerRadius 替代
+    barPlot.barWidth=CPTDecimalFromFloat(1.0f);
+    barPlot.barWidthScale=0.5f;
+    barPlot. identifier = BAR_IDENTIFIER;
+    // 添加图形到绘图空间
+    [graph addPlot :barPlot toPlotSpace :plotSpace];
+}
 
 
 - (void)didReceiveMemoryWarning

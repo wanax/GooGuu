@@ -30,7 +30,7 @@
 
 
 #define kCellIdentifier  @"UITableViewCell"
-#define kNavigationTitle @"Demo"
+#define kNavigationTitle @"行业选择"
 
 
 @interface DemoTableViewController()

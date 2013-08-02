@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ModelClassViewController : UIViewController
+@interface ModelClassViewController :UITableViewController
+
+@property (nonatomic,retain) id jsonData;
+@property (nonatomic,retain) NSArray *modelClass;
+@property (nonatomic,retain) UITableView *customTable;
 
 @end

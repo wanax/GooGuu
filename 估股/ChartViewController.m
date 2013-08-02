@@ -23,6 +23,7 @@
 #import "PrettyNavigationController.h"
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
+#import "ModelClassViewController.h"
 
 
 
@@ -49,6 +50,7 @@
 @synthesize linkage;
 
 @synthesize industryClass=_industryClass;
+@synthesize modelClassViewController;
 //@synthesize context;
 @synthesize hostView;
 @synthesize plotSpace;
@@ -68,6 +70,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    [modelClassViewController release];modelClassViewController=nil;
     [graph release];graph=nil;
     [plotSpace release];plotSpace=nil;
     [hostView release];hostView=nil;
@@ -94,25 +97,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 
-
--(void)applicationDidFinishLaunching:(UIApplication *)application{
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     linkage=YES;
-    
+    self.modelClassViewController=[[ModelClassViewController alloc] init];
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
@@ -127,7 +116,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"calu" ofType:@"html"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
 
     
@@ -186,12 +175,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
     
-    DemoTableViewController *demoViewController = [[[DemoTableViewController alloc] init] autorelease];
-	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
+    CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
-    floatingController.frameColor=[UIColor blueColor];
-	[floatingController presentWithContentViewController:demoViewController
-												animated:YES]; 
+    floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
+	[floatingController presentWithContentViewController:modelClassViewController
+												animated:YES];
 }
 
 -(void)backTo:(UIButton *)bt{
@@ -212,8 +200,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         barPlot.baseValue  = CPTDecimalFromString(@"0");
         barPlot.dataSource = self;
         barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
+        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
         barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
-        barPlot.barWidthsAreInViewCoordinates=0.1f;
+        barPlot.barWidth=CPTDecimalFromFloat(0.5f);
         [graph addPlot:barPlot];
         linkage=NO;
         [barPlot release];
@@ -238,9 +227,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //获取股票种类
         NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonForChart];
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        
+        //NSLog(@"%@",re);
+        self.modelClassViewController.jsonData=[re objectFromJSONString];
         self.industryClass=[re objectFromJSONString];
         
         //获取对应折线信息,将历史数据与预测数据分组
@@ -249,12 +238,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.forecastPoints removeAllObjects];
         //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
         [self.reverseDic removeAllObjects];
-        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[self.industryClass objectAtIndex:4] objectForKey:@"id"]];
+        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:4] objectForKey:@"id"]];
         re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         id charData=[re objectFromJSONString];
         NSMutableDictionary *mutableObj=nil;
-        for(id obj in charData){
+        for(id obj in [charData objectForKey:@"array"]){
             
             mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
             
@@ -303,7 +292,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     
 }
+#pragma mark -
+#pragma mark Scatter Methods Delegate
 
+-(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx withEvent:(UIEvent *)event{
+    
+    NSLog(@"%d",idx);
+    NSLog(@"%@",event);
+    
+}
 
 
 
@@ -567,6 +564,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         forecastLinePlot.dataLineStyle=lineStyle;
         forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
         forecastLinePlot.dataSource=self;//需实现委托
+        forecastLinePlot.delegate=self;
         
         //创建默认对比数据线
         lineStyle.lineColor=[CPTColor grayColor];
@@ -642,7 +640,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    NSLog(@"chart willAnimateRotationToInterfaceOrientation");
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //[self.navigationController.navigationBar setHidden:YES];
         //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
