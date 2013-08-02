@@ -90,8 +90,6 @@
 		AE2E9429179D13A50049B28E /* 33.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E9425179D13A50049B28E /* 33.png */; };
 		AE2E942A179D13A50049B28E /* 44.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E9426179D13A50049B28E /* 44.png */; };
 		AE2E942B179D13A50049B28E /* 66.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E9427179D13A50049B28E /* 66.png */; };
-		AE2E9433179D13D40049B28E /* c.html in Resources */ = {isa = PBXBuildFile; fileRef = AE2E942C179D13D40049B28E /* c.html */; };
-		AE2E9434179D13D40049B28E /* cal.html in Resources */ = {isa = PBXBuildFile; fileRef = AE2E942D179D13D40049B28E /* cal.html */; };
 		AE2E9435179D13D40049B28E /* netrequesturl.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE2E942E179D13D40049B28E /* netrequesturl.plist */; };
 		AE2E9436179D13D40049B28E /* currentPageDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E942F179D13D40049B28E /* currentPageDot@2x.png */; };
 		AE2E9437179D13D40049B28E /* mzl.uujmenlv-512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E9430179D13D40049B28E /* mzl.uujmenlv-512x512.png */; };
@@ -340,6 +338,10 @@
 		AE4CF0D917AA32780060640E /* CQMFloatingFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0D217AA32780060640E /* CQMFloatingFrameView.m */; };
 		AE4CF0DA17AA32780060640E /* CQMFloatingNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0D417AA32780060640E /* CQMFloatingNavigationBar.m */; };
 		AE4CF0DB17AA32780060640E /* CQMPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0D617AA32780060640E /* CQMPathUtilities.m */; };
+		AE4CF0E017AA3CC20060640E /* ModelClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0DF17AA3CC20060640E /* ModelClassViewController.m */; };
+		AE4CF0E417AA3DF30060640E /* FinancalModelChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */; };
+		AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E617AA419A0060640E /* DrawChartTool.m */; };
+		AE4CF0E917AA48CF0060640E /* c.html in Resources */ = {isa = PBXBuildFile; fileRef = AE4CF0E817AA48CF0060640E /* c.html */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
 		AE6B96E217A0F51200DBE0C6 /* MHTabBarIndicator3.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */; };
@@ -795,8 +797,6 @@
 		AE2E9425179D13A50049B28E /* 33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 33.png; sourceTree = "<group>"; };
 		AE2E9426179D13A50049B28E /* 44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 44.png; sourceTree = "<group>"; };
 		AE2E9427179D13A50049B28E /* 66.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 66.png; sourceTree = "<group>"; };
-		AE2E942C179D13D40049B28E /* c.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = c.html; sourceTree = "<group>"; };
-		AE2E942D179D13D40049B28E /* cal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = cal.html; sourceTree = "<group>"; };
 		AE2E942E179D13D40049B28E /* netrequesturl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = netrequesturl.plist; sourceTree = "<group>"; };
 		AE2E942F179D13D40049B28E /* currentPageDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "currentPageDot@2x.png"; sourceTree = "<group>"; };
 		AE2E9430179D13D40049B28E /* mzl.uujmenlv-512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mzl.uujmenlv-512x512.png"; sourceTree = "<group>"; };
@@ -870,6 +870,13 @@
 		AE4CF0D417AA32780060640E /* CQMFloatingNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CQMFloatingNavigationBar.m; sourceTree = "<group>"; };
 		AE4CF0D517AA32780060640E /* CQMPathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQMPathUtilities.h; sourceTree = "<group>"; };
 		AE4CF0D617AA32780060640E /* CQMPathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CQMPathUtilities.m; sourceTree = "<group>"; };
+		AE4CF0DE17AA3CC20060640E /* ModelClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClassViewController.h; sourceTree = "<group>"; };
+		AE4CF0DF17AA3CC20060640E /* ModelClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClassViewController.m; sourceTree = "<group>"; };
+		AE4CF0E217AA3DF30060640E /* FinancalModelChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinancalModelChartViewController.h; sourceTree = "<group>"; };
+		AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinancalModelChartViewController.m; sourceTree = "<group>"; };
+		AE4CF0E517AA419A0060640E /* DrawChartTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawChartTool.h; sourceTree = "<group>"; };
+		AE4CF0E617AA419A0060640E /* DrawChartTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawChartTool.m; sourceTree = "<group>"; };
+		AE4CF0E817AA48CF0060640E /* c.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = c.html; sourceTree = "<group>"; };
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
 		AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator2.png; sourceTree = "<group>"; };
 		AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator3.png; sourceTree = "<group>"; };
@@ -1389,11 +1396,10 @@
 		AE2E91A8179D061A0049B28E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AE4CF0E817AA48CF0060640E /* c.html */,
 				AE15103F17A79CC1007B9E66 /* Default.png */,
 				AE31AB9C17A6000A007E903F /* calu.html */,
 				AE2E951A179D32390049B28E /* icon.png */,
-				AE2E942C179D13D40049B28E /* c.html */,
-				AE2E942D179D13D40049B28E /* cal.html */,
 				AE2E942E179D13D40049B28E /* netrequesturl.plist */,
 				AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */,
 				AE75B90F17A211B30046901F /* userconfigure.plist */,
@@ -1843,14 +1849,15 @@
 		AE2E93C6179D09E90049B28E /* CompanyDetailController */ = {
 			isa = PBXGroup;
 			children = (
+				AE4CF0E117AA3D8E0060640E /* MultipleChart */,
+				AE2E93FF179D0A880049B28E /* ChartViewController.h */,
+				AE2E9400179D0A880049B28E /* ChartViewController.m */,
 				AEF9848317A9F08800688473 /* DemoTableViewController.h */,
 				AEF9848417A9F08800688473 /* DemoTableViewController.m */,
 				AEF9848517A9F08800688473 /* DemoDetailViewController.h */,
 				AEF9848617A9F08800688473 /* DemoDetailViewController.m */,
 				AE2E93FD179D0A880049B28E /* ComFieldViewController.h */,
 				AE2E93FE179D0A880049B28E /* ComFieldViewController.m */,
-				AE2E93FF179D0A880049B28E /* ChartViewController.h */,
-				AE2E9400179D0A880049B28E /* ChartViewController.m */,
 				AE2E9401179D0A880049B28E /* GuestCommentViewController.h */,
 				AE2E9402179D0A880049B28E /* GuestCommentViewController.m */,
 				AE2E9403179D0A880049B28E /* IntroductionViewController.h */,
@@ -1976,6 +1983,19 @@
 				AE4CF0D617AA32780060640E /* CQMPathUtilities.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		AE4CF0E117AA3D8E0060640E /* MultipleChart */ = {
+			isa = PBXGroup;
+			children = (
+				AE4CF0DE17AA3CC20060640E /* ModelClassViewController.h */,
+				AE4CF0DF17AA3CC20060640E /* ModelClassViewController.m */,
+				AE4CF0E217AA3DF30060640E /* FinancalModelChartViewController.h */,
+				AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */,
+				AE4CF0E517AA419A0060640E /* DrawChartTool.h */,
+				AE4CF0E617AA419A0060640E /* DrawChartTool.m */,
+			);
+			name = MultipleChart;
 			sourceTree = "<group>";
 		};
 		AE6B987B17A11E3100DBE0C6 /* Nimbus */ = {
@@ -2656,8 +2676,6 @@
 				AE2E9429179D13A50049B28E /* 33.png in Resources */,
 				AE2E942A179D13A50049B28E /* 44.png in Resources */,
 				AE2E942B179D13A50049B28E /* 66.png in Resources */,
-				AE2E9433179D13D40049B28E /* c.html in Resources */,
-				AE2E9434179D13D40049B28E /* cal.html in Resources */,
 				AE2E9435179D13D40049B28E /* netrequesturl.plist in Resources */,
 				AE2E9436179D13D40049B28E /* currentPageDot@2x.png in Resources */,
 				AE2E9437179D13D40049B28E /* mzl.uujmenlv-512x512.png in Resources */,
@@ -2696,6 +2714,7 @@
 				AEFB4C6D17A89A790044176B /* DoubleLabelCell.xib in Resources */,
 				AEFB4C7217A89C2D0044176B /* LabelSwitchCell.xib in Resources */,
 				AEFB4C7D17A8C0C20044176B /* AboutUsAndCopyrightView.xib in Resources */,
+				AE4CF0E917AA48CF0060640E /* c.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3031,6 +3050,9 @@
 				AE4CF0D917AA32780060640E /* CQMFloatingFrameView.m in Sources */,
 				AE4CF0DA17AA32780060640E /* CQMFloatingNavigationBar.m in Sources */,
 				AE4CF0DB17AA32780060640E /* CQMPathUtilities.m in Sources */,
+				AE4CF0E017AA3CC20060640E /* ModelClassViewController.m in Sources */,
+				AE4CF0E417AA3DF30060640E /* FinancalModelChartViewController.m in Sources */,
+				AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

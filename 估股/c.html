@@ -4,18 +4,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <script type="text/javascript">
-            
-            //初始化value值
+                       
 			var values;
-            //计算公式字符串
             var strequ;
-            //计算公式computerf=new Function(strequ)
             var computerf;
-            //当前默认曲线股价Id
-            var countId = "";
-            //调整曲线后的值
-			var countV = "";
-            
+            var countId = "";//当前默认曲线股价Id
+			var countV = "";//调整曲线后的值
 			var jsonobjs;
 			var jsonbackup;
                         
@@ -24,44 +18,146 @@
             {
             	this.jsonobjs = eval('(' + jsondata + ')');
             	this.jsonbackup=jsonobjs;
-            	this.values=jsonobjs.modelData.values;               
-            	this.strequ = jsonobjs.modelData.computeldentifiers;
+            	this.values=jsonobjs.model.values;
+            	this.strequ = jsonobjs.model.equation;
             	this.computerf=new Function(strequ);
             	
-                initGGid();
-				return returnMainIds();
+            	initGGid();
+				returnInfo();
+				returnDragableChartList();
+            }
+			
+            //金融数据所需信息
+            function returnDragableChartList()
+            {
+            	rtnstr="{\"listMain\":";
+            	rtnstr+=returnMainIds();
+				
+            	rtnstr+=",\"listFee\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.fee);
+            	
+            	rtnstr+=",\"listCap\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.cap);
+            	
+            	rtnstr+=",\"listWacc\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.wacc);
+            	rtnstr+="}";
+            	return rtnstr;
+            }      
+            
+            //金融数据所需信息
+            function returnWaccData()
+            {
+            	view=jsonobjs.model.root.wacc;
+            	rtnstr="[";
+            	for (var i1 = 0; i1 < view.length; i1 ++ ) {
+					var viewOne = view[i1]; 
+					var sun = jsonobjs.model.driver[viewOne];
+					if(!sun) {
+						continue;
+					}
+					rtnstr+="{\"name\":\""+sun.name+"\",";
+					ddata=sun.array;
+					rtnstr+="\"data\":\""+ddata[0].v+"\",";
+					rtnstr+="\"datanew\":\""+values[ddata[0].id]+"\",";
+	        		rtnstr+="\"id\":\""+ddata[0].id+"\"},";
+				}
+            	rtnstr=rtnstr.substring(0,rtnstr.length-1);
+            	rtnstr+="]";
+                return rtnstr;
+            }
+			
+            //初始化各变量
+            function initFinancialData(jsondata)
+            {
+            	this.jsonobjs = eval('(' + jsondata + ')');
+            	this.jsonbackup=jsonobjs;
+            	this.values=jsonobjs.model.values;
+            	this.strequ = jsonobjs.model.equation;
+            	this.computerf=new Function(strequ);
+                
+                return returnFinancialChartList();
 
             }
+			
+			//金融数据所需信息
+            function returnFinancialChartList()
+            {
+            	rtnstr="{\"listRatio\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.r);
             	
-            //返回主业务调整参数数据
+            	rtnstr+=",\"listChart\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.fc);
+            	
+            	rtnstr+=",\"listOther\":";
+            	rtnstr+=returnIds(jsonobjs.model.root.ot);
+            	rtnstr+="}";
+            	return rtnstr;
+            }
+            //root中某类图标数据的具体信息
+			function returnIds(view)
+            {
+            	rtnstr="[";
+            	for (var i1 = 0; i1 < view.length; i1 ++ ) {
+					var viewOne = view[i1];
+					var sun = jsonobjs.model.driver[viewOne];
+					if(!sun) {
+						continue;
+					}
+					rtnstr+="{\"name\":\""+sun.name+"\",";
+	        		rtnstr+="\"id\":\""+viewOne+"\"},";
+				}
+            	rtnstr=rtnstr.substring(0,rtnstr.length-1);
+            	rtnstr+="]";
+            	return rtnstr;
+            }
+
+			
+			//模型基本信息
+            function returnInfo()
+            {
+            	var data=jsonobjs.info;
+            	rtnstr="{";
+            	for(var i in data)
+            	{
+            		rtnstr+="\""+i+"\":\""+data[i]+"\",";
+            	}
+            	rtnstr=rtnstr.substring(0,rtnstr.length-1);
+            	rtnstr+="}";
+            	return rtnstr;
+            }
+			
+			//返回主业务调整参数数据
             function returnMainIds()
             {
-            	ws=jsonobjs.modelData.divisionData;
+            	ws=jsonobjs.model.division;
             	rtnstr="[";
             	for(var i in ws)
             	{
-            		for ( var j in ws[i].topForcasts) 
+            		for ( var j in ws[i].drivers) 
             		{
-	            		var para = ws[i].topForcasts[j].split('/');
-	            		chartdata=jsonobjs.modelData.driverData[para[0]].chartData["0"].array;
-	            		if(chartdata.length>1)
+	            		var para = ws[i].drivers[j].split('/');
+	            		chartdata=jsonobjs.model.driver[para[0]];
+	            		if(chartdata.array.length>1)
 	            		{
-	            			rtnstr+="{\"name\":\""+ws[i].name+"\",";
-		            		rtnstr+="\"chartlength\":\""+chartdata.length+"\",";
+	            			rtnstr+="{\"name\":\""+chartdata.name+"\",";
 		            		rtnstr+="\"id\":\""+para[0]+"\"},";
 	            		}
 					}						
             	}
             	rtnstr+="]";
-                return rtnstr;
+            	return rtnstr;
             }
-            
-            //返回一组调整参数数据
+
+          
+            //根据driverid返回一组调整参数数据
             function returnChartData(driverid)
             {
-            	chartdata=jsonobjs.modelData.driverData[driverid].chartData["0"].array;
-
-            	rtnstr="[";
+            	chartdata=jsonobjs.model.driver[driverid].array;
+            	rtnstr="{\"unit\":\""+jsonobjs.model.driver[driverid].unit
+            			+"\",\"title\":\""+jsonobjs.model.driver[driverid].name
+            			+"\",\"array\":[";
+            	//[{"h":false,"id":"1398.21","v":0.03,"y":"21"},{"h":false,"id":"1398.22","v":0.03,"y":"22"}]
             	for(i=0;i<chartdata.length;i++)
             	{
             		rtnstr+="{\"h\":"+chartdata[i].h+",";
@@ -69,27 +165,39 @@
             		rtnstr+="\"v\":"+chartdata[i].v+",";
             		rtnstr+="\"y\":\""+chartdata[i].y+"\"},";
             	}
-            	rtnstr+="]";
-                return rtnstr;
+            	rtnstr+="],\"arraynew\":["
+            	for(i=0;i<chartdata.length;i++)
+            	{
+	            	if(!chartdata[i].h)
+	            	{
+	            		rtnstr+="{\"h\":"+chartdata[i].h+",";
+	            		rtnstr+="\"id\":\""+chartdata[i].id+"\",";
+	            		rtnstr+="\"v\":"+values[chartdata[i].id]+",";
+	            		rtnstr+="\"y\":\""+chartdata[i].y+"\"},";
+            		}
+            	}
+            	rtnstr+="]}";
+            	return rtnstr;
             }
             
             //估股价
 			function initGGid() 
 			{
-					var ayal = jsonobjs.info.AyalyseItemId;
-					var moldelAy = jsonobjs.modelData.driverData[ayal].chartData["0"].array;
-					for (var hi = 0; hi < moldelAy.length; hi ++) 
+				var ayal = jsonobjs.info.AyalyseItemId;
+				var moldelAy = jsonobjs.model.driver[ayal].array;
+				for (var hi = 0; hi < moldelAy.length; hi ++) 
+				{
+					var h = moldelAy[hi].h;
+					if(h == false) 
 					{
-						var h = moldelAy[hi].h;
-						if(h == false) 
-						{
-							//当前默认曲线股价值
-							countV = moldelAy[hi].v;
-							//当前默认曲线id
-							countId = moldelAy[hi].id;
-							break;
-						}
+						//当前默认曲线股价值
+						countV = moldelAy[hi].v;
+						//当前默认曲线id
+						countId = moldelAy[hi].id;
+						break;
 					}
+				}
+				return rtnstr;
 			}   
 				
 			//根据传入的数据重新计算估股价
@@ -98,39 +206,32 @@
 	            var sValue = eval('(' + jsondata + ')');
 	            var strtmp="";
 				for ( var i = 0; i < sValue.length; i++) {
-					values[sValue[i].id] = sValue[i].v;
-					strtmp+=sValue[i].v;
+					values[sValue[i].id] = sValue[i].value;
+					strtmp+=sValue[i].value;
+					strtmp+=sValue[i].id;
+				}
+				//values["1398.13"]=0.3;
+				//values["1398.14"]=0.3;
+				computerf();
+				return rtnstr;
+			}
+			//根据传入的数据重新计算估股价
+            function chartCaluWacc(jsondata) 
+            {            
+	            var sValue = eval('(' + jsondata + ')');
+	            var strtmp="";
+				for ( var i = 0; i < sValue.length; i++) {
+					values[sValue[i].id] = sValue[i].value;
+					strtmp+=sValue[i].value;
 					strtmp+=sValue[i].id;
 				}
 				computerf();
-                return values[countId];
+                returnWaccData();
+				return rtnstr;				
 			}
-            
-            //test
-            function testCalc(jsondata)
-            {
-            	var jsonobjs = eval('(' + jsondata + ')');
-            	this.values=jsonobjs.modelData.values;
-            	this.strequ = jsonobjs.modelData.computeldentifiers;
-            	this.computerf=new Function(strequ);
-            	values["1398.13"]=0.3;
-            	
-            	computerf();
-            	tmpdata=jsonobjs.info;
-            	var tmpstr;
-            	for(i=0;i<tmpdata.length;i++)
-            	{tmpstr+="\r\n"+tmpdata[i];}
-             }        
-            
-            //test 
-            //to get some values
-            function getChartDataStr(driverid)
-            {
-            	var moldelAy = jsonData.modelData.driverData[driverid].chartData["0"].array;
-            }
             
         </script>
     </head>
-    <body>
+    <body onload="javascript:webcalc.initJson()">
     </body>
 </html>

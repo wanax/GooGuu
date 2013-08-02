@@ -13,6 +13,7 @@
 #import "ChartViewController.h"
 #import "UIButton+BGColor.h"
 #import "MHTabBarController.h"
+#import "FinancalModelChartViewController.h"
 
 @interface ModelViewController ()
 
@@ -79,7 +80,8 @@
 -(void)buttonClicked:(UIButton *)bt{
     
     if(bt.tag==1){
-        NSLog(@"1");
+        FinancalModelChartViewController *model=[[FinancalModelChartViewController alloc] init];
+        [self presentViewController:model animated:YES completion:nil];
     }else if(bt.tag==2){
         chartViewController=[[ChartViewController alloc] init];
         chartViewController.view.frame=CGRectMake(0,0,480,320);

@@ -29,6 +29,7 @@
 #import "CQMFloatingFrameView.h"
 #import "CQMFloatingNavigationBar.h"
 #import "CQMPathUtilities.h"
+#import "PrettyNavigationController.h"
 
 
 #define kDefaultMaskColor  [UIColor colorWithWhite:0 alpha:0.5]
@@ -37,9 +38,9 @@
 #define kFramePadding      5.0f
 #define kRootKey           @"root"
 #define kShadowColor       [UIColor blackColor]
-#define kShadowOffset      CGSizeMake(0, 2.0f)
+#define kShadowOffset      CGSizeMake(0, 0.0f)
 #define kShadowOpacity     0.70f
-#define kShadowRadius      10.0f
+#define kShadowRadius      0.0f
 #define kAnimationDuration 0.3f
 
 
@@ -49,7 +50,7 @@
 @property (nonatomic, readonly, retain) CQMFloatingFrameView *frameView;
 @property (nonatomic, readonly, retain) UIView *contentView;
 @property (nonatomic, readonly, retain) CQMFloatingContentOverlayView *contentOverlayView;
-@property (nonatomic, readonly, retain) UINavigationController *navigationController;
+@property (nonatomic, readonly, retain) PrettyNavigationController *navigationController;
 @property (nonatomic, retain) UIImageView *shadowView;
 
 - (void)layoutFrameView;

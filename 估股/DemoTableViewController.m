@@ -112,17 +112,6 @@
     
 }
 
--(NSUInteger)supportedInterfaceOrientations{
-    
-    return UIInterfaceOrientationMaskLandscapeRight;
-}
-
-- (BOOL)shouldAutorotate
-{
-    NSLog(@"demo table");
-    return YES;
-}
-
 
 #pragma mark -
 #pragma mark UIViewController

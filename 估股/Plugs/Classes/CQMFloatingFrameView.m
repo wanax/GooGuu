@@ -27,13 +27,13 @@
 #import "CQMPathUtilities.h"
 
 
-#define kLightBorderWidth    1.0f
-#define kHighlightHeight     12.0f
-#define kHighlightMargin     1.0f
+#define kLightBorderWidth    0.0f
+#define kHighlightHeight     0.0f
+#define kHighlightMargin     0.0f
 #define kLightBorderColor    [UIColor colorWithWhite:1.00f alpha:0.10f]
 #define kStartHighlightColor [UIColor colorWithWhite:1.00f alpha:0.40f]
 #define kEndHighlightColor   [UIColor colorWithWhite:1.00f alpha:0.05f]
-#define kDefaultCornerRadius 8.0f
+#define kDefaultCornerRadius 10.0f
 
 
 @implementation CQMFloatingFrameView {

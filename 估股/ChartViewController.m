@@ -22,6 +22,9 @@
 #import "TSPopoverController.h"
 #import "PrettyNavigationController.h"
 #import "CQMFloatingController.h"
+#import "DrawChartTool.h"
+
+
 
 @interface ChartViewController ()
 
@@ -113,12 +116,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
-    YRANGELENGTH=0.9;
-    
+    YRANGELENGTH=0.9;    
     XINTERVALLENGTH=3.0;
     XORTHOGONALCOORDINATE=0.0;
     XTICKSPERINTERVAL=2;
-    
     YINTERVALLENGTH= 0.1;
     YORTHOGONALCOORDINATE =11.0;
     YTICKSPERINTERVAL =2;
@@ -145,155 +146,53 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [graph applyTheme:theme];
         
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280) ];
-        [self.view insertSubview:hostView atIndex:1];
+        [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
     }
-    
-    // CPGraph 四边不留白
+
     graph . paddingLeft = 0.0f ;
     graph . paddingRight = 0.0f ;
     graph . paddingTop = GRAPAHTOPPAD ;
     graph . paddingBottom = GRAPAHBOTTOMPAD ;
-    // 绘图区 4 边留白
-    graph . plotAreaFrame . paddingLeft = 0.0 ;
-    graph . plotAreaFrame . paddingTop = 0.0 ;
-    graph . plotAreaFrame . paddingRight = 0.0 ;
-    graph . plotAreaFrame . paddingBottom = 00.0 ;
     
     graph.title=@"股票估值";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
-    [self addXYAxis];
     
-    
+    DrawXYAxis;
+   
     priceLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,160,40)];
     priceLabel.text=@"here";
     [self.view addSubview:priceLabel];
     
-    UIButton *scatterButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    scatterButton.frame=CGRectMake(160,0,80,40);
-    [scatterButton setTitle:@"联动" forState:UIControlStateNormal];
-    scatterButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    scatterButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [scatterButton addTarget:self action:@selector(addScatterChart:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:scatterButton];
-    [scatterButton release];
     
-    UIButton *barButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    barButton.frame=CGRectMake(240,0,80,40);
-    [barButton setTitle:@"点动" forState:UIControlStateNormal];
-    barButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    barButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [barButton addTarget:self action:@selector(addBarChart:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:barButton];
-    [barButton release];
-    
-    UIButton *selectIndustryButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    selectIndustryButton.frame=CGRectMake(320,0,80,40);
-    [selectIndustryButton setTitle:@"行业选择" forState:UIControlStateNormal];
-    selectIndustryButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    selectIndustryButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [selectIndustryButton addTarget:self action:@selector(selectIndustry:forEvent:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:selectIndustryButton];
-    [selectIndustryButton release];
-    
-    
-    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(400,0,80,40);
-    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    backButton.backgroundColor=[Utiles colorWithHexString:@"#323232"];
-    backButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
-    [backButton addTarget:self action:@selector(backTo:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:backButton];
-    [backButton release];
-    
+    DrawChartTool *tool=[[DrawChartTool alloc] init];
+    tool.standIn=self;
+    UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];
+    [tool addButtonToView:self.view withTitle:@"点动" frame:CGRectMake(240,0,80,40) andFun:@selector(addBarChart:)];
+    [tool addButtonToView:self.view withTitle:@"行业选择" frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
+    [tool addButtonToView:self.view withTitle:@"返回" frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];    
     [self addScatterChart:scatterButton];
-    
+    [tool release];
     //手势添加
     UIPanGestureRecognizer *panGr=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(viewPan:)];
     [hostView addGestureRecognizer:panGr];
     [panGr release];
-    
-
 }
 
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
     
-    /*DemoTableViewController *tableViewController = [[DemoTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    tableViewController.view.frame = CGRectMake(0,0, 320, 400);
-    PrettyNavigationController *tabNav=[[PrettyNavigationController alloc] initWithRootViewController:tableViewController];
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    delegate.popoverController = [[TSPopoverController alloc] initWithContentViewController:tabNav];
-    
-    delegate.popoverController.cornerRadius = 2;
-    delegate.popoverController.titleText = @"";
-    delegate.popoverController.popoverBaseColor =[Utiles colorWithHexString:@"#009ec5"];
-    delegate.popoverController.popoverGradient= NO;
-    [delegate.popoverController showPopoverWithTouch:event andSuperView:self.view];*/
-    
     DemoTableViewController *demoViewController = [[[DemoTableViewController alloc] init] autorelease];
-	
-	// 2. Get shared floating controller
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[UIColor blueColor];
-	
-	// 3. Show floating controller with specified content
 	[floatingController presentWithContentViewController:demoViewController
-												animated:YES];
-
-    
+												animated:YES]; 
 }
-
-
-
--(void)addXYAxis{
-    
-    CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
-    textStyle.color                   = [CPTColor grayColor];
-    textStyle.fontSize                = 16.0f;
-    textStyle.textAlignment           = CPTTextAlignmentCenter;
-    graph.titleTextStyle           = textStyle;
-    graph.titleDisplacement        = CGPointMake(0.0f, -20.0f);
-    graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
-  
-    //plotSpace.allowsUserInteraction=YES;
-    
-    //设置x，y坐标范围
-    plotSpace.xRange=[CPTPlotRange plotRangeWithLocation:
-                      CPTDecimalFromCGFloat(XRANGEBEGIN)
-                                                  length:CPTDecimalFromCGFloat(XRANGELENGTH)];
-    plotSpace.yRange=[CPTPlotRange plotRangeWithLocation:
-                      CPTDecimalFromCGFloat(YRANGEBEGIN)  length:CPTDecimalFromCGFloat(YRANGELENGTH)];
-    
-    //绘制坐标系
-    CPTXYAxisSet *axisSet=(CPTXYAxisSet *)graph.axisSet;
-    CPTXYAxis *x=axisSet.xAxis;
-    
-    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle.miterLimit = 1.0f;
-    lineStyle.lineWidth = 2.0;
-    lineStyle.lineColor = [CPTColor colorWithComponentRed:255/255.0 green:211/255.0 blue:155/255.0 alpha:1.0];
-    
-    x.majorIntervalLength=CPTDecimalFromFloat(XINTERVALLENGTH);
-    x.orthogonalCoordinateDecimal=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
-    x.minorTicksPerInterval=XTICKSPERINTERVAL;
-    x.minorTickLineStyle = lineStyle;
-    
-    CPTXYAxis *y=axisSet.yAxis;
-    y.majorIntervalLength=CPTDecimalFromFloat(YINTERVALLENGTH);
-    y.orthogonalCoordinateDecimal=CPTDecimalFromFloat(YORTHOGONALCOORDINATE);
-    y.minorTicksPerInterval=YTICKSPERINTERVAL;
-    y.minorTickLineStyle = lineStyle;
-    
-}
-
-
 
 -(void)backTo:(UIButton *)bt{
     
@@ -391,7 +290,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         YRANGELENGTH=[[sortArr lastObject] floatValue]-[[sortArr objectAtIndex:0] floatValue]+0.5;
         XORTHOGONALCOORDINATE=YRANGEBEGIN+0.5;
         YINTERVALLENGTH=YRANGELENGTH/5;
-        [self addXYAxis];
+        
+        DrawXYAxis;
+        
         [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
         [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
