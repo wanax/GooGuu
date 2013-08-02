@@ -17,12 +17,14 @@
 
 @implementation ModelClassViewController
 
+@synthesize delegate;
 @synthesize jsonData;
 @synthesize modelClass;
 @synthesize customTable;
 
 - (void)dealloc
 {
+    [delegate release];delegate=nil;
     [jsonData release];jsonData=nil;
     [customTable release];customTable=nil;
     [modelClass release];modelClass=nil;
@@ -78,6 +80,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
 	
     ModelClassGrade2ViewController *grade2=[[ModelClassGrade2ViewController alloc] init];
+    grade2.delegate=self;
     grade2.indicator=[self.modelClass objectAtIndex:indexPath.row];
     grade2.jsonData=self.jsonData;    
     [self.navigationController pushViewController:grade2 animated:YES];
@@ -86,7 +89,9 @@
     
 }
 
-
+-(void)modelClassChanged:(NSString *)driverId{
+    [delegate toldYouClassChanged:driverId];
+}
 
 - (void)didReceiveMemoryWarning
 {

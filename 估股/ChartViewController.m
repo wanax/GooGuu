@@ -146,7 +146,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     graph . paddingRight = 0.0f ;
     graph . paddingTop = GRAPAHTOPPAD ;
     graph . paddingBottom = GRAPAHBOTTOMPAD ;
-    
+   
     graph.title=@"股票估值";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
@@ -157,7 +157,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     priceLabel.text=@"here";
     [self.view addSubview:priceLabel];
     
-    
+    //plotSpace.allowsUserInteraction=YES;
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
     UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];

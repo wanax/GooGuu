@@ -46,7 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.delegate modelClassChanged:@"test"];
+
     id tempClass=[jsonData objectForKey:indicator];
     NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
     NSMutableArray *tempArr=[[NSMutableArray alloc] init];
@@ -92,7 +92,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
 	
-    [delegate modelClassChanged];
+    [delegate modelClassChanged:[self.indicatorClass objectForKey:[self.indicatorClassKey objectAtIndex:indexPath.row]]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     [floatingController dismissAnimated:YES];

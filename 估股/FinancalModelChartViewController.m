@@ -20,6 +20,7 @@
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
 #import "ModelClassViewController.h"
+#import "ModelClassGrade2ViewController.h"
 
 @interface FinancalModelChartViewController ()
 
@@ -66,6 +67,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor blackColor]];
     self.modelClassViewController=[[ModelClassViewController alloc] init];
+    self.modelClassViewController.delegate=self;
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
@@ -94,7 +96,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         [graph applyTheme:theme];
         graph.cornerRadius  = 0.0f;
         
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280) ];
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280)];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
     }
@@ -105,12 +107,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     graph . paddingLeft = 0.0f ;
     graph . paddingRight = 0.0f ;
     graph . paddingTop = GRAPAHTOPPAD ;
-    graph . paddingBottom = GRAPAHBOTTOMPAD ;
+    graph . paddingBottom = 20 ;
+
     
     graph.title=@"金融模型";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
-    //plotSpace.allowsUserInteraction=YES;
+    plotSpace.allowsUserInteraction=YES;
     
     DrawXYAxis;
     [self initBarPlot];
@@ -142,10 +145,19 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 }
 
 #pragma mark -
-#pragma mark ModelClassGrade2 Methods Delegate
--(void)modelClassChanged:(NSString *)value{
-    
-    NSLog(@"here");
+#pragma mark ModelClass Methods Delegate
+-(void)toldYouClassChanged:(NSString *)driverId{
+
+    NSString *arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",driverId];
+    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
+    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    id temp=[re objectFromJSONString];
+
+    self.points=[temp objectForKey:@"array"];
+    graph.title=[temp objectForKey:@"title"];    
+    [self setXYAxis];
+    barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
+    [graph reloadData];
     
 }
 
@@ -169,6 +181,14 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         self.modelClassViewController.jsonData=[re objectFromJSONString];
         
+        arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",@"4278"];
+        re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
+        re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+        id temp=[re objectFromJSONString];
+        self.points=[temp objectForKey:@"array"];
+        graph.title=[temp objectForKey:@"title"];
+        
+        [graph reloadData];
         
     }];
     
@@ -190,7 +210,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
     
     if([(NSString *)plot.identifier isEqualToString:BAR_IDENTIFIER]){
-        return 1;
+        return [self.points count];
     }
     
 }
@@ -204,9 +224,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         
         if([key isEqualToString:@"x"]){
-            num=[NSNumber numberWithInt:13];
+            num=[NSNumber numberWithInt:[[[self.points objectAtIndex:index] objectForKey:@"y"] intValue]];
         }else if([key isEqualToString:@"y"]){
-            num=[NSNumber numberWithFloat:0.5];
+            num=[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] intValue]];
         }
         
     }
@@ -217,11 +237,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 -(void)initBarPlot{
     barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0] horizontalBars:NO];
-    barPlot.baseValue  = CPTDecimalFromString(@"0");;
     barPlot. dataSource = self ;
     barPlot.delegate=self;
-    // 柱子的起始基线：即最下沿的 y 坐标
-    barPlot. baseValue = CPTDecimalFromString ( @"0" );
     barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
     // 图形向右偏移： 0.25
     barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
@@ -233,6 +250,25 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [graph addPlot :barPlot toPlotSpace :plotSpace];
 }
 
+-(void)setXYAxis{
+    NSMutableArray *xTmp=[[NSMutableArray alloc] init];
+    NSMutableArray *yTmp=[[NSMutableArray alloc] init];
+    for(id obj in self.points){
+        [xTmp addObject:[obj objectForKey:@"y"]];
+        [yTmp addObject:[obj objectForKey:@"v"]];
+    }
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp];
+    XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
+    XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
+    XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];
+    XINTERVALLENGTH=[[xyDic objectForKey:@"xInterval"] floatValue];
+    YRANGEBEGIN=[[xyDic objectForKey:@"yBegin"] floatValue];
+    YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
+    YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
+    YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
+    DrawXYAxis;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -242,7 +278,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,40,480,320);
+        self.hostView.frame=CGRectMake(0,40,480,280);
+        //self.graph.frame=CGRectMake(0,40,480,280);
     }
 }
 

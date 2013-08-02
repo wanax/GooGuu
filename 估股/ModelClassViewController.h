@@ -7,9 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ModelClassGrade2ViewController.h"
 
-@interface ModelClassViewController :UITableViewController
+@protocol HubDelegate <NSObject>
+@optional
+-(void)toldYouClassChanged:(NSString *)driverId;
+@end
 
+@interface ModelClassViewController :UITableViewController<ModelClassGrade2Delegate>
+
+@property (nonatomic,retain) id<HubDelegate> delegate;
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSArray *modelClass;
 @property (nonatomic,retain) UITableView *customTable;

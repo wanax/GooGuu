@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @protocol ModelClassGrade2Delegate <NSObject>
-
 @optional
--(void)modelClassChanged:(NSString *)value;
+-(void)modelClassChanged:(NSString *)driverId;
 @end
 
 @interface ModelClassGrade2ViewController : UITableViewController

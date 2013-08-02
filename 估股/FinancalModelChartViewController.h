@@ -10,7 +10,7 @@
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
 #import "DrawChartTool.h"
-#import "ModelClassGrade2ViewController.h"
+#import "ModelClassViewController.h"
 
 @class CQMFloatingController;
 @class ModelClassViewController;
@@ -29,7 +29,7 @@
 
 #define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL]
 
-@interface FinancalModelChartViewController : UIViewController<UIWebViewDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,ModelClassGrade2Delegate>{
+@interface FinancalModelChartViewController : UIViewController<UIWebViewDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,HubDelegate>{
     //x轴起点
     float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
