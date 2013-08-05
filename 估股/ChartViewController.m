@@ -160,10 +160,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     //plotSpace.allowsUserInteraction=YES;
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];
-    [tool addButtonToView:self.view withTitle:@"点动" frame:CGRectMake(240,0,80,40) andFun:@selector(addBarChart:)];
-    [tool addButtonToView:self.view withTitle:@"行业选择" frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
-    [tool addButtonToView:self.view withTitle:@"返回" frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];    
+    UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];
+    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(addBarChart:)];
+    [tool addButtonToView:self.view withTitle:@"行业选择" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
     [self addScatterChart:scatterButton];
     [tool release];
     //手势添加
@@ -285,6 +285,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
         [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
+        //[self setXYAxis];
         [graph reloadData];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         
@@ -541,6 +542,29 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     return CGPointMake(coordinateX,coordinateY);
     
+}
+
+-(void)setXYAxis{
+    NSMutableArray *xTmp=[[NSMutableArray alloc] init];
+    NSMutableArray *yTmp=[[NSMutableArray alloc] init];
+    for(id obj in self.hisPoints){
+        [xTmp addObject:[obj objectForKey:@"y"]];
+        [yTmp addObject:[obj objectForKey:@"v"]];
+    }
+    for(id obj in self.forecastPoints){
+        [xTmp addObject:[obj objectForKey:@"y"]];
+        [yTmp addObject:[obj objectForKey:@"v"]];
+    }
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp];
+    XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
+    XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
+    XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];
+    XINTERVALLENGTH=[[xyDic objectForKey:@"xInterval"] floatValue];
+    YRANGEBEGIN=[[xyDic objectForKey:@"yBegin"] floatValue];
+    YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
+    YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
+    YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
+    DrawXYAxis;
 }
 
 -(void)addScatterChart:(UIButton *)bt{

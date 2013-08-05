@@ -19,6 +19,7 @@
 #import "PrettyTabBarViewController.h"
 #import "PrettyNavigationController.h"
 #import "MBProgressHUD.h"
+#import "IndicatorView.h"
 
 @interface ConcernedViewController ()
 
@@ -33,6 +34,7 @@
 @synthesize customTableView;
 @synthesize type;
 @synthesize nibsRegistered;
+@synthesize nibsRegistered2;
 
 @synthesize comInfoList;
 
@@ -72,10 +74,14 @@
     [super viewDidLoad];
     self.title=@"小马财经";
     nibsRegistered=NO;
-    
+    nibsRegistered2=NO;
     self.comInfoList=[[NSMutableArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"",@"googuuprice",@"",@"marketprice",@"",@"market",@"",@"companyname", nil],nil];
     
-   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,330)];
+    IndicatorView *indicator=[[IndicatorView alloc] init];
+    [self.view addSubview:indicator];
+    [indicator release];
+    
+   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,308)];
     
     customTableView.dataSource=self;
     customTableView.delegate=self;
@@ -152,15 +158,19 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
-    return [self.comInfoList count];
-    
+   return [self.comInfoList count];
+
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [cell setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+
     //股票栏目
     static NSString *CustomCellIdentifier = @"CustomCellIdentifier";
-
+    
     if (!nibsRegistered) {
         UINib *nib = [UINib nibWithNibName:@"CustomCell" bundle:nil];
         [tableView registerNib:nib forCellReuseIdentifier:CustomCellIdentifier];
@@ -177,9 +187,7 @@
         NSUInteger row = [indexPath row];
         id com=[self.comInfoList objectAtIndex:row];
         cell.name=[com objectForKey:@"companyname"];
-        //cell.topImg=[UIImage imageNamed:@"web.png"];
-        //cell.bottomImg=[UIImage imageNamed:@"up.png"];
-       
+   
         NSNumber *gPriceStr=[com objectForKey:@"googuuprice"];
         float g=[gPriceStr floatValue];
         cell.gPrice=[NSString stringWithFormat:@"%.2f",g];
@@ -202,20 +210,11 @@
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
             cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
         }
-        
-        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]];
-        [cell setBackgroundView:backView];
-        cell.gooGuuPriceLabel.layer.cornerRadius = 5;
-        cell.gooGuuPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#EAC117"].CGColor;
-        cell.gooGuuPriceLabel.layer.borderWidth = 1;
-        cell.marketPriceLabel.layer.cornerRadius = 5;
-        cell.marketPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#599653"].CGColor;
-        cell.marketPriceLabel.layer.borderWidth = 1;
-        cell.percentLabel.layer.cornerRadius = 5;        
+
+        cell.percentLabel.layer.cornerRadius = 5;
         cell.percentLabel.layer.borderWidth = 1;
         
-
+        
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -227,7 +226,8 @@
     [cell addGestureRecognizer:longP];
     [longP release];
     
-    return cell;    
+    return cell;
+    
 }
 
 -(void)longAction:(UILongPressGestureRecognizer *)press andCellIndex:(NSIndexPath *)indexPath{
@@ -264,13 +264,12 @@
     return UITableViewCellEditingStyleDelete;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 62.0;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 48.0;
+
 }
 #pragma mark Table Delegate Methods
-
-
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
@@ -280,17 +279,7 @@
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
     com.view.frame=CGRectMake(0,20,320,480);
     [self presentViewController:com animated:YES completion:nil];
-    
-    /*CATransition *animation = [CATransition animation];
-    animation.duration = 0.5f;
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.fillMode = kCAFilterLinear;
-    animation.type = kCATransitionPush;
-    animation.subtype = kCATransitionFromTop;
-    [[com.view layer] addAnimation:animation forKey:@"animation"];
-    animation=nil;
-    */
-   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 

@@ -19,11 +19,12 @@
     [super dealloc];
 }
 
--(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title frame:(CGRect)rect andFun:(SEL)fun{
+-(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun{
     
     UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
     button.frame=rect;
     [button setTitle:title forState:UIControlStateNormal];
+    button.tag=tag;
     button.backgroundColor=[Utiles colorWithHexString:@"#323232"];
     button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
     [button addTarget:standIn action:fun forControlEvents:UIControlEventTouchDown];
@@ -47,16 +48,16 @@
     NSArray *sortXArr=[xArr sortedArrayUsingComparator:cmptr];
     NSArray *sortYArr=[yArr sortedArrayUsingComparator:cmptr];
     
-    float xMax=[[sortXArr lastObject] floatValue];
-    float xMin=[[sortXArr objectAtIndex:0] floatValue];
-    float xTap=(xMax-xMin)/[sortXArr count];
+    NSInteger xMax=[[sortXArr lastObject] integerValue];
+    NSInteger xMin=[[sortXArr objectAtIndex:0] integerValue];
+    NSInteger xTap=1;
     float yMax=[[sortYArr lastObject] floatValue];
     float yMin=[[sortYArr objectAtIndex:0] floatValue];
     float yTap=(yMax-yMin)/[sortYArr count];
     
-    float xLowBound=xMin-xTap;
+    float xLowBound=xMin-2;
     float xUpBound=xMax+xTap;
-    float yLowBound=yMin-yTap;
+    float yLowBound=0-2.5*yTap;
     float yUpBound=yMax+yTap;
     
     float xBegin=xLowBound;
@@ -65,11 +66,11 @@
     float yBegin=yLowBound;
     float yLength=yUpBound-yLowBound;
     
-    float xInterval=xLength/6;
-    float xOrigin=yMin;
+    float xInterval=1;
+    float xOrigin=0;
     
     float yInterval=yLength/8;
-    float yOrigin=xLength/7+xBegin;
+    float yOrigin=xBegin+1;
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithFloat:xBegin],@"xBegin",
@@ -88,7 +89,7 @@
     
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
-    textStyle.fontSize                = 16.0f;
+    textStyle.fontSize                = 14.0f;
     textStyle.textAlignment           = CPTTextAlignmentCenter;
     graph.titleTextStyle           = textStyle;
     graph.titleDisplacement        = CGPointMake(0.0f, -20.0f);
@@ -109,8 +110,8 @@
     
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle.miterLimit = 1.0f;
-    lineStyle.lineWidth = 2.0;
+    lineStyle.miterLimit = 0.5f;
+    lineStyle.lineWidth = 0.5;
     lineStyle.lineColor = [CPTColor colorWithComponentRed:30/255.0 green:211/255.0 blue:155/255.0 alpha:1.0];
     
     x.majorIntervalLength=CPTDecimalFromFloat(XINTERVALLENGTH);

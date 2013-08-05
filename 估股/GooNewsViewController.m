@@ -213,9 +213,7 @@
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
-        //cell.outLookLabel.layer.cornerRadius=5.0;
-        //cell.outLookTextLabel.layer.cornerRadius=5.0;
-        cell.outLookTextLabel.textColor=[UIColor grayColor];
+        cell.outLookTextLabel.textColor=[Utiles colorWithHexString:@"#6C5F3D"];
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *fallColorStr=[NSString stringWithFormat:@"FallColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *riseColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:riseColorStr inUserDomain:NO];

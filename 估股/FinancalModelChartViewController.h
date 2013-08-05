@@ -10,10 +10,9 @@
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
 #import "DrawChartTool.h"
-#import "ModelClassViewController.h"
+#import "ModelClassGrade2ViewController.h"
 
 @class CQMFloatingController;
-@class ModelClassViewController;
 
 //数据点个数
 #define NUM 10
@@ -29,7 +28,7 @@
 
 #define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL]
 
-@interface FinancalModelChartViewController : UIViewController<UIWebViewDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,HubDelegate>{
+@interface FinancalModelChartViewController : UIViewController<UIWebViewDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,ModelClassGrade2Delegate>{
     //x轴起点
     float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
@@ -56,7 +55,9 @@
 @property (nonatomic,retain) NSMutableArray *points;
 @property (nonatomic,retain) NSString *jsonForChart;
 
-@property (nonatomic,retain) ModelClassViewController *modelClassViewController;
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelRatioViewController;
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelChartViewController;
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelOtherViewController;
 
 @property (nonatomic,retain) UIWebView *webView;
 @property (nonatomic,retain) CPTXYGraph * graph ;

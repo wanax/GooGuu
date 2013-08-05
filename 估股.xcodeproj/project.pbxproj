@@ -292,6 +292,7 @@
 		AE2E950E179D1A5B0049B28E /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */; };
 		AE2E950F179D1A5B0049B28E /* libiOSJavaScriptCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */; };
 		AE2E951B179D32390049B28E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951A179D32390049B28E /* icon.png */; };
+		AE315CFD17AF5A040061FAD1 /* IndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE315CFC17AF5A040061FAD1 /* IndicatorView.m */; };
 		AE31AB9D17A6000A007E903F /* calu.html in Resources */ = {isa = PBXBuildFile; fileRef = AE31AB9C17A6000A007E903F /* calu.html */; };
 		AE368E97179F5F3E000AF7BD /* UIImageView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368E96179F5F3E000AF7BD /* UIImageView+Addition.m */; };
 		AE368E9A179F682F000AF7BD /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE368E99179F682E000AF7BD /* MessageUI.framework */; };
@@ -342,6 +343,7 @@
 		AE4CF0E417AA3DF30060640E /* FinancalModelChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */; };
 		AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E617AA419A0060640E /* DrawChartTool.m */; };
 		AE4CF0E917AA48CF0060640E /* c.html in Resources */ = {isa = PBXBuildFile; fileRef = AE4CF0E817AA48CF0060640E /* c.html */; };
+		AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4E149E17AF7C6300723E1E /* IndicatorComView.m */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
 		AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
@@ -818,6 +820,8 @@
 		AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiOSJavaScriptCore.a; sourceTree = "<group>"; };
 		AE2E951A179D32390049B28E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		AE315CFB17AF5A040061FAD1 /* IndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorView.h; sourceTree = "<group>"; };
+		AE315CFC17AF5A040061FAD1 /* IndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorView.m; sourceTree = "<group>"; };
 		AE31AB9C17A6000A007E903F /* calu.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = calu.html; sourceTree = "<group>"; };
 		AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addition.h"; sourceTree = "<group>"; };
 		AE368E96179F5F3E000AF7BD /* UIImageView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addition.m"; sourceTree = "<group>"; };
@@ -878,6 +882,8 @@
 		AE4CF0E517AA419A0060640E /* DrawChartTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawChartTool.h; sourceTree = "<group>"; };
 		AE4CF0E617AA419A0060640E /* DrawChartTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawChartTool.m; sourceTree = "<group>"; };
 		AE4CF0E817AA48CF0060640E /* c.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = c.html; sourceTree = "<group>"; };
+		AE4E149D17AF7C6300723E1E /* IndicatorComView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorComView.h; sourceTree = "<group>"; };
+		AE4E149E17AF7C6300723E1E /* IndicatorComView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorComView.m; sourceTree = "<group>"; };
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
 		AE51B8D717AB528000A09D1E /* ModelClassGrade2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClassGrade2ViewController.h; sourceTree = "<group>"; };
 		AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClassGrade2ViewController.m; sourceTree = "<group>"; };
@@ -1747,6 +1753,8 @@
 				AE2E93D1179D0A400049B28E /* GooGuuContainerViewController.m */,
 				AE2E93D2179D0A400049B28E /* CalendarViewController.h */,
 				AE2E93D3179D0A400049B28E /* CalendarViewController.m */,
+				AE315CFB17AF5A040061FAD1 /* IndicatorView.h */,
+				AE315CFC17AF5A040061FAD1 /* IndicatorView.m */,
 			);
 			name = MyGooguu;
 			sourceTree = "<group>";
@@ -1909,6 +1917,8 @@
 				AE2E941E179D0A9A0049B28E /* StockContainerViewController.m */,
 				AE2E941F179D0A9A0049B28E /* UniverseViewController.h */,
 				AE2E9420179D0A9A0049B28E /* UniverseViewController.m */,
+				AE4E149D17AF7C6300723E1E /* IndicatorComView.h */,
+				AE4E149E17AF7C6300723E1E /* IndicatorComView.m */,
 			);
 			name = AddCompany;
 			sourceTree = "<group>";
@@ -3059,6 +3069,8 @@
 				AE4CF0E417AA3DF30060640E /* FinancalModelChartViewController.m in Sources */,
 				AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */,
 				AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */,
+				AE315CFD17AF5A040061FAD1 /* IndicatorView.m in Sources */,
+				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

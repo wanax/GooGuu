@@ -38,11 +38,15 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 @synthesize graph;
 @synthesize hostView;
 @synthesize plotSpace;
-@synthesize modelClassViewController;
+@synthesize modelRatioViewController;
+@synthesize modelChartViewController;
+@synthesize modelOtherViewController;
 
 - (void)dealloc
 {
-    [modelClassViewController release];modelClassViewController=nil;
+    [modelRatioViewController release];modelRatioViewController=nil;
+    [modelChartViewController release];modelChartViewController=nil;
+    [modelOtherViewController release];modelOtherViewController=nil;
     [hostView release];hostView=nil;
     [points release];points=nil;
     [jsonForChart release];jsonForChart=nil;
@@ -66,8 +70,14 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor blackColor]];
-    self.modelClassViewController=[[ModelClassViewController alloc] init];
-    self.modelClassViewController.delegate=self;
+    
+    self.modelRatioViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelRatioViewController.delegate=self;
+    self.modelChartViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelChartViewController.delegate=self;
+    self.modelOtherViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelOtherViewController.delegate=self;
+    
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
@@ -75,11 +85,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
     XINTERVALLENGTH=3.0;
     XORTHOGONALCOORDINATE=0.0;
-    XTICKSPERINTERVAL=2;
+    XTICKSPERINTERVAL=0;
     
     YINTERVALLENGTH= 0.1;
     YORTHOGONALCOORDINATE =11.0;
-    YTICKSPERINTERVAL =2;
+    YTICKSPERINTERVAL =0;
     
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
@@ -99,6 +109,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280)];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
+        hostView.collapsesLayers = YES;
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -119,8 +130,10 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [self initBarPlot];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    [tool addButtonToView:self.view withTitle:@"行业选择" frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
-    [tool addButtonToView:self.view withTitle:@"返回" frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
+    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
+    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
+    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
     [tool release];
     
 }
@@ -130,11 +143,21 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
 
+    sender.showsTouchWhenHighlighted=YES;
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
-	[floatingController presentWithContentViewController:modelClassViewController
-												animated:YES];
+    if(sender.tag==1){
+        [floatingController presentWithContentViewController:modelRatioViewController
+                                                    animated:YES];
+    }else if(sender.tag==2){
+        [floatingController presentWithContentViewController:modelChartViewController
+                                                    animated:YES];
+    }else if(sender.tag==3){
+        [floatingController presentWithContentViewController:modelOtherViewController
+                                                    animated:YES];
+    }
+	
 }
 
 -(void)backTo:(UIButton *)bt{
@@ -146,7 +169,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 #pragma mark -
 #pragma mark ModelClass Methods Delegate
--(void)toldYouClassChanged:(NSString *)driverId{
+-(void)modelClassChanged:(NSString *)driverId{
 
     NSString *arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",driverId];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
@@ -179,7 +202,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         NSString *arg=[[NSString alloc] initWithFormat:@"initFinancialData(\"%@\")",self.jsonForChart];
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        self.modelClassViewController.jsonData=[re objectFromJSONString];
+        id transObj=[re objectFromJSONString];
+        self.modelRatioViewController.jsonData=transObj;
+        self.modelChartViewController.jsonData=transObj;
+        self.modelOtherViewController.jsonData=transObj;
+        self.modelRatioViewController.indicator=@"listRatio";
+        self.modelChartViewController.indicator=@"listChart";
+        self.modelOtherViewController.indicator=@"listOther";
         
         arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",@"4278"];
         re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
@@ -226,7 +255,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         if([key isEqualToString:@"x"]){
             num=[NSNumber numberWithInt:[[[self.points objectAtIndex:index] objectForKey:@"y"] intValue]];
         }else if([key isEqualToString:@"y"]){
-            num=[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] intValue]];
+            num=[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] floatValue]];
         }
         
     }
@@ -236,16 +265,24 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 
 -(void)initBarPlot{
-    barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0] horizontalBars:NO];
+    barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0] horizontalBars:NO];
     barPlot. dataSource = self ;
     barPlot.delegate=self;
-    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
+    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0]];
     // 图形向右偏移： 0.25
     barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
     // 在 SDK 中， barCornerRadius 被 cornerRadius 替代
     barPlot.barWidth=CPTDecimalFromFloat(1.0f);
     barPlot.barWidthScale=0.5f;
     barPlot. identifier = BAR_IDENTIFIER;
+    barPlot.opacity = 0.0f;
+    barPlot.opacity=0.0f;
+    CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    fadeInAnimation.duration            = 3.0f;
+    fadeInAnimation.removedOnCompletion = NO;
+    fadeInAnimation.fillMode            = kCAFillModeForwards;
+    fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
+    [barPlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
     // 添加图形到绘图空间
     [graph addPlot :barPlot toPlotSpace :plotSpace];
 }

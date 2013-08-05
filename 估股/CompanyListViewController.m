@@ -26,6 +26,7 @@
 #import "JSONKit.h"
 #import "MBProgressHUD.h"
 #import "SVPullToRefresh.h"
+#import "IndicatorComView.h"
 
 @interface CompanyListViewController ()
 
@@ -71,6 +72,7 @@
 
 
     if(self.isShowSearchBar){
+        
         table=[[UITableView alloc] initWithFrame:CGRectMake(0,40,320,330)];
         search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
         [[self.search.subviews objectAtIndex:0] removeFromSuperview];
@@ -78,7 +80,10 @@
         search.delegate=self;
         [self.view addSubview:search];
     }else{
-        table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,330)];
+        IndicatorComView *indicator=[[IndicatorComView alloc] init];
+        [self.view addSubview:indicator];
+        [indicator release];
+        table=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,364)];
     }
    
     table.dataSource=self;
@@ -204,6 +209,10 @@
     return 62.0;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [cell setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString * StockCellIdentifier =
@@ -232,7 +241,6 @@
         if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
             if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){
                 [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];
-                //[cell.concernBt setBackgroundColorString:@"#34C3C1" forState:UIControlStateNormal];
                 [cell.concernBt setBackgroundImage:[UIImage imageNamed:@"cancelConcernBt"] forState:UIControlStateNormal];
                 [cell.concernBt setTag:row+1];
             }else{
@@ -272,15 +280,6 @@
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
             cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
         }
-        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
-        [cell setBackgroundView:backView];
-        cell.gooGuuPriceLabel.layer.cornerRadius = 5;
-        cell.gooGuuPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#EAC117"].CGColor;
-        cell.gooGuuPriceLabel.layer.borderWidth = 1;
-        cell.marketPriceLabel.layer.cornerRadius = 5;
-        cell.marketPriceLabel.layer.borderColor = [Utiles colorWithHexString:@"#599653"].CGColor;
-        cell.marketPriceLabel.layer.borderWidth = 1;
         cell.percentLabel.layer.cornerRadius = 5;        
         cell.percentLabel.layer.borderWidth = 1;
   

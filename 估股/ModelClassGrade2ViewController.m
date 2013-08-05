@@ -46,7 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    [self.navigationItem setTitle:@"行业选择"];
     id tempClass=[jsonData objectForKey:indicator];
     NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
     NSMutableArray *tempArr=[[NSMutableArray alloc] init];
