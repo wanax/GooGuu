@@ -124,7 +124,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     graph.title=@"金融模型";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
-    plotSpace.allowsUserInteraction=YES;
+    //plotSpace.allowsUserInteraction=YES;
     
     DrawXYAxis;
     [self initBarPlot];
@@ -294,7 +294,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         [xTmp addObject:[obj objectForKey:@"y"]];
         [yTmp addObject:[obj objectForKey:@"v"]];
     }
-    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp];
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp ToWhere:NO];
     XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
     XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
     XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];

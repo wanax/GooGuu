@@ -33,7 +33,7 @@
     
 }
 
-+(NSDictionary *)getXYAxisRangeFromxArr:(NSArray *)xArr andyArr:(NSArray *)yArr{
++(NSDictionary *)getXYAxisRangeFromxArr:(NSArray *)xArr andyArr:(NSArray *)yArr ToWhere:(BOOL)isDrag{
     
     NSComparator cmptr = ^(id obj1, id obj2){
         if ([obj1 floatValue] > [obj2 floatValue]) {
@@ -57,7 +57,13 @@
     
     float xLowBound=xMin-2;
     float xUpBound=xMax+xTap;
-    float yLowBound=0-2.5*yTap;
+    float yLowBound=0.0f;
+    if(isDrag){
+        yLowBound=yMin-2*yTap;
+    }else{
+        yLowBound=0-2.5*yTap;
+    }
+    
     float yUpBound=yMax+yTap;
     
     float xBegin=xLowBound;
@@ -67,7 +73,7 @@
     float yLength=yUpBound-yLowBound;
     
     float xInterval=1;
-    float xOrigin=0;
+    float xOrigin=yLowBound+2.5*yTap;
     
     float yInterval=yLength/8;
     float yOrigin=xBegin+1;

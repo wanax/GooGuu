@@ -5,6 +5,8 @@
 //  Created by Xcode on 13-4-15.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
+//  Vision History
+//  2013-04-15 | Wanax | 可调整参数图表
 
 #import <UIKit/UIKit.h>
 #import <math.h>

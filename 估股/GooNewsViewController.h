@@ -5,7 +5,8 @@
 //  Created by Xcode on 13-6-14.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
-//  估股新闻栏目
+//  Vision History
+//  2013-06-14 | Wanax | 估股新闻栏目
 
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"

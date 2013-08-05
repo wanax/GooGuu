@@ -1,10 +1,12 @@
 //
 //  TestViewController.h
-//  UIDemo
+//  估股
 //
 //  Created by Xcode on 13-7-10.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
+//  Vision History
+//  2013-07-31 | Wanax | 关注列表修正bug  
 
 #import <UIKit/UIKit.h>
 

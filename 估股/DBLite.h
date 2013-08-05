@@ -7,6 +7,7 @@
 //
 //  Vision History
 //  2013-05-08 | Wanax | 数据库相关操作
+//  2013-05-08 | Wanax | 废弃
 
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"

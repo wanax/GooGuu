@@ -18,7 +18,6 @@
 #import "MHTabBarController.h"
 #import "MBProgressHUD.h"
 #import "XYZAppDelegate.h"
-#import "DemoTableViewController.h"
 #import "TSPopoverController.h"
 #import "PrettyNavigationController.h"
 #import "CQMFloatingController.h"
@@ -257,35 +256,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             
         }
         [mutableObj release];
-        NSComparator cmptr = ^(id obj1, id obj2){
-            if ([obj1 floatValue] > [obj2 floatValue]) {
-                return (NSComparisonResult)NSOrderedDescending;
-            }
-            
-            if ([obj1 floatValue] < [obj2 floatValue]) {
-                return (NSComparisonResult)NSOrderedAscending;
-            }
-            return (NSComparisonResult)NSOrderedSame;
-        };
-        NSMutableArray *tempArr=[[NSMutableArray alloc] init];
-        for(id obj in self.hisPoints){
-            [tempArr addObject:[obj objectForKey:@"v"]];
-        }
-        for(id obj in self.forecastPoints){
-            [tempArr addObject:[obj objectForKey:@"v"]];
-        }
-        NSArray *sortArr=[tempArr sortedArrayUsingComparator:cmptr];
-        YRANGEBEGIN=[[sortArr objectAtIndex:0] floatValue]-0.5;
-        YRANGELENGTH=[[sortArr lastObject] floatValue]-[[sortArr objectAtIndex:0] floatValue]+0.5;
-        XORTHOGONALCOORDINATE=YRANGEBEGIN+0.5;
-        YINTERVALLENGTH=YRANGELENGTH/5;
         
+        //[self setXYAxis];
         DrawXYAxis;
         
         [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
         [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
         [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
-        //[self setXYAxis];
+        
         [graph reloadData];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         
@@ -347,7 +325,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         return [self.hisPoints count];
     }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DATALINE_IDENTIFIER]){
         return [self.forecastPoints count];
-    }else if([(NSString *)plot.identifier isEqualToString:COLUMNAR_DATALINE_IDENTIFIER]){
+    }else{
         return [self.forecastPoints count];
     }
     
@@ -421,10 +399,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)viewPan:(UIPanGestureRecognizer *)tapGr
 {
-    CGPoint now=[tapGr locationInView:self.view];
-    
+    CGPoint now=[tapGr locationInView:self.view];    
     CGPoint change=[tapGr translationInView:self.view];
-
     CGPoint coordinate=[self CoordinateTransformRealToAbstract:now];
     
     if(tapGr.state==UIGestureRecognizerStateBegan){

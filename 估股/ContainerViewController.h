@@ -5,6 +5,8 @@
 //  Created by Xcode on 13-7-11.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
+//  Vision History
+//  2013-07-11 | Wanax | 公司详细页面容器
 
 #import <UIKit/UIKit.h>
 

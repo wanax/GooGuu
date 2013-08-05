@@ -7,6 +7,7 @@
 //
 //  Vision History
 //  2013-05-07 | Wanax | 添加股票自定义cell
+//  2013-08-05 | Wanax | 废弃
 
 #import <UIKit/UIKit.h>
 

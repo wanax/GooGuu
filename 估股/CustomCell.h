@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 Pony Finance.. All rights reserved.
 //
 //  Vision History
-//  2013-05-07 | Wanax | 开机首页默认股票cell
+//  2013-05-07 | Wanax | 我的估股栏目股票cell  
 
 #import <UIKit/UIKit.h>
 

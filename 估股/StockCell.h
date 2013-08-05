@@ -5,6 +5,8 @@
 //  Created by Xcode on 13-7-15.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
+//  Vision History
+//  2013-07-15 | Wanax | 估值模型栏目股票cell
 
 #import <UIKit/UIKit.h>
 

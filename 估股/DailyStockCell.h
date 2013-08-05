@@ -5,6 +5,8 @@
 //  Created by Xcode on 13-7-18.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
+//  Vision History
+//  2013-07-18 | Wanax | 我的估股栏目顶层每日一股cell
 
 #import <UIKit/UIKit.h>
 #import "NIAttributedLabel.h"

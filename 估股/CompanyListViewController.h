@@ -9,6 +9,7 @@
 //
 //  Vision History
 //  2013-05-09 | Wanax | 股票添加列表
+//  2013-08-05 | Wanax | 估值模型页面
 
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"

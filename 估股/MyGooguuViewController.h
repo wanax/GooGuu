@@ -1,11 +1,12 @@
 //
 //  MyGooguuViewController.h
-//  UIDemo
+//  估股
 //
 //  Created by Xcode on 13-6-18.
 //  Copyright (c) 2013年 Xcode. All rights reserved.
 //
-//  我的估股滚动页面
+//  Vision History
+//  2013-07-31 | Wanax | 我的估股滚动容器，包含我的关注，我的保存和投资日历 
 
 #import <UIKit/UIKit.h>
 
