@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
+#import "ModelClassViewController.h"
 
 @class CQMFloatingController;
 @class ModelClassViewController;
@@ -30,10 +31,10 @@
 
 #define FINGERCHANGEDISTANCE 100.0
 
-#define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL]
+#define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL to:self isY:YES]
 
 
-@interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,UIWebViewDelegate>{
+@interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,UIWebViewDelegate,HubDelegate,CPTAxisDelegate>{
     //x轴起点
     float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
@@ -62,8 +63,6 @@
     NSMutableArray *_forecastDefaultPoints;
     //不可调整历史数据线
     NSMutableArray *_hisPoints;
-    //分割线
-    NSMutableArray *_dividingPoints;
     //网络获取图表所需数据
     NSString *_jsonForChart;
     //股票种类
@@ -78,8 +77,6 @@
 @property (nonatomic,retain) NSMutableArray *forecastDefaultPoints;
 //历史曲线
 @property (nonatomic,retain) NSMutableArray *hisPoints;
-//分割线
-@property (nonatomic,retain) NSMutableArray *dividingPoints;
 //网络获取数据
 @property (nonatomic,retain) NSString *jsonForChart;
 @property (nonatomic,retain) NSMutableArray *standard;
@@ -87,13 +84,13 @@
 @property (nonatomic,retain) CPTScatterPlot * forecastLinePlot;
 @property (nonatomic,retain) CPTScatterPlot * forecastDefaultLinePlot;
 @property (nonatomic,retain) CPTScatterPlot * historyLinePlot;
-@property (nonatomic,retain) CPTScatterPlot * dividingLinePlot;
 @property (nonatomic,retain) CPTBarPlot *barPlot;
 //是否联动
 @property (nonatomic) BOOL linkage;
 
 //行业分类
 @property (nonatomic,retain) id industryClass;
+@property (nonatomic,retain) NSString *yAxisUnit;
 @property (nonatomic,retain) ModelClassViewController *modelClassViewController;
 
 @property (nonatomic,retain) UIWebView *webView;
@@ -101,8 +98,6 @@
 
 //转换坐标系字典，与手指触摸点匹配
 @property (nonatomic,retain) NSMutableDictionary *reverseDic;
-//js引擎上下文
-//@property (nonatomic) JSGlobalContextRef context;
 //绘图view
 @property (nonatomic,retain) CPTXYGraph * graph ;
 @property (nonatomic,retain) CPTGraphHostingView *hostView;
@@ -116,8 +111,6 @@
 //判断手指触摸点是否在折点旁边
 -(BOOL)isNearByThePoint:(CGPoint)p;
 
-//js代码运行
-- (NSString *)runsJS:(NSString *)aJSString;
 
 
 @end

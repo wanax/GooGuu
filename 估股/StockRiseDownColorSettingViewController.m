@@ -9,6 +9,7 @@
 #import "StockRiseDownColorSettingViewController.h"
 #import "PrettyKit.h"
 #import "Utiles.h"
+#import "CommonlyMacros.h"
 
 @interface StockRiseDownColorSettingViewController ()
 
@@ -43,7 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.customTable=[[UITableView alloc] initWithFrame:CGRectMake(0,44,320,480) style:UITableViewStyleGrouped];
+	self.customTable=[[UITableView alloc] initWithFrame:CGRectMake(0,44,SCREEN_WIDTH,SCREEN_HEIGHT) style:UITableViewStyleGrouped];
     self.customTable.delegate=self;
     self.customTable.dataSource=self;
     [self.view addSubview:self.customTable];

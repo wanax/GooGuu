@@ -20,6 +20,7 @@
 #import "PrettyNavigationController.h"
 #import "MBProgressHUD.h"
 #import "IndicatorView.h"
+#import "CommonlyMacros.h"
 
 @interface ConcernedViewController ()
 
@@ -277,7 +278,7 @@
     delegate.comInfo=[self.comInfoList objectAtIndex:row];
     
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
-    com.view.frame=CGRectMake(0,20,320,480);
+    com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
     [self presentViewController:com animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

@@ -13,6 +13,7 @@
 #import "MHTabBarController.h"
 #import "GooGuuContainerViewController.h"
 #import "XYZAppDelegate.h"
+#import "CommonlyMacros.h"
 
 @interface MyGooguuViewController ()
 
@@ -82,7 +83,7 @@
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
         ClientLoginViewController *loginViewController = [[ClientLoginViewController alloc] init];
         
-        loginViewController.view.frame=CGRectMake(0, 20, 320, 480);
+        loginViewController.view.frame=CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT);
         XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
         [delegate.window addSubview:loginViewController.view];
         [self addChildViewController:loginViewController];
@@ -107,7 +108,7 @@
     [self setTitle:@"我的估股"];
     
     GooGuuContainerViewController *content=[[GooGuuContainerViewController alloc] init];
-    content.view.frame=CGRectMake(0,-21,320,480);
+    content.view.frame=CGRectMake(0,-21,SCREEN_WIDTH,SCREEN_HEIGHT);
 
     [self.view addSubview:content.view];
     [self addChildViewController:content];

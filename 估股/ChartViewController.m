@@ -23,6 +23,7 @@
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
 #import "ModelClassViewController.h"
+#import "CommonlyMacros.h"
 
 
 
@@ -35,7 +36,6 @@
 @synthesize forecastPoints=_forecastPoints;
 @synthesize forecastDefaultPoints=_forecastDefaultPoints;
 @synthesize hisPoints=_hisPoints;
-@synthesize dividingPoints=_dividingPoints;
 @synthesize standard=_standard;
 
 @synthesize jsonForChart=_jsonForChart;
@@ -43,14 +43,13 @@
 @synthesize forecastDefaultLinePlot;
 @synthesize forecastLinePlot;
 @synthesize historyLinePlot;
-@synthesize dividingLinePlot;
 @synthesize barPlot;
 
 @synthesize linkage;
 
 @synthesize industryClass=_industryClass;
+@synthesize yAxisUnit;
 @synthesize modelClassViewController;
-//@synthesize context;
 @synthesize hostView;
 @synthesize plotSpace;
 @synthesize graph;
@@ -63,12 +62,12 @@
 static NSString * FORECAST_DATALINE_IDENTIFIER =@"forecast_dataline_identifier";
 static NSString * FORECAST_DEFAULT_DATALINE_IDENTIFIER =@"forecast_default_dataline_identifier";
 static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
-static NSString * DIVIDING_DATALINE_IDENTIFIER =@"dividing_dataline_identifier";
 static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 
 - (void)dealloc
 {
+    [yAxisUnit release];yAxisUnit=nil;
     [modelClassViewController release];modelClassViewController=nil;
     [graph release];graph=nil;
     [plotSpace release];plotSpace=nil;
@@ -78,7 +77,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [_forecastDefaultPoints release];_forecastDefaultPoints=nil;
     [_forecastPoints release];_forecastPoints=nil;
     [_hisPoints release];_hisPoints=nil;
-    [_dividingPoints release];_dividingPoints=nil;
     [_jsonForChart release];_jsonForChart=nil;
     [_industryClass release];_industryClass=nil;
     [_standard release];_standard=nil;
@@ -86,7 +84,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [forecastLinePlot release];forecastLinePlot=nil;
     [forecastDefaultLinePlot release];forecastDefaultLinePlot=nil;
     [historyLinePlot release];historyLinePlot=nil;
-    [dividingLinePlot release];dividingLinePlot=nil;
     [barPlot release];barPlot=nil;
     
     [webView release];webView=nil;
@@ -101,16 +98,17 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [super viewDidLoad];
     linkage=YES;
     self.modelClassViewController=[[ModelClassViewController alloc] init];
+    self.modelClassViewController.delegate=self;
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
     YRANGEBEGIN=-0.3;
     YRANGELENGTH=0.9;    
     XINTERVALLENGTH=3.0;
     XORTHOGONALCOORDINATE=0.0;
-    XTICKSPERINTERVAL=2;
+    XTICKSPERINTERVAL=0;
     YINTERVALLENGTH= 0.1;
     YORTHOGONALCOORDINATE =11.0;
-    YTICKSPERINTERVAL =2;
+    YTICKSPERINTERVAL =0;
     
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
@@ -121,7 +119,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     self.forecastPoints=[[NSMutableArray alloc] init];
     self.hisPoints=[[NSMutableArray alloc] init];
-    self.dividingPoints=[[NSMutableArray alloc] init];
     self.forecastDefaultPoints=[[NSMutableArray alloc] init];
     self.standard=[[NSMutableArray alloc] init];
     reverseDic=[[NSMutableDictionary alloc] init];
@@ -133,7 +130,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
         [graph applyTheme:theme];
         
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280) ];
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,SCREEN_WIDTH,280) ];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
     }
@@ -155,8 +152,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     priceLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,160,40)];
     priceLabel.text=@"here";
     [self.view addSubview:priceLabel];
-    
-    //plotSpace.allowsUserInteraction=YES;
+
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
     UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];
@@ -194,9 +190,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     if(![graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
 
-        // First bar plot
         barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:105/255.0 green:195/255.0 blue:228/255.0 alpha:1.0] horizontalBars:NO];
-        barPlot.baseValue  = CPTDecimalFromString(@"0");
+        barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         barPlot.dataSource = self;
         barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
         barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
@@ -216,54 +211,26 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:@"03331",@"stockCode", nil];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
         self.jsonForChart=[resObj JSONString];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-        
-        //获取股票种类
+
         NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonForChart];
         NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
         re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        //NSLog(@"%@",re);
-        self.modelClassViewController.jsonData=[re objectFromJSONString];
-        self.industryClass=[re objectFromJSONString];
+
+        id resTmp=[re objectFromJSONString];
+        self.modelClassViewController.jsonData=resTmp;
+        self.industryClass=resTmp;
+      
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"]];
         
-        //获取对应折线信息,将历史数据与预测数据分组
-        [self.hisPoints removeAllObjects];
-        [self.forecastDefaultPoints removeAllObjects];
-        [self.forecastPoints removeAllObjects];
-        //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
-        [self.reverseDic removeAllObjects];
-        arg=[NSString stringWithFormat:@"returnChartData(\"%@\")",[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:4] objectForKey:@"id"]];
-        re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        id charData=[re objectFromJSONString];
-        NSMutableDictionary *mutableObj=nil;
-        for(id obj in [charData objectForKey:@"array"]){
-            
-            mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
-            
-            if([[mutableObj objectForKey:@"h"] boolValue]){
-                [self.hisPoints addObject:mutableObj];
-            }else{
-                [self.forecastPoints addObject:mutableObj];
-                [self.forecastDefaultPoints addObject:[[mutableObj mutableCopy] autorelease]];
-                [reverseDic setObject:[mutableObj objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[mutableObj objectForKey:@"y"] floatValue]]];
-            }
-            
-        }
-        [mutableObj release];
-        
-        //[self setXYAxis];
-        DrawXYAxis;
-        
-        [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
-        [self.forecastPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
-        [self.forecastDefaultPoints insertObject:[self.hisPoints objectAtIndex:[self.hisPoints count]-1] atIndex:0];
-        
+        [self divideData:chartData];
+        [self setXYAxis];
+        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
         [graph reloadData];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         
@@ -271,14 +238,117 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     
 }
-#pragma mark -
-#pragma mark Scatter Methods Delegate
 
--(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx withEvent:(UIEvent *)event{
+-(void)toldYouClassChanged:(NSString *)driverId{
     
-    NSLog(@"%d",idx);
-    NSLog(@"%@",event);
+    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
+    [self divideData:chartData];
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
+    [self setXYAxis];
+    [graph reloadData];
+}
+
+-(void)divideData:(id)sourceData{
+    [self.hisPoints removeAllObjects];
+    [self.forecastDefaultPoints removeAllObjects];
+    [self.forecastPoints removeAllObjects];
+    //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
+    [self.reverseDic removeAllObjects];
+    NSMutableDictionary *mutableObj=nil;
+    for(id obj in [sourceData objectForKey:@"array"]){
+        mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
+        if([[mutableObj objectForKey:@"h"] boolValue]){
+            [self.hisPoints addObject:mutableObj];
+        }else{
+            [self.forecastPoints addObject:mutableObj];
+            [self.forecastDefaultPoints addObject:[[mutableObj mutableCopy] autorelease]];
+            [reverseDic setObject:[mutableObj objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[mutableObj objectForKey:@"y"] floatValue]]];
+        }
+    }
+    [mutableObj release];
+    [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
+    //历史数据与预测数据线拼接
+    [self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
+    [self.forecastDefaultPoints insertObject:[self.hisPoints lastObject] atIndex:0];
+}
+
+
+-(id)getObjectDataFromJsFun:(NSString *)funName byDriverId:(NSString *)driverId{    
+    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,driverId];
+    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
+    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    return [re objectFromJSONString];    
+}
+
+-(void)viewPan:(UIPanGestureRecognizer *)tapGr
+{
+    CGPoint now=[tapGr locationInView:self.view];
+    CGPoint change=[tapGr translationInView:self.view];
+    CGPoint coordinate=[self CoordinateTransformRealToAbstract:now];
     
+    if(tapGr.state==UIGestureRecognizerStateBegan){
+        [self.standard removeAllObjects];
+        for(id obj in self.forecastPoints){
+            [self.standard addObject:[obj objectForKey:@"v"]];
+        }
+        
+    }else if(tapGr.state==UIGestureRecognizerStateEnded){
+        [self.standard removeAllObjects];
+        
+        for(id obj in self.forecastPoints){
+            double v = [[obj objectForKey:@"v"] doubleValue];
+            [self.standard addObject:[NSNumber numberWithDouble:v]];
+        }
+    }
+    //手势变化并且接近折点旁边
+    if([tapGr state]==UIGestureRecognizerStateChanged){
+
+        coordinate.x=(int)(coordinate.x+0.5);
+        coordinate.x=(int)(coordinate.x+0.5);
+
+        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count]-1;        
+        subscript=subscript<0?0:subscript;
+        subscript=subscript>=[self.forecastPoints count]-1?[self.forecastPoints count]-1:subscript;
+        NSAssert(subscript<=[self.forecastPoints count]-1&&coordinate.x>=0,@"over bounds");
+        
+        if(linkage){            
+            double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
+
+            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:subscript] objectForKey:@"y"] doubleValue]);
+            int i=0;
+            for(id obj in self.forecastPoints){
+                double v = [[obj objectForKey:@"v"] doubleValue];
+                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i++));
+                [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+            }
+            
+            [self setStockPrice];
+            [graph reloadData];
+            
+        }else{
+            
+            double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
+            double v=[[self.standard objectAtIndex:subscript] doubleValue]+changeD;
+            [[self.forecastPoints objectAtIndex:subscript] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+            
+            [self setStockPrice];
+            [graph reloadData];
+            
+        }
+        
+    }
+    
+}
+
+
+-(void)setStockPrice{
+    
+    NSString *jsonPrice=[self.forecastPoints JSONString];
+    jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
+    //传入数据注意格式调用，html文件的key值应与此key值对应
+    NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
+    [self.priceLabel setText:[re1 substringToIndex:5]];
 }
 
 
@@ -317,9 +387,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 //散点数据源委托实现
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
     
-    if([(NSString *)plot.identifier isEqualToString:DIVIDING_DATALINE_IDENTIFIER]){
-        return [self.dividingPoints count];
-    }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DEFAULT_DATALINE_IDENTIFIER]){
+    if([(NSString *)plot.identifier isEqualToString:FORECAST_DEFAULT_DATALINE_IDENTIFIER]){
         return [self.forecastDefaultPoints count];
     }else if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         return [self.hisPoints count];
@@ -334,15 +402,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger) index{
 
     NSNumber *num=nil;
-    
 
-    if([(NSString *)plot.identifier isEqualToString:DIVIDING_DATALINE_IDENTIFIER]){
-        
-        NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        num=[[self.dividingPoints objectAtIndex:index] valueForKey:key];
-        
-
-    }else if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
+    if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         //num=[[self.hisPoints objectAtIndex:index] valueForKey:key];
@@ -388,111 +449,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 
-
-
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 
 {
     return YES;
 }
-
-
--(void)viewPan:(UIPanGestureRecognizer *)tapGr
-{
-    CGPoint now=[tapGr locationInView:self.view];    
-    CGPoint change=[tapGr translationInView:self.view];
-    CGPoint coordinate=[self CoordinateTransformRealToAbstract:now];
-    
-    if(tapGr.state==UIGestureRecognizerStateBegan){
-        [self.standard removeAllObjects];
-        for(id obj in self.forecastPoints){
-            [self.standard addObject:[obj objectForKey:@"v"]];
-        }
-
-    }else if(tapGr.state==UIGestureRecognizerStateEnded){
-        [self.standard removeAllObjects];
-
-        for(id obj in self.forecastPoints){
-            double v = [[obj objectForKey:@"v"] doubleValue];
-            [self.standard addObject:[NSNumber numberWithDouble:v]];
-        }
-    }
-    //手势变化并且接近折点旁边
-    if([tapGr state]==UIGestureRecognizerStateChanged&&[self isNearByThePoint:now]){
-      
-        //[reverseDic removeAllObjects];
-        coordinate.x=(int)(coordinate.x+0.5);
-        coordinate.x=(int)(coordinate.x+0.5);
-        
-        coordinate.x=coordinate.x>=23?22:coordinate.x;
-        coordinate.x=coordinate.x<=12?13:coordinate.x;
-        
-        NSAssert(coordinate.x<23&&coordinate.x>11,@"coordiante.x must less than 23");
-        
-        if(linkage){
-
-            //NSLog(@"%@",[self.forecastPoints JSONString]);
-            double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
-            //double l5 = [[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] doubleValue];
-            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:(coordinate.x+2-XRANGEBEGIN-[self.hisPoints count])] objectForKey:@"y"] doubleValue]);
-            int i=0;
-            for(id obj in self.forecastPoints){
-                double v = [[obj objectForKey:@"v"] doubleValue];
-                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i++));
-                [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
-            }
-            
-            [self setStockPrice];
-            [graph reloadData];
-            
-        }else{
-            
-            double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
-            double v=[[self.standard objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] doubleValue]+changeD;
-            [[self.forecastPoints objectAtIndex:(coordinate.x-XRANGEBEGIN-3)] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
-            
-            [self setStockPrice];
-            [graph reloadData];
-            
-        }
-        
-    }
-
-}
-
-
--(void)setStockPrice{
-
-    NSString *jsonPrice=[self.forecastPoints JSONString];
-    jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
-    //传入数据注意格式调用，html文件的key值应与此key值对应
-    NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
-    [self.priceLabel setText:[re1 substringWithRange:NSMakeRange(0, 5)]];
-}
-
-
-//判断手指触摸点是否在折点旁边
--(BOOL)isNearByThePoint:(CGPoint)p{
-    
-    //从手指触摸点的实际坐标得到抽象坐标
-    /*CGPoint abstractCoordinate=[self CoordinateTransformRealToAbstract:p];
-    //获取临近坐标点
-    int acX=(int)(abstractCoordinate.x+0.5);
-    //判断临近坐标点是否存在折点，存在则取出
-    float acY=[[reverseDic objectForKey:[NSString stringWithFormat:@"%d",acX]] floatValue];
-    
-    //构造临近坐标折点，并转化为实际屏幕坐标点
-    CGPoint temp=[self CoordinateTransformAbstractToReal:CGPointMake([[NSNumber numberWithInt:acX] floatValue], acY)];
-    //计算临近坐标点与手指触摸点的距离
-    double distance=sqrt(pow((p.x-temp.x),2)+pow((p.y-temp.y),2));
-    
-    //NSLog(@"%f",distance);
-    //return distance>50?NO:YES;*/
-    return  YES;
-    
-}
-
 
 //空间坐标转换:实际坐标转化自定义坐标
 -(CGPoint)CoordinateTransformRealToAbstract:(CGPoint)point{
@@ -519,6 +480,48 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     return CGPointMake(coordinateX,coordinateY);
     
 }
+#pragma mark -
+#pragma mark Axis Delegate Methods
+
+-(BOOL)axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations
+{
+    if(axis.coordinate==CPTCoordinateX){
+
+        NSNumberFormatter * formatter   = (NSNumberFormatter *)axis.labelFormatter;
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
+        [formatter setPositiveFormat:@"##"];
+        CGFloat labelOffset             = axis.labelOffset;       
+        NSMutableSet * newLabels        = [NSMutableSet set];
+        static CPTTextStyle * positiveStyle = nil;
+        for (NSDecimalNumber * tickLocation in locations) {
+            CPTTextStyle *theLabelTextStyle;
+
+            CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            positiveStyle  = newStyle;
+            
+            theLabelTextStyle = positiveStyle;
+            
+            NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
+            
+            CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
+            newLabel.tickLocation       = tickLocation.decimalValue;
+            newLabel.offset             = labelOffset;
+            
+            [newLabels addObject:newLabel];
+        }
+        
+        axis.axisLabels = newLabels;
+    }else{
+
+        
+    }
+    
+    
+    return NO;
+}
+
 
 -(void)setXYAxis{
     NSMutableArray *xTmp=[[NSMutableArray alloc] init];
@@ -531,14 +534,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [xTmp addObject:[obj objectForKey:@"y"]];
         [yTmp addObject:[obj objectForKey:@"v"]];
     }
-    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp];
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp ToWhere:YES];
     XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
     XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
     XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];
     XINTERVALLENGTH=[[xyDic objectForKey:@"xInterval"] floatValue];
     YRANGEBEGIN=[[xyDic objectForKey:@"yBegin"] floatValue];
     YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
-    YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
+    YORTHOGONALCOORDINATE=[[[self.hisPoints lastObject] objectForKey:@"y"] floatValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
     DrawXYAxis;
 }
@@ -580,16 +583,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         historyLinePlot.dataLineStyle = lineStyle;
         historyLinePlot.identifier = HISTORY_DATALINE_IDENTIFIER;
         historyLinePlot.dataSource = self;
-        
-        
-        //创建分隔线段
-        lineStyle.lineColor=[CPTColor grayColor];
-        dividingLinePlot = [[CPTScatterPlot alloc] init];
-        dividingLinePlot.dataLineStyle = lineStyle;
-        dividingLinePlot.identifier =DIVIDING_DATALINE_IDENTIFIER;
-        dividingLinePlot.dataSource = self;
-        
-        
+     
         // Add plot symbols: 表示数值的符号的形状
         //
         CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
@@ -615,18 +609,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
         [forecastLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
         [historyLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        [dividingLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
         
-        [graph addPlot:forecastLinePlot];
         [graph addPlot:forecastDefaultLinePlot];
         [graph addPlot:historyLinePlot];
-        [graph addPlot:dividingLinePlot];
+        [graph addPlot:forecastLinePlot];
         
         
         [forecastDefaultLinePlot release];
         [forecastLinePlot release];
         [historyLinePlot release];
-        [dividingLinePlot release];
         
     }
     
@@ -644,7 +635,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //[self.navigationController.navigationBar setHidden:YES];
         //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
     } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,40,480,320);
+        self.hostView.frame=CGRectMake(0,40,SCREEN_HEIGHT,260);
     }
 }
 

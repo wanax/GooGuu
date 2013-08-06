@@ -27,6 +27,7 @@
 #import "MBProgressHUD.h"
 #import "SVPullToRefresh.h"
 #import "IndicatorComView.h"
+#import "CommonlyMacros.h"
 
 @interface CompanyListViewController ()
 
@@ -352,7 +353,7 @@
     delegate.comInfo=[self.comList objectAtIndex:row];
     
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
-    com.view.frame=CGRectMake(0,20,320,480);
+    com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
     [self presentViewController:com animated:YES completion:nil];
     
     /*CATransition *animation = [CATransition animation];

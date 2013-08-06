@@ -14,6 +14,7 @@
 #import "UIButton+BGColor.h"
 #import "MHTabBarController.h"
 #import "FinancalModelChartViewController.h"
+#import "CommonlyMacros.h"
 
 @interface ModelViewController ()
 
@@ -84,7 +85,7 @@
         [self presentViewController:model animated:YES completion:nil];
     }else if(bt.tag==2){
         chartViewController=[[ChartViewController alloc] init];
-        chartViewController.view.frame=CGRectMake(0,0,480,320);
+        chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
         [self presentViewController:chartViewController animated:YES completion:nil];
     }
     

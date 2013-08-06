@@ -23,6 +23,7 @@
 #import "GooGuuContainerViewController.h"
 #import "MHTabBarController.h"
 #import "ConcernedViewController.h"
+#import "CommonlyMacros.h"
 
 @interface ClientLoginViewController ()
 
@@ -58,7 +59,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    loginView=[[LoginView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    loginView=[[LoginView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     [loginView setBackgroundColor:[[Utiles class] colorWithHexString:@"#34C3C1"]];
     
     [self.view addSubview:loginView];

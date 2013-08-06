@@ -344,6 +344,7 @@
 		AE4CF0E717AA419A0060640E /* DrawChartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0E617AA419A0060640E /* DrawChartTool.m */; };
 		AE4CF0E917AA48CF0060640E /* c.html in Resources */ = {isa = PBXBuildFile; fileRef = AE4CF0E817AA48CF0060640E /* c.html */; };
 		AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4E149E17AF7C6300723E1E /* IndicatorComView.m */; };
+		AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4E14A117AF986A00723E1E /* CommonlyMacros.m */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
 		AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
@@ -882,6 +883,8 @@
 		AE4CF0E817AA48CF0060640E /* c.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = c.html; sourceTree = "<group>"; };
 		AE4E149D17AF7C6300723E1E /* IndicatorComView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorComView.h; sourceTree = "<group>"; };
 		AE4E149E17AF7C6300723E1E /* IndicatorComView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorComView.m; sourceTree = "<group>"; };
+		AE4E14A017AF986A00723E1E /* CommonlyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonlyMacros.h; sourceTree = "<group>"; };
+		AE4E14A117AF986A00723E1E /* CommonlyMacros.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonlyMacros.m; sourceTree = "<group>"; };
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
 		AE51B8D717AB528000A09D1E /* ModelClassGrade2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClassGrade2ViewController.h; sourceTree = "<group>"; };
 		AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClassGrade2ViewController.m; sourceTree = "<group>"; };
@@ -1894,6 +1897,8 @@
 				AE2E9418179D0A920049B28E /* UILabel+VerticalAlign.m */,
 				AE2E9419179D0A920049B28E /* UIButton+BGColor.h */,
 				AE2E941A179D0A920049B28E /* UIButton+BGColor.m */,
+				AE4E14A017AF986A00723E1E /* CommonlyMacros.h */,
+				AE4E14A117AF986A00723E1E /* CommonlyMacros.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -3059,6 +3064,7 @@
 				AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */,
 				AE315CFD17AF5A040061FAD1 /* IndicatorView.m in Sources */,
 				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
+				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

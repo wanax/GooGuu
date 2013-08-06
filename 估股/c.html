@@ -21,7 +21,7 @@
             	this.values=jsonobjs.model.values;
             	this.strequ = jsonobjs.model.equation;
             	this.computerf=new Function(strequ);
-
+                initGGid();
 				return returnDragableChartList();
             }
 			
@@ -195,19 +195,18 @@
 						break;
 					}
 				}
-				return rtnstr;
+				//return rtnstr;
 			}   
 				
 			//根据传入的数据重新计算估股价
-            function chartCalu(jsondata) 
-            {            
+            function chartCalu(jsondata)
+            {
 	            var sValue = eval('(' + jsondata + ')');
 				for ( var i = 0; i < sValue.length; i++) {
 					values[sValue[i].id] = sValue[i].v;
 				}
-				//values["1398.13"]=0.3;
 				computerf();
-				return rtnstr;
+				return values[countId];
 			}
 			//根据传入的数据重新计算估股价
             function chartCaluWacc(jsondata) 

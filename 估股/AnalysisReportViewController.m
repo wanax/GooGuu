@@ -115,7 +115,8 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.customTableView];
         }else{
-            [Utiles ToastNotification:@"暂无数据" andView:self.view andLoading:NO andIsBottom:NO andIsHide:NO];
+            [Utiles ToastNotification:@"暂无数据" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
     }];
 }

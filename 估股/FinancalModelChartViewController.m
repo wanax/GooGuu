@@ -167,17 +167,20 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
 }
 
+-(id)getObjectDataFromJsFun:(NSString *)funName byDriverId:(NSString *)driverId{
+    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,driverId];
+    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
+    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    return [re objectFromJSONString];
+}
+
 #pragma mark -
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
-
-    NSString *arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",driverId];
-    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-    id temp=[re objectFromJSONString];
-
+    
+    id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
     self.points=[temp objectForKey:@"array"];
-    graph.title=[temp objectForKey:@"title"];    
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];    
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
@@ -188,6 +191,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 #pragma mark Web Didfinished CallBack
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     
+    [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     //[MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
@@ -210,13 +214,12 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         self.modelChartViewController.indicator=@"listChart";
         self.modelOtherViewController.indicator=@"listOther";
         
-        arg=[[NSString alloc] initWithFormat:@"returnChartData(\"%@\")",@"4278"];
-        re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        id temp=[re objectFromJSONString];
+        id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[transObj objectForKey:@"listRatio"] objectAtIndex:0] objectForKey:@"id"]];
         self.points=[temp objectForKey:@"array"];
-        graph.title=[temp objectForKey:@"title"];
-        
+        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
+        [self setXYAxis];
+        barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
+        [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         [graph reloadData];
         
     }];
@@ -234,6 +237,22 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 #pragma mark -
 #pragma mark Bar Data Source Delegate
+
+// 添加数据标签
+-( CPTLayer *)dataLabelForPlot:( CPTPlot *)plot recordIndex:( NSUInteger )index
+{
+    // 定义一个白色的 TextStyle
+    static CPTMutableTextStyle *whiteText = nil ;
+    if ( !whiteText ) {
+        whiteText = [[ CPTMutableTextStyle alloc ] init ];
+        whiteText.color=[CPTColor colorWithComponentRed:85/255.0 green:16/255.0 blue:118/255.0 alpha:1.0];
+    }    
+    // 定义一个 TextLayer
+    CPTTextLayer *newLayer = nil ;
+    newLayer=[[CPTTextLayer alloc] initWithText:[[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue] substringToIndex:4] style:whiteText];
+
+    return newLayer;
+}
 
 //散点数据源委托实现
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
@@ -263,6 +282,47 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     return num;
 }
 
+#pragma mark -
+#pragma mark Axis Delegate Methods
+
+-(BOOL)axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations
+{
+    if(axis.coordinate==CPTCoordinateX){
+        
+        NSNumberFormatter * formatter   = (NSNumberFormatter *)axis.labelFormatter;
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
+        [formatter setPositiveFormat:@"##"];
+        CGFloat labelOffset             = axis.labelOffset;
+        NSMutableSet * newLabels        = [NSMutableSet set];
+        static CPTTextStyle * positiveStyle = nil;
+        for (NSDecimalNumber * tickLocation in locations) {
+            CPTTextStyle *theLabelTextStyle;
+            
+            CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            positiveStyle  = newStyle;
+            
+            theLabelTextStyle = positiveStyle;
+            
+            NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
+            
+            CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
+            newLabel.tickLocation       = tickLocation.decimalValue;
+            newLabel.offset             = labelOffset;
+            
+            [newLabels addObject:newLabel];
+        }
+        
+        axis.axisLabels = newLabels;
+    }else{
+        
+        
+    }
+    
+    
+    return NO;
+}
 
 -(void)initBarPlot{
     barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0] horizontalBars:NO];
@@ -277,6 +337,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     barPlot. identifier = BAR_IDENTIFIER;
     barPlot.opacity = 0.0f;
     barPlot.opacity=0.0f;
+
+    
     CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     fadeInAnimation.duration            = 3.0f;
     fadeInAnimation.removedOnCompletion = NO;
