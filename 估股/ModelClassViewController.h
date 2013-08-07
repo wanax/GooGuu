@@ -11,7 +11,7 @@
 
 @protocol HubDelegate <NSObject>
 @optional
--(void)toldYouClassChanged:(NSString *)driverId;
+-(void)toldYouClassChanged:(NSString *)driverId andIndustry:(NSString *)industry;
 @end
 
 @interface ModelClassViewController :UITableViewController<ModelClassGrade2Delegate>
@@ -20,5 +20,6 @@
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSArray *modelClass;
 @property (nonatomic,retain) UITableView *customTable;
+@property (nonatomic,retain) NSDictionary *industry;
 
 @end

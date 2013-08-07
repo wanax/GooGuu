@@ -34,6 +34,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 @synthesize points;
 @synthesize jsonForChart;
 @synthesize barPlot;
+@synthesize yAxisUnit;
 @synthesize webView;
 @synthesize graph;
 @synthesize hostView;
@@ -44,6 +45,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 - (void)dealloc
 {
+    [yAxisUnit release];yAxisUnit=nil;
     [modelRatioViewController release];modelRatioViewController=nil;
     [modelChartViewController release];modelChartViewController=nil;
     [modelOtherViewController release];modelOtherViewController=nil;
@@ -180,6 +182,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
     id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
     self.points=[temp objectForKey:@"array"];
+    self.yAxisUnit=[temp objectForKey:@"unit"];
     graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];    
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
@@ -216,6 +219,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         
         id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[transObj objectForKey:@"listRatio"] objectAtIndex:0] objectForKey:@"id"]];
         self.points=[temp objectForKey:@"array"];
+        self.yAxisUnit=[temp objectForKey:@"unit"];
         graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
         [self setXYAxis];
         barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
@@ -249,18 +253,25 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     }    
     // 定义一个 TextLayer
     CPTTextLayer *newLayer = nil ;
-    newLayer=[[CPTTextLayer alloc] initWithText:[[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue] substringToIndex:4] style:whiteText];
+    NSString *numberString =nil;
+    if([self.yAxisUnit isEqualToString:@"%"]){
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+        numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+    }else{
+        numberString=[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue];
+        if(numberString.length>4){
+            numberString=[numberString substringToIndex:4];
+        }
+    }
+    newLayer=[[CPTTextLayer alloc] initWithText:numberString style:whiteText];
 
     return newLayer;
 }
 
 //散点数据源委托实现
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
-    
-    if([(NSString *)plot.identifier isEqualToString:BAR_IDENTIFIER]){
-        return [self.points count];
-    }
-    
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{    
+    return [self.points count];
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger) index{
@@ -290,10 +301,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     if(axis.coordinate==CPTCoordinateX){
         
         NSNumberFormatter * formatter   = (NSNumberFormatter *)axis.labelFormatter;
+        // axis.fillMode=@"132";
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
         [formatter setPositiveFormat:@"##"];
-        CGFloat labelOffset             = axis.labelOffset;
+        //CGFloat labelOffset             = axis.labelOffset;
         NSMutableSet * newLabels        = [NSMutableSet set];
         static CPTTextStyle * positiveStyle = nil;
         for (NSDecimalNumber * tickLocation in locations) {
@@ -306,18 +318,17 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             
             NSString * labelString      = [formatter stringForObjectValue:tickLocation];
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
-            
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             = labelOffset;
-            
+            newLabel.offset             = 0;
+            newLabel.rotation     = 5.5;
+            //newLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0];
             [newLabels addObject:newLabel];
         }
         
         axis.axisLabels = newLabels;
     }else{
-        
-        
+    
     }
     
     
@@ -328,13 +339,14 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0] horizontalBars:NO];
     barPlot. dataSource = self ;
     barPlot.delegate=self;
-    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0]];
+    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:0.7]];
     // 图形向右偏移： 0.25
     barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
     // 在 SDK 中， barCornerRadius 被 cornerRadius 替代
     barPlot.barWidth=CPTDecimalFromFloat(1.0f);
     barPlot.barWidthScale=0.5f;
-    barPlot. identifier = BAR_IDENTIFIER;
+    barPlot.labelOffset=0;
+    barPlot.identifier = BAR_IDENTIFIER;
     barPlot.opacity = 0.0f;
     barPlot.opacity=0.0f;
 

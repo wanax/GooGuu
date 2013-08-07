@@ -43,27 +43,7 @@
             	return rtnstr;
             }      
             
-            //金融数据所需信息
-            function returnWaccData()
-            {
-            	view=jsonobjs.model.root.wacc;
-            	rtnstr="[";
-            	for (var i1 = 0; i1 < view.length; i1 ++ ) {
-					var viewOne = view[i1]; 
-					var sun = jsonobjs.model.driver[viewOne];
-					if(!sun) {
-						continue;
-					}
-					rtnstr+="{\"name\":\""+sun.name+"\",";
-					ddata=sun.array;
-					rtnstr+="\"data\":\""+ddata[0].v+"\",";
-					rtnstr+="\"datanew\":\""+values[ddata[0].id]+"\",";
-	        		rtnstr+="\"id\":\""+ddata[0].id+"\"},";
-				}
-            	rtnstr=rtnstr.substring(0,rtnstr.length-1);
-            	rtnstr+="]";
-                return rtnstr;
-            }
+            
 			
             //初始化各变量
             function initFinancialData(jsondata)
@@ -214,14 +194,32 @@
 	            var sValue = eval('(' + jsondata + ')');
 	            var strtmp="";
 				for ( var i = 0; i < sValue.length; i++) {
-					values[sValue[i].id] = sValue[i].value;
-					strtmp+=sValue[i].value;
-					strtmp+=sValue[i].id;
+					values[sValue[i].id] = sValue[i].v;
 				}
 				computerf();
-                returnWaccData();
-				return rtnstr;				
+				return returnWaccData();				
 			}
+            //金融数据所需信息
+            function returnWaccData()
+            {
+            	view=jsonobjs.model.root.wacc;
+            	rtnstr="[";
+            	for (var i1 = 0; i1 < view.length; i1 ++ ) {
+					var viewOne = view[i1];
+					var sun = jsonobjs.model.driver[viewOne];
+					if(!sun) {
+						continue;
+					}
+					rtnstr+="{\"name\":\""+sun.name+"\",";
+					ddata=sun.array;
+					rtnstr+="\"data\":\""+ddata[0].v+"\",";
+					rtnstr+="\"datanew\":\""+values[ddata[0].id]+"\",";
+	        		rtnstr+="\"id\":\""+ddata[0].id+"\"},";
+				}
+            	rtnstr=rtnstr.substring(0,rtnstr.length-1);
+            	rtnstr+="]";
+                return rtnstr;
+            }
             
         </script>
     </head>

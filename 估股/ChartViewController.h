@@ -87,6 +87,7 @@
 @property (nonatomic,retain) CPTBarPlot *barPlot;
 //是否联动
 @property (nonatomic) BOOL linkage;
+@property (nonatomic) BOOL isAddGesture;
 
 //行业分类
 @property (nonatomic,retain) id industryClass;

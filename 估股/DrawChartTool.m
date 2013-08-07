@@ -50,34 +50,33 @@
     
     NSInteger xMax=[[sortXArr lastObject] integerValue];
     NSInteger xMin=[[sortXArr objectAtIndex:0] integerValue];
-    NSInteger xTap=1;
-    float yMax=[[sortYArr lastObject] floatValue];
-    float yMin=[[sortYArr objectAtIndex:0] floatValue];
-    float yTap=(yMax-yMin)/[sortYArr count];
+    //NSInteger xTap=1;
+    double yMax=[[sortYArr lastObject] doubleValue];
+    double yMin=[[sortYArr objectAtIndex:0] doubleValue];
+    double yTap=(yMax-yMin)/[sortYArr count];
     
-    float xLowBound=xMin-2;
-    float xUpBound=xMax+xTap;
-    float yLowBound=0.0f;
-    //不可拖动柱状图y轴应从0起
-    if(isDrag){
-        yLowBound=yMin-2*yTap;
+    double xLowBound=xMin-2;
+    double xUpBound=xMax+1;
+  
+    double yLowBound=0.0;
+    if(yMin>0){
+        yLowBound=0-4*yTap;
     }else{
-        yLowBound=0-2.5*yTap;
+        yLowBound=yMin-4*yTap;
     }
+    double yUpBound=yMax+4*yTap;
     
-    float yUpBound=yMax+3*yTap;
+    double xBegin=xLowBound;
+    double xLength=xUpBound-xLowBound;
     
-    float xBegin=xLowBound;
-    float xLength=xUpBound-xLowBound;
+    double yBegin=yLowBound;
+    double yLength=yUpBound-yLowBound;
     
-    float yBegin=yLowBound;
-    float yLength=yUpBound-yLowBound;
+    double xInterval=1;
+    double xOrigin=0.0f;
     
-    float xInterval=1;
-    float xOrigin=yLowBound+2.5*yTap;
-    
-    float yInterval=0;
-    float yOrigin=xBegin+2;
+    double yInterval=0;
+    double yOrigin=xBegin+2;
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithFloat:xBegin],@"xBegin",
@@ -126,7 +125,7 @@
     x.minorTicksPerInterval=XTICKSPERINTERVAL;
     x.minorTickLineStyle = lineStyle;
     x.majorTickLineStyle=lineStyle;
-    //x.axisTitle=[[CPTAxisTitle alloc] initWithText:@"here" textStyle:[CPTTextStyle textStyle]];
+    //x.axisTitle=[[CPTAxisTitle alloc] initWithText:@"年份" textStyle:[CPTTextStyle textStyle]];
     x.axisLineStyle=lineStyle;
     x.delegate=delegate;
     

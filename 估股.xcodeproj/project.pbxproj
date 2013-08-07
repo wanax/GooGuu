@@ -378,6 +378,7 @@
 		AE6B997117A1226100DBE0C6 /* NIWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6B997017A1226100DBE0C6 /* NIWebController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE6B997717A122DF00DBE0C6 /* NIAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6B997317A122DF00DBE0C6 /* NIAttributedLabel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE6B997817A122DF00DBE0C6 /* NSMutableAttributedString+NimbusAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6B997617A122DF00DBE0C6 /* NSMutableAttributedString+NimbusAttributedLabel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6C5EAA17B223560080988E /* DiscountRateViewController.m */; };
 		AE75B90617A20C0B0046901F /* NICellBackgrounds.m in Sources */ = {isa = PBXBuildFile; fileRef = AE75B8F217A20C0B0046901F /* NICellBackgrounds.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE75B90717A20C0B0046901F /* NICellCatalog.m in Sources */ = {isa = PBXBuildFile; fileRef = AE75B8F417A20C0B0046901F /* NICellCatalog.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AE75B90817A20C0B0046901F /* NICellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = AE75B8F617A20C0B0046901F /* NICellFactory.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -952,6 +953,8 @@
 		AE6B997417A122DF00DBE0C6 /* NimbusAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusAttributedLabel.h; sourceTree = "<group>"; };
 		AE6B997517A122DF00DBE0C6 /* NSMutableAttributedString+NimbusAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+NimbusAttributedLabel.h"; sourceTree = "<group>"; };
 		AE6B997617A122DF00DBE0C6 /* NSMutableAttributedString+NimbusAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+NimbusAttributedLabel.m"; sourceTree = "<group>"; };
+		AE6C5EA917B223560080988E /* DiscountRateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountRateViewController.h; sourceTree = "<group>"; };
+		AE6C5EAA17B223560080988E /* DiscountRateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountRateViewController.m; sourceTree = "<group>"; };
 		AE75B8F117A20C0B0046901F /* NICellBackgrounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NICellBackgrounds.h; sourceTree = "<group>"; };
 		AE75B8F217A20C0B0046901F /* NICellBackgrounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NICellBackgrounds.m; sourceTree = "<group>"; };
 		AE75B8F317A20C0B0046901F /* NICellCatalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NICellCatalog.h; sourceTree = "<group>"; };
@@ -2004,6 +2007,8 @@
 				AE4CF0E317AA3DF30060640E /* FinancalModelChartViewController.m */,
 				AE4CF0E517AA419A0060640E /* DrawChartTool.h */,
 				AE4CF0E617AA419A0060640E /* DrawChartTool.m */,
+				AE6C5EA917B223560080988E /* DiscountRateViewController.h */,
+				AE6C5EAA17B223560080988E /* DiscountRateViewController.m */,
 			);
 			name = MultipleChart;
 			sourceTree = "<group>";
@@ -3065,6 +3070,7 @@
 				AE315CFD17AF5A040061FAD1 /* IndicatorView.m in Sources */,
 				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
 				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
+				AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

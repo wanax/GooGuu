@@ -21,9 +21,11 @@
 @synthesize jsonData;
 @synthesize modelClass;
 @synthesize customTable;
+@synthesize industry;
 
 - (void)dealloc
 {
+    [industry release];industry=nil;
     [delegate release];delegate=nil;
     [jsonData release];jsonData=nil;
     [customTable release];customTable=nil;
@@ -44,7 +46,7 @@
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"行业选择"];
-    
+    industry=[[NSDictionary alloc] initWithObjectsAndKeys:@"主营收入",@"listMain",@"运营费用",@"listFee",@"运营资本",@"listCap",@"折现率",@"listWacc", nil];
     self.modelClass=[jsonData allKeys];
     
 }
@@ -65,11 +67,17 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 									   reuseIdentifier:ClassCellIdentifier] autorelease];
 	}
-	
-	NSString *text = [self.modelClass objectAtIndex:[indexPath row]];
-	[cell.textLabel setText:text];
-    cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
-	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+
+    if(indexPath.row!=3){
+        NSString *text = [industry objectForKey:[self.modelClass objectAtIndex:[indexPath row]]];
+        [cell.textLabel setText:text];
+        cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }else{
+        NSString *text = [industry objectForKey:[self.modelClass objectAtIndex:[indexPath row]]];
+        [cell.textLabel setText:text];
+        cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
+    }
 	
 	return cell;
 }
@@ -79,18 +87,23 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
 	
-    ModelClassGrade2ViewController *grade2=[[ModelClassGrade2ViewController alloc] init];
-    grade2.delegate=self;
-    grade2.indicator=[self.modelClass objectAtIndex:indexPath.row];
-    grade2.jsonData=self.jsonData;    
-    [self.navigationController pushViewController:grade2 animated:YES];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [grade2 release];
+    if(indexPath.row!=3){
+        ModelClassGrade2ViewController *grade2=[[ModelClassGrade2ViewController alloc] init];
+        grade2.delegate=self;
+        grade2.indicator=[self.modelClass objectAtIndex:indexPath.row];
+        grade2.jsonData=self.jsonData;
+        [self.navigationController pushViewController:grade2 animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [grade2 release];
+    }else{
+        NSLog(@"here");
+        //[delegate toldYouClassChanged:<#(NSString *)#> andIndustry:<#(NSString *)#>]
+    }
     
 }
 
 -(void)modelClassChanged:(NSString *)driverId{
-    [delegate toldYouClassChanged:driverId];
+    [delegate toldYouClassChanged:driverId andIndustry:nil];
 }
 
 - (void)didReceiveMemoryWarning

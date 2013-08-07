@@ -54,6 +54,7 @@
 @property (nonatomic,retain) UIButton *button;
 @property (nonatomic,retain) NSMutableArray *points;
 @property (nonatomic,retain) NSString *jsonForChart;
+@property (nonatomic,retain) NSString *yAxisUnit;
 
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelRatioViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelChartViewController;

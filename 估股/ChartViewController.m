@@ -24,6 +24,7 @@
 #import "DrawChartTool.h"
 #import "ModelClassViewController.h"
 #import "CommonlyMacros.h"
+#import "DiscountRateViewController.h"
 
 
 
@@ -46,6 +47,7 @@
 @synthesize barPlot;
 
 @synthesize linkage;
+@synthesize isAddGesture;
 
 @synthesize industryClass=_industryClass;
 @synthesize yAxisUnit;
@@ -155,16 +157,29 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    UIButton *scatterButton=[tool addButtonToView:self.view withTitle:@"联动" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(addScatterChart:)];
-    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(addBarChart:)];
+    [tool addButtonToView:self.view withTitle:@"保存" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(saveData:)];
+    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(changeButton:)];
     [tool addButtonToView:self.view withTitle:@"行业选择" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
     [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
-    [self addScatterChart:scatterButton];
+    [self addScatterChart];
     [tool release];
-    //手势添加
-    UIPanGestureRecognizer *panGr=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(viewPan:)];
-    [hostView addGestureRecognizer:panGr];
-    [panGr release];
+
+}
+-(void)saveData:(UIButton *)bt{
+    NSLog(@"save");
+}
+
+-(void)changeButton:(UIButton *)bt{
+    bt.showsTouchWhenHighlighted=YES;
+    if(linkage){
+        [bt setTitle:@"联动" forState:UIControlStateNormal];
+        [self addBarChart];
+        linkage=NO;
+    }else{
+        [bt setTitle:@"点动" forState:UIControlStateNormal];
+        [self addScatterChart];
+        linkage=YES;
+    }
 }
 
 
@@ -184,17 +199,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
 }
 
--(void)addBarChart:(UIButton *)bt{
-
-    bt.showsTouchWhenHighlighted=YES;
+-(void)addBarChart{
     
     if(![graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
 
-        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:105/255.0 green:195/255.0 blue:228/255.0 alpha:1.0] horizontalBars:NO];
+        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3] horizontalBars:NO];
         barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         barPlot.dataSource = self;
         barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
-        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:1.0]];
+        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3]];
         barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
         barPlot.barWidth=CPTDecimalFromFloat(0.5f);
         [graph addPlot:barPlot];
@@ -229,23 +242,31 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"]];
         
         [self divideData:chartData];
-        [self setXYAxis];
+        self.yAxisUnit=[chartData objectForKey:@"unit"];
         graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
-        [graph reloadData];
+        [self setXYAxis];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
+        if(!isAddGesture){
+            //手势添加
+            UIPanGestureRecognizer *panGr=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(viewPan:)];
+            [hostView addGestureRecognizer:panGr];
+            [panGr release];
+            isAddGesture=YES;
+        }
+        
         
     }];
 
     
 }
 
--(void)toldYouClassChanged:(NSString *)driverId{
+-(void)toldYouClassChanged:(NSString *)driverId andIndustry:(NSString *)industry{
     
     id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
     [self divideData:chartData];
+    self.yAxisUnit=[chartData objectForKey:@"unit"];
     graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
     [self setXYAxis];
-    [graph reloadData];
 }
 
 -(void)divideData:(id)sourceData{
@@ -299,6 +320,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             double v = [[obj objectForKey:@"v"] doubleValue];
             [self.standard addObject:[NSNumber numberWithDouble:v]];
         }
+        //结束拖动重绘坐标轴 适应新尺寸
+        [self setXYAxis];
     }
     //手势变化并且接近折点旁边
     if([tapGr state]==UIGestureRecognizerStateChanged){
@@ -371,15 +394,25 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     CPTTextLayer *newLayer = nil ;
     NSString * identifier=( NSString *)[plot identifier];
     if ([identifier isEqualToString : FORECAST_DATALINE_IDENTIFIER]) {
-        
-        newLayer=[[[CPTTextLayer alloc] initWithText:[[[NSString alloc] initWithFormat:@"%0.2f",[[[self.forecastPoints objectAtIndex:index] objectForKey:@"v"] doubleValue]] autorelease] style:whiteText] autorelease];
-        
-    }else if([identifier isEqualToString : HISTORY_DATALINE_IDENTIFIER]){
-        
-        newLayer=[[[CPTTextLayer alloc] initWithText:[[[NSString alloc] initWithFormat:@"%0.2f",[[[self.hisPoints objectAtIndex:index] objectForKey:@"v"] doubleValue]] autorelease] style:whiteText] autorelease];
-        
+        newLayer=[[CPTTextLayer alloc] initWithText:[self formatTrans:index from:self.forecastPoints] style:whiteText];
+    }else if([identifier isEqualToString : HISTORY_DATALINE_IDENTIFIER]){        
+        newLayer=[[CPTTextLayer alloc] initWithText:[self formatTrans:index from:self.hisPoints] style:whiteText];        
     }
     return newLayer;
+}
+-(NSString *)formatTrans:(NSUInteger)index from:(NSMutableArray *)arr{
+    NSString *numberString =nil;
+    if([self.yAxisUnit isEqualToString:@"%"]){
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+        numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[arr objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+    }else{
+        numberString=[[[arr objectAtIndex:index] objectForKey:@"v"] stringValue];
+        if(numberString.length>4){
+            numberString=[numberString substringToIndex:4];
+        }
+    }
+    return numberString;
 }
 
 
@@ -491,7 +524,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
         [formatter setPositiveFormat:@"##"];
-        CGFloat labelOffset             = axis.labelOffset;       
+        //CGFloat labelOffset             = axis.labelOffset;
         NSMutableSet * newLabels        = [NSMutableSet set];
         static CPTTextStyle * positiveStyle = nil;
         for (NSDecimalNumber * tickLocation in locations) {
@@ -504,11 +537,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             
             NSString * labelString      = [formatter stringForObjectValue:tickLocation];
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
-            
+            [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             = labelOffset;
-            
+            newLabel.offset             =  0;
+            newLabel.rotation     = 5.5;
             [newLabels addObject:newLabel];
         }
         
@@ -544,12 +577,11 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     YORTHOGONALCOORDINATE=[[[self.hisPoints lastObject] objectForKey:@"y"] floatValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
     DrawXYAxis;
+    [graph reloadData];
 }
 
--(void)addScatterChart:(UIButton *)bt{
-    
-    bt.showsTouchWhenHighlighted=YES;
-    
+-(void)addScatterChart{
+   
     linkage=YES;
     if([graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
         [graph removePlot:barPlot];
@@ -566,6 +598,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         lineStyle.lineColor=[CPTColor whiteColor];
         forecastLinePlot.dataLineStyle=lineStyle;
         forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
+        //forecastLinePlot.labelOffset=5;
         forecastLinePlot.dataSource=self;//需实现委托
         forecastLinePlot.delegate=self;
         
