@@ -19,13 +19,26 @@
     [super dealloc];
 }
 
+-(UILabel *)addLabelToView:(UIView *)view withTile:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size{
+    
+    UILabel *label=[[UILabel alloc] initWithFrame:rect];
+    [label setText:title];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setFont:[UIFont fontWithName:@"Heiti SC" size:size]];
+    label.tag=tag;
+    label.backgroundColor=[Utiles colorWithHexString:@"#007ab7"];
+    [view addSubview:label];
+    return label;
+    
+}
+
 -(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun{
     
     UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
     button.frame=rect;
     [button setTitle:title forState:UIControlStateNormal];
     button.tag=tag;
-    button.backgroundColor=[Utiles colorWithHexString:@"#323232"];
+    button.backgroundColor=[Utiles colorWithHexString:@"#705C32"];
     button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
     [button addTarget:standIn action:fun forControlEvents:UIControlEventTouchDown];
     [view addSubview:button];

@@ -113,18 +113,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     YTICKSPERINTERVAL =0;
     
     webView=[[UIWebView alloc] init];
-    webView.delegate=self;
-    
+    webView.delegate=self;    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
-
-    
+  
     self.forecastPoints=[[NSMutableArray alloc] init];
     self.hisPoints=[[NSMutableArray alloc] init];
     self.forecastDefaultPoints=[[NSMutableArray alloc] init];
     self.standard=[[NSMutableArray alloc] init];
     reverseDic=[[NSMutableDictionary alloc] init];
-
     
     //初始化图形视图
     @try {
@@ -150,13 +147,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
     
     DrawXYAxis;
-   
-    priceLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,160,40)];
-    priceLabel.text=@"here";
-    [self.view addSubview:priceLabel];
 
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
+    priceLabel=[tool addLabelToView:self.view withTile:@"拖动计算股价" Tag:11 frame:CGRectMake(0,0,160,40) fontSize:16.0];
     [tool addButtonToView:self.view withTitle:@"保存" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(saveData:)];
     [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(changeButton:)];
     [tool addButtonToView:self.view withTitle:@"行业选择" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
@@ -207,7 +201,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         barPlot.dataSource = self;
         barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
-        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3]];
+        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:174/255.0 green:10/255.0 blue:148/255.0 alpha:0.3]];
         barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
         barPlot.barWidth=CPTDecimalFromFloat(0.5f);
         [graph addPlot:barPlot];
@@ -262,11 +256,20 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)toldYouClassChanged:(NSString *)driverId andIndustry:(NSString *)industry{
     
-    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
-    [self divideData:chartData];
-    self.yAxisUnit=[chartData objectForKey:@"unit"];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
-    [self setXYAxis];
+    if([industry isEqualToString:@"discount"]){
+        
+        DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
+        rateViewController.view.frame=CGRectMake(0,40,480,320);
+        rateViewController.jsonData=self.jsonForChart;
+        [self presentViewController:rateViewController animated:YES completion:nil];
+    }else{
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
+        [self divideData:chartData];
+        self.yAxisUnit=[chartData objectForKey:@"unit"];
+        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
+        [self setXYAxis];
+    }
+    
 }
 
 -(void)divideData:(id)sourceData{

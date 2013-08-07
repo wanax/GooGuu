@@ -8,6 +8,8 @@
 
 #import "ModelClassViewController.h"
 #import "ModelClassGrade2ViewController.h"
+#import "CQMFloatingController.h"
+#import "CommonlyMacros.h"
 
 #define ClassCellIdentifier  @"UITableViewCell"
 
@@ -96,8 +98,10 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [grade2 release];
     }else{
-        NSLog(@"here");
-        //[delegate toldYouClassChanged:<#(NSString *)#> andIndustry:<#(NSString *)#>]
+        [delegate toldYouClassChanged:nil andIndustry:@"discount"];
+        CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
+        [floatingController dismissAnimated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
 }

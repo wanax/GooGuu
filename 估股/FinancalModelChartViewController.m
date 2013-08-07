@@ -71,7 +71,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#6E5F3E"]];
     
     self.modelRatioViewController=[[ModelClassGrade2ViewController alloc] init];
     self.modelRatioViewController.delegate=self;
@@ -132,6 +132,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [self initBarPlot];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    id com=delegate.comInfo;
+    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:16.0];
     [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
     [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
     [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
