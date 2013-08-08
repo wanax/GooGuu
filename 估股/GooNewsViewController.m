@@ -21,6 +21,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "SVPullToRefresh.h"
 #import "NimbusAttributedLabel.h"
+#import "CommonlyMacros.h"
 
 
 @interface GooNewsViewController ()
@@ -322,6 +323,8 @@
         [self.navigationController pushViewController:container animated:YES];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        SAFE_RELEASE(articleViewController);
+        SAFE_RELEASE(articleCommentViewController);
     }
     
 }

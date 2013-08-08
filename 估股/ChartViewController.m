@@ -93,6 +93,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     [super dealloc];
 }
+-(void)viewDidDisappear:(BOOL)animated{
+    
+}
 
 
 - (void)viewDidLoad
@@ -186,11 +189,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 												animated:YES];
 }
 
--(void)backTo:(UIButton *)bt{
-    
+-(void)backTo:(UIButton *)bt{    
     bt.showsTouchWhenHighlighted=YES;
     [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 -(void)addBarChart{
@@ -225,15 +226,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
 
-        NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonForChart];
-        NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
 
-        id resTmp=[re objectFromJSONString];
+        id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart];
         self.modelClassViewController.jsonData=resTmp;
         self.industryClass=resTmp;
       
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"]];
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"]];
         
         [self divideData:chartData];
         self.yAxisUnit=[chartData objectForKey:@"unit"];
@@ -263,7 +261,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         rateViewController.jsonData=self.jsonForChart;
         [self presentViewController:rateViewController animated:YES completion:nil];
     }else{
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId];
         [self divideData:chartData];
         self.yAxisUnit=[chartData objectForKey:@"unit"];
         graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
@@ -289,16 +287,16 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             [reverseDic setObject:[mutableObj objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[mutableObj objectForKey:@"y"] floatValue]]];
         }
     }
-    [mutableObj release];
     [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
     //历史数据与预测数据线拼接
     [self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
     [self.forecastDefaultPoints insertObject:[self.hisPoints lastObject] atIndex:0];
+    SAFE_RELEASE(mutableObj);
 }
 
 
--(id)getObjectDataFromJsFun:(NSString *)funName byDriverId:(NSString *)driverId{    
-    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,driverId];
+-(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data{
+    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
     return [re objectFromJSONString];    
@@ -634,22 +632,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         forecastLinePlot.plotSymbol = plotSymbol;
         historyLinePlot.plotSymbol=plotSymbol;
         
-        
-        // Animate in the new plot: 淡入动画
-        forecastLinePlot.opacity = 0.0f;
-        historyLinePlot.opacity=0.0f;
-        CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeInAnimation.duration            = 3.0f;
-        fadeInAnimation.removedOnCompletion = NO;
-        fadeInAnimation.fillMode            = kCAFillModeForwards;
-        fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
-        [forecastLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        [historyLinePlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
-        
         [graph addPlot:forecastDefaultLinePlot];
         [graph addPlot:historyLinePlot];
         [graph addPlot:forecastLinePlot];
-        
         
         [forecastDefaultLinePlot release];
         [forecastLinePlot release];

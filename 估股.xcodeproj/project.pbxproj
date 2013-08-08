@@ -22,6 +22,7 @@
 		AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105517A7A4A6007B9E66 /* defaultAvatar.png */; };
 		AE15105917A7A758007B9E66 /* addConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105717A7A756007B9E66 /* addConcernBt.png */; };
 		AE15105A17A7A758007B9E66 /* cancelConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105817A7A757007B9E66 /* cancelConcernBt.png */; };
+		AE19BECE17B3457F007F3FA7 /* DahonValuationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */; };
 		AE2CFA4517A0B0A00082F292 /* colorconfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */; };
 		AE2CFA4717A0C0FC0082F292 /* MHTabBarInactiveTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */; };
 		AE2CFA4917A0C8B90082F292 /* MHTabBarIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4817A0C8B90082F292 /* MHTabBarIndicator.png */; };
@@ -527,6 +528,8 @@
 		AE15105517A7A4A6007B9E66 /* defaultAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultAvatar.png; sourceTree = "<group>"; };
 		AE15105717A7A756007B9E66 /* addConcernBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addConcernBt.png; sourceTree = "<group>"; };
 		AE15105817A7A757007B9E66 /* cancelConcernBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelConcernBt.png; sourceTree = "<group>"; };
+		AE19BECC17B3457F007F3FA7 /* DahonValuationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DahonValuationViewController.h; sourceTree = "<group>"; };
+		AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DahonValuationViewController.m; sourceTree = "<group>"; };
 		AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colorconfigure.plist; sourceTree = "<group>"; };
 		AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarInactiveTab.png; sourceTree = "<group>"; };
 		AE2CFA4817A0C8B90082F292 /* MHTabBarIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator.png; sourceTree = "<group>"; };
@@ -2012,6 +2015,8 @@
 				AE4CF0E617AA419A0060640E /* DrawChartTool.m */,
 				AE6C5EA917B223560080988E /* DiscountRateViewController.h */,
 				AE6C5EAA17B223560080988E /* DiscountRateViewController.m */,
+				AE19BECC17B3457F007F3FA7 /* DahonValuationViewController.h */,
+				AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */,
 			);
 			name = MultipleChart;
 			sourceTree = "<group>";
@@ -3075,6 +3080,7 @@
 				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
 				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
 				AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */,
+				AE19BECE17B3457F007F3FA7 /* DahonValuationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

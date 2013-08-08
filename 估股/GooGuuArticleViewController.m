@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 #import "Utiles.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CommonlyMacros.h"
 
 @interface GooGuuArticleViewController ()
 
@@ -88,7 +89,8 @@
                        }"];
     [articleWeb stringByEvaluatingJavaScriptFromString:botySise];
     [articleWeb stringByEvaluatingJavaScriptFromString:imgSize];
-    
+    SAFE_RELEASE(botySise);
+    SAFE_RELEASE(imgSize);
 }
 
 -(void)panView:(UIPanGestureRecognizer *)tap{

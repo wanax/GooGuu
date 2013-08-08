@@ -74,37 +74,36 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#D1AB6D"]];
-
+    self.transData=[[NSMutableArray alloc] init];
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
     
-    DrawChartTool *tool=[[DrawChartTool alloc] init];
-    tool.standIn=self;
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id com=delegate.comInfo;
     [self.companyNameLabel setText:[NSString stringWithFormat:@"%@(%@.%@)",[com objectForKey:@"companyname"],[com objectForKey:@"stockcode"],[com objectForKey:@"marketname"]]];
     [self.marketPriceLabel setText:[[com objectForKey:@"marketprice"] stringValue]];
     [self.ggPriceLabel setText:[[com objectForKey:@"googuuprice"] stringValue]];
     
-    
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     
-    NSString *arg=[[NSString alloc] initWithFormat:@"initData(\"%@\")",self.jsonData];
-    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-    arg=[[NSString alloc] initWithFormat:@"returnWaccData()"];
-    re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-    self.transData=[re objectFromJSONString];
+    [self getObjectDataFromJsFun:@"initData" param:self.jsonData];
+
+    id tempData=[self getObjectDataFromJsFun:@"returnWaccData" param:@""];
+    for(id obj in tempData){
+        [self.transData addObject:obj];
+    }
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+    self.myRateLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue]]]];
     self.suggestRateLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue]]]];
     self.unRiskRateLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:0] objectForKey:@"datanew"] floatValue]]]];
     self.marketBetaLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:1] objectForKey:@"datanew"] floatValue]]]];
@@ -120,16 +119,41 @@
 -(IBAction)sliderChanged:(UISlider *)slider{
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
+    float progress = slider.value;
     if(slider.tag==1){
-        float progress = slider.value;
         unRiskRateLabel.text = [NSString stringWithFormat:@"%@%%", [formatter stringFromNumber:[NSNumber numberWithFloat:progress]]];
+        [self resetValue:progress index:0];
     }else if(slider.tag==2){
-        float progress = slider.value;
         marketBetaLabel.text = [NSString stringWithFormat:@"%.2f", progress];
+        [self resetValue:progress index:1];
     }else if(slider.tag==3){
-        float progress =slider.value;
         marketPremiumLabel.text = [NSString stringWithFormat:@"%@%%", [formatter stringFromNumber:[NSNumber numberWithFloat:progress]]];
+        [self resetValue:progress index:2];
     }
+    SAFE_RELEASE(formatter);
+}
+
+-(id)getObjectDataFromJsFun:(NSString *)funName param:(NSString *)data{
+    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
+    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
+    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    return [re objectFromJSONString];
+}
+
+-(void)resetValue:(float)progress index:(NSInteger)index{
+    NSMutableDictionary * temp=[[NSMutableDictionary alloc] initWithDictionary:[self.transData objectAtIndex:index]];
+    [temp setObject:[NSNumber numberWithFloat:progress/100] forKey:@"datanew"];
+    [self.transData setObject:temp atIndexedSubscript:index];
+    SAFE_RELEASE(temp);
+    NSString *jsonForChart=[[self.transData JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    id tempData=[self getObjectDataFromJsFun:@"chartCaluWacc" param:jsonForChart];
+    [self.transData removeAllObjects];
+    for(id obj in tempData){
+        [self.transData addObject:obj];
+    }
+    NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+    self.myRateLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue]]]];
     SAFE_RELEASE(formatter);
 }
 

@@ -365,7 +365,6 @@
     [[com.view layer] addAnimation:animation forKey:@"animation"];
     animation=nil;*/
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     [search resignFirstResponder];
 }
 

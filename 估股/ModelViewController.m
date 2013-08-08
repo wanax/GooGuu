@@ -15,6 +15,7 @@
 #import "MHTabBarController.h"
 #import "FinancalModelChartViewController.h"
 #import "CommonlyMacros.h"
+#import "DahonValuationViewController.h"
 
 @interface ModelViewController ()
 
@@ -46,29 +47,27 @@
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
-    UIButton *bt1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    bt1.frame = CGRectMake(10, 20, 300, 50);
-    [bt1 setTitle:@"查看模型金融模型" forState: UIControlStateNormal];
-    [bt1 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
-    [bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    bt1.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
-    bt1.tag = 1;
-    [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:bt1];
-    UIButton *bt2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    bt2.frame = CGRectMake(10, 75, 300, 50);
-    [bt2 setTitle:@"调整模型参数" forState: UIControlStateNormal];
-    [bt2 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
-    [bt2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    bt2.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
-    bt2.tag = 2;
-    [bt2 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:bt2];
+    
+    [self addNewButton:@"查看金融模型" Tag:1 frame:CGRectMake(10, 20, 300, 50)];
+    [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(10, 75, 300, 50)];
+    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(10, 130, 300, 50)];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
 
+}
+
+-(void)addNewButton:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect{
+    UIButton *bt1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bt1.frame = rect;
+    [bt1 setTitle:title forState: UIControlStateNormal];
+    [bt1 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
+    [bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    bt1.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    bt1.tag = tag;
+    [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bt1];
 }
 
 -(void)panView:(UIPanGestureRecognizer *)tap{
@@ -87,6 +86,9 @@
         chartViewController=[[ChartViewController alloc] init];
         chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
         [self presentViewController:chartViewController animated:YES completion:nil];
+    }else if(bt.tag==3){
+        DahonValuationViewController *dahon=[[DahonValuationViewController alloc] init];
+        [self presentViewController:dahon animated:YES completion:nil];
     }
     
 }

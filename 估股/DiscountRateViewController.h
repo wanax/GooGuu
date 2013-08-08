@@ -11,7 +11,7 @@
 @interface DiscountRateViewController : UIViewController<UIWebViewDelegate>
 
 @property (nonatomic,retain) id jsonData;
-@property (nonatomic,retain) id transData;
+@property (nonatomic,retain) NSMutableArray *transData;
 
 @property (nonatomic,retain) IBOutlet UIButton *resetBt;
 @property (nonatomic,retain) IBOutlet UIButton *saveBt;

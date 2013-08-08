@@ -112,7 +112,7 @@
 
     [self.view addSubview:content.view];
     [self addChildViewController:content];
-    
+    SAFE_RELEASE(content);
     
 }
 

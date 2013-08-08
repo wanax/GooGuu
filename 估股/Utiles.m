@@ -104,7 +104,7 @@
     }
     
     if(key!=nil){
-        return [[dictionary objectForKey:key] autorelease];
+        return [dictionary objectForKey:key];
     }else{
         return dictionary;
     }
