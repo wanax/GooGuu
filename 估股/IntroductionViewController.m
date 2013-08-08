@@ -14,6 +14,7 @@
 #import "XYZAppDelegate.h"
 #import "MHTabBarController.h"
 #import "UIImageView+Addition.h"
+#import "CommonlyMacros.h"
 
 @interface IntroductionViewController ()
 
@@ -26,8 +27,8 @@
 
 - (void)dealloc
 {
-    [photos release];
-    [imageView release];
+    SAFE_RELEASE(photos);
+    SAFE_RELEASE(imageView);
     [super dealloc];
 }
 
@@ -78,7 +79,8 @@
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
-    
+    SAFE_RELEASE(browser);
+    SAFE_RELEASE(tempPhotos);
 }
 
 #pragma mark - MWPhotoBrowserDelegate

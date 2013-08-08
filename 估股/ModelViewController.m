@@ -27,7 +27,7 @@
 
 - (void)dealloc
 {
-    [chartViewController release];
+    SAFE_RELEASE(chartViewController);
     [super dealloc];
 }
 
@@ -82,6 +82,7 @@
     if(bt.tag==1){
         FinancalModelChartViewController *model=[[FinancalModelChartViewController alloc] init];
         [self presentViewController:model animated:YES completion:nil];
+        SAFE_RELEASE(model);
     }else if(bt.tag==2){
         chartViewController=[[ChartViewController alloc] init];
         chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
@@ -89,6 +90,7 @@
     }else if(bt.tag==3){
         DahonValuationViewController *dahon=[[DahonValuationViewController alloc] init];
         [self presentViewController:dahon animated:YES completion:nil];
+        SAFE_RELEASE(dahon);
     }
     
 }

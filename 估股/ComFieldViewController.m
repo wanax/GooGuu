@@ -16,6 +16,7 @@
 #import "MHTabBarController.h"
 #import "ContainerViewController.h"
 #import "PrettyToolbar.h"
+#import "CommonlyMacros.h"
 
 @interface ComFieldViewController ()
 
@@ -37,13 +38,13 @@
 
 - (void)dealloc
 {
-    [myToolBarItems release];
-    [top release];
-    [tabBarController release];
-    [viewController1 release];viewController1=nil;
-    [viewController2 release];viewController2=nil;
-    [viewController3 release];viewController3=nil;
-    [viewController4 release];viewController4=nil;
+    SAFE_RELEASE(myToolBarItems);
+    SAFE_RELEASE(top);
+    SAFE_RELEASE(tabBarController);
+    SAFE_RELEASE(viewController1);
+    SAFE_RELEASE(viewController2);
+    SAFE_RELEASE(viewController3);
+    SAFE_RELEASE(viewController4);
     
     [super dealloc];
 }

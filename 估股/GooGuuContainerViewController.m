@@ -10,6 +10,7 @@
 #import "MHTabBarController.h"
 #import "ConcernedViewController.h"
 #import "CalendarViewController.h"
+#import "CommonlyMacros.h"
 
 @interface GooGuuContainerViewController ()
 
@@ -24,10 +25,10 @@
 
 - (void)dealloc
 {
-    [tabBarController release];
-    [calendarViewController release];
-    [concernedViewController release];
-    [saveModelViewControler release];
+    SAFE_RELEASE(tabBarController);
+    SAFE_RELEASE(calendarViewController);
+    SAFE_RELEASE(concernedViewController);
+    SAFE_RELEASE(saveModelViewControler);
     [super dealloc];
 }
 

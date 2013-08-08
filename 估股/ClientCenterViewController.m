@@ -17,6 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Reachability.h"
 #import "UIButton+BGColor.h"
+#import "CommonlyMacros.h"
 
 
 
@@ -37,11 +38,11 @@
 
 - (void)dealloc
 {
-    [avatar release];
-    [logoutBt release];
-    [_dateDic release];
-    [_eventArr release];
-    [userNameLabel release];
+    SAFE_RELEASE(avatar);
+    SAFE_RELEASE(logoutBt);
+    SAFE_RELEASE(_dateDic);
+    SAFE_RELEASE(_eventArr);
+    SAFE_RELEASE(userNameLabel);
     [super dealloc];
 }
 

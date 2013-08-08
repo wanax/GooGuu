@@ -52,7 +52,7 @@
 
 - (void)dealloc
 {
-    [tabBarController release];
+    [tabBarController release];tabBarController=nil;
     [concernedViewController release];concernedViewController=nil;
     [saveModelViewControler release];saveModelViewControler=nil;
     

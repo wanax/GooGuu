@@ -10,6 +10,7 @@
 #import "GooGuuArticleViewController.h"
 #import "ArticleCommentViewController.h"
 #import "MHTabBarController.h"
+#import "CommonlyMacros.h"
 
 @interface AnalyDetailContainerViewController ()
 
@@ -18,10 +19,12 @@
 @implementation AnalyDetailContainerViewController
 
 @synthesize articleId;
+@synthesize container;
 
 - (void)dealloc
 {
-    [articleId release];
+    SAFE_RELEASE(container);
+    SAFE_RELEASE(articleId);
     [super dealloc];
 }
 
@@ -45,11 +48,13 @@
     articleCommentViewController.articleId=self.articleId;
     articleCommentViewController.title=@"评论";
     articleCommentViewController.type=StockCompany;
-    MHTabBarController *container=[[MHTabBarController alloc] init];
+    container=[[MHTabBarController alloc] init];
     NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
     container.viewControllers=controllers;
     [self.view addSubview:container.view];
     [self addChildViewController:container];
+    SAFE_RELEASE(articleViewController);
+    SAFE_RELEASE(articleCommentViewController);
 }
 
 - (void)didReceiveMemoryWarning

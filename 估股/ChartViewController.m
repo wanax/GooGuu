@@ -260,6 +260,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         rateViewController.view.frame=CGRectMake(0,40,480,320);
         rateViewController.jsonData=self.jsonForChart;
         [self presentViewController:rateViewController animated:YES completion:nil];
+        SAFE_RELEASE(rateViewController);
     }else{
         id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId];
         [self divideData:chartData];
@@ -299,6 +300,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    SAFE_RELEASE(arg);
     return [re objectFromJSONString];    
 }
 
@@ -372,6 +374,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
     //传入数据注意格式调用，html文件的key值应与此key值对应
     NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
+    SAFE_RELEASE(arg1);
     [self.priceLabel setText:[re1 substringToIndex:5]];
 }
 
@@ -407,6 +410,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterPercentStyle];
         numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[arr objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+        SAFE_RELEASE(formatter);
     }else{
         numberString=[[[arr objectAtIndex:index] objectForKey:@"v"] stringValue];
         if(numberString.length>4){
@@ -578,6 +582,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     YORTHOGONALCOORDINATE=[[[self.hisPoints lastObject] objectForKey:@"y"] floatValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
     DrawXYAxis;
+    SAFE_RELEASE(xTmp);
+    SAFE_RELEASE(yTmp);
     [graph reloadData];
 }
 

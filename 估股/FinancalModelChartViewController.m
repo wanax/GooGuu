@@ -21,6 +21,7 @@
 #import "DrawChartTool.h"
 #import "ModelClassViewController.h"
 #import "ModelClassGrade2ViewController.h"
+#import "CommonlyMacros.h"
 
 @interface FinancalModelChartViewController ()
 
@@ -176,6 +177,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,driverId];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    SAFE_RELEASE(arg);
     return [re objectFromJSONString];
 }
 
@@ -228,7 +230,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         [graph reloadData];
-        
+        SAFE_RELEASE(arg);
     }];
     
     
@@ -261,6 +263,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterPercentStyle];
         numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+        SAFE_RELEASE(formatter);
     }else{
         numberString=[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue];
         if(numberString.length>4){
@@ -268,8 +271,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         }
     }
     newLayer=[[CPTTextLayer alloc] initWithText:numberString style:whiteText];
-
-    return newLayer;
+    return [newLayer autorelease];
 }
 
 //散点数据源委托实现
@@ -327,6 +329,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             newLabel.rotation     = 5.5;
             //newLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0];
             [newLabels addObject:newLabel];
+            SAFE_RELEASE(newLabel);
+            SAFE_RELEASE(newLabelLayer);
         }
         
         axis.axisLabels = newLabels;
@@ -381,6 +385,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
     DrawXYAxis;
+    SAFE_RELEASE(xTmp);
+    SAFE_RELEASE(yTmp);
+    
 }
 
 

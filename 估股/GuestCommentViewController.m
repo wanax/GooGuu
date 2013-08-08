@@ -21,6 +21,7 @@
 #import "ComFieldViewController.h"
 #import "AddCommentViewController.h"
 #import "PrettyKit.h"
+#import "CommonlyMacros.h"
 
 @interface GuestCommentViewController ()
 
@@ -39,9 +40,9 @@
 
 - (void)dealloc
 {
-    [commentList release];
-    [search release];
-    [table release];
+    SAFE_RELEASE(commentList);
+    SAFE_RELEASE(search);
+    SAFE_RELEASE(table);
     [super dealloc];
 }
 

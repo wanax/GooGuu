@@ -8,6 +8,7 @@
 
 #import "DrawChartTool.h"
 #import "Utiles.h"
+#import "CommonlyMacros.h"
 
 @implementation DrawChartTool
 
@@ -15,7 +16,7 @@
 
 - (void)dealloc
 {
-    [standIn release];
+    [standIn release];standIn=nil;
     [super dealloc];
 }
 
@@ -28,7 +29,7 @@
     label.tag=tag;
     label.backgroundColor=[Utiles colorWithHexString:@"#007ab7"];
     [view addSubview:label];
-    return label;
+    return [label autorelease];
     
 }
 

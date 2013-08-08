@@ -30,7 +30,7 @@
 @implementation ConcernedViewController
 
 @synthesize companyFieldViewController;
-
+@synthesize com;
 @synthesize loginViewController;
 @synthesize customTableView;
 @synthesize type;
@@ -42,13 +42,12 @@
 
 - (void)dealloc
 {
-    [type release];
-    [companyFieldViewController release];
-
-    [customTableView release];
-    [comInfoList release];
-    
-    [loginViewController release];
+    SAFE_RELEASE(com);
+    SAFE_RELEASE(type);
+    SAFE_RELEASE(companyFieldViewController);
+    SAFE_RELEASE(customTableView);
+    SAFE_RELEASE(comInfoList);
+    SAFE_RELEASE(loginViewController);
     [super dealloc];
 }
 
@@ -277,7 +276,7 @@
     int row=indexPath.row;
     delegate.comInfo=[self.comInfoList objectAtIndex:row];
     
-    ComFieldViewController *com=[[ComFieldViewController alloc] init];
+    com=[[ComFieldViewController alloc] init];
     com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
     [self presentViewController:com animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

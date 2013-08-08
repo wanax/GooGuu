@@ -9,6 +9,7 @@
 //  2013-05-07 | Wanax | 用户评论中自定义cell
 
 #import "UserCell.h"
+#import "CommonlyMacros.h"
 
 @implementation UserCell
 @synthesize imageView;
@@ -20,6 +21,19 @@
 @synthesize name;
 @synthesize dec;
 @synthesize loc;
+
+- (void)dealloc
+{
+    SAFE_RELEASE(imageView);
+    SAFE_RELEASE(nameLabel);
+    SAFE_RELEASE(decLabel);
+    SAFE_RELEASE(locLabel);
+    SAFE_RELEASE(image);
+    SAFE_RELEASE(name);
+    SAFE_RELEASE(dec);
+    SAFE_RELEASE(loc);
+    [super dealloc];
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

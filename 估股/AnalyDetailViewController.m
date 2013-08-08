@@ -11,6 +11,7 @@
 #import "Utiles.h"
 #import "PrettyToolbar.h"
 #import "AnalyDetailContainerViewController.h"
+#import "CommonlyMacros.h"
 
 @interface AnalyDetailViewController ()
 
@@ -21,10 +22,12 @@
 @synthesize articleId;
 @synthesize top;
 @synthesize myToolBarItems;
+@synthesize container;
 
 - (void)dealloc
 {
-    [articleId release];
+    SAFE_RELEASE(container);
+    SAFE_RELEASE(articleId);
     [super dealloc];
 }
 
@@ -41,7 +44,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    AnalyDetailContainerViewController *container=[[AnalyDetailContainerViewController alloc] init];
+    container=[[AnalyDetailContainerViewController alloc] init];
     container.articleId=self.articleId;
     container.view.frame=CGRectMake(0,24,self.view.frame.size.width,self.view.frame.size.height);
     [self.view addSubview:container.view];

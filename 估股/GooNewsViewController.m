@@ -32,20 +32,21 @@
 
 
 @synthesize customTableView;
-@synthesize newArrList;
+@synthesize arrList;
 @synthesize imageUrl;
 @synthesize companyInfo;
 @synthesize readingMarksDic;
-
+@synthesize container;
 @synthesize hud;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(container);
     [readingMarksDic release];readingMarksDic=nil;
     [companyInfo release];companyInfo=nil;
     [hud release];hud=nil;
     [customTableView release];customTableView=nil;
-    [newArrList release];newArrList=nil;
+    [arrList release];arrList=nil;
     [imageUrl release];imageUrl=nil;
     [super dealloc];
 }
@@ -106,16 +107,16 @@
 
 -(void)addGooGuuNews{
     
-    NSString *arId=[[self.newArrList lastObject] objectForKey:@"articleid"];
+    NSString *arId=[[self.arrList lastObject] objectForKey:@"articleid"];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:arId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:params besidesBlock:^(id resObj){
 
         NSMutableArray *exNews=[resObj objectForKey:@"data"];
-        NSMutableArray *temp=[NSMutableArray arrayWithArray:self.newArrList];
+        NSMutableArray *temp=[NSMutableArray arrayWithArray:self.arrList];
         for(id obj in exNews){
             [temp addObject:obj];
         }
-        self.newArrList=temp;
+        self.arrList=temp;
         [self.customTableView reloadData];
         [self.customTableView.infiniteScrollingView stopAnimating];
         
@@ -128,7 +129,7 @@
     
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:nil besidesBlock:^(id news){
        
-        self.newArrList=[news objectForKey:@"data"];
+        self.arrList=[news objectForKey:@"data"];
        
         [self.customTableView reloadData];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -175,7 +176,7 @@
     if(section==0){
         return 1;
     }else if(section==1){
-        return [self.newArrList count];
+        return [self.arrList count];
     }
     return 0;
 }
@@ -255,7 +256,7 @@
         }
         
         int row=[indexPath row];
-        id model=[newArrList objectAtIndex:row];
+        id model=[arrList objectAtIndex:row];
         
         cell.title=[model objectForKey:@"title"];
         [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
@@ -305,7 +306,7 @@
     if(indexPath.section==0){
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else if(indexPath.section==1){
-        NSString *artId=[NSString stringWithFormat:@"%@",[[self.newArrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
+        NSString *artId=[NSString stringWithFormat:@"%@",[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
         GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
         articleViewController.articleId=artId;
         articleViewController.title=@"研究报告";
@@ -313,11 +314,11 @@
         articleCommentViewController.articleId=artId;
         articleCommentViewController.title=@"评论";
         articleCommentViewController.type=News;
-        MHTabBarController *container=[[MHTabBarController alloc] init];
+        container=[[MHTabBarController alloc] init];
         NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
         container.viewControllers=controllers;
         
-        [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.newArrList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
+        [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
         self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
         
         [self.navigationController pushViewController:container animated:YES];

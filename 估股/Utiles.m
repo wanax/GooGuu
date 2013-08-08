@@ -12,6 +12,7 @@
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "JSONKit.h"
+#import "CommonlyMacros.h"
 
 @implementation Utiles
 

@@ -44,16 +44,18 @@
 @synthesize search;
 @synthesize isShowSearchBar=_isShowSearchBar;
 @synthesize concernStocksCodeArr;
+@synthesize com;
 @synthesize type;
 @synthesize nibsRegistered;
 
 - (void)dealloc {
-    [concernStocksCodeArr release];
-    [comType release];
-    [comList release];
-    [rowImage release];
-    [table release];
-    [search release];
+    SAFE_RELEASE(com);
+    SAFE_RELEASE(concernStocksCodeArr);
+    SAFE_RELEASE(comType);
+    SAFE_RELEASE(comList);
+    SAFE_RELEASE(rowImage);
+    SAFE_RELEASE(table);
+    SAFE_RELEASE(search);
     [super dealloc];
 }
 
@@ -352,7 +354,7 @@
     int row=indexPath.row;
     delegate.comInfo=[self.comList objectAtIndex:row];
     
-    ComFieldViewController *com=[[ComFieldViewController alloc] init];
+    com=[[ComFieldViewController alloc] init];
     com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
     [self presentViewController:com animated:YES completion:nil];
     

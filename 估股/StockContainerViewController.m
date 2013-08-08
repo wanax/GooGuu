@@ -9,6 +9,7 @@
 #import "StockContainerViewController.h"
 #import "MHTabBarController.h"
 #import "CompanyListViewController.h"
+#import "CommonlyMacros.h"
 
 @interface StockContainerViewController ()
 
@@ -24,11 +25,11 @@
 
 - (void)dealloc
 {
-    [tabBarController release];
-    [hkListViewController release];
-    [szListViewController release];
-    [shListViewController release];
-    [usListViewController release];
+    SAFE_RELEASE(tabBarController);
+    SAFE_RELEASE(hkListViewController);
+    SAFE_RELEASE(szListViewController);
+    SAFE_RELEASE(shListViewController);
+    SAFE_RELEASE(usListViewController);
     [super dealloc];
 }
 

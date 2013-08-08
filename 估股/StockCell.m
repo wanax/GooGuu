@@ -7,6 +7,7 @@
 //
 
 #import "StockCell.h"
+#import "CommonlyMacros.h"
 
 @implementation StockCell
 
@@ -23,14 +24,14 @@
 
 - (void)dealloc
 {
-    [percentLabel release];
-    [gooGuuPriceLabel release];
-    [marketPriceLabel release];
-    [belongLabel release];
-    [gPriceLabel release];
-    [priceLabel release];
-    [stockNameLabel release];
-    [concernBt release];
+    SAFE_RELEASE(percentLabel);
+    SAFE_RELEASE(gooGuuPriceLabel);
+    SAFE_RELEASE(marketPriceLabel);
+    SAFE_RELEASE(belongLabel);
+    SAFE_RELEASE(gPriceLabel);
+    SAFE_RELEASE(priceLabel);
+    SAFE_RELEASE(stockNameLabel);
+    SAFE_RELEASE(concernBt);
     [super dealloc];
 }
 

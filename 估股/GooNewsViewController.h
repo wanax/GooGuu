@@ -13,6 +13,7 @@
 
 @class CustomTableView;
 @class MBProgressHUD;
+@class MHTabBarController;
 
 
 @interface GooNewsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,EGORefreshTableHeaderDelegate>{
@@ -26,12 +27,12 @@
 
 @property (nonatomic,retain) CustomTableView *customTableView;
 
-@property (nonatomic,retain) NSMutableArray *newArrList;
+@property (nonatomic,retain) NSMutableArray *arrList;
 @property (nonatomic,retain) NSString *imageUrl;
 @property (nonatomic,retain) id companyInfo;
 
 @property (nonatomic,retain) NSDictionary *readingMarksDic;
-
+@property (nonatomic,retain) MHTabBarController *container;
 @property (nonatomic,retain) MBProgressHUD *hud;
 
 - (void)reloadTableViewDataSource;

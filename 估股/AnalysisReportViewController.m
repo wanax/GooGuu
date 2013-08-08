@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 #import "GooNewsCell.h"
 #import "AnalyDetailViewController.h"
+#import "CommonlyMacros.h"
 
 
 @interface AnalysisReportViewController ()
@@ -35,9 +36,9 @@
 
 - (void)dealloc
 {
-    [readingMarksDic release];
-    [customTableView release];
-    [analyReportList release];
+    SAFE_RELEASE(readingMarksDic);
+    SAFE_RELEASE(customTableView);
+    SAFE_RELEASE(analyReportList);
     [super dealloc];
 }
 

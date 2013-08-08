@@ -29,7 +29,7 @@
 
 - (void)dealloc
 {
-    [tabBarController release];
+    [tabBarController release];tabBarController=nil;
     [viewController1 release];viewController1=nil;
     [viewController2 release];viewController2=nil;
     [viewController3 release];viewController3=nil;

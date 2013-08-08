@@ -13,6 +13,7 @@
 #import "EGORefreshTableHeaderView.h"
 
 @class CompanyFieldViewController;
+@class ComFieldViewController;
 @class ClientLoginViewController;
 @class CustomTableView;
 
@@ -30,7 +31,7 @@
 
 @property (nonatomic,retain) CompanyFieldViewController *companyFieldViewController;
 
-
+@property (nonatomic,retain) ComFieldViewController *com;
 @property (nonatomic,retain) NSMutableArray *comInfoList;
 
 

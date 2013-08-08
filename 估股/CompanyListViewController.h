@@ -14,6 +14,8 @@
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 
+@class ComFieldViewController;
+
 typedef enum {
     
     HK=1,//港股
@@ -47,7 +49,7 @@ typedef enum {
 @property (nonatomic) BOOL isShowSearchBar;
 
 @property (nonatomic,retain) NSMutableArray *concernStocksCodeArr;
-
+@property (nonatomic,retain) ComFieldViewController *com;
 
 - (void)resetSearch;
 - (void)handleSearchForTerm:(NSString *)searchTerm;

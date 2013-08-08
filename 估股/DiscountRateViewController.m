@@ -108,6 +108,7 @@
     self.unRiskRateLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:0] objectForKey:@"datanew"] floatValue]]]];
     self.marketBetaLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:1] objectForKey:@"datanew"] floatValue]]]];
     self.marketPremiumLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:2] objectForKey:@"datanew"] floatValue]]]];
+    SAFE_RELEASE(formatter);
 }
 
 -(IBAction)btClick:(UIButton *)bt{
@@ -137,6 +138,7 @@
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    SAFE_RELEASE(arg);
     return [re objectFromJSONString];
 }
 

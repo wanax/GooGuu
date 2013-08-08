@@ -10,8 +10,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class MHTabBarController;
+
 @interface AnalyDetailContainerViewController : UIViewController
 
 @property (nonatomic,retain) NSString *articleId;
+@property (nonatomic,retain) MHTabBarController *container;
 
 @end

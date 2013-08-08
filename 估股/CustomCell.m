@@ -9,6 +9,7 @@
 //  2013-05-07 | Wanax | 开机首页默认股票cell
 
 #import "CustomCell.h"
+#import "CommonlyMacros.h"
 
 @interface CustomCell ()
 
@@ -34,19 +35,20 @@
 
 - (void)dealloc
 {
-    [percentLabel release];
-    [topImageView release];
-    [bottomImageView release];
-    [nameLabel release];
-    [belong release];
-    [gPriceLabel release];
-    [priceLabel release];
-    [topImg release];
-    [bottomImg release];
-    [name release];
-    [belong release];
-    [gPrice release];
-    [price release];
+    SAFE_RELEASE(percentLabel);
+    SAFE_RELEASE(topImageView);
+    SAFE_RELEASE(bottomImageView);
+    SAFE_RELEASE(nameLabel);
+    SAFE_RELEASE(belongLabel);
+    SAFE_RELEASE(belong);
+    SAFE_RELEASE(gPriceLabel);
+    SAFE_RELEASE(priceLabel);
+    SAFE_RELEASE(topImg);
+    SAFE_RELEASE(bottomImg);
+    SAFE_RELEASE(name);
+    SAFE_RELEASE(belong);
+    SAFE_RELEASE(gPrice);
+    SAFE_RELEASE(price);
     [super dealloc];
 }
 

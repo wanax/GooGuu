@@ -13,6 +13,7 @@
 #import "MHTabBarController.h"
 #import "UILabel+VerticalAlign.h"
 #import "NIAttributedLabel.h"
+#import "CommonlyMacros.h"
 
 @interface CalendarViewController ()
 
@@ -27,10 +28,10 @@
 
 - (void)dealloc
 {
-    [messageLabel release];
-    [dateIndicator release];
-    [_dateDic release];
-    [_eventArr release];
+    SAFE_RELEASE(messageLabel);
+    SAFE_RELEASE(dateIndicator);
+    SAFE_RELEASE(_dateDic);
+    SAFE_RELEASE(_eventArr);
     [super dealloc];
 }
 
@@ -120,7 +121,8 @@
                 for(id key in self.eventArr){
                     [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
                 }
-                [dates release];
+                SAFE_RELEASE(dates);
+                SAFE_RELEASE(f);
             }else{
                 [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
@@ -137,13 +139,13 @@
     [dateFormat setDateFormat:@"YYYY/MM/dd"];
     NSString *pointerDate=[NSString stringWithFormat:@"%@相关信息",[dateFormat stringFromDate:date]];
     dateIndicator.text=pointerDate;
-    messageLabel.text=@"";
+    [self.messageLabel setText:@""];
     if ([[self.dateDic allKeys] containsObject:currentDateStr]){
         NSString *msg=[[NSString alloc] init];
         for(id obj in [self.dateDic objectForKey:currentDateStr]){
             msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
         }
-        messageLabel.text=msg;
+        [self.messageLabel setText:msg];
         
         [messageLabel alignTop];
     }
