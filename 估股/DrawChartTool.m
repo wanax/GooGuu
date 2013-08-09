@@ -47,8 +47,7 @@
     
 }
 
-+(NSDictionary *)getXYAxisRangeFromxArr:(NSArray *)xArr andyArr:(NSArray *)yArr ToWhere:(BOOL)isDrag{
-    
++(NSDictionary *)getXYAxisRangeFromxArr:(NSArray *)xArr andyArr:(NSArray *)yArr fromWhere:(ChartType)tag{
     NSComparator cmptr = ^(id obj1, id obj2){
         if ([obj1 floatValue] > [obj2 floatValue]) {
             return (NSComparisonResult)NSOrderedDescending;
@@ -69,8 +68,8 @@
     double yMin=[[sortYArr objectAtIndex:0] doubleValue];
     double yTap=(yMax-yMin)/[sortYArr count];
     
-    double xLowBound=xMin-2;
-    double xUpBound=xMax+1;
+    long xLowBound=xMin-2;
+    long xUpBound=xMax+1;
   
     double yLowBound=0.0;
     if(yMin>0){
@@ -80,33 +79,33 @@
     }
     double yUpBound=yMax+4*yTap;
     
-    double xBegin=xLowBound;
-    double xLength=xUpBound-xLowBound;
+    long xBegin=xLowBound;
+    long xLength=xUpBound-xLowBound;
     
     double yBegin=yLowBound;
     double yLength=yUpBound-yLowBound;
     
-    double xInterval=1;
-    double xOrigin=0.0f;
+    long xInterval=1;
+    long xOrigin=0.0f;
     
     double yInterval=0;
     double yOrigin=xBegin+2;
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithFloat:xBegin],@"xBegin",
-            [NSNumber numberWithFloat:xLength],@"xLength",
-            [NSNumber numberWithFloat:xInterval],@"xInterval",
-            [NSNumber numberWithFloat:xOrigin],@"xOrigin",
-            [NSNumber numberWithFloat:yBegin],@"yBegin",
-            [NSNumber numberWithFloat:yLength],@"yLength",
-            [NSNumber numberWithFloat:yInterval],@"yInterval",
-            [NSNumber numberWithFloat:yOrigin],@"yOrigin",
+            [NSNumber numberWithLong:xBegin],@"xBegin",
+            [NSNumber numberWithLong:xLength],@"xLength",
+            [NSNumber numberWithLong:xInterval],@"xInterval",
+            [NSNumber numberWithLong:xOrigin],@"xOrigin",
+            [NSNumber numberWithDouble:yBegin],@"yBegin",
+            [NSNumber numberWithDouble:yLength],@"yLength",
+            [NSNumber numberWithDouble:yInterval],@"yInterval",
+            [NSNumber numberWithDouble:yOrigin],@"yOrigin",
             nil];
     
 }
 
-+(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(float)XRANGEBEGIN XRANGELENGTH:(float)XRANGELENGTH YRANGEBEGIN:(float)YRANGEBEGIN YRANGELENGTH:(float)YRANGELENGTH XINTERVALLENGTH:(float)XINTERVALLENGTH XORTHOGONALCOORDINATE:(float)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(float)XTICKSPERINTERVAL YINTERVALLENGTH:(float)YINTERVALLENGTH YORTHOGONALCOORDINATE:(float)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(float)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY{
-    
++(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(long)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY{
+
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
     textStyle.fontSize                = 14.0f;
@@ -118,11 +117,11 @@
     /*NSLog(@"\nXRANGEBEGIN%f\nXRANGELENGTH%f\nXORTHOGONALCOORDINATE%f\nXTICKSPERINTERVAL%f\nYRANGEBEGIN%f\nYRANGELENGTH%f\nYORTHOGONALCOORDINATE%f\nYTICKSPERINTERVAL%f\n",XRANGEBEGIN,XRANGELENGTH,XORTHOGONALCOORDINATE,XTICKSPERINTERVAL,YRANGEBEGIN,YRANGELENGTH,YORTHOGONALCOORDINATE,YINTERVALLENGTH);*/
     
     //设置x，y坐标范围
-    plotSpace.xRange=[CPTPlotRange plotRangeWithLocation:
-                      CPTDecimalFromCGFloat(XRANGEBEGIN)
-                                                  length:CPTDecimalFromCGFloat(XRANGELENGTH)];
+    plotSpace.xRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromLong(XRANGEBEGIN)
+                                                  length:CPTDecimalFromLong(XRANGELENGTH)];
     plotSpace.yRange=[CPTPlotRange plotRangeWithLocation:
                       CPTDecimalFromCGFloat(YRANGEBEGIN)  length:CPTDecimalFromCGFloat(YRANGELENGTH)];
+    //plotSpace.allowsUserInteraction=YES;
     
     //绘制坐标系
     CPTXYAxisSet *axisSet=(CPTXYAxisSet *)graph.axisSet;
@@ -134,8 +133,8 @@
     lineStyle.lineWidth = 1.5;
     lineStyle.lineColor = [CPTColor colorWithComponentRed:20/255.0 green:46/255.0 blue:108/255.0 alpha:1.0];
     
-    x.majorIntervalLength=CPTDecimalFromFloat(XINTERVALLENGTH);
-    x.orthogonalCoordinateDecimal=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
+    x.majorIntervalLength=CPTDecimalFromLong(XINTERVALLENGTH);
+    x.orthogonalCoordinateDecimal=CPTDecimalFromLong(XORTHOGONALCOORDINATE);
     x.minorTicksPerInterval=XTICKSPERINTERVAL;
     x.minorTickLineStyle = lineStyle;
     x.majorTickLineStyle=lineStyle;

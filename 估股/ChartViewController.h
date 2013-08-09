@@ -36,20 +36,20 @@
 
 @interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,UIWebViewDelegate,HubDelegate,CPTAxisDelegate>{
     //x轴起点
-    float XRANGEBEGIN;
+    long XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
-    float XRANGELENGTH;
+    long XRANGELENGTH;
     //y轴起点
     float YRANGEBEGIN;
     //y轴在屏幕可视范围内的范围
     float YRANGELENGTH;
     
     //x轴屏幕范围内大坐标间距
-    float XINTERVALLENGTH;
+    long XINTERVALLENGTH;
     //x轴坐标的原点（x轴在y轴上的坐标）
-    float XORTHOGONALCOORDINATE;
+    long XORTHOGONALCOORDINATE;
     //x轴每两个大坐标间小坐标个数
-    float XTICKSPERINTERVAL;
+    long XTICKSPERINTERVAL;
         
     float YINTERVALLENGTH;
     float YORTHOGONALCOORDINATE;

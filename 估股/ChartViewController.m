@@ -104,13 +104,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     linkage=YES;
     self.modelClassViewController=[[ModelClassViewController alloc] init];
     self.modelClassViewController.delegate=self;
-    XRANGEBEGIN=9.0;
-    XRANGELENGTH=14.0;
+
     YRANGEBEGIN=-0.3;
-    YRANGELENGTH=0.9;    
-    XINTERVALLENGTH=3.0;
-    XORTHOGONALCOORDINATE=0.0;
-    XTICKSPERINTERVAL=0;
+    YRANGELENGTH=0.9;
     YINTERVALLENGTH= 0.1;
     YORTHOGONALCOORDINATE =11.0;
     YTICKSPERINTERVAL =0;
@@ -572,7 +568,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [xTmp addObject:[obj objectForKey:@"y"]];
         [yTmp addObject:[obj objectForKey:@"v"]];
     }
-    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp ToWhere:YES];
+
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp fromWhere:DragabelModel];
     XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
     XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
     XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];

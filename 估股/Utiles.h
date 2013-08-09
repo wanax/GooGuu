@@ -40,9 +40,11 @@
 +(NSString *)getCatchSize;
 +(void)deleteSandBoxContent;
 
+//日期与秒数转换since1970
++(double)dateToSecond:(NSString *)date;
++(NSString *)secondToDate:(double)second;
 
-
-
++(NSArray *)sortDateArr:(NSArray *)dateArr;
 
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE11E63F17B4902500FE0190 /* DahonValuationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */; };
 		AE15103817A7968E007B9E66 /* readed.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15103717A7968E007B9E66 /* readed.png */; };
 		AE15103E17A79C52007B9E66 /* unread.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15103D17A79C52007B9E66 /* unread.png */; };
 		AE15104017A79CC1007B9E66 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15103F17A79CC1007B9E66 /* Default.png */; };
@@ -22,7 +23,6 @@
 		AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105517A7A4A6007B9E66 /* defaultAvatar.png */; };
 		AE15105917A7A758007B9E66 /* addConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105717A7A756007B9E66 /* addConcernBt.png */; };
 		AE15105A17A7A758007B9E66 /* cancelConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105817A7A757007B9E66 /* cancelConcernBt.png */; };
-		AE19BECE17B3457F007F3FA7 /* DahonValuationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */; };
 		AE2CFA4517A0B0A00082F292 /* colorconfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */; };
 		AE2CFA4717A0C0FC0082F292 /* MHTabBarInactiveTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */; };
 		AE2CFA4917A0C8B90082F292 /* MHTabBarIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4817A0C8B90082F292 /* MHTabBarIndicator.png */; };
@@ -2765,6 +2765,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE11E63F17B4902500FE0190 /* DahonValuationViewController.m in Sources */,
 				AE368F2D179F693D000AF7BD /* SDImageCache.h in Sources */,
 				AE368F2E179F693D000AF7BD /* SDImageCacheDelegate.h in Sources */,
 				AE368F2F179F693D000AF7BD /* SDWebImageCompat.h in Sources */,
@@ -3080,7 +3081,6 @@
 				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
 				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
 				AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */,
-				AE19BECE17B3457F007F3FA7 /* DahonValuationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

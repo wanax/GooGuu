@@ -90,7 +90,6 @@
     }else if(bt.tag==3){
         DahonValuationViewController *dahon=[[DahonValuationViewController alloc] init];
         [self presentViewController:dahon animated:YES completion:nil];
-        SAFE_RELEASE(dahon);
     }
     
 }

@@ -375,7 +375,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         [xTmp addObject:[obj objectForKey:@"y"]];
         [yTmp addObject:[obj objectForKey:@"v"]];
     }
-    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp ToWhere:NO];
+    NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp fromWhere:FinancalModel];
     XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
     XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
     XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];

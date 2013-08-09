@@ -18,6 +18,13 @@
 
 #define DEFAULT_VOID_COLOR [UIColor whiteColor]
 
+static NSDateFormatter *formatter;
+
+- (void)dealloc
+{
+    [super dealloc];
+}
+
 //字符串转颜色
 + (UIColor *) colorWithHexString: (NSString *) stringToConvert
 {
@@ -268,7 +275,63 @@
     
 }
 
++(double)dateToSecond:(NSString *)date{
+    
+    if(formatter==nil){
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-mm-dd"];
+    }        
+    NSTimeInterval inter = [[formatter dateFromString:date] timeIntervalSince1970];
+    return inter;
+    
+}
++(NSString *)secondToDate:(double)second{
+    
+    if(formatter==nil){
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-mm-dd"];
+    }
+    NSDate *nd = [NSDate dateWithTimeIntervalSince1970:second];    
+    return [formatter stringFromDate:nd];
+  
+}
 
++(NSArray *)sortDateArr:(NSArray *)dateArr{
+    
+    NSComparator cmptr = ^(id obj1, id obj2){
+        if ([obj1 longValue] > [obj2 longValue]) {
+            return (NSComparisonResult)NSOrderedDescending;
+        }
+        
+        if ([obj1 longValue] < [obj2 longValue]) {
+            return (NSComparisonResult)NSOrderedAscending;
+        }
+        return (NSComparisonResult)NSOrderedSame;
+    };
+    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSMutableArray *tempDate=[[NSMutableArray alloc] init];
+    for(id key in dateArr){
+        NSString *str=[key stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        [tempDate addObject:[f numberFromString:str]];
+    }
+    NSArray *tempArr=[tempDate sortedArrayUsingComparator:cmptr];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyymmdd"];
+    
+    NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+    [dateFormatter2 setDateFormat:@"yyyy-mm-dd"];
+    
+    [tempDate removeAllObjects];
+    for(id obj in tempArr){
+        [tempDate addObject:[dateFormatter2 stringFromDate:[dateFormatter dateFromString:[obj stringValue]]]];
+    }
+    SAFE_RELEASE(dateFormatter);
+    SAFE_RELEASE(dateFormatter2);
+    SAFE_RELEASE(f);
+    return [tempDate autorelease];
+}
 
 
 
