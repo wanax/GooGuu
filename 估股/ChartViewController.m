@@ -440,8 +440,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        //num=[[self.hisPoints objectAtIndex:index] valueForKey:key];
-        
+   
         if([key isEqualToString:@"x"]){
             num=[[self.hisPoints objectAtIndex:index] valueForKey:@"y"];
         }else if([key isEqualToString:@"y"]){

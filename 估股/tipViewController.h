@@ -10,7 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class ConcernedViewController;
 
 @interface tipViewController : UIViewController<UIScrollViewDelegate>
 {
@@ -26,7 +25,6 @@
 
 @property(retain,nonatomic) UIButton * gotoMainViewBtn;
 
-@property(nonatomic,retain) ConcernedViewController *concernedViewController;
 -(void)gotoMainView:(id)sender;
 
 

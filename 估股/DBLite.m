@@ -10,7 +10,6 @@
 
 #import "DBLite.h"
 #import "Utiles.h"
-#import "User.h"
 #import "JSONKit.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
@@ -116,7 +115,7 @@
     if([classify isEqual:@"全部"]){
         sql=[[NSString alloc] initWithFormat:@"SELECT * FROM companylist WHERE (companyName LIKE '%%%@%%' OR stockCode LIKE '%%%@%%');",key,key];
     }else{
-        sql=[[NSString alloc] initWithFormat:@"SELECT * FROM companylist WHERE (companyName LIKE '%%%@%%' OR stockCode LIKE '%%%@%%') AND market='%@%';",key,key,classify];
+        //sql=[[NSString alloc] initWithFormat:@"SELECT * FROM companylist WHERE (companyName LIKE '%%%@%%' OR stockCode LIKE '%%%@%%') AND market='%@%';",key,key,classify];
  
     }
     NSLog(@"股票搜索：%@",sql);

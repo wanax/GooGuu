@@ -66,18 +66,33 @@
     //NSInteger xTap=1;
     double yMax=[[sortYArr lastObject] doubleValue];
     double yMin=[[sortYArr objectAtIndex:0] doubleValue];
-    double yTap=(yMax-yMin)/[sortYArr count];
+    double yTap=0.0;
+    if(tag==DahonModel){
+       yTap=(yMax-yMin);
+    }else{
+       yTap=(yMax-yMin)/[sortYArr count]; 
+    }
     
     long xLowBound=xMin-2;
     long xUpBound=xMax+1;
   
     double yLowBound=0.0;
     if(yMin>0){
-        yLowBound=0-4*yTap;
+        if(tag==DahonModel){
+            yLowBound=yMin-0.2*(yMax-yMin);
+        }else
+            yLowBound=0-4*yTap;
     }else{
-        yLowBound=yMin-4*yTap;
+        if(tag==DahonModel){
+            yLowBound=yMin-0.2*(yMax-yMin);
+        }else
+            yLowBound=yMin-4*yTap;
     }
-    double yUpBound=yMax+4*yTap;
+    double yUpBound=0.0;
+    if(tag==DahonModel){
+        yUpBound=yMax+0.2*yTap;
+    }else 
+        yUpBound=yMax+4*yTap;
     
     long xBegin=xLowBound;
     long xLength=xUpBound-xLowBound;
@@ -86,16 +101,22 @@
     double yLength=yUpBound-yLowBound;
     
     long xInterval=1;
-    long xOrigin=0.0f;
-    
+    double xOrigin=0.0f;
+ 
     double yInterval=0;
     double yOrigin=xBegin+2;
+    
+    if(tag==DahonModel){
+        xOrigin=yMin;
+        yInterval=0.5;
+        yOrigin=xBegin+xLength*0.2;
+    }
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithLong:xBegin],@"xBegin",
             [NSNumber numberWithLong:xLength],@"xLength",
             [NSNumber numberWithLong:xInterval],@"xInterval",
-            [NSNumber numberWithLong:xOrigin],@"xOrigin",
+            [NSNumber numberWithDouble:xOrigin],@"xOrigin",
             [NSNumber numberWithDouble:yBegin],@"yBegin",
             [NSNumber numberWithDouble:yLength],@"yLength",
             [NSNumber numberWithDouble:yInterval],@"yInterval",
@@ -104,7 +125,7 @@
     
 }
 
-+(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(long)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY{
++(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(double)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY{
 
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
@@ -134,7 +155,7 @@
     lineStyle.lineColor = [CPTColor colorWithComponentRed:20/255.0 green:46/255.0 blue:108/255.0 alpha:1.0];
     
     x.majorIntervalLength=CPTDecimalFromLong(XINTERVALLENGTH);
-    x.orthogonalCoordinateDecimal=CPTDecimalFromLong(XORTHOGONALCOORDINATE);
+    x.orthogonalCoordinateDecimal=CPTDecimalFromDouble(XORTHOGONALCOORDINATE);
     x.minorTicksPerInterval=XTICKSPERINTERVAL;
     x.minorTickLineStyle = lineStyle;
     x.majorTickLineStyle=lineStyle;

@@ -60,7 +60,7 @@
         UIApplication *app=[UIApplication sharedApplication];
         [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     }
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(UIImage *)splashImage{

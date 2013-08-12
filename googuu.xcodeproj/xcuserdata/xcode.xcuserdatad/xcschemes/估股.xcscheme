@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AE2E919D179D061A0049B28E"
-               BuildableName = "&#20272;&#32929;.app"
-               BlueprintName = "&#20272;&#32929;"
-               ReferencedContainer = "container:&#20272;&#32929;.xcodeproj">
+               BuildableName = "googuu.app"
+               BlueprintName = "googuu"
+               ReferencedContainer = "container:googuu.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AE2E919D179D061A0049B28E"
-            BuildableName = "&#20272;&#32929;.app"
-            BlueprintName = "&#20272;&#32929;"
-            ReferencedContainer = "container:&#20272;&#32929;.xcodeproj">
+            BuildableName = "googuu.app"
+            BlueprintName = "googuu"
+            ReferencedContainer = "container:googuu.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AE2E919D179D061A0049B28E"
-            BuildableName = "&#20272;&#32929;.app"
-            BlueprintName = "&#20272;&#32929;"
-            ReferencedContainer = "container:&#20272;&#32929;.xcodeproj">
+            BuildableName = "googuu.app"
+            BlueprintName = "googuu"
+            ReferencedContainer = "container:googuu.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AE2E919D179D061A0049B28E"
-            BuildableName = "&#20272;&#32929;.app"
-            BlueprintName = "&#20272;&#32929;"
-            ReferencedContainer = "container:&#20272;&#32929;.xcodeproj">
+            BuildableName = "googuu.app"
+            BlueprintName = "googuu"
+            ReferencedContainer = "container:googuu.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -142,8 +142,9 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
 -(void)setXYAxis{
     NSMutableArray *xTmp=[[NSMutableArray alloc] init];
     NSMutableArray *yTmp=[[NSMutableArray alloc] init];
+    int n=0;
     for(id obj in self.dateArr){
-        [xTmp addObject:[NSNumber numberWithDouble:0.0]];
+        [xTmp addObject:[NSNumber numberWithInt:n++]];
     }
     for(id obj in self.chartData){
         [yTmp addObject:[[self.chartData objectForKey:obj] objectForKey:@"close"]];
@@ -192,7 +193,78 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
     return  num;
 }
 
+#pragma mark -
+#pragma mark Axis Delegate Methods
 
+-(BOOL)axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations
+{
+    if(axis.coordinate==CPTCoordinateX){
+        
+        NSNumberFormatter * formatter   = (NSNumberFormatter *)axis.labelFormatter;
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
+        [formatter setPositiveFormat:@"##"];
+        //CGFloat labelOffset             = axis.labelOffset;
+        NSMutableSet * newLabels        = [NSMutableSet set];
+        static CPTTextStyle * positiveStyle = nil;
+        for (NSDecimalNumber * tickLocation in locations) {
+            CPTTextStyle *theLabelTextStyle;
+            
+            CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            positiveStyle  = newStyle;
+            
+            theLabelTextStyle = positiveStyle;
+            
+            NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            NSString *str=nil;
+            if([labelString intValue]<230&&[labelString intValue]>=0){
+                str=[self.dateArr objectAtIndex:[labelString intValue]];
+            }else{
+                str=@"";
+            }
+            CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:str style:theLabelTextStyle];
+            [newLabelLayer sizeToFit];
+            CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
+            newLabel.tickLocation       = tickLocation.decimalValue;
+            newLabel.offset             =  0;
+            //newLabel.rotation     = labelOffset;
+            [newLabels addObject:newLabel];
+        }
+        
+        axis.axisLabels = newLabels;
+    }else{
+        NSNumberFormatter * formatter   = (NSNumberFormatter *)axis.labelFormatter;
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
+        [formatter setPositiveFormat:@"##.##"];
+        CGFloat labelOffset             = axis.labelOffset;
+        NSMutableSet * newLabels        = [NSMutableSet set];
+        static CPTTextStyle * positiveStyle = nil;
+        for (NSDecimalNumber * tickLocation in locations) {
+            CPTTextStyle *theLabelTextStyle;
+            
+            CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            positiveStyle  = newStyle;
+            
+            theLabelTextStyle = positiveStyle;
+            
+            NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
+            [newLabelLayer sizeToFit];
+            CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
+            newLabel.tickLocation       = tickLocation.decimalValue;
+            newLabel.offset             =  0;
+            //newLabel.rotation     = labelOffset;
+            [newLabels addObject:newLabel];
+        }
+        
+        axis.axisLabels = newLabels;
+        
+    }
+    
+    
+    return NO;
+}
 
 -(void)addScatterChart{
 

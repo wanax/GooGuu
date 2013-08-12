@@ -179,8 +179,6 @@
 		AE2E9498179D15550049B28E /* ClientLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93DF179D0A590049B28E /* ClientLoginViewController.m */; };
 		AE2E9499179D15550049B28E /* SettingCenterViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93E0179D0A590049B28E /* SettingCenterViewController.h */; };
 		AE2E949A179D15550049B28E /* SettingCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93E1179D0A590049B28E /* SettingCenterViewController.m */; };
-		AE2E949B179D15550049B28E /* User.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93D4179D0A520049B28E /* User.h */; };
-		AE2E949C179D15550049B28E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93D5179D0A520049B28E /* User.m */; };
 		AE2E949D179D15550049B28E /* Company.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93D6179D0A520049B28E /* Company.h */; };
 		AE2E949E179D15550049B28E /* Company.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93D7179D0A520049B28E /* Company.m */; };
 		AE2E949F179D15550049B28E /* ArticleCommentModel.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E93D8179D0A520049B28E /* ArticleCommentModel.h */; };
@@ -510,6 +508,7 @@
 		AEFB4C7817A8B5DA0044176B /* StockRiseDownColorSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C7717A8B5DA0044176B /* StockRiseDownColorSettingViewController.m */; };
 		AEFB4C7B17A8C08C0044176B /* AboutUsAndCopyrightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */; };
 		AEFB4C7D17A8C0C20044176B /* AboutUsAndCopyrightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEFB4C7C17A8C0C20044176B /* AboutUsAndCopyrightView.xib */; };
+		AEFE65A017B8799B00E1FC8F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEFE659F17B8799B00E1FC8F /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -534,14 +533,13 @@
 		AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarInactiveTab.png; sourceTree = "<group>"; };
 		AE2CFA4817A0C8B90082F292 /* MHTabBarIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator.png; sourceTree = "<group>"; };
 		AE2CFA4A17A0D1110082F292 /* dailystockdotline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dailystockdotline.png; sourceTree = "<group>"; };
-		AE2E919E179D061A0049B28E /* 估股.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "估股.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE2E919E179D061A0049B28E /* googuu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = googuu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2E91A1179D061A0049B28E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AE2E91A3179D061A0049B28E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE2E91A5179D061A0049B28E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		AE2E91A9179D061A0049B28E /* 估股-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "估股-Info.plist"; sourceTree = "<group>"; };
+		AE2E91A9179D061A0049B28E /* googuu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "googuu-Info.plist"; sourceTree = "<group>"; };
 		AE2E91AB179D061A0049B28E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE2E91AD179D061A0049B28E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		AE2E91AF179D061A0049B28E /* 估股-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "估股-Prefix.pch"; sourceTree = "<group>"; };
 		AE2E91C0179D06890049B28E /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		AE2E91C1179D06890049B28E /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		AE2E91C2179D06890049B28E /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -722,8 +720,6 @@
 		AE2E93D1179D0A400049B28E /* GooGuuContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GooGuuContainerViewController.m; sourceTree = "<group>"; };
 		AE2E93D2179D0A400049B28E /* CalendarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
 		AE2E93D3179D0A400049B28E /* CalendarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
-		AE2E93D4179D0A520049B28E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		AE2E93D5179D0A520049B28E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		AE2E93D6179D0A520049B28E /* Company.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Company.h; sourceTree = "<group>"; };
 		AE2E93D7179D0A520049B28E /* Company.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Company.m; sourceTree = "<group>"; };
 		AE2E93D8179D0A520049B28E /* ArticleCommentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleCommentModel.h; sourceTree = "<group>"; };
@@ -1292,6 +1288,8 @@
 		AEFB4C7917A8C08C0044176B /* AboutUsAndCopyrightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsAndCopyrightViewController.h; sourceTree = "<group>"; };
 		AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsAndCopyrightViewController.m; sourceTree = "<group>"; };
 		AEFB4C7C17A8C0C20044176B /* AboutUsAndCopyrightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutUsAndCopyrightView.xib; sourceTree = "<group>"; };
+		AEFE659E17B8760B00E1FC8F /* googuu-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "googuu-Prefix.pch"; sourceTree = "<group>"; };
+		AEFE659F17B8799B00E1FC8F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1340,7 +1338,7 @@
 		AE2E9195179D061A0049B28E = {
 			isa = PBXGroup;
 			children = (
-				AE2E91A7179D061A0049B28E /* 估股 */,
+				AE2E91A7179D061A0049B28E /* googuu */,
 				AE2E9422179D0AE20049B28E /* XYZAppDelegate.h */,
 				AE2E9423179D0AE20049B28E /* XYZAppDelegate.m */,
 				AE75B91917A217690046901F /* Test */,
@@ -1352,7 +1350,7 @@
 		AE2E919F179D061A0049B28E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AE2E919E179D061A0049B28E /* 估股.app */,
+				AE2E919E179D061A0049B28E /* googuu.app */,
 				AE75B91517A217690046901F /* Test.app */,
 			);
 			name = Products;
@@ -1382,7 +1380,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AE2E91A7179D061A0049B28E /* 估股 */ = {
+		AE2E91A7179D061A0049B28E /* googuu */ = {
 			isa = PBXGroup;
 			children = (
 				AE2E93C9179D0A110049B28E /* DataBase */,
@@ -1404,12 +1402,14 @@
 				AE2E91BE179D06890049B28E /* Plugs */,
 				AE2E91A8179D061A0049B28E /* Supporting Files */,
 			);
+			name = googuu;
 			path = "估股";
 			sourceTree = "<group>";
 		};
 		AE2E91A8179D061A0049B28E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AEFE659F17B8799B00E1FC8F /* Default-568h@2x.png */,
 				AE4CF0E817AA48CF0060640E /* c.html */,
 				AE15103F17A79CC1007B9E66 /* Default.png */,
 				AE31AB9C17A6000A007E903F /* calu.html */,
@@ -1425,10 +1425,10 @@
 				AE2E9425179D13A50049B28E /* 33.png */,
 				AE2E9426179D13A50049B28E /* 44.png */,
 				AE2E9427179D13A50049B28E /* 66.png */,
-				AE2E91A9179D061A0049B28E /* 估股-Info.plist */,
+				AE2E91A9179D061A0049B28E /* googuu-Info.plist */,
 				AE2E91AA179D061A0049B28E /* InfoPlist.strings */,
 				AE2E91AD179D061A0049B28E /* main.m */,
-				AE2E91AF179D061A0049B28E /* 估股-Prefix.pch */,
+				AEFE659E17B8760B00E1FC8F /* googuu-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1768,8 +1768,6 @@
 		AE2E93BF179D099D0049B28E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				AE2E93D4179D0A520049B28E /* User.h */,
-				AE2E93D5179D0A520049B28E /* User.m */,
 				AE2E93D6179D0A520049B28E /* Company.h */,
 				AE2E93D7179D0A520049B28E /* Company.m */,
 				AE2E93D8179D0A520049B28E /* ArticleCommentModel.h */,
@@ -2608,9 +2606,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AE2E919D179D061A0049B28E /* 估股 */ = {
+		AE2E919D179D061A0049B28E /* googuu */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE2E91BB179D061A0049B28E /* Build configuration list for PBXNativeTarget "估股" */;
+			buildConfigurationList = AE2E91BB179D061A0049B28E /* Build configuration list for PBXNativeTarget "googuu" */;
 			buildPhases = (
 				AE2E919A179D061A0049B28E /* Sources */,
 				AE2E919B179D061A0049B28E /* Frameworks */,
@@ -2620,9 +2618,9 @@
 			);
 			dependencies = (
 			);
-			name = "估股";
+			name = googuu;
 			productName = "估股";
-			productReference = AE2E919E179D061A0049B28E /* 估股.app */;
+			productReference = AE2E919E179D061A0049B28E /* googuu.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AE75B91417A217690046901F /* Test */ = {
@@ -2651,7 +2649,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Xcode;
 			};
-			buildConfigurationList = AE2E9199179D061A0049B28E /* Build configuration list for PBXProject "估股" */;
+			buildConfigurationList = AE2E9199179D061A0049B28E /* Build configuration list for PBXProject "googuu" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2663,7 +2661,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AE2E919D179D061A0049B28E /* 估股 */,
+				AE2E919D179D061A0049B28E /* googuu */,
 				AE75B91417A217690046901F /* Test */,
 			);
 		};
@@ -2739,6 +2737,7 @@
 				AEFB4C7D17A8C0C20044176B /* AboutUsAndCopyrightView.xib in Resources */,
 				AE4CF0E917AA48CF0060640E /* c.html in Resources */,
 				AE6C5EAD17B23A7E0080988E /* DiscountRateView.xib in Resources */,
+				AEFE65A017B8799B00E1FC8F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2951,8 +2950,6 @@
 				AE2E9498179D15550049B28E /* ClientLoginViewController.m in Sources */,
 				AE2E9499179D15550049B28E /* SettingCenterViewController.h in Sources */,
 				AE2E949A179D15550049B28E /* SettingCenterViewController.m in Sources */,
-				AE2E949B179D15550049B28E /* User.h in Sources */,
-				AE2E949C179D15550049B28E /* User.m in Sources */,
 				AE2E949D179D15550049B28E /* Company.h in Sources */,
 				AE2E949E179D15550049B28E /* Company.m in Sources */,
 				AE2E949F179D15550049B28E /* ArticleCommentModel.h in Sources */,
@@ -3261,8 +3258,8 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
-				INFOPLIST_FILE = "估股/估股-Info.plist";
+				GCC_PREFIX_HEADER = "估股/googuu-Prefix.pch";
+				INFOPLIST_FILE = "估股/googuu-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../UIDemo\"",
@@ -3272,7 +3269,7 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = googuu;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3283,8 +3280,8 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "估股/估股-Prefix.pch";
-				INFOPLIST_FILE = "估股/估股-Info.plist";
+				GCC_PREFIX_HEADER = "估股/googuu-Prefix.pch";
+				INFOPLIST_FILE = "估股/googuu-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../UIDemo\"",
@@ -3294,7 +3291,7 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = googuu;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3342,7 +3339,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AE2E9199179D061A0049B28E /* Build configuration list for PBXProject "估股" */ = {
+		AE2E9199179D061A0049B28E /* Build configuration list for PBXProject "googuu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2E91B9179D061A0049B28E /* Debug */,
@@ -3351,7 +3348,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE2E91BB179D061A0049B28E /* Build configuration list for PBXNativeTarget "估股" */ = {
+		AE2E91BB179D061A0049B28E /* Build configuration list for PBXNativeTarget "googuu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2E91BC179D061A0049B28E /* Debug */,

@@ -10,14 +10,22 @@
 
 #import "tipViewController.h"
 #import "XYZAppDelegate.h"
-#import "ConcernedViewController.h"
 #import "GooNewsViewController.h"
 #import "MyGooguuViewController.h"
 #import "FinanceToolsViewController.h"
-#import "ConcernedViewController.h"
 #import "ClientCenterViewController.h"
 #import "DBLite.h"
 #import "PrettyTabBarViewController.h"
+#import "ClientCenterViewController.h"
+#import "UniverseViewController.h"
+#import "ChartViewController.h"
+#import "Company.h"
+#import "PrettyNavigationController.h"
+#import "PrettyTabBarViewController.h"
+#import "Utiles.h"
+#import "Reachability.h"
+#import "ChartViewController.h"
+#import "CommonlyMacros.h"
 
 @interface tipViewController ()
 
@@ -36,7 +44,17 @@
 @synthesize pageScroll;
 @synthesize pageControl;
 @synthesize gotoMainViewBtn;
-@synthesize concernedViewController;
+
+- (void)dealloc
+{
+    SAFE_RELEASE(imageView);
+    SAFE_RELEASE(_left);
+    SAFE_RELEASE(_right);
+    SAFE_RELEASE(pageControl);
+    SAFE_RELEASE(pageScroll);
+    SAFE_RELEASE(gotoMainViewBtn);
+    [super dealloc];
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -135,7 +153,7 @@
 -(void)hide{
     UIApplication *app=[UIApplication sharedApplication];
     [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -158,37 +176,40 @@
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     
     
-    UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"rank"] tag:1];
-    UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"uptrend.png"] tag:2];
+    UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"googuuNewsBar"] tag:1];
+    UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"myGooGuuBar"] tag:2];
     UITabBarItem *barItem3=[[UITabBarItem alloc] initWithTitle:@"金融工具" image:[UIImage imageNamed:@"hammer.png"] tag:3];
-    UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"设置" image:[UIImage imageNamed:@"settings1.png"] tag:4];
+    UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"功能设置" image:[UIImage imageNamed:@"moreAboutBar"] tag:4];
+    UITabBarItem *barItem5=[[UITabBarItem alloc] initWithTitle:@"估值模型" image:[UIImage imageNamed:@"companyListBar"] tag:5];
     
     //股票关注
     MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
     myGooGuu.tabBarItem=barItem2;
-    UINavigationController *myGooGuuNavController=[[UINavigationController alloc] initWithRootViewController:myGooGuu];
-    
-    //金融工具
-    FinanceToolsViewController *toolsViewController=[[FinanceToolsViewController alloc] init];
-    toolsViewController.tabBarItem=barItem3;
-    
-    
+    PrettyNavigationController *myGooGuuNavController=[[PrettyNavigationController alloc] initWithRootViewController:myGooGuu];
+
     //客户设置
     ClientCenterViewController *clientView=[[ClientCenterViewController alloc] init];
     clientView.tabBarItem=barItem4;
-    UINavigationController *clientCenterNav=[[UINavigationController alloc] initWithRootViewController:clientView];
+    PrettyNavigationController *clientCenterNav=[[PrettyNavigationController alloc] initWithRootViewController:clientView];
+    
     
     //估股新闻
     GooNewsViewController *gooNewsViewController=[[GooNewsViewController alloc] init];
     gooNewsViewController.tabBarItem=barItem;
-    UINavigationController *gooNewsNavController=[[UINavigationController alloc] initWithRootViewController:gooNewsViewController];
+    PrettyNavigationController *gooNewsNavController=[[PrettyNavigationController alloc] initWithRootViewController:gooNewsViewController];
+    
+    
+    //股票列表
+    UniverseViewController *universeViewController=[[UniverseViewController alloc] init];
+    universeViewController.tabBarItem=barItem5;
+    PrettyNavigationController *universeNav=[[PrettyNavigationController alloc] initWithRootViewController:universeViewController];
     
     
     
     
     delegate.tabBarController = [[[PrettyTabBarViewController alloc] init] autorelease];
     
-    delegate.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,myGooGuuNavController,toolsViewController, clientCenterNav ,nil];
+    delegate.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,universeNav,myGooGuuNavController, clientCenterNav ,nil];
     
     delegate.window.backgroundColor=[UIColor clearColor];
     delegate.window.rootViewController = self.tabBarController;
@@ -198,13 +219,21 @@
     
     [[delegate.window layer] addAnimation:animation forKey:kCATransitionReveal];
     
-    [gooNewsNavController release];
+    SAFE_RELEASE(barItem);
+    SAFE_RELEASE(barItem2);
+    SAFE_RELEASE(barItem3);
+    SAFE_RELEASE(barItem4);
+    SAFE_RELEASE(barItem5);
     
-    [myGooGuu release];
+    SAFE_RELEASE(myGooGuu);
+    SAFE_RELEASE(clientView);
+    SAFE_RELEASE(gooNewsNavController);
+    SAFE_RELEASE(universeViewController);
     
-    [barItem release];
-    [barItem2 release];
-    [barItem3 release];
+    SAFE_RELEASE(myGooGuuNavController);
+    SAFE_RELEASE(clientCenterNav);
+    SAFE_RELEASE(gooNewsNavController);
+    SAFE_RELEASE(universeNav);
     
 }
 

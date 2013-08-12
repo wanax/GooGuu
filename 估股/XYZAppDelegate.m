@@ -23,6 +23,7 @@
 #import "Utiles.h"
 #import "Reachability.h"
 #import "ChartViewController.h"
+#import "CommonlyMacros.h"
 
 
 @implementation XYZAppDelegate
@@ -82,11 +83,6 @@
         MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
         myGooGuu.tabBarItem=barItem2;
         PrettyNavigationController *myGooGuuNavController=[[PrettyNavigationController alloc] initWithRootViewController:myGooGuu];
-       
-        
-        //金融工具
-        /*FinanceToolsViewController *toolsViewController=[[FinanceToolsViewController alloc] init];
-        toolsViewController.tabBarItem=barItem3;*/
 
         
         //客户设置
@@ -118,22 +114,21 @@
         self.window.rootViewController = self.tabBarController;
 
         
-        [barItem release];
-        [barItem2 release];
-        [barItem3 release];
-        [barItem4 release];
-        [barItem5 release];
+        SAFE_RELEASE(barItem);
+        SAFE_RELEASE(barItem2);
+        SAFE_RELEASE(barItem3);
+        SAFE_RELEASE(barItem4);
+        SAFE_RELEASE(barItem5);
 
-        [myGooGuu release];
-        [clientView release];
-        [gooNewsViewController release];
-        [universeViewController release];
-        //[toolsViewController release];
-        
-        [myGooGuuNavController release];
-        [clientCenterNav release];
-        [gooNewsNavController release];
-        [universeNav release];
+        SAFE_RELEASE(myGooGuu);
+        SAFE_RELEASE(clientView);
+        SAFE_RELEASE(gooNewsNavController);
+        SAFE_RELEASE(universeViewController);
+
+        SAFE_RELEASE(myGooGuuNavController);
+        SAFE_RELEASE(clientCenterNav);
+        SAFE_RELEASE(gooNewsNavController);
+        SAFE_RELEASE(universeNav);
 
     }
 
