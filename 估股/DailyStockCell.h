@@ -9,7 +9,6 @@
 //  2013-07-18 | Wanax | 我的估股栏目顶层每日一股cell
 
 #import <UIKit/UIKit.h>
-#import "NIAttributedLabel.h"
 
 @interface DailyStockCell : UITableViewCell
 
@@ -22,6 +21,5 @@
 @property (nonatomic,retain) IBOutlet UILabel *tradeLabel;
 @property (nonatomic,retain) IBOutlet UILabel *outLookLabel;
 @property (nonatomic,retain) IBOutlet UILabel *outLookTextLabel;
-@property (nonatomic,retain) IBOutlet NIAttributedLabel *backGroundLabel;
 
 @end

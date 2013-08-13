@@ -12,7 +12,6 @@
 #import "MBProgressHUD.h"
 #import "MHTabBarController.h"
 #import "UILabel+VerticalAlign.h"
-#import "NIAttributedLabel.h"
 #import "CommonlyMacros.h"
 
 @interface CalendarViewController ()

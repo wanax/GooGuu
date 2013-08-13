@@ -55,7 +55,6 @@
 @synthesize hostView;
 @synthesize plotSpace;
 @synthesize graph;
-@synthesize reverseDic;
 
 @synthesize webView;
 @synthesize priceLabel;
@@ -74,7 +73,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [graph release];graph=nil;
     [plotSpace release];plotSpace=nil;
     [hostView release];hostView=nil;
-    [reverseDic release];reverseDic=nil;
     
     [_forecastDefaultPoints release];_forecastDefaultPoints=nil;
     [_forecastPoints release];_forecastPoints=nil;
@@ -105,12 +103,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     self.modelClassViewController=[[ModelClassViewController alloc] init];
     self.modelClassViewController.delegate=self;
 
-    YRANGEBEGIN=-0.3;
-    YRANGELENGTH=0.9;
-    YINTERVALLENGTH= 0.1;
-    YORTHOGONALCOORDINATE =11.0;
-    YTICKSPERINTERVAL =0;
-    
     webView=[[UIWebView alloc] init];
     webView.delegate=self;    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
@@ -120,7 +112,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     self.hisPoints=[[NSMutableArray alloc] init];
     self.forecastDefaultPoints=[[NSMutableArray alloc] init];
     self.standard=[[NSMutableArray alloc] init];
-    reverseDic=[[NSMutableDictionary alloc] init];
     
     //初始化图形视图
     @try {
@@ -140,8 +131,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     graph . paddingRight = 0.0f ;
     graph . paddingTop = GRAPAHTOPPAD ;
     graph . paddingBottom = GRAPAHBOTTOMPAD ;
-   
-    graph.title=@"股票估值";
+
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
     
@@ -272,19 +262,19 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self.forecastDefaultPoints removeAllObjects];
     [self.forecastPoints removeAllObjects];
     //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
-    [self.reverseDic removeAllObjects];
     NSMutableDictionary *mutableObj=nil;
     for(id obj in [sourceData objectForKey:@"array"]){
         mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
         if([[mutableObj objectForKey:@"h"] boolValue]){
             [self.hisPoints addObject:mutableObj];
         }else{
-            [self.forecastPoints addObject:mutableObj];
             [self.forecastDefaultPoints addObject:[[mutableObj mutableCopy] autorelease]];
-            [reverseDic setObject:[mutableObj objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[mutableObj objectForKey:@"y"] floatValue]]];
         }
     }
-    [reverseDic setObject:[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"v"] forKey:[NSString stringWithFormat:@"%.0f",[[[self.hisPoints objectAtIndex:[self.hisPoints count]-1] objectForKey:@"y"] floatValue]]];
+    for(id obj in [sourceData objectForKey:@"arraynew"]){
+        mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
+        [self.forecastPoints addObject:mutableObj];
+    }
     //历史数据与预测数据线拼接
     [self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
     [self.forecastDefaultPoints insertObject:[self.hisPoints lastObject] atIndex:0];
@@ -513,6 +503,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     return CGPointMake(coordinateX,coordinateY);
     
 }
+
 #pragma mark -
 #pragma mark Axis Delegate Methods
 
@@ -603,7 +594,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
         //forecastLinePlot.labelOffset=5;
         forecastLinePlot.dataSource=self;//需实现委托
-        forecastLinePlot.delegate=self;
+        //forecastLinePlot.delegate=self;
         
         //创建默认对比数据线
         lineStyle.lineColor=[CPTColor grayColor];
@@ -623,13 +614,13 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         // Add plot symbols: 表示数值的符号的形状
         //
         CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
-        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0];
+        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5];
         symbolLineStyle.lineWidth = 2.0;
         
-        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-        //plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:1.0]];
+        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol diamondPlotSymbol];
+        plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5]];
         plotSymbol.lineStyle     = symbolLineStyle;
-        plotSymbol.size          = CGSizeMake(1.8, 1.8);
+        plotSymbol.size          = CGSizeMake(10, 10);
         
         forecastLinePlot.plotSymbol = plotSymbol;
         historyLinePlot.plotSymbol=plotSymbol;
@@ -638,8 +629,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [graph addPlot:historyLinePlot];
         [graph addPlot:forecastLinePlot];
         
-        [forecastDefaultLinePlot release];
         [forecastLinePlot release];
+        [forecastDefaultLinePlot release];
         [historyLinePlot release];
         
     }

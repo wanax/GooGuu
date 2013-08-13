@@ -20,7 +20,6 @@
 #import "DailyStockCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "SVPullToRefresh.h"
-#import "NimbusAttributedLabel.h"
 #import "CommonlyMacros.h"
 
 
@@ -229,10 +228,6 @@
             cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
             cell.outLookTextLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
         }
-        cell.backGroundLabel.underlineStyle = kCTUnderlineStyleSingle;
-        cell.backGroundLabel.underlineStyleModifier = kCTUnderlinePatternDashDot;
-        cell.backGroundLabel.strokeWidth = 3.0;
-        cell.backGroundLabel.strokeColor = [UIColor blackColor];
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];

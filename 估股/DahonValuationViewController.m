@@ -20,20 +20,38 @@
 
 @implementation DahonValuationViewController
 
+@synthesize oneMonth;
+@synthesize threeMonth;
+@synthesize sixMonth;
+@synthesize oneYear;
+
 @synthesize daHonLinePlot;
+@synthesize historyLinePlot;
 
 @synthesize jsonData;
 @synthesize dateArr;
 @synthesize chartData;
+@synthesize daHonDataDic;
+@synthesize indexDateMap;
+@synthesize daHonIndexSets;
 
 @synthesize graph;
 @synthesize hostView;
 @synthesize plotSpace;
 
 static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
+static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(daHonIndexSets);
+    SAFE_RELEASE(indexDateMap);
+    SAFE_RELEASE(daHonDataDic);
+    SAFE_RELEASE(oneMonth);
+    SAFE_RELEASE(oneYear);
+    SAFE_RELEASE(threeMonth);
+    SAFE_RELEASE(sixMonth);
+    SAFE_RELEASE(historyLinePlot);
     SAFE_RELEASE(daHonLinePlot);
     SAFE_RELEASE(dateArr);
     SAFE_RELEASE(chartData);
@@ -59,15 +77,22 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
     [super viewDidLoad];
     [self initData];
     [self initChart];
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    id com=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
 	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
-    [tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(75.5,260,80,40) andFun:@selector(changeDateInter:)];
-    [tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(158.5,260,80,40) andFun:@selector(changeDateInter:)];
-    [tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(241.5,260,80,40) andFun:@selector(changeDateInter:)];
-    [tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(324.5,260,80,40) andFun:@selector(changeDateInter:)];
+    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(370,260,80,40) andFun:@selector(backTo:)];
+    oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(30,260,80,40) andFun:@selector(changeDateInter:)];
+    threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(115,260,80,40) andFun:@selector(changeDateInter:)];
+    sixMonth=[tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(200,260,80,40) andFun:@selector(changeDateInter:)];
+    oneYear=[tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(285,260,80,40) andFun:@selector(changeDateInter:)];
+    [oneMonth setEnabled:NO];
+    [threeMonth setEnabled:NO];
+    [sixMonth setEnabled:NO];
+    [oneYear setEnabled:NO];
     SAFE_RELEASE(tool);
 }
 
@@ -86,16 +111,9 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
 }
 
 -(void)initChart{
-    XRANGEBEGIN=0;
+    XRANGEBEGIN=-10;
     XRANGELENGTH=50;
-    YRANGEBEGIN=0;
-    YRANGELENGTH=20;
     XINTERVALLENGTH=50;
-    XORTHOGONALCOORDINATE=5;
-    XTICKSPERINTERVAL=0;
-    YINTERVALLENGTH=5;
-    YORTHOGONALCOORDINATE =11.0;
-    YTICKSPERINTERVAL =0;
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
@@ -119,7 +137,8 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction=YES;
-    DrawXYAxis;
+    [self.hostView setAllowPinchScaling:NO];
+    DrawXYAxisWithoutXAxisOrYAxis;
     [self addScatterChart];
 }
 
@@ -133,9 +152,26 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
        
         self.chartData=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"data"];
         self.dateArr=[Utiles sortDateArr:self.chartData];
-
+        self.daHonDataDic=[resObj objectForKey:@"dahonData"];
+        NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
+        for(int i=0;i<[self.dateArr count];i++){
+            [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
+        }
+        NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
+        for(id key in daHonDataDic){
+            [tempMap setValue:key forKey:[tempDic objectForKey:key]];
+        }
+        self.indexDateMap=tempMap;
+        self.daHonIndexSets=[self.indexDateMap allKeys];
+        
         [self setXYAxis];
+        [oneMonth setEnabled:YES];
+        [threeMonth setEnabled:YES];
+        [sixMonth setEnabled:YES];
+        [oneYear setEnabled:YES];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
+        SAFE_RELEASE(tempDic);
+        SAFE_RELEASE(tempMap);
     }];
 }
 
@@ -156,7 +192,8 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
     YRANGELENGTH=[[xyDic objectForKey:@"yLength"] doubleValue];
     YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] doubleValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] doubleValue];
-    DrawXYAxis;
+    plotSpace.globalYRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(YRANGEBEGIN) length:CPTDecimalFromDouble(YRANGELENGTH)];
+    DrawXYAxisWithoutXAxisOrYAxis;
     [graph reloadData];
 }
 
@@ -171,7 +208,12 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
 //散点数据源委托实现
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
 
-    return [self.chartData count];
+    
+    if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
+        return [self.chartData count];
+    }else if([(NSString *)plot.identifier isEqualToString:DAHON_DATALINE_IDENTIFIER]){
+        return [self.daHonDataDic count];
+    }
 
 }
 
@@ -179,7 +221,7 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
     
     NSNumber *num=nil;
     
-    if([(NSString *)plot.identifier isEqualToString:DAHON_DATALINE_IDENTIFIER]){
+    if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
   
@@ -189,8 +231,35 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
             num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:index]] objectForKey:@"close"];
         }
         
+    }else if([(NSString *)plot.identifier isEqualToString:DAHON_DATALINE_IDENTIFIER]){
+        
+        NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
+        NSInteger trueIndex=[[self.daHonIndexSets objectAtIndex:index] intValue];
+        if([key isEqualToString:@"x"]){
+            num=[NSNumber numberWithInt:trueIndex];
+        }else if([key isEqualToString:@"y"]){
+            num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:trueIndex]] objectForKey:@"close"];
+        }
     }
     return  num;
+}
+
+#pragma mark -
+#pragma mark Scatter Plot Methods Delegate
+-(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx{
+    NSNumber *trueIndex=[NSNumber numberWithInt:[[self.daHonIndexSets objectAtIndex:idx] intValue]];
+    NSString *date=[self.indexDateMap objectForKey:trueIndex];
+    id data=[self.daHonDataDic objectForKey:date];
+    NSString *msg=[[NSString alloc] init];
+    for(id obj in data){
+        msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
+    }
+
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+    alert.alertViewStyle=UIAlertViewStyleDefault;
+    [alert show];
+    SAFE_RELEASE(alert);
+    
 }
 
 #pragma mark -
@@ -217,11 +286,19 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
             
             NSString * labelString      = [formatter stringForObjectValue:tickLocation];
             NSString *str=nil;
-            if([labelString intValue]<230&&[labelString intValue]>=0){
-                str=[self.dateArr objectAtIndex:[labelString intValue]];
-            }else{
-                str=@"";
+            if([self.dateArr count]>10){
+                @try {
+                    if([labelString intValue]<=[self.dateArr count]&&[labelString intValue]>=0){
+                        str=[self.dateArr objectAtIndex:[labelString intValue]];
+                    }else{
+                        str=@"";
+                    }
+                }
+                @catch (NSException *exception) {
+                    NSLog(@"%@",exception);
+                }
             }
+        
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:str style:theLabelTextStyle];
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
@@ -237,7 +314,6 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         //[formatter setPositiveFormat:@"0.00%;0.00%;-0.00%"];
         [formatter setPositiveFormat:@"##.##"];
-        CGFloat labelOffset             = axis.labelOffset;
         NSMutableSet * newLabels        = [NSMutableSet set];
         static CPTTextStyle * positiveStyle = nil;
         for (NSDecimalNumber * tickLocation in locations) {
@@ -253,8 +329,7 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             =  0;
-            //newLabel.rotation     = labelOffset;
+            newLabel.offset             =  10;
             [newLabels addObject:newLabel];
         }
         
@@ -270,16 +345,38 @@ static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
 
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     //修改折线图线段样式,创建可调整数据线段
-    daHonLinePlot=[[CPTScatterPlot alloc] init];
+    historyLinePlot=[[CPTScatterPlot alloc] init];
     lineStyle.miterLimit=2.0f;
     lineStyle.lineWidth=2.0f;
-    lineStyle.lineColor=[CPTColor whiteColor];
+    lineStyle.lineColor=[CPTColor colorWithComponentRed:134/255.0 green:6/255.0 blue:156 alpha:0.8];
+    historyLinePlot.dataLineStyle=lineStyle;
+    historyLinePlot.identifier=HISTORY_DATALINE_IDENTIFIER;
+    historyLinePlot.labelOffset=5;
+    historyLinePlot.dataSource=self;
+    historyLinePlot.delegate=self;
+    
+    daHonLinePlot=[[CPTScatterPlot alloc] init];
+    lineStyle.miterLimit=0.0f;
+    lineStyle.lineWidth=0.0f;
+    lineStyle.lineColor=[CPTColor clearColor];
     daHonLinePlot.dataLineStyle=lineStyle;
     daHonLinePlot.identifier=DAHON_DATALINE_IDENTIFIER;
-    //forecastLinePlot.labelOffset=5;
-    daHonLinePlot.dataSource=self;//需实现委托
+    daHonLinePlot.labelOffset=5;
+    daHonLinePlot.dataSource=self;
     daHonLinePlot.delegate=self;
+    
+    CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
+    symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5];
+    symbolLineStyle.lineWidth = 2.0;
+    
+    CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+    plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5]];
+    plotSymbol.lineStyle     = symbolLineStyle;
+    plotSymbol.size          = CGSizeMake(20, 20);
+    
+    daHonLinePlot.plotSymbol = plotSymbol;
    
+    [graph addPlot:historyLinePlot];
     [graph addPlot:daHonLinePlot];
 
 }

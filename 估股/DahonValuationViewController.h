@@ -11,7 +11,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "DrawChartTool.h"
 
-#define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL to:self isY:YES]
+#define DrawXYAxisWithoutXAxisOrYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL to:self isY:NO isX:NO]
 
 @interface DahonValuationViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTAxisDelegate>{
     //x轴起点
@@ -37,12 +37,22 @@
     
     CPTXYGraph * graph ;
 }
+@property (nonatomic,retain) NSNumberFormatter * f;
 
 @property (nonatomic,retain) id jsonData;
-@property (nonatomic,retain) id dateArr;
+@property (nonatomic,retain) NSArray *dateArr;
 @property (nonatomic,retain) id chartData;
+@property (nonatomic,retain) NSDictionary *daHonDataDic;
+@property (nonatomic,retain) NSMutableDictionary *indexDateMap;
+@property (nonatomic,retain) NSArray *daHonIndexSets;
+
+@property (nonatomic,retain) UIButton *oneMonth;
+@property (nonatomic,retain) UIButton *threeMonth;
+@property (nonatomic,retain) UIButton *sixMonth;
+@property (nonatomic,retain) UIButton *oneYear;
 
 @property (nonatomic,retain) CPTScatterPlot * daHonLinePlot;
+@property (nonatomic,retain) CPTScatterPlot * historyLinePlot;
 
 //绘图view
 @property (nonatomic,retain) CPTXYGraph * graph ;

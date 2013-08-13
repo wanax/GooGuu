@@ -9,12 +9,8 @@
 //  2013-06-21 | Wanax | 设置中心 
 
 #import <UIKit/UIKit.h>
-#import "NimbusModels.h"
 
 @class CustomTableView;
-@class NIMutableTableViewModel;
-@class NITableViewModel;
-@class NIRadioGroup;
 
 
 // This enumeration is used in the sub radio group mapping.

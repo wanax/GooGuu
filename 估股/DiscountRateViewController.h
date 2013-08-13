@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DiscountRateViewController : UIViewController<UIWebViewDelegate>
+@interface DiscountRateViewController : UIViewController<UIWebViewDelegate>{
+    float ggPrice;
+    float myRate;
+    float unRisk;
+    float marketBeta;
+    float marketPremium;
+}
 
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSMutableArray *transData;

@@ -181,6 +181,7 @@
     }
     
     NSUInteger row = [indexPath row];
+    NSAssert([self.commentArr count]>=row,@"index bound");
     id model=[self.commentArr objectAtIndex:row];
     
     cell.name = [model objectForKey:@"author"];

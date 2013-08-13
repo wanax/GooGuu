@@ -46,18 +46,27 @@
     return button;
     
 }
+NSComparator cmptr = ^(id obj1, id obj2){
+    if ([obj1 floatValue] > [obj2 floatValue]) {
+        return (NSComparisonResult)NSOrderedDescending;
+    }
+    
+    if ([obj1 floatValue] < [obj2 floatValue]) {
+        return (NSComparisonResult)NSOrderedAscending;
+    }
+    return (NSComparisonResult)NSOrderedSame;
+};
++(NSDictionary *)getMaxMinMidFromArr:(NSArray *)arr{
+    NSArray *sortArr=[arr sortedArrayUsingComparator:cmptr];
+    double max=[[sortArr lastObject] doubleValue];
+    double min=[[sortArr objectAtIndex:0] doubleValue];
+    double mid=(max+min)/2;
+    NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:max],@"max",[NSNumber numberWithDouble:min],@"min",[NSNumber numberWithDouble:mid],@"mid", nil];
+    return dic;
+}
 
 +(NSDictionary *)getXYAxisRangeFromxArr:(NSArray *)xArr andyArr:(NSArray *)yArr fromWhere:(ChartType)tag{
-    NSComparator cmptr = ^(id obj1, id obj2){
-        if ([obj1 floatValue] > [obj2 floatValue]) {
-            return (NSComparisonResult)NSOrderedDescending;
-        }
-        
-        if ([obj1 floatValue] < [obj2 floatValue]) {
-            return (NSComparisonResult)NSOrderedAscending;
-        }
-        return (NSComparisonResult)NSOrderedSame;
-    };
+   
     NSArray *sortXArr=[xArr sortedArrayUsingComparator:cmptr];
     NSArray *sortYArr=[yArr sortedArrayUsingComparator:cmptr];
     
@@ -108,8 +117,8 @@
     
     if(tag==DahonModel){
         xOrigin=yMin;
-        yInterval=0.5;
-        yOrigin=xBegin+xLength*0.2;
+        yInterval=0.5*yTap;
+        yOrigin=xBegin;
     }
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -125,7 +134,7 @@
     
 }
 
-+(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(double)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY{
++(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(double)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY isX:(BOOL)isX{
 
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
@@ -149,31 +158,35 @@
     CPTXYAxis *x=axisSet.xAxis;
     
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle.miterLimit = 50.0f;
     lineStyle.lineWidth = 1.5;
-    lineStyle.lineColor = [CPTColor colorWithComponentRed:20/255.0 green:46/255.0 blue:108/255.0 alpha:1.0];
-    
+    lineStyle.lineCap=kCGLineCapButt;
+    lineStyle.lineColor = [CPTColor colorWithComponentRed:112/255.0 green:124/255.0 blue:4/255.0 alpha:1.0];
+    if(!isX){
+        lineStyle.lineWidth=0;
+    }
+    x.axisLineStyle=lineStyle;
     x.majorIntervalLength=CPTDecimalFromLong(XINTERVALLENGTH);
     x.orthogonalCoordinateDecimal=CPTDecimalFromDouble(XORTHOGONALCOORDINATE);
     x.minorTicksPerInterval=XTICKSPERINTERVAL;
+    //lineStyle.lineWidth=1.0;
     x.minorTickLineStyle = lineStyle;
     x.majorTickLineStyle=lineStyle;
-    //x.axisTitle=[[CPTAxisTitle alloc] initWithText:@"年份" textStyle:[CPTTextStyle textStyle]];
-    x.axisLineStyle=lineStyle;
     x.delegate=delegate;
     
-    lineStyle.lineColor = [CPTColor colorWithComponentRed:41/255.0 green:41/255.0 blue:41/255.0 alpha:1.0];
+    //lineStyle.lineColor = [CPTColor colorWithComponentRed:112/255.0 green:196/255.0 blue:64/255.0 alpha:1.0];
     lineStyle.lineWidth = 1.0;
     if(!isY){
         lineStyle.lineWidth=0.0;
     }
     CPTXYAxis *y=axisSet.yAxis;
+    y.axisLineStyle=lineStyle;
     y.majorIntervalLength=CPTDecimalFromFloat(YINTERVALLENGTH);
     y.orthogonalCoordinateDecimal=CPTDecimalFromFloat(YORTHOGONALCOORDINATE);
-    y.minorTicksPerInterval=YTICKSPERINTERVAL;
+    y.minorTicksPerInterval=YTICKSPERINTERVAL;    
+    y.majorTickLength=10000.0;
+    lineStyle.lineWidth=1.0;
+    y.majorTickLineStyle=lineStyle;
     y.minorTickLineStyle = lineStyle;
-    y.axisLineStyle=lineStyle;
     y.delegate=delegate;
     
 }

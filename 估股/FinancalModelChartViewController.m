@@ -101,7 +101,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
     
     self.points=[[NSMutableArray alloc] init];
-	
+    
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
@@ -122,14 +122,14 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     graph . paddingRight = 0.0f ;
     graph . paddingTop = GRAPAHTOPPAD ;
     graph . paddingBottom = 20 ;
-
+    
     
     graph.title=@"金融模型";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
     //plotSpace.allowsUserInteraction=YES;
     
-    DrawXYAxis;
+    DrawXYAxisWithoutYAxis;
     [self initBarPlot];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
@@ -148,7 +148,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 #pragma Button Clicked Methods
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
-
+    
     sender.showsTouchWhenHighlighted=YES;
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
@@ -163,7 +163,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         [floatingController presentWithContentViewController:modelOtherViewController
                                                     animated:YES];
     }
-	
+    
 }
 
 -(void)backTo:(UIButton *)bt{
@@ -188,7 +188,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
     self.points=[temp objectForKey:@"array"];
     self.yAxisUnit=[temp objectForKey:@"unit"];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];    
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
@@ -236,13 +236,6 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
 }
 
-#pragma mark -
-#pragma mark Bar Methods Delegate
--(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx{
-    
-}
-
-
 
 #pragma mark -
 #pragma mark Bar Data Source Delegate
@@ -255,7 +248,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     if ( !whiteText ) {
         whiteText = [[ CPTMutableTextStyle alloc ] init ];
         whiteText.color=[CPTColor colorWithComponentRed:85/255.0 green:16/255.0 blue:118/255.0 alpha:1.0];
-    }    
+    }
     // 定义一个 TextLayer
     CPTTextLayer *newLayer = nil ;
     NSString *numberString =nil;
@@ -275,7 +268,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 }
 
 //散点数据源委托实现
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{    
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
     return [self.points count];
 }
 
@@ -335,7 +328,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         
         axis.axisLabels = newLabels;
     }else{
-    
+        
     }
     
     
@@ -356,7 +349,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     barPlot.identifier = BAR_IDENTIFIER;
     barPlot.opacity = 0.0f;
     barPlot.opacity=0.0f;
-
+    
     
     CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     fadeInAnimation.duration            = 3.0f;
@@ -384,7 +377,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
     YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
-    DrawXYAxis;
+    DrawXYAxisWithoutYAxis;
     SAFE_RELEASE(xTmp);
     SAFE_RELEASE(yTmp);
     
@@ -404,7 +397,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     }
 }
 
--(NSUInteger)supportedInterfaceOrientations{   
+-(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscapeRight;
 }
 
