@@ -33,7 +33,6 @@
 
 @synthesize comInfo;
 @synthesize globalDriverId;
-@synthesize chartData;
 
 @synthesize modelMainViewController;
 @synthesize modelFeeViewController;
@@ -72,7 +71,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
-    SAFE_RELEASE(chartData);
     SAFE_RELEASE(globalDriverId);
     SAFE_RELEASE(comInfo);
     
@@ -167,13 +165,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 }
 -(void)saveData:(UIButton *)bt{
-    NSLog(@"%@",chartData);
-    NSString *saveData=[Utiles dataRecombinant:chartData comInfo:comInfo driverId:globalDriverId price:self.priceLabel.text];
-    NSLog(@"%@",saveData);
+    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:globalDriverId shouldTrans:YES];
+    NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",saveData,@"data", nil];
     [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
        
-        NSLog(@"%@",resObj);
+        if([resObj objectForKey:@"status"]){
+            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        }
         
     }];
     
@@ -258,6 +257,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 
         id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart shouldTrans:YES];
+        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]];
         self.industryClass=resTmp;
         id transObj=resTmp;
         self.modelMainViewController.jsonData=transObj;
@@ -267,11 +267,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.modelFeeViewController.indicator=@"listFee";
         self.modelCapViewController.indicator=@"listCap";
       
-        chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"] shouldTrans:YES];
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"] shouldTrans:YES];
         globalDriverId=[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"];
-        NSLog(@"%@",chartData);
-        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]];
-        
+ 
         [self divideData:chartData];
         self.yAxisUnit=[chartData objectForKey:@"unit"];
         graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
@@ -295,14 +293,13 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
     
-    chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId shouldTrans:YES];
+    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId shouldTrans:YES];
     globalDriverId=driverId;
     
     [self divideData:chartData];
     self.yAxisUnit=[chartData objectForKey:@"unit"];
     graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
     [self setXYAxis];
-    //[Utiles dataRecombinant:chartData comInfo:comInfo driverId:driverId price:self.priceLabel.text];
 }
 
 
@@ -350,6 +347,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
+                [graph reloadData];
             }
         }
     }];

@@ -73,7 +73,6 @@
 
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSString *globalDriverId;
-@property (nonatomic,retain) id chartData;
 
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelMainViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelFeeViewController;
