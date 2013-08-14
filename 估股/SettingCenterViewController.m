@@ -8,11 +8,9 @@
 
 #import "SettingCenterViewController.h"
 #import <CommonCrypto/CommonDigest.h>
-#import <QuartzCore/QuartzCore.h>
 #import "ClientLoginViewController.h"
 #import "XYZAppDelegate.h"
 #import "PrettyKit.h"
-#import "Utiles.h"
 #import "DoubleLabelCell.h"
 #import "LabelSwitchCell.h"
 #import "StockRiseDownColorSettingViewController.h"

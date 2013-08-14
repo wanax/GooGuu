@@ -9,12 +9,10 @@
 //  2013-05-08 | Wanax | 股票详细页-股票模型
 
 #import "ModelViewController.h"
-#import "Utiles.h"
 #import "ChartViewController.h"
 #import "UIButton+BGColor.h"
 #import "MHTabBarController.h"
 #import "FinancalModelChartViewController.h"
-#import "CommonlyMacros.h"
 #import "DahonValuationViewController.h"
 
 @interface ModelViewController ()
@@ -48,9 +46,9 @@
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
     
-    [self addNewButton:@"查看金融模型" Tag:1 frame:CGRectMake(10, 20, 300, 50)];
-    [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(10, 75, 300, 50)];
-    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(10, 130, 300, 50)];
+    [self addNewButton:@"查看金融模型" Tag:1 frame:CGRectMake(10, 20, 140, 50)];
+    [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(10, 90, 300, 50)];
+    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(170, 20, 140, 50)];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];

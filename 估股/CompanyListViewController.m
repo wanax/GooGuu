@@ -16,18 +16,15 @@
 #import "XYZAppDelegate.h"
 #import "MHTabBarController.h"
 #import "ComFieldViewController.h"
-#import <QuartzCore/QuartzCore.h>
 #import "CustomTableView.h"
 #import "StockCell.h"
-#import "Utiles.h"
 #import "UIButton+BGColor.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
-#import "JSONKit.h"
 #import "MBProgressHUD.h"
 #import "SVPullToRefresh.h"
 #import "IndicatorComView.h"
-#import "CommonlyMacros.h"
+
 
 @interface CompanyListViewController ()
 

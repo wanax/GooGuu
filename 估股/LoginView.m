@@ -8,8 +8,7 @@
 
 #import "LoginView.h"
 #import "ClientCenterViewController.h"
-#import "Utiles.h"
-#import <QuartzCore/QuartzCore.h>
+
 
 @implementation LoginView
 

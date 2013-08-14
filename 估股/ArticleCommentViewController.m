@@ -8,7 +8,6 @@
 
 #import "ArticleCommentViewController.h"
 #import "ArticleCommentModel.h"
-#import "Utiles.h"
 #import "UserCell.h"
 #import "MHTabBarController.h"
 #import "UIImageView+AFNetworking.h"

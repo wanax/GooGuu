@@ -8,10 +8,8 @@
 
 #import "AnalyDetailViewController.h"
 #import "UILabel+VerticalAlign.h"
-#import "Utiles.h"
 #import "PrettyToolbar.h"
 #import "AnalyDetailContainerViewController.h"
-#import "CommonlyMacros.h"
 
 @interface AnalyDetailViewController ()
 

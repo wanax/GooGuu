@@ -7,16 +7,14 @@
 //
 
 #import "ComFieldViewController.h"
-#import "Utiles.h"
 #import "XYZAppDelegate.h"
-#import <QuartzCore/QuartzCore.h>
 #import "IntroductionViewController.h"
 #import "ModelViewController.h"
 #import "AnalysisReportViewController.h"
 #import "MHTabBarController.h"
 #import "ContainerViewController.h"
 #import "PrettyToolbar.h"
-#import "CommonlyMacros.h"
+
 
 @interface ComFieldViewController ()
 

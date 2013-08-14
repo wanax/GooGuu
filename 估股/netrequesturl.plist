@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>DeleteModelData</key>
+	<string>/m/deletemodeldata</string>
+	<key>GetModelData</key>
+	<string>/m/getmodeldata</string>
+	<key>AddModelData</key>
+	<string>/m/addmodeldata</string>
+	<key>AdjustedData</key>
+	<string>/m/adjusteddata</string>
 	<key>GetStockHistoryData</key>
 	<string>/m/getstockhistorydata</string>
 	<key>CompanyModel</key>

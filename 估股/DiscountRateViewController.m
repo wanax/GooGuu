@@ -7,11 +7,9 @@
 //
 
 #import "DiscountRateViewController.h"
-#import "CommonlyMacros.h"
-#import "Utiles.h"
 #import "DrawChartTool.h"
 #import "XYZAppDelegate.h"
-#import "JSONKit.h"
+
 
 @interface DiscountRateViewController ()
 

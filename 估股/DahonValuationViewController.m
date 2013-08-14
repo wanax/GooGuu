@@ -7,11 +7,8 @@
 //
 
 #import "DahonValuationViewController.h"
-#import "CommonlyMacros.h"
-#import "Utiles.h"
 #import "DrawChartTool.h"
 #import "XYZAppDelegate.h"
-#import "JSONKit.h"
 #import "MBProgressHUD.h"
 
 @interface DahonValuationViewController ()
@@ -84,11 +81,11 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
     [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(370,260,80,40) andFun:@selector(backTo:)];
-    oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(30,260,80,40) andFun:@selector(changeDateInter:)];
-    threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(115,260,80,40) andFun:@selector(changeDateInter:)];
-    sixMonth=[tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(200,260,80,40) andFun:@selector(changeDateInter:)];
-    oneYear=[tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(285,260,80,40) andFun:@selector(changeDateInter:)];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(370,260,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(30,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(115,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    sixMonth=[tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(200,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    oneYear=[tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(285,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [oneMonth setEnabled:NO];
     [threeMonth setEnabled:NO];
     [sixMonth setEnabled:NO];
@@ -154,15 +151,23 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
         self.dateArr=[Utiles sortDateArr:self.chartData];
         self.daHonDataDic=[resObj objectForKey:@"dahonData"];
         NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
-        for(int i=0;i<[self.dateArr count];i++){
-            [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
+        @try {
+            for(int i=0;i<[self.dateArr count];i++){
+                [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
+            }
+            NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
+            for(id key in daHonDataDic){
+                [tempMap setValue:key forKey:[tempDic objectForKey:key]];
+            }
+            self.indexDateMap=tempMap;
+            self.daHonIndexSets=[self.indexDateMap allKeys];
+            SAFE_RELEASE(tempDic);
+            SAFE_RELEASE(tempMap);
         }
-        NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
-        for(id key in daHonDataDic){
-            [tempMap setValue:key forKey:[tempDic objectForKey:key]];
+        @catch (NSException *exception) {
+            NSLog(@"%@",exception);
         }
-        self.indexDateMap=tempMap;
-        self.daHonIndexSets=[self.indexDateMap allKeys];
+        
         
         [self setXYAxis];
         [oneMonth setEnabled:YES];
@@ -170,8 +175,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
         [sixMonth setEnabled:YES];
         [oneYear setEnabled:YES];
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
-        SAFE_RELEASE(tempDic);
-        SAFE_RELEASE(tempMap);
+        
     }];
 }
 
@@ -193,6 +197,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] doubleValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] doubleValue];
     plotSpace.globalYRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(YRANGEBEGIN) length:CPTDecimalFromDouble(YRANGELENGTH)];
+    plotSpace.globalXRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(XRANGEBEGIN) length:CPTDecimalFromDouble(300)];
     DrawXYAxisWithoutXAxisOrYAxis;
     [graph reloadData];
 }
@@ -329,7 +334,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             =  10;
+            newLabel.offset             =  -100;
             [newLabels addObject:newLabel];
         }
         

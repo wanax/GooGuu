@@ -8,8 +8,7 @@
 
 #import "StockRiseDownColorSettingViewController.h"
 #import "PrettyKit.h"
-#import "Utiles.h"
-#import "CommonlyMacros.h"
+
 
 @interface StockRiseDownColorSettingViewController ()
 

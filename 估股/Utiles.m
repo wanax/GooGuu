@@ -11,8 +11,7 @@
 #import "MBProgressHUD.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
-#import "JSONKit.h"
-#import "CommonlyMacros.h"
+
 
 @implementation Utiles
 
@@ -332,6 +331,24 @@ static NSDateFormatter *formatter;
     SAFE_RELEASE(f);
     return [tempDate autorelease];
 }
+
++(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price{
+    
+    NSString *returnStr=[NSString stringWithFormat:@"{\"modeldata\":[{\"data\":["];
+    for(id obj in [chartData objectForKey:@"arraynew"]){
+        returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+    }
+    returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"}],",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],driverId,[chartData objectForKey:@"title"]];
+    returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
+    returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    return returnStr;
+}
+
+
+
+
+
+
 
 
 

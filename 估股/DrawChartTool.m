@@ -7,8 +7,7 @@
 //
 
 #import "DrawChartTool.h"
-#import "Utiles.h"
-#import "CommonlyMacros.h"
+#import "UIButton+BGColor.h"
 
 @implementation DrawChartTool
 
@@ -33,13 +32,18 @@
     
 }
 
--(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun{
+-(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun withType:(UIButtonType)buttonType andColor:(NSString *)color{
     
-    UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button=[UIButton buttonWithType:buttonType];
     button.frame=rect;
     [button setTitle:title forState:UIControlStateNormal];
     button.tag=tag;
-    button.backgroundColor=[Utiles colorWithHexString:@"#705C32"];
+    if (buttonType==UIButtonTypeCustom) {
+        [button setBackgroundColor:[Utiles colorWithHexString:color]];
+    }else if(buttonType==UIButtonTypeRoundedRect){
+        [button setBackgroundColorString:color forState:UIControlStateNormal];
+    }
+    
     button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
     [button addTarget:standIn action:fun forControlEvents:UIControlEventTouchDown];
     [view addSubview:button];

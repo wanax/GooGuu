@@ -9,7 +9,6 @@
 #import "GooNewsViewController.h"
 #import "CustomTableView.h"
 #import "GooNewsCell.h"
-#import "Utiles.h"
 #import "EGORefreshTableHeaderView.h"
 #import "WebKitAvailability.h"
 #import "UIImageView+AFNetworking.h"
@@ -20,7 +19,7 @@
 #import "DailyStockCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "SVPullToRefresh.h"
-#import "CommonlyMacros.h"
+
 
 
 @interface GooNewsViewController ()

@@ -20,10 +20,10 @@
 #import "Company.h"
 #import "PrettyNavigationController.h"
 #import "PrettyTabBarViewController.h"
-#import "Utiles.h"
 #import "Reachability.h"
 #import "ChartViewController.h"
 #import "CommonlyMacros.h"
+#import <Crashlytics/Crashlytics.h>
 
 
 @implementation XYZAppDelegate
@@ -51,6 +51,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Utiles setConfigureInfoTo:@"userconfigure" forKey:@"stockColorSetting" andContent:[NSString stringWithFormat:@"%d",0]];
+    [Crashlytics startWithAPIKey:@"c59317990c405b2f42582cacbe9f4fa9abe1fefb"];
     // Override point for customization after application launch.
     //增加标识，用于判断是否是第一次启动应用...
 

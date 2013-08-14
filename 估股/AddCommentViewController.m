@@ -8,7 +8,6 @@
 
 #import "AddCommentViewController.h"
 #import "AFImageRequestOperation.h"
-#import "Utiles.h"
 
 @interface AddCommentViewController ()
 

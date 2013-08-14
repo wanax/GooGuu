@@ -11,8 +11,6 @@
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "math.h"
-#import "JSONKit.h"
-#import "Utiles.h"
 #import <AddressBook/AddressBook.h>
 #import "ModelViewController.h"
 #import "MHTabBarController.h"
@@ -22,9 +20,8 @@
 #import "PrettyNavigationController.h"
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
-#import "ModelClassViewController.h"
-#import "CommonlyMacros.h"
 #import "DiscountRateViewController.h"
+#import <Crashlytics/Crashlytics.h>
 
 
 
@@ -33,6 +30,14 @@
 @end
 
 @implementation ChartViewController
+
+@synthesize comInfo;
+@synthesize globalDriverId;
+@synthesize chartData;
+
+@synthesize modelMainViewController;
+@synthesize modelFeeViewController;
+@synthesize modelCapViewController;
 
 @synthesize forecastPoints=_forecastPoints;
 @synthesize forecastDefaultPoints=_forecastDefaultPoints;
@@ -51,7 +56,6 @@
 
 @synthesize industryClass=_industryClass;
 @synthesize yAxisUnit;
-@synthesize modelClassViewController;
 @synthesize hostView;
 @synthesize plotSpace;
 @synthesize graph;
@@ -68,8 +72,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(chartData);
+    SAFE_RELEASE(globalDriverId);
+    SAFE_RELEASE(comInfo);
+    
+    SAFE_RELEASE(modelMainViewController);
+    SAFE_RELEASE(modelFeeViewController);
+    SAFE_RELEASE(modelCapViewController);
+    
     [yAxisUnit release];yAxisUnit=nil;
-    [modelClassViewController release];modelClassViewController=nil;
     [graph release];graph=nil;
     [plotSpace release];plotSpace=nil;
     [hostView release];hostView=nil;
@@ -91,17 +102,21 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     [super dealloc];
 }
--(void)viewDidDisappear:(BOOL)animated{
-    
-}
-
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     linkage=YES;
-    self.modelClassViewController=[[ModelClassViewController alloc] init];
-    self.modelClassViewController.delegate=self;
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#8D99B2"]];
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    comInfo=delegate.comInfo;
+    
+    self.modelMainViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelFeeViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelCapViewController=[[ModelClassGrade2ViewController alloc] init];
+    self.modelMainViewController.delegate=self;
+    self.modelFeeViewController.delegate=self;
+    self.modelCapViewController.delegate=self;
 
     webView=[[UIWebView alloc] init];
     webView.delegate=self;    
@@ -129,7 +144,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     graph . paddingLeft = 0.0f ;
     graph . paddingRight = 0.0f ;
-    graph . paddingTop = GRAPAHTOPPAD ;
+    graph . paddingTop = 0 ;
     graph . paddingBottom = GRAPAHBOTTOMPAD ;
 
     //绘制图形空间
@@ -139,17 +154,29 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    priceLabel=[tool addLabelToView:self.view withTile:@"拖动计算股价" Tag:11 frame:CGRectMake(0,0,160,40) fontSize:16.0];
-    [tool addButtonToView:self.view withTitle:@"保存" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(saveData:)];
-    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(changeButton:)];
-    [tool addButtonToView:self.view withTitle:@"行业选择" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:)];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:)];
+    priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(0,0,80,40) fontSize:16.0];
+    [tool addButtonToView:self.view withTitle:@"保存" Tag:1 frame:CGRectMake(410,42,60,35) andFun:@selector(saveData:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(340,42,60,35) andFun:@selector(changeButton:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:11 frame:CGRectMake(80,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:22 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:33 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"折现率" Tag:44 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [self addScatterChart];
     [tool release];
 
 }
 -(void)saveData:(UIButton *)bt{
-    NSLog(@"save");
+    NSLog(@"%@",chartData);
+    NSString *saveData=[Utiles dataRecombinant:chartData comInfo:comInfo driverId:globalDriverId price:self.priceLabel.text];
+    NSLog(@"%@",saveData);
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",saveData,@"data", nil];
+    [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
+       
+        NSLog(@"%@",resObj);
+        
+    }];
+    
 }
 
 -(void)changeButton:(UIButton *)bt{
@@ -165,15 +192,34 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }
 }
 
+#pragma mark -
+#pragma Button Clicked Methods
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
     
-    CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
+    sender.showsTouchWhenHighlighted=YES;
+	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
-	[floatingController presentWithContentViewController:modelClassViewController
-												animated:YES];
+    if(sender.tag==11){
+        [floatingController presentWithContentViewController:modelMainViewController
+                                                    animated:YES];
+    }else if(sender.tag==22){
+        [floatingController presentWithContentViewController:modelFeeViewController
+                                                    animated:YES];
+    }else if(sender.tag==33){
+        [floatingController presentWithContentViewController:modelCapViewController
+                                                    animated:YES];
+    }else if(sender.tag==44){
+        DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
+        rateViewController.view.frame=CGRectMake(0,40,480,320);
+        rateViewController.jsonData=self.jsonForChart;
+        [self presentViewController:rateViewController animated:YES completion:nil];
+        SAFE_RELEASE(rateViewController);
+    }
+    
 }
+
 
 -(void)backTo:(UIButton *)bt{    
     bt.showsTouchWhenHighlighted=YES;
@@ -202,8 +248,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
 
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
@@ -213,11 +257,20 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
 
 
-        id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart];
-        self.modelClassViewController.jsonData=resTmp;
+        id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart shouldTrans:YES];
         self.industryClass=resTmp;
+        id transObj=resTmp;
+        self.modelMainViewController.jsonData=transObj;
+        self.modelFeeViewController.jsonData=transObj;
+        self.modelCapViewController.jsonData=transObj;
+        self.modelMainViewController.indicator=@"listMain";
+        self.modelFeeViewController.indicator=@"listFee";
+        self.modelCapViewController.indicator=@"listCap";
       
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"]];
+        chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"] shouldTrans:YES];
+        globalDriverId=[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"];
+        NSLog(@"%@",chartData);
+        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]];
         
         [self divideData:chartData];
         self.yAxisUnit=[chartData objectForKey:@"unit"];
@@ -238,24 +291,20 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
 }
 
--(void)toldYouClassChanged:(NSString *)driverId andIndustry:(NSString *)industry{
+#pragma mark -
+#pragma mark ModelClass Methods Delegate
+-(void)modelClassChanged:(NSString *)driverId{
     
-    if([industry isEqualToString:@"discount"]){
-        
-        DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
-        rateViewController.view.frame=CGRectMake(0,40,480,320);
-        rateViewController.jsonData=self.jsonForChart;
-        [self presentViewController:rateViewController animated:YES completion:nil];
-        SAFE_RELEASE(rateViewController);
-    }else{
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId];
-        [self divideData:chartData];
-        self.yAxisUnit=[chartData objectForKey:@"unit"];
-        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
-        [self setXYAxis];
-    }
+    chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId shouldTrans:YES];
+    globalDriverId=driverId;
     
+    [self divideData:chartData];
+    self.yAxisUnit=[chartData objectForKey:@"unit"];
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
+    [self setXYAxis];
+    //[Utiles dataRecombinant:chartData comInfo:comInfo driverId:driverId price:self.priceLabel.text];
 }
+
 
 -(void)divideData:(id)sourceData{
     [self.hisPoints removeAllObjects];
@@ -281,13 +330,37 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(mutableObj);
 }
 
-
--(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data{
+-(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans{
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
     SAFE_RELEASE(arg);
-    return [re objectFromJSONString];    
+    if(isTrans)
+        return [re objectFromJSONString];
+    else
+        return re;
+}
+-(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
+    [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
+        if(resObj!=nil){
+            id saveData=[resObj objectForKey:@"data"];
+            for(id data in saveData){
+                id tempChartData=[data objectForKey:@"data"];
+                NSString *chartStr=[tempChartData JSONString];
+                chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+                [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
+            }
+        }
+    }];
+}
+
+-(void)setStockPrice{
+    
+    NSString *jsonPrice=[self.forecastPoints JSONString];
+    jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
+    [self.priceLabel setText:[backInfo substringToIndex:5]];
 }
 
 -(void)viewPan:(UIPanGestureRecognizer *)tapGr
@@ -351,20 +424,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }
     
 }
-
-
--(void)setStockPrice{
-    
-    NSString *jsonPrice=[self.forecastPoints JSONString];
-    jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    NSString *arg1=[[NSString alloc] initWithFormat:@"chartCalu(\"%@\")",jsonPrice];
-    //传入数据注意格式调用，html文件的key值应与此key值对应
-    NSString *re1=[self.webView stringByEvaluatingJavaScriptFromString:arg1];
-    SAFE_RELEASE(arg1);
-    [self.priceLabel setText:[re1 substringToIndex:5]];
-}
-
-
 
 #pragma mark -
 #pragma mark Line Data Source Delegate
@@ -540,9 +599,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }else{
 
         
-    }
-    
-    
+    }   
     return NO;
 }
 
@@ -645,16 +702,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        //[self.navigationController.navigationBar setHidden:YES];
-        //self.hostView.frame=CGRectMake(0,HOSTVIEWTOPPAD,320,480-HOSTVIEWBOTTOMPAD-HOSTVIEWTOPPAD);
-    } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,40,SCREEN_HEIGHT,260);
+    if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
+        self.hostView.frame=CGRectMake(0,80,SCREEN_HEIGHT,220);
     }
 }
 
 -(NSUInteger)supportedInterfaceOrientations{
-
     return UIInterfaceOrientationMaskLandscapeRight;
 }
 

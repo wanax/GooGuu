@@ -7,7 +7,6 @@
 //
 
 #import "IndicatorComView.h"
-#import "Utiles.h"
 
 @implementation IndicatorComView
 

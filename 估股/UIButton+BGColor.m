@@ -7,8 +7,7 @@
 //
 
 #import "UIButton+BGColor.h"
-#import <QuartzCore/QuartzCore.h>
-#import "Utiles.h"
+
 
 @implementation UIButton(BGColor)
 

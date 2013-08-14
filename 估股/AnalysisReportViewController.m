@@ -9,8 +9,6 @@
 //  2013-05-08 | Wanax | 股票详细页-股票分析
 
 #import "AnalysisReportViewController.h"
-#import "Utiles.h"
-#import "JSONKit.h"
 #import "XYZAppDelegate.h"
 #import "UILabel+VerticalAlign.h"
 #import "MHTabBarController.h"
@@ -18,7 +16,7 @@
 #import "MBProgressHUD.h"
 #import "GooNewsCell.h"
 #import "AnalyDetailViewController.h"
-#import "CommonlyMacros.h"
+
 
 
 @interface AnalysisReportViewController ()

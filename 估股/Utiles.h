@@ -46,7 +46,7 @@
 
 +(NSArray *)sortDateArr:(NSArray *)dateArr;
 
-
++(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price;
 
 
 

@@ -11,10 +11,9 @@
 #import <UIKit/UIKit.h>
 #import <math.h>
 #import "CorePlot-CocoaTouch.h"
-#import "ModelClassViewController.h"
+#import "ModelClassGrade2ViewController.h"
 
 @class CQMFloatingController;
-@class ModelClassViewController;
 
 //数据点个数
 #define NUM 10
@@ -34,7 +33,7 @@
 #define DrawXYAxis [DrawChartTool drawXYAxisIn:graph toPlot:plotSpace withXRANGEBEGIN:XRANGEBEGIN XRANGELENGTH:XRANGELENGTH YRANGEBEGIN:YRANGEBEGIN YRANGELENGTH:YRANGELENGTH XINTERVALLENGTH:XINTERVALLENGTH XORTHOGONALCOORDINATE:XORTHOGONALCOORDINATE XTICKSPERINTERVAL:XTICKSPERINTERVAL YINTERVALLENGTH:YINTERVALLENGTH YORTHOGONALCOORDINATE:YORTHOGONALCOORDINATE YTICKSPERINTERVAL:YTICKSPERINTERVAL to:self isY:YES isX:YES]
 
 
-@interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,UIWebViewDelegate,HubDelegate,CPTAxisDelegate>{
+@interface ChartViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTBarPlotDataSource,CPTBarPlotDelegate,UIWebViewDelegate,CPTAxisDelegate,ModelClassGrade2Delegate>{
     //x轴起点
     long XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
@@ -71,6 +70,15 @@
     NSMutableArray *_standard;
     
 }
+
+@property (nonatomic,retain) id comInfo;
+@property (nonatomic,retain) NSString *globalDriverId;
+@property (nonatomic,retain) id chartData;
+
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelMainViewController;
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelFeeViewController;
+@property (nonatomic,retain) ModelClassGrade2ViewController *modelCapViewController;
+
 //预测曲线
 @property (nonatomic,retain) NSMutableArray *forecastPoints;
 //预测默认曲线
@@ -92,13 +100,10 @@
 //行业分类
 @property (nonatomic,retain) id industryClass;
 @property (nonatomic,retain) NSString *yAxisUnit;
-@property (nonatomic,retain) ModelClassViewController *modelClassViewController;
 
 @property (nonatomic,retain) UIWebView *webView;
 @property (nonatomic,retain) UILabel *priceLabel;
 
-//转换坐标系字典，与手指触摸点匹配
-@property (nonatomic,retain) NSMutableDictionary *reverseDic;
 //绘图view
 @property (nonatomic,retain) CPTXYGraph * graph ;
 @property (nonatomic,retain) CPTGraphHostingView *hostView;

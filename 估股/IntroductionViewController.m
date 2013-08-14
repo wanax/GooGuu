@@ -9,12 +9,10 @@
 //  2013-05-08 | Wanax | 股票详细页-股票介绍
 
 #import "IntroductionViewController.h"
-#import "Utiles.h"
 #import "UIImageView+AFNetworking.h"
 #import "XYZAppDelegate.h"
 #import "MHTabBarController.h"
 #import "UIImageView+Addition.h"
-#import "CommonlyMacros.h"
 
 @interface IntroductionViewController ()
 

@@ -14,13 +14,12 @@
 #import "UserCell.h"
 #import "XYZAppDelegate.h"
 #import "MHTabBarController.h"
-#import "Utiles.h"
 #import "ComFieldViewController.h"
 #import "PrettyTabBarViewController.h"
 #import "PrettyNavigationController.h"
 #import "MBProgressHUD.h"
 #import "IndicatorView.h"
-#import "CommonlyMacros.h"
+
 
 @interface ConcernedViewController ()
 
