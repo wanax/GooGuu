@@ -80,12 +80,12 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(370,260,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(30,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(115,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    sixMonth=[tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(200,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    oneYear=[tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(285,260,80,40) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0 color:@"#007ab7"];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(384,265,96,35) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
+    oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(0,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(96,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    sixMonth=[tool addButtonToView:self.view withTitle:@"六个月" Tag:3 frame:CGRectMake(192,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    oneYear=[tool addButtonToView:self.view withTitle:@"一年" Tag:4 frame:CGRectMake(288,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [oneMonth setEnabled:NO];
     [threeMonth setEnabled:NO];
     [sixMonth setEnabled:NO];
@@ -396,7 +396,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 }
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,40,480,220);
+        self.hostView.frame=CGRectMake(0,40,480,225);
     }
 }
 -(NSUInteger)supportedInterfaceOrientations{

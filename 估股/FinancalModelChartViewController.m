@@ -133,11 +133,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     tool.standIn=self;
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id com=delegate.comInfo;
-    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:16.0];
+    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:16.0 color:@"#007ab7"];
     [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
     [tool release];
     
 }

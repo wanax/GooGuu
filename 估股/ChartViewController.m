@@ -148,52 +148,72 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
-    
     DrawXYAxis;
+    [self initChartViewComponents];
+    
 
+}
+
+
+
+-(void)initChartViewComponents{
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(0,0,80,40) fontSize:16.0];
-    [tool addButtonToView:self.view withTitle:@"保存" Tag:1 frame:CGRectMake(410,42,60,35) andFun:@selector(saveData:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
-    [tool addButtonToView:self.view withTitle:@"点动" Tag:2 frame:CGRectMake(340,42,60,35) andFun:@selector(changeButton:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
-    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:11 frame:CGRectMake(80,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:22 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:33 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"折现率" Tag:44 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    UILabel *companyLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:0 frame:CGRectMake(0,35,100,45) fontSize:13.0 color:@"#8D99B2"];
+    companyLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    companyLabel.numberOfLines = 0;
+    [tool addLabelToView:self.view withTile:@"估股价" Tag:11 frame:CGRectMake(100,35,80,20) fontSize:13.0 color:@"#8D99B2"];
+    priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(100,55,80,25) fontSize:16.0 color:@"#8D99B2"];
+    [tool addLabelToView:self.view withTile:@"市场价" Tag:11 frame:CGRectMake(180,35,109,20) fontSize:13.0 color:@"#8D99B2"];
+    [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(180,55,109,25) fontSize:16.0 color:@"#8D99B2"];
+    [tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(415,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    [tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(352,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    [tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(289,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(384,0,96,35) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
+    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(0,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(96,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(192,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(288,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     [self addScatterChart];
     [tool release];
-
-}
--(void)saveData:(UIButton *)bt{
-    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:globalDriverId shouldTrans:YES];
-    NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
-    [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
-       
-        if([resObj objectForKey:@"status"]){
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-        }
-        
-    }];
-    
-}
-
--(void)changeButton:(UIButton *)bt{
-    bt.showsTouchWhenHighlighted=YES;
-    if(linkage){
-        [bt setTitle:@"联动" forState:UIControlStateNormal];
-        [self addBarChart];
-        linkage=NO;
-    }else{
-        [bt setTitle:@"点动" forState:UIControlStateNormal];
-        [self addScatterChart];
-        linkage=YES;
-    }
 }
 
 #pragma mark -
 #pragma Button Clicked Methods
+-(void)chartAction:(UIButton *)bt{
+    bt.showsTouchWhenHighlighted=YES;
+    if(bt.tag==SaveData){
+        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:globalDriverId shouldTrans:YES];
+        NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
+        [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
+            if([resObj objectForKey:@"status"]){
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }
+        }];
+    }else if(bt.tag==DragChartType){
+        if(linkage){
+            [bt setTitle:@"联动" forState:UIControlStateNormal];
+            [self addBarChart];
+            linkage=NO;
+        }else{
+            [bt setTitle:@"点动" forState:UIControlStateNormal];
+            [self addScatterChart];
+            linkage=YES;
+        }
+    }else if(bt.tag==ResetChart){
+        [self.forecastPoints removeAllObjects];
+        for(id obj in self.forecastDefaultPoints){
+            [self.forecastPoints addObject:[obj mutableCopy]];
+        }
+        [self setXYAxis];
+    }else if(bt.tag==BackToSuperView){
+        bt.showsTouchWhenHighlighted=YES;
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+
 
 -(void)selectIndustry:(UIButton *)sender forEvent:(UIEvent*)event{
     
@@ -201,16 +221,16 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
-    if(sender.tag==11){
+    if(sender.tag==MainIncome){
         [floatingController presentWithContentViewController:modelMainViewController
                                                     animated:YES];
-    }else if(sender.tag==22){
+    }else if(sender.tag==OperaFee){
         [floatingController presentWithContentViewController:modelFeeViewController
                                                     animated:YES];
-    }else if(sender.tag==33){
+    }else if(sender.tag==OperaCap){
         [floatingController presentWithContentViewController:modelCapViewController
                                                     animated:YES];
-    }else if(sender.tag==44){
+    }else if(sender.tag==DiscountRate){
         DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
         rateViewController.view.frame=CGRectMake(0,40,480,320);
         rateViewController.jsonData=self.jsonForChart;
@@ -218,12 +238,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         SAFE_RELEASE(rateViewController);
     }
     
-}
-
-
--(void)backTo:(UIButton *)bt{    
-    bt.showsTouchWhenHighlighted=YES;
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)addBarChart{
@@ -303,7 +317,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self setXYAxis];
 }
 
-
+#pragma mark -
+#pragma mark General Methods
 -(void)divideData:(id)sourceData{
     [self.hisPoints removeAllObjects];
     [self.forecastDefaultPoints removeAllObjects];
@@ -327,7 +342,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self.forecastDefaultPoints insertObject:[self.hisPoints lastObject] atIndex:0];
     SAFE_RELEASE(mutableObj);
 }
-
 
 -(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans{
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
@@ -704,7 +718,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,80,SCREEN_HEIGHT,220);
+        self.hostView.frame=CGRectMake(0,80,SCREEN_HEIGHT,230);
     }
 }
 

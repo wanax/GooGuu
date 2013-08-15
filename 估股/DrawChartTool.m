@@ -19,14 +19,14 @@
     [super dealloc];
 }
 
--(UILabel *)addLabelToView:(UIView *)view withTile:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size{
+-(UILabel *)addLabelToView:(UIView *)view withTile:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size color:(NSString *)color{
     
     UILabel *label=[[UILabel alloc] initWithFrame:rect];
     [label setText:title];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setFont:[UIFont fontWithName:@"Heiti SC" size:size]];
     label.tag=tag;
-    label.backgroundColor=[Utiles colorWithHexString:@"#007ab7"];
+    label.backgroundColor=[Utiles colorWithHexString:color];
     [view addSubview:label];
     return [label autorelease];
     

@@ -38,7 +38,20 @@ typedef enum {
     ALL=31    
 } MarketType;
 
+//拖动图表按钮动作定义
+typedef enum{
+    SaveData=1,
+    DragChartType=2,
+    ResetChart=3,
+    BackToSuperView=4
+} ChartBtAction;
 
+typedef enum{
+    MainIncome=11,
+    OperaFee=22,
+    OperaCap=33,
+    DiscountRate=44
+} IndustoryModelType;
 
 
 
