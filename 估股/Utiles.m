@@ -344,7 +344,20 @@ static NSDateFormatter *formatter;
     return returnStr;
 }
 
-
++(BOOL)isLogin{
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        return YES;
+    }else{
+        return NO;
+    }
+}
++(NSString *)getUserToken{
+    NSString *token=[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"];
+    if(![Utiles isBlankString:token]){
+        return token;
+    }else
+        return nil;
+}
 
 
 

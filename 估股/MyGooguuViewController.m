@@ -79,7 +79,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if(![Utiles isLogin]){
         ClientLoginViewController *loginViewController = [[ClientLoginViewController alloc] init];
         
         loginViewController.view.frame=CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT);

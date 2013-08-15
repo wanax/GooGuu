@@ -16,18 +16,6 @@
 
 @class ComFieldViewController;
 
-typedef enum {
-    
-    HK=1,//港股
-    NYSE=2,//纽交所
-    SZSE=4,//深圳
-    SHSE=8,//上海
-    SHSZSE=12,//沪深
-    NASDAQ=16,//纳斯达克
-    NANY=18,//美股
-    ALL=31
-    
-} MarketType;
 
 @interface CompanyListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,EGORefreshTableHeaderDelegate,UIScrollViewDelegate>{
     BOOL _isShowSearchBar;

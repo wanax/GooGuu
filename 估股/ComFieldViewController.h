@@ -19,6 +19,8 @@
 
 @interface ComFieldViewController : UIViewController
 
+@property BrowseSourceType browseType;
+
 @property (strong, nonatomic) IntroductionViewController *viewController1;
 @property (strong, nonatomic) ModelViewController *viewController2;
 @property (strong, nonatomic) AnalysisReportViewController *viewController3;

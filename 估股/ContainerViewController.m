@@ -19,6 +19,8 @@
 
 @implementation ContainerViewController
 
+@synthesize browseType;
+
 @synthesize viewController1;
 @synthesize viewController2;
 @synthesize viewController3;
@@ -62,8 +64,7 @@
     viewController2.title=@"估值模型";
     viewController3.title=@"研究报告";
     viewController4.title=@"用户评论";
-    
-    
+    viewController2.browseType=self.browseType;
     
     NSArray *viewControllers = [NSArray arrayWithObjects:viewController2, viewController1,viewController3,viewController4, nil];
 	tabBarController = [[MHTabBarController alloc] init];

@@ -31,6 +31,7 @@
 
 @implementation ChartViewController
 
+@synthesize sourceType;
 @synthesize comInfo;
 @synthesize globalDriverId;
 
@@ -167,7 +168,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)saveData:(UIButton *)bt{
     id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:globalDriverId shouldTrans:YES];
     NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",saveData,@"data", nil];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
     [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
        
         if([resObj objectForKey:@"status"]){
@@ -257,7 +258,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 
         id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart shouldTrans:YES];
-        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]];
+        if(self.sourceType==MySavedType){
+            [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
+        }
         self.industryClass=resTmp;
         id transObj=resTmp;
         self.modelMainViewController.jsonData=transObj;
@@ -266,14 +269,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.modelMainViewController.indicator=@"listMain";
         self.modelFeeViewController.indicator=@"listFee";
         self.modelCapViewController.indicator=@"listCap";
-      
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"] shouldTrans:YES];
-        globalDriverId=[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"];
- 
-        [self divideData:chartData];
-        self.yAxisUnit=[chartData objectForKey:@"unit"];
-        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
-        [self setXYAxis];
+
+        if(globalDriverId==0){
+            globalDriverId=[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"];
+        }
+        [self modelClassChanged:globalDriverId];
+        
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         if(!isAddGesture){
             //手势添加
@@ -327,6 +328,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(mutableObj);
 }
 
+
 -(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans{
     NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
@@ -337,6 +339,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     else
         return re;
 }
+    
 -(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
@@ -347,8 +350,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
-                [graph reloadData];
             }
+            [self modelClassChanged:globalDriverId];
         }
     }];
 }

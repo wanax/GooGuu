@@ -102,7 +102,7 @@
         id dateNow=[NSDate date];
         
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",
+                                [Utiles getUserToken], @"token",
                                 [NSString stringWithFormat:@"%d",[dateNow year]],@"year",[NSString stringWithFormat:@"0%d",[dateNow month]],@"month",@"googuu",@"from",
                                 nil];
         [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){

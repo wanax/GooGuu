@@ -71,6 +71,7 @@
     
 }
 
+@property BrowseSourceType sourceType;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSString *globalDriverId;
 

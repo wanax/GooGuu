@@ -45,7 +45,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         if(self.type==StockCompany){
             NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
             [arr removeLastObject];
@@ -58,7 +58,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         if(self.type==News){
             UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
             self.parentViewController.navigationItem.rightBarButtonItem=wanSay;

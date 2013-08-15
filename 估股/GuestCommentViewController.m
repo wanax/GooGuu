@@ -56,7 +56,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
 
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
         [arr removeLastObject];
         UIToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
@@ -67,7 +67,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
 
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
         
         self.parentViewController.parentViewController.navigationController.navigationItem.rightBarButtonItem=wanSay;
@@ -106,6 +106,7 @@
     [self.view setBackgroundColor:[UIColor redColor]];
     
     self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,383)];
+    [self.table setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
     self.table.delegate=self;
     self.table.dataSource=self;
     

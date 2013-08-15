@@ -21,8 +21,9 @@
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;//主要是记录是否在刷新中
     __strong UIActivityIndicatorView *_activityIndicatorView;
+    BOOL _showToast;
 }
-
+@property BrowseSourceType browseType;
 @property (nonatomic,retain) NSString *type;
 @property BOOL nibsRegistered;
 @property BOOL nibsRegistered2;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE0513C617BC793C00D872BB /* EnumSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0513C517BC793C00D872BB /* EnumSummary.m */; };
 		AE11E63F17B4902500FE0190 /* DahonValuationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */; };
 		AE15103817A7968E007B9E66 /* readed.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15103717A7968E007B9E66 /* readed.png */; };
 		AE15103E17A79C52007B9E66 /* unread.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15103D17A79C52007B9E66 /* unread.png */; };
@@ -478,6 +479,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE0513C417BC793C00D872BB /* EnumSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnumSummary.h; sourceTree = "<group>"; };
+		AE0513C517BC793C00D872BB /* EnumSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnumSummary.m; sourceTree = "<group>"; };
 		AE15103717A7968E007B9E66 /* readed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readed.png; sourceTree = "<group>"; };
 		AE15103D17A79C52007B9E66 /* unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread.png; sourceTree = "<group>"; };
 		AE15103F17A79CC1007B9E66 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -1794,6 +1797,8 @@
 				AE2E941A179D0A920049B28E /* UIButton+BGColor.m */,
 				AE4E14A017AF986A00723E1E /* CommonlyMacros.h */,
 				AE4E14A117AF986A00723E1E /* CommonlyMacros.m */,
+				AE0513C417BC793C00D872BB /* EnumSummary.h */,
+				AE0513C517BC793C00D872BB /* EnumSummary.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2390,7 +2395,6 @@
 				AE2E919A179D061A0049B28E /* Sources */,
 				AE2E919B179D061A0049B28E /* Frameworks */,
 				AE2E919C179D061A0049B28E /* Resources */,
-				AEF2EF9817BB132900B7B9A2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2536,22 +2540,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		AEF2EF9817BB132900B7B9A2 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run c59317990c405b2f42582cacbe9f4fa9abe1fefb";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE2E919A179D061A0049B28E /* Sources */ = {
@@ -2837,6 +2825,7 @@
 				AE4E149F17AF7C6300723E1E /* IndicatorComView.m in Sources */,
 				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
 				AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */,
+				AE0513C617BC793C00D872BB /* EnumSummary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,6 +33,7 @@
 @synthesize loginViewController;
 @synthesize customTableView;
 @synthesize type;
+@synthesize browseType;
 @synthesize nibsRegistered;
 @synthesize nibsRegistered2;
 
@@ -72,6 +73,7 @@
 {
     [super viewDidLoad];
     self.title=@"小马财经";
+    _showToast=NO;
     nibsRegistered=NO;
     nibsRegistered2=NO;
     self.comInfoList=[[NSMutableArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"",@"googuuprice",@"",@"marketprice",@"",@"market",@"",@"companyname", nil],nil];
@@ -81,7 +83,7 @@
     [indicator release];
     
    	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,308)];
-    
+    [customTableView setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     customTableView.dataSource=self;
     customTableView.delegate=self;
 
@@ -125,7 +127,7 @@
 -(void)getComList{
    
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",@"googuu",@"from",
+                            [Utiles getUserToken], @"token",@"googuu",@"from",
                             nil];
     [Utiles postNetInfoWithPath:self.type andParams:params besidesBlock:^(id obj){
         if(![[obj objectForKey:@"status"] isEqualToString:@"0"]){
@@ -184,16 +186,16 @@
     
     @try {
         NSUInteger row = [indexPath row];
-        id com=[self.comInfoList objectAtIndex:row];
-        cell.name=[com objectForKey:@"companyname"];
+        id comInfo=[self.comInfoList objectAtIndex:row];
+        cell.name=[comInfo objectForKey:@"companyname"];
    
-        NSNumber *gPriceStr=[com objectForKey:@"googuuprice"];
+        NSNumber *gPriceStr=[comInfo objectForKey:@"googuuprice"];
         float g=[gPriceStr floatValue];
         cell.gPrice=[NSString stringWithFormat:@"%.2f",g];
-        NSNumber *priceStr=[com objectForKey:@"marketprice"];
+        NSNumber *priceStr=[comInfo objectForKey:@"marketprice"];
         float p = [priceStr floatValue];
         cell.price=[NSString stringWithFormat:@"%.2f",p];
-        cell.belong=[NSString stringWithFormat:@"%@.%@",[com objectForKey:@"stockcode"],[com objectForKey:@"marketname"]];
+        cell.belong=[NSString stringWithFormat:@"%@.%@",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]];
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
@@ -231,6 +233,11 @@
 
 -(void)longAction:(UILongPressGestureRecognizer *)press andCellIndex:(NSIndexPath *)indexPath{
     [customTableView setEditing:YES animated:YES];
+    if(!_showToast){
+        [Utiles ToastNotification:@"下拉取消删除" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        _showToast=YES;
+    }
+    
 }
 
 
@@ -242,8 +249,14 @@
             NSString *stockCode=[[[self.comInfoList objectAtIndex:row] objectForKey:@"stockcode"] copy];
             [self.comInfoList removeObjectAtIndex:row];
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
-            [Utiles postNetInfoWithPath:@"DeleteAttention" andParams:params besidesBlock:^(id resObj){
+            NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
+            NSString *netAction=nil;
+            if(self.browseType==MyConcernedType){
+                netAction=@"DeleteAttention";
+            }else if(self.browseType==MySavedType){
+                netAction=@"DeleteModelData";
+            }
+            [Utiles postNetInfoWithPath:netAction andParams:params besidesBlock:^(id resObj){
                 if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
                     [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
                 }
@@ -276,7 +289,8 @@
     delegate.comInfo=[self.comInfoList objectAtIndex:row];
     
     com=[[ComFieldViewController alloc] init];
-    com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
+    com.browseType=self.browseType;
+    com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);    
     [self presentViewController:com animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -302,6 +316,7 @@
     
     [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
     [customTableView setEditing:NO animated:YES];
+    _showToast=NO;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{

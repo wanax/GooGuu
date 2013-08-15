@@ -54,11 +54,11 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         
         logoutBt.hidden=NO;
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"], @"token",@"googuu",@"from",
+                                [Utiles getUserToken], @"token",@"googuu",@"from",
                                 nil];
         [Utiles postNetInfoWithPath:@"UserInfo" andParams:params besidesBlock:^(id resObj){
            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
@@ -101,7 +101,7 @@
 
 -(void)logoutBtClick:(id)sender{
     
-    NSString *token= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"];
+    NSString *token= [Utiles getUserToken];
     if(token){
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:

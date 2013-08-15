@@ -63,7 +63,7 @@
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     [self getAnalyrePort];
     customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
-    
+    [self.customTableView setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
     customTableView.dataSource=self;
     customTableView.delegate=self;
     

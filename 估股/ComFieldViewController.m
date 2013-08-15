@@ -22,7 +22,7 @@
 
 @implementation ComFieldViewController
 
-
+@synthesize browseType;
 
 @synthesize viewController1;
 @synthesize viewController2;
@@ -90,6 +90,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     ContainerViewController *content=[[ContainerViewController alloc] init];
+    content.browseType=self.browseType;
     content.view.frame=CGRectMake(0,24,self.view.frame.size.width,self.view.frame.size.height);
     [self.view addSubview:content.view];
     [self addChildViewController:content];

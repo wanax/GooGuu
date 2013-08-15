@@ -47,8 +47,10 @@
 	// Do any additional setup after loading the view.
     concernedViewController = [[ConcernedViewController alloc] init];
     concernedViewController.type=@"AttentionData";
+    concernedViewController.browseType=MyConcernedType;
     saveModelViewControler = [[ConcernedViewController alloc] init];
     saveModelViewControler.type=@"SavedData";
+    saveModelViewControler.browseType=MySavedType;
     calendarViewController=[[CalendarViewController alloc] init];
     calendarViewController.view.frame=CGRectMake(0,100,320,600);
     concernedViewController.title=@"已关注";

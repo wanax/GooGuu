@@ -85,7 +85,7 @@
         [indicator release];
         table=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,364)];
     }
-   
+    [table setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     table.dataSource=self;
     table.delegate=self;
     
@@ -152,7 +152,7 @@
      
 -(void)getConcernStocksCode{
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from", nil];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from", nil];
     [Utiles postNetInfoWithPath:@"AttentionData" andParams:params besidesBlock:^(id resObj){
         if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
             self.concernStocksCodeArr=[[NSMutableArray alloc] init];
@@ -238,7 +238,7 @@
         cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"];
         cell.stockNameLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
         cell.concernBt.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:10.0f];
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+        if([Utiles isLogin]){
             if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){
                 [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];
                 [cell.concernBt setBackgroundImage:[UIImage imageNamed:@"cancelConcernBt"] forState:UIControlStateNormal];
@@ -311,7 +311,7 @@
 -(Boolean)NetAction:(NSString *)url andCode:(NSString *)stockCode withBt:(UIButton *)cellBt{
     __block Boolean tag;
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
     
     [Utiles postNetInfoWithPath:url andParams:params besidesBlock:^(id resObj){
 
@@ -345,24 +345,16 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
+  
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
     delegate.comInfo=[self.comList objectAtIndex:row];
     
     com=[[ComFieldViewController alloc] init];
+    com.browseType=ValuationModelType;
     com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
     [self presentViewController:com animated:YES completion:nil];
-    
-    /*CATransition *animation = [CATransition animation];
-    animation.duration = 0.5f;
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.fillMode = kCAFilterLinear;
-    animation.type = kCATransitionPush;
-    animation.subtype = kCATransitionFromTop;
-    [[com.view layer] addAnimation:animation forKey:@"animation"];
-    animation=nil;*/
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [search resignFirstResponder];
 }

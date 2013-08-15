@@ -134,7 +134,7 @@
 
     }
 
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]){
+    if([Utiles isLogin]){
         
         [self handleTimer:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginKeeping" object:nil];

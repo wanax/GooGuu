@@ -15,4 +15,5 @@
 #import "Utiles.h"
 #import "CommonlyMacros.h"
 #import "JSONKit.h"
+#import "EnumSummary.h"
 #endif
