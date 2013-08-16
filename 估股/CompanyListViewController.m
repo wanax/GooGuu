@@ -24,6 +24,7 @@
 #import "MBProgressHUD.h"
 #import "SVPullToRefresh.h"
 #import "IndicatorComView.h"
+#import "StockSearchListViewController.h"
 
 
 @interface CompanyListViewController ()
@@ -44,6 +45,7 @@
 @synthesize com;
 @synthesize type;
 @synthesize nibsRegistered;
+@synthesize isSearchList;
 
 - (void)dealloc {
     SAFE_RELEASE(com);
@@ -67,24 +69,25 @@
     
     [super viewDidLoad];
     nibsRegistered = NO;
-    self.title=@"估值模型";
-    [self getCompanyList];
-
-
-    if(self.isShowSearchBar){
-        
-        table=[[UITableView alloc] initWithFrame:CGRectMake(0,40,320,330)];
-        search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
-        [[self.search.subviews objectAtIndex:0] removeFromSuperview];
-        self.search.backgroundColor = [UIColor grayColor];
-        search.delegate=self;
-        [self.view addSubview:search];
+    if(isSearchList){
+        self.title=@"股票搜索";
     }else{
-        IndicatorComView *indicator=[[IndicatorComView alloc] init];
-        [self.view addSubview:indicator];
-        [indicator release];
-        table=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,364)];
+        self.title=@"估值模型";
     }
+    
+    [self getCompanyList];
+   
+    table=[[UITableView alloc] initWithFrame:CGRectMake(0,60,320,320)];
+    search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
+    [[self.search.subviews objectAtIndex:0] removeFromSuperview];
+    self.search.backgroundColor = [UIColor grayColor];
+    search.delegate=self;
+    [self.view addSubview:search];
+    IndicatorComView *indicator=[[IndicatorComView alloc] init];
+    indicator.center=CGPointMake(SCREEN_WIDTH/2,50);
+    [self.view insertSubview:indicator aboveSubview:self.table];
+    [indicator release];
+    
     [table setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     table.dataSource=self;
     table.delegate=self;
@@ -92,10 +95,12 @@
     [self.view addSubview:table];
     [self getConcernStocksCode];
     
+    if(!self.isSearchList){
+        [self.table addInfiniteScrollingWithActionHandler:^{
+            [self addCompany];
+        }];
+    }
     
-    [self.table addInfiniteScrollingWithActionHandler:^{
-        [self addCompany];
-    }];
     
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
@@ -340,6 +345,12 @@
 #pragma mark -
 #pragma mark Table Delegate Methods
 
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [search resignFirstResponder];
+    return indexPath;
+}
+
 -(void)viewDidDisappear:(BOOL)animated{
     [search resignFirstResponder];
 }
@@ -364,63 +375,57 @@
 #pragma mark -
 #pragma mark Search Delegate Methods
 
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    if(!isSearchList){
+        CompanyListViewController *searchList=[[CompanyListViewController alloc] init];
+        searchList.isSearchList=YES;
+        searchList.type=ALL;
+        [self.navigationController pushViewController:searchList animated:YES];
+        SAFE_RELEASE(searchList);
+        [search resignFirstResponder];
+    }
+  
+}
 //搜索实现
 -(void)resetSearch
-{//重置搜索
-    DBLite *tool=[[DBLite alloc] init];
-    [tool openSQLiteDB];
-    
-    //获取同类股票列表
-    self.comList=[tool getCompanyInfo:self.comType];
-    
-    [tool closeDB];
-    [tool release];
+{  
+    [self handleSearchForTerm:@""];
     
 }
 -(void)handleSearchForTerm:(NSString *)searchTerm
 {
-    [super viewDidLoad];
-    
-    DBLite *tool=[[DBLite alloc] init];
-    [tool openSQLiteDB];
-    
-    //获取同类股票列表
-    self.comList=[tool searchStocks:searchTerm from:self.comType];
-    
-    [tool closeDB];
-    [table reloadData];
-    [tool release];
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:searchTerm,@"q", nil];
+    [Utiles postNetInfoWithPath:@"Query" andParams:params besidesBlock:^(id resObj){
+        
+        self.comList=resObj;
+        [self.table reloadData];
+        
+    }];
 }
--(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{//TableView的项被选择前触发
-    [search resignFirstResponder];
-    //搜索条释放焦点，隐藏软键盘
-    return indexPath;
-}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{//按软键盘右下角的搜索按钮时触发
+{
     NSString *searchTerm=[searchBar text];
-    //读取被输入的关键字
     [self handleSearchForTerm:searchTerm];
-    //根据关键字，进行处理
     [search resignFirstResponder];
-    //隐藏软键盘
     
 }
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{//搜索条输入文字修改时触发
+{
     if([searchText length]==0)
-    {//如果无文字输入
+    {
         [self resetSearch];
         [table reloadData];
         return;
+    }else{
+        [self handleSearchForTerm:searchText];
     }
     
-    [self handleSearchForTerm:searchText];
     //有文字输入就把关键字传给handleSearchForTerm处理
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{//取消按钮被按下时触发
+{
     [self resetSearch];
     //重置
     searchBar.text=@"";
@@ -430,6 +435,8 @@
     //重新载入数据，隐藏软键盘
     
 }
+
+
 
 #pragma mark -
 #pragma mark - Table Header View Methods

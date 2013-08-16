@@ -19,6 +19,7 @@
 #import "PrettyNavigationController.h"
 #import "MBProgressHUD.h"
 #import "IndicatorView.h"
+#import "Indicator2View.h"
 
 
 @interface ConcernedViewController ()
@@ -77,10 +78,15 @@
     nibsRegistered=NO;
     nibsRegistered2=NO;
     self.comInfoList=[[NSMutableArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"",@"googuuprice",@"",@"marketprice",@"",@"market",@"",@"companyname", nil],nil];
-    
-    IndicatorView *indicator=[[IndicatorView alloc] init];
-    [self.view addSubview:indicator];
-    [indicator release];
+    if(browseType==MyConcernedType){
+        IndicatorView *indicator=[[IndicatorView alloc] init];
+        [self.view addSubview:indicator];
+        [indicator release];
+    }else if(browseType==MySavedType){
+        Indicator2View *indicator=[[Indicator2View alloc] init];
+        [self.view addSubview:indicator];
+        [indicator release];
+    }
     
    	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,308)];
     [customTableView setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];

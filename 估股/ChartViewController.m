@@ -62,6 +62,7 @@
 
 @synthesize webView;
 @synthesize priceLabel;
+@synthesize myGGpriceLabel;
 
 
 static NSString * FORECAST_DATALINE_IDENTIFIER =@"forecast_dataline_identifier";
@@ -72,6 +73,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(myGGpriceLabel);
     SAFE_RELEASE(globalDriverId);
     SAFE_RELEASE(comInfo);
     
@@ -162,7 +164,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     UILabel *companyLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:0 frame:CGRectMake(0,35,100,45) fontSize:13.0 color:@"#8D99B2"];
     companyLabel.lineBreakMode = NSLineBreakByWordWrapping;
     companyLabel.numberOfLines = 0;
-    [tool addLabelToView:self.view withTile:@"估股价" Tag:11 frame:CGRectMake(100,35,80,20) fontSize:13.0 color:@"#8D99B2"];
+    myGGpriceLabel=[tool addLabelToView:self.view withTile:@"估股价" Tag:11 frame:CGRectMake(100,35,80,20) fontSize:13.0 color:@"#8D99B2"];
     priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(100,55,80,25) fontSize:16.0 color:@"#8D99B2"];
     [tool addLabelToView:self.view withTile:@"市场价" Tag:11 frame:CGRectMake(180,35,109,20) fontSize:13.0 color:@"#8D99B2"];
     [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(180,55,109,25) fontSize:16.0 color:@"#8D99B2"];
@@ -206,6 +208,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         for(id obj in self.forecastDefaultPoints){
             [self.forecastPoints addObject:[obj mutableCopy]];
         }
+        [self setStockPrice];
         [self setXYAxis];
     }else if(bt.tag==BackToSuperView){
         bt.showsTouchWhenHighlighted=YES;
@@ -364,6 +367,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
+                [self setStockPrice];
             }
             [self modelClassChanged:globalDriverId];
         }
@@ -375,6 +379,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *jsonPrice=[self.forecastPoints JSONString];
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
+    [self.myGGpriceLabel setText:@"我的估股价"];
     [self.priceLabel setText:[backInfo substringToIndex:5]];
 }
 
@@ -600,7 +605,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             
             theLabelTextStyle = positiveStyle;
             
-            NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            NSString * labelString      = [Utiles yearFilled:[formatter stringForObjectValue:tickLocation]];
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];

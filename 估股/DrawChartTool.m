@@ -93,11 +93,15 @@ NSComparator cmptr = ^(id obj1, id obj2){
     if(yMin>0){
         if(tag==DahonModel){
             yLowBound=yMin-0.2*(yMax-yMin);
+        }else if(tag==DragabelModel){
+            yLowBound=0-6*yTap;
         }else
             yLowBound=0-4*yTap;
     }else{
         if(tag==DahonModel){
             yLowBound=yMin-0.2*(yMax-yMin);
+        }else if(tag==DragabelModel){
+           yLowBound=yMin-6*yTap;
         }else
             yLowBound=yMin-4*yTap;
     }

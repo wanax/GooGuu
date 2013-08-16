@@ -102,6 +102,7 @@
 @property (nonatomic,retain) NSString *yAxisUnit;
 
 @property (nonatomic,retain) UIWebView *webView;
+@property (nonatomic,retain) UILabel *myGGpriceLabel;
 @property (nonatomic,retain) UILabel *priceLabel;
 
 //绘图view

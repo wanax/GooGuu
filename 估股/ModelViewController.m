@@ -52,8 +52,8 @@
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
-    [self addNewButton:@"查看金融模型" Tag:1 frame:CGRectMake(10, 10, 145, 50)];
-    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(165, 10, 145, 50)];
+    [self addNewButton:@"查看财务数据" Tag:1 frame:CGRectMake(165, 10, 145, 50)];
+    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(10, 10, 145, 50)];
     [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(10, 70, 300, 50)];
     
     if(self.browseType==MySavedType){

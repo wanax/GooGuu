@@ -19,6 +19,8 @@
 #import "DailyStockCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "SVPullToRefresh.h"
+#import "XYZAppDelegate.h"
+#import "ComFieldViewController.h"
 
 
 
@@ -298,6 +300,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section==0){
+        XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+        delegate.comInfo=self.companyInfo;
+        ComFieldViewController *com=[[ComFieldViewController alloc] init];
+        com.browseType=ValuationModelType;
+        com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
+        [self presentViewController:com animated:YES completion:nil];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else if(indexPath.section==1){
         NSString *artId=[NSString stringWithFormat:@"%@",[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];

@@ -15,6 +15,7 @@
 #import "LabelSwitchCell.h"
 #import "StockRiseDownColorSettingViewController.h"
 #import "AboutUsAndCopyrightViewController.h"
+#import "FeedBackViewController.h"
 
 @interface SettingCenterViewController ()
 
@@ -299,6 +300,10 @@
             AboutUsAndCopyrightViewController *us=[[AboutUsAndCopyrightViewController alloc] init];
             [self.navigationController pushViewController:us animated:YES];
             [us release];
+        }else if(row==0){
+            FeedBackViewController *fd=[[FeedBackViewController alloc] init];
+            [self.navigationController pushViewController:fd animated:YES];
+            SAFE_RELEASE(fd);
         }
     }
 

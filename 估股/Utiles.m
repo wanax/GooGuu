@@ -155,8 +155,8 @@ static NSDateFormatter *formatter;
     
     AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
     [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
-        
-        id resObj=[operation.responseString objectFromJSONString];
+        NSString *tempRes=[operation.responseString stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+        id resObj=[tempRes objectFromJSONString];
         if(block){
             block(resObj);
         }
@@ -342,6 +342,19 @@ static NSDateFormatter *formatter;
     returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
     returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
     return returnStr;
+}
+
++(NSString *)yearFilled:(NSString *)year{
+    NSMutableString *temp=[[[NSMutableString alloc] initWithString:year] autorelease];
+    if(![Utiles isBlankString:year]){
+        if([year length]==1){
+            [temp insertString:@"200" atIndex:0];
+        }if([year length]==2){
+            [temp insertString:@"20" atIndex:0];
+        }
+        return temp;
+    }
+    return nil;
 }
 
 +(BOOL)isLogin{

@@ -35,6 +35,7 @@
 
 @property (nonatomic,retain) NSMutableArray *comList;
 @property (nonatomic) BOOL isShowSearchBar;
+@property BOOL isSearchList;
 
 @property (nonatomic,retain) NSMutableArray *concernStocksCodeArr;
 @property (nonatomic,retain) ComFieldViewController *com;

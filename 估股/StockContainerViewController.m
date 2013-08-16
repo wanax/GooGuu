@@ -67,10 +67,10 @@
     szListViewController.type=SZSE;
     shListViewController.type=SHSE;
     
-    hkListViewController.isShowSearchBar=NO;
-    usListViewController.isShowSearchBar=NO;
-    szListViewController.isShowSearchBar=NO;
-    shListViewController.isShowSearchBar=NO;
+    hkListViewController.isSearchList=NO;
+    usListViewController.isSearchList=NO;
+    szListViewController.isSearchList=NO;
+    shListViewController.isSearchList=NO;
   
 	NSArray *viewControllers = [NSArray arrayWithObjects:hkListViewController, usListViewController,szListViewController,shListViewController, nil];
 	tabBarController = [[MHTabBarController alloc] init];

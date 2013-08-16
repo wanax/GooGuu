@@ -48,6 +48,8 @@
 
 +(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price;
 
++(NSString *)yearFilled:(NSString *)year;
+
 +(BOOL)isLogin;
 +(NSString *)getUserToken;
 

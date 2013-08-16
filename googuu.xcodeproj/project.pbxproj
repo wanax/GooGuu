@@ -290,7 +290,6 @@
 		AE2E950A179D19A40049B28E /* NSNumberExtensions.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9220179D06890049B28E /* NSNumberExtensions.h */; };
 		AE2E950B179D19A40049B28E /* GCDiscreetNotificationView.h in Sources */ = {isa = PBXBuildFile; fileRef = AE2E9222179D06890049B28E /* GCDiscreetNotificationView.h */; };
 		AE2E950E179D1A5B0049B28E /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */; };
-		AE2E950F179D1A5B0049B28E /* libiOSJavaScriptCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */; };
 		AE2E951B179D32390049B28E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2E951A179D32390049B28E /* icon.png */; };
 		AE315CFD17AF5A040061FAD1 /* IndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE315CFC17AF5A040061FAD1 /* IndicatorView.m */; };
 		AE31AB9D17A6000A007E903F /* calu.html in Resources */ = {isa = PBXBuildFile; fileRef = AE31AB9C17A6000A007E903F /* calu.html */; };
@@ -347,6 +346,10 @@
 		AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4E14A117AF986A00723E1E /* CommonlyMacros.m */; };
 		AE4FE590179FD10B00C2350A /* ClientCenterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */; };
 		AE51B8D917AB528000A09D1E /* ModelClassGrade2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */; };
+		AE5608D217BDFADD0064EA91 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5608D117BDFADD0064EA91 /* FeedBackViewController.m */; };
+		AE5608D417BDFAF20064EA91 /* FeedBackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE5608D317BDFAF20064EA91 /* FeedBackView.xib */; };
+		AE5608D717BE02AB0064EA91 /* Indicator2View.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5608D617BE02AB0064EA91 /* Indicator2View.m */; };
+		AE5608DA17BE05580064EA91 /* StockSearchListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5608D917BE05580064EA91 /* StockSearchListViewController.m */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
 		AE6B96E217A0F51200DBE0C6 /* MHTabBarIndicator3.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */; };
 		AE6B96E317A0F51200DBE0C6 /* MHTabBarIndicator4.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */; };
@@ -787,7 +790,6 @@
 		AE2E9448179D14CC0049B28E /* MHTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHTabBarController.h; sourceTree = "<group>"; };
 		AE2E9449179D14CC0049B28E /* MHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHTabBarController.m; sourceTree = "<group>"; };
 		AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
-		AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiOSJavaScriptCore.a; sourceTree = "<group>"; };
 		AE2E951A179D32390049B28E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		AE315CFB17AF5A040061FAD1 /* IndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorView.h; sourceTree = "<group>"; };
 		AE315CFC17AF5A040061FAD1 /* IndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorView.m; sourceTree = "<group>"; };
@@ -858,6 +860,13 @@
 		AE4FE58F179FD10B00C2350A /* ClientCenterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCenterView.xib; sourceTree = "<group>"; };
 		AE51B8D717AB528000A09D1E /* ModelClassGrade2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClassGrade2ViewController.h; sourceTree = "<group>"; };
 		AE51B8D817AB528000A09D1E /* ModelClassGrade2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClassGrade2ViewController.m; sourceTree = "<group>"; };
+		AE5608D017BDFADD0064EA91 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
+		AE5608D117BDFADD0064EA91 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
+		AE5608D317BDFAF20064EA91 /* FeedBackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedBackView.xib; sourceTree = "<group>"; };
+		AE5608D517BE02AB0064EA91 /* Indicator2View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Indicator2View.h; sourceTree = "<group>"; };
+		AE5608D617BE02AB0064EA91 /* Indicator2View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Indicator2View.m; sourceTree = "<group>"; };
+		AE5608D817BE05580064EA91 /* StockSearchListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StockSearchListViewController.h; sourceTree = "<group>"; };
+		AE5608D917BE05580064EA91 /* StockSearchListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockSearchListViewController.m; sourceTree = "<group>"; };
 		AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator2.png; sourceTree = "<group>"; };
 		AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator3.png; sourceTree = "<group>"; };
 		AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator4.png; sourceTree = "<group>"; };
@@ -1201,7 +1210,6 @@
 				AE2E91A4179D061A0049B28E /* Foundation.framework in Frameworks */,
 				AE2E91A6179D061A0049B28E /* CoreGraphics.framework in Frameworks */,
 				AE2E950E179D1A5B0049B28E /* libCorePlot-CocoaTouch.a in Frameworks */,
-				AE2E950F179D1A5B0049B28E /* libiOSJavaScriptCore.a in Frameworks */,
 				AEF2EF9B17BB13A800B7B9A2 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1257,7 +1265,6 @@
 				AE368F0B179F68E4000AF7BD /* MWPhotoBrowser.bundle */,
 				AE368E99179F682E000AF7BD /* MessageUI.framework */,
 				AE2E950C179D1A5B0049B28E /* libCorePlot-CocoaTouch.a */,
-				AE2E950D179D1A5B0049B28E /* libiOSJavaScriptCore.a */,
 				AE2E92D9179D07BE0049B28E /* libsqlite3.0.dylib */,
 				AE2E92D7179D07B30049B28E /* libicucore.dylib */,
 				AE2E92D5179D07A70049B28E /* libstdc++.dylib */,
@@ -1652,6 +1659,8 @@
 				AE2E93D3179D0A400049B28E /* CalendarViewController.m */,
 				AE315CFB17AF5A040061FAD1 /* IndicatorView.h */,
 				AE315CFC17AF5A040061FAD1 /* IndicatorView.m */,
+				AE5608D517BE02AB0064EA91 /* Indicator2View.h */,
+				AE5608D617BE02AB0064EA91 /* Indicator2View.m */,
 			);
 			name = MyGooguu;
 			sourceTree = "<group>";
@@ -1682,6 +1691,8 @@
 				AEFB4C7717A8B5DA0044176B /* StockRiseDownColorSettingViewController.m */,
 				AEFB4C7917A8C08C0044176B /* AboutUsAndCopyrightViewController.h */,
 				AEFB4C7A17A8C08C0044176B /* AboutUsAndCopyrightViewController.m */,
+				AE5608D017BDFADD0064EA91 /* FeedBackViewController.h */,
+				AE5608D117BDFADD0064EA91 /* FeedBackViewController.m */,
 			);
 			name = ClientCenter;
 			sourceTree = "<group>";
@@ -1814,6 +1825,8 @@
 				AE2E9420179D0A9A0049B28E /* UniverseViewController.m */,
 				AE4E149D17AF7C6300723E1E /* IndicatorComView.h */,
 				AE4E149E17AF7C6300723E1E /* IndicatorComView.m */,
+				AE5608D817BE05580064EA91 /* StockSearchListViewController.h */,
+				AE5608D917BE05580064EA91 /* StockSearchListViewController.m */,
 			);
 			name = AddCompany;
 			sourceTree = "<group>";
@@ -2381,6 +2394,7 @@
 			children = (
 				AEFB4C6C17A89A790044176B /* DoubleLabelCell.xib */,
 				AEFB4C7117A89C2D0044176B /* LabelSwitchCell.xib */,
+				AE5608D317BDFAF20064EA91 /* FeedBackView.xib */,
 			);
 			name = SettingNibFile;
 			sourceTree = "<group>";
@@ -2395,6 +2409,7 @@
 				AE2E919A179D061A0049B28E /* Sources */,
 				AE2E919B179D061A0049B28E /* Frameworks */,
 				AE2E919C179D061A0049B28E /* Resources */,
+				AE4F3FCB17BCD54200E24783 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2520,6 +2535,7 @@
 				AE4CF0E917AA48CF0060640E /* c.html in Resources */,
 				AE6C5EAD17B23A7E0080988E /* DiscountRateView.xib in Resources */,
 				AEFE65A017B8799B00E1FC8F /* Default-568h@2x.png in Resources */,
+				AE5608D417BDFAF20064EA91 /* FeedBackView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2540,6 +2556,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AE4F3FCB17BCD54200E24783 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run c59317990c405b2f42582cacbe9f4fa9abe1fefb";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE2E919A179D061A0049B28E /* Sources */ = {
@@ -2826,6 +2858,9 @@
 				AE4E14A217AF986B00723E1E /* CommonlyMacros.m in Sources */,
 				AE6C5EAB17B223560080988E /* DiscountRateViewController.m in Sources */,
 				AE0513C617BC793C00D872BB /* EnumSummary.m in Sources */,
+				AE5608D217BDFADD0064EA91 /* FeedBackViewController.m in Sources */,
+				AE5608D717BE02AB0064EA91 /* Indicator2View.m in Sources */,
+				AE5608DA17BE05580064EA91 /* StockSearchListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

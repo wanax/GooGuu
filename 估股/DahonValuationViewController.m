@@ -259,7 +259,6 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     for(id obj in data){
         msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
     }
-
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
     alert.alertViewStyle=UIAlertViewStyleDefault;
     [alert show];
@@ -334,7 +333,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             =  -100;
+            newLabel.offset             = 10;
             [newLabels addObject:newLabel];
         }
         

@@ -313,6 +313,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             theLabelTextStyle = positiveStyle;
             
             NSString * labelString      = [formatter stringForObjectValue:tickLocation];
+            labelString=[Utiles yearFilled:labelString];
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
