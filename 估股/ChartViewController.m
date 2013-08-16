@@ -118,6 +118,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     self.modelMainViewController.delegate=self;
     self.modelFeeViewController.delegate=self;
     self.modelCapViewController.delegate=self;
+    self.modelMainViewController.classTitle=@"主营收入";
+    self.modelFeeViewController.classTitle=@"运营费用";
+    self.modelCapViewController.classTitle=@"运营资本";
 
     webView=[[UIWebView alloc] init];
     webView.delegate=self;    
@@ -172,10 +175,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(352,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
     [tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(289,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
     [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(384,0,96,35) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
-    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(0,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(96,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(192,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(288,0,96,35) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(3,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(99,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(195,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+    [tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(291,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
     [self addScatterChart];
     [tool release];
 }
@@ -208,7 +211,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         for(id obj in self.forecastDefaultPoints){
             [self.forecastPoints addObject:[obj mutableCopy]];
         }
-        [self setStockPrice];
+        //[self setStockPrice];
         [self setXYAxis];
     }else if(bt.tag==BackToSuperView){
         bt.showsTouchWhenHighlighted=YES;
@@ -367,7 +370,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
-                [self setStockPrice];
+                //[self setStockPrice];
             }
             [self modelClassChanged:globalDriverId];
         }

@@ -19,6 +19,7 @@
 
 @synthesize delegate;
 
+@synthesize classTitle;
 @synthesize jsonData;
 @synthesize indicator;
 @synthesize indicatorClass;
@@ -26,6 +27,7 @@
 
 - (void)dealloc
 {
+    SAFE_RELEASE(classTitle);
     [delegate release];delegate=nil;
     [indicatorClassKey release];indicatorClassKey=nil;
     [jsonData release];jsonData=nil;
@@ -46,7 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationItem setTitle:@"行业选择"];
+    [self.navigationItem setTitle:classTitle];
     id tempClass=[jsonData objectForKey:indicator];
     NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
     NSMutableArray *tempArr=[[NSMutableArray alloc] init];

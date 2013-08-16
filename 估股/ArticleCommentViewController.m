@@ -111,6 +111,7 @@
 
     
     self.cusTable=[[UITableView alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
+    [self.cusTable setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     self.cusTable.dataSource=self;
     self.cusTable.delegate=self;
     [self.view addSubview:cusTable];
@@ -155,6 +156,10 @@
 
 #pragma mark -
 #pragma mark Table Data Source
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [cell setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.commentArr count];
 }
@@ -204,9 +209,6 @@
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
     }
-    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-    backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
-    [cell setBackgroundView:backView];
     return cell;
 }
 

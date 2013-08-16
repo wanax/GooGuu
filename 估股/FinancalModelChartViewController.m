@@ -78,6 +78,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     self.modelChartViewController.delegate=self;
     self.modelOtherViewController=[[ModelClassGrade2ViewController alloc] init];
     self.modelOtherViewController.delegate=self;
+    self.modelRatioViewController.classTitle=@"财务比例";
+    self.modelChartViewController.classTitle=@"财务图表";
+    self.modelOtherViewController.classTitle=@"其它指标";
     
     XRANGEBEGIN=9.0;
     XRANGELENGTH=14.0;
@@ -132,11 +135,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id com=delegate.comInfo;
-    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:16.0 color:@"#007ab7"];
-    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(160,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(240,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
-    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(320,0,80,40) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeCustom andColor:@"#705C32"];
+    id comInfo=delegate.comInfo;
+    [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:14.0 color:@"#007ab7"];
+    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
     [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
     [tool release];
     

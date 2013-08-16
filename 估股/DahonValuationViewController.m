@@ -75,12 +75,12 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     [self initData];
     [self initChart];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id com=delegate.comInfo;
+    id comInfo=delegate.comInfo;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
 	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    [tool addLabelToView:self.view withTile:[com objectForKey:@"companyname"] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0 color:@"#007ab7"];
+    [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:6 frame:CGRectMake(0,0,480,40) fontSize:18.0 color:@"#007ab7"];
     [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(384,265,96,35) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
     oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:1 frame:CGRectMake(0,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
     threeMonth=[tool addButtonToView:self.view withTitle:@"三个月" Tag:2 frame:CGRectMake(96,265,96,35) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:@"#705C32"];
@@ -96,20 +96,24 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 -(void)changeDateInter:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
     if(bt.tag==1){
+        XRANGEBEGIN=-5;
         XRANGELENGTH=22;
     }else if(bt.tag==2){
+        XRANGEBEGIN=-7;
         XRANGELENGTH=65;
     }else if(bt.tag==3){
+        XRANGEBEGIN=-12;
         XRANGELENGTH=130;
     }else if(bt.tag==4){
+        XRANGEBEGIN=-20;
         XRANGELENGTH=260;
     }
     [self setXYAxis];
 }
 
 -(void)initChart{
-    XRANGEBEGIN=-10;
-    XRANGELENGTH=50;
+    XRANGEBEGIN=-20;
+    XRANGELENGTH=260;
     XINTERVALLENGTH=50;
     //初始化图形视图
     @try {
@@ -134,7 +138,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction=YES;
-    [self.hostView setAllowPinchScaling:NO];
+    [self.hostView setAllowPinchScaling:YES];
     DrawXYAxisWithoutXAxisOrYAxis;
     [self addScatterChart];
 }
@@ -148,6 +152,12 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     [Utiles getNetInfoWithPath:@"GetStockHistoryData" andParams:params besidesBlock:^(id resObj){
        
         self.chartData=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"data"];
+        id info=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"info"];
+        NSString *high=[[NSString stringWithFormat:@"%@",[info objectForKey:@"high"]] substringToIndex:3];
+        NSString *low=[[NSString stringWithFormat:@"%@",[info objectForKey:@"low"]] substringToIndex:3];
+        NSString *volume=[NSString stringWithFormat:@"%@",[info objectForKey:@"volume"]];
+        NSString *indicator=[NSString stringWithFormat:@"昨开盘:%@ 昨收盘:%@ 最高价:%@ 最低价:%@ 成交量:%@",[info objectForKey:@"open"],[info objectForKey:@"close"],high,low,volume];
+        graph.title=indicator;
         self.dateArr=[Utiles sortDateArr:self.chartData];
         self.daHonDataDic=[resObj objectForKey:@"dahonData"];
         NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
@@ -259,6 +269,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     for(id obj in data){
         msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
     }
+    msg=[msg stringByAppendingFormat:@"\n时间:%@",[[data objectAtIndex:0] objectForKey:@"date"]];
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
     alert.alertViewStyle=UIAlertViewStyleDefault;
     [alert show];
@@ -333,7 +344,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             [newLabelLayer sizeToFit];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             = 10;
+            newLabel.offset             = 0;
             [newLabels addObject:newLabel];
         }
         
