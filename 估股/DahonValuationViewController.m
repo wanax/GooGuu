@@ -96,13 +96,13 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 -(void)changeDateInter:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
     if(bt.tag==1){
-        XRANGEBEGIN=-5;
+        XRANGEBEGIN=245;
         XRANGELENGTH=22;
     }else if(bt.tag==2){
-        XRANGEBEGIN=-7;
+        XRANGEBEGIN=200;
         XRANGELENGTH=65;
     }else if(bt.tag==3){
-        XRANGEBEGIN=-12;
+        XRANGEBEGIN=135;
         XRANGELENGTH=130;
     }else if(bt.tag==4){
         XRANGEBEGIN=-20;
@@ -150,41 +150,54 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     id comInfo=delegate.comInfo;
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"marketname"],@"marketname", nil];
     [Utiles getNetInfoWithPath:@"GetStockHistoryData" andParams:params besidesBlock:^(id resObj){
-       
-        self.chartData=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"data"];
-        id info=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"info"];
-        NSString *high=[[NSString stringWithFormat:@"%@",[info objectForKey:@"high"]] substringToIndex:3];
-        NSString *low=[[NSString stringWithFormat:@"%@",[info objectForKey:@"low"]] substringToIndex:3];
-        NSString *volume=[NSString stringWithFormat:@"%@",[info objectForKey:@"volume"]];
-        NSString *indicator=[NSString stringWithFormat:@"昨开盘:%@ 昨收盘:%@ 最高价:%@ 最低价:%@ 成交量:%@",[info objectForKey:@"open"],[info objectForKey:@"close"],high,low,volume];
-        graph.title=indicator;
-        self.dateArr=[Utiles sortDateArr:self.chartData];
-        self.daHonDataDic=[resObj objectForKey:@"dahonData"];
-        NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
+        NSNumberFormatter * formatter   = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setPositiveFormat:@"##.##"];
         @try {
+            self.chartData=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"data"];
+            id info=[[resObj objectForKey:@"stockHistoryData"] objectForKey:@"info"];
+            NSString *open=[formatter stringForObjectValue:[info objectForKey:@"open"]];
+            NSString *close=[formatter stringForObjectValue:[info objectForKey:@"close"]];
+            NSString *high=[formatter stringForObjectValue:[info objectForKey:@"high"]];
+            NSString *low=[formatter stringForObjectValue:[info objectForKey:@"low"]];
+            NSString *volume=[NSString stringWithFormat:@"%@",[info objectForKey:@"volume"]];
+            NSString *indicator=[NSString stringWithFormat:@"昨开盘:%@ 昨收盘:%@ 最高价:%@ 最低价:%@ 成交量:%@",open,close,high,low,volume];
+            graph.title=indicator;
+            self.dateArr=[Utiles sortDateArr:self.chartData];
+            self.daHonDataDic=[resObj objectForKey:@"dahonData"];
+            NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
             for(int i=0;i<[self.dateArr count];i++){
                 [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
             }
             NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
-            for(id key in daHonDataDic){
-                [tempMap setValue:key forKey:[tempDic objectForKey:key]];
+            NSMutableArray *scoreCounter=[[NSMutableArray alloc] init];
+            for(id key in self.daHonDataDic){
+                if([tempDic objectForKey:key]){
+                    [tempMap setValue:key forKey:[tempDic objectForKey:key]];
+                    [scoreCounter addObject:[tempDic objectForKey:key]];
+                }else{
+                    [tempMap setValue:key forKey:[NSString stringWithFormat:@"%d",[[scoreCounter lastObject] integerValue]+1]];
+                }
+                
             }
             self.indexDateMap=tempMap;
             self.daHonIndexSets=[self.indexDateMap allKeys];
             SAFE_RELEASE(tempDic);
             SAFE_RELEASE(tempMap);
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@",exception);
-        }
+            SAFE_RELEASE(scoreCounter);
+            SAFE_RELEASE(formatter);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
         
         
-        [self setXYAxis];
-        [oneMonth setEnabled:YES];
-        [threeMonth setEnabled:YES];
-        [sixMonth setEnabled:YES];
-        [oneYear setEnabled:YES];
-        [MBProgressHUD hideHUDForView:self.hostView animated:YES];
+    [self setXYAxis];
+    [oneMonth setEnabled:YES];
+    [threeMonth setEnabled:YES];
+    [sixMonth setEnabled:YES];
+    [oneYear setEnabled:YES];
+    [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         
     }];
 }
@@ -207,7 +220,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] doubleValue];
     YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] doubleValue];
     plotSpace.globalYRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(YRANGEBEGIN) length:CPTDecimalFromDouble(YRANGELENGTH)];
-    plotSpace.globalXRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(XRANGEBEGIN) length:CPTDecimalFromDouble(300)];
+    //plotSpace.globalXRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(130) length:CPTDecimalFromDouble(-300)];
     DrawXYAxisWithoutXAxisOrYAxis;
     [graph reloadData];
 }
@@ -227,7 +240,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         return [self.chartData count];
     }else if([(NSString *)plot.identifier isEqualToString:DAHON_DATALINE_IDENTIFIER]){
-        return [self.daHonDataDic count];
+        return [self.daHonIndexSets count];
     }
 
 }
@@ -239,22 +252,32 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     if([(NSString *)plot.identifier isEqualToString:HISTORY_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-  
-        if([key isEqualToString:@"x"]){
-            num=[NSNumber numberWithInt:index] ;
-        }else if([key isEqualToString:@"y"]){
-            num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:index]] objectForKey:@"close"];
+        @try {
+            if([key isEqualToString:@"x"]){
+                num=[NSNumber numberWithInt:index] ;
+            }else if([key isEqualToString:@"y"]){
+                num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:index]] objectForKey:@"close"];
+            }
         }
+        @catch (NSException *exception) {
+            NSLog(@"%@",exception);
+        }
+        
         
     }else if([(NSString *)plot.identifier isEqualToString:DAHON_DATALINE_IDENTIFIER]){
-        
-        NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        NSInteger trueIndex=[[self.daHonIndexSets objectAtIndex:index] intValue];
-        if([key isEqualToString:@"x"]){
-            num=[NSNumber numberWithInt:trueIndex];
-        }else if([key isEqualToString:@"y"]){
-            num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:trueIndex]] objectForKey:@"close"];
+        @try {
+            NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
+            NSInteger trueIndex=[[self.daHonIndexSets objectAtIndex:index] intValue];
+            if([key isEqualToString:@"x"]){
+                num=[NSNumber numberWithInt:trueIndex];
+            }else if([key isEqualToString:@"y"]){
+                num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:trueIndex]] objectForKey:@"close"];
+            }
         }
+        @catch (NSException *exception) {
+            NSLog(@"%@",exception);
+        }
+        
     }
     return  num;
 }

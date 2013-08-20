@@ -32,8 +32,8 @@
 
 @property (nonatomic,retain) CompanyFieldViewController *companyFieldViewController;
 
-@property (nonatomic,retain) ComFieldViewController *com;
-@property (nonatomic,retain) NSMutableArray *comInfoList;
+@property (nonatomic,retain) ComFieldViewController *comFieldViewController;
+@property (nonatomic,strong) NSMutableArray *comInfoList;
 
 
 

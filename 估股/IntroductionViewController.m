@@ -77,7 +77,6 @@
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
-    SAFE_RELEASE(browser);
     SAFE_RELEASE(tempPhotos);
 }
 

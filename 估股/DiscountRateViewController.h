@@ -16,6 +16,7 @@
     float marketPremium;
 }
 
+@property (nonatomic,retain) id com;
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSMutableArray *transData;
 

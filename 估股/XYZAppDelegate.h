@@ -23,7 +23,7 @@
 @property(nonatomic,retain)  PrettyTabBarViewController *tabBarController;
 
 @property (retain,nonatomic) UIPageControl * pageControl;
-@property (nonatomic,retain) id comInfo;
+@property (nonatomic,strong) id comInfo;
 @property (nonatomic,retain) NSTimer *loginTimer;
 
 

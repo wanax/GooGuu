@@ -38,7 +38,7 @@
         UILabel *googuuPriceLabel=[[UILabel alloc] initWithFrame:CGRectMake(168,1,55,21)];
         [googuuPriceLabel setFont:[UIFont fontWithName:@"Heiti SC" size:11.0]];
         [googuuPriceLabel setTextAlignment:NSTextAlignmentCenter];
-        [googuuPriceLabel setText:@"我的估股价"];
+        [googuuPriceLabel setText:@"我的估值"];
         [googuuPriceLabel setTextColor:[Utiles colorWithHexString:@"#B9B9B6"]];
         [googuuPriceLabel setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
         [self addSubview:googuuPriceLabel];

@@ -16,6 +16,7 @@
 #import "DahonValuationViewController.h"
 #import "XYZAppDelegate.h"
 #import "MBProgressHUD.h"
+#import "DiscountRateViewController.h"
 
 @interface ModelViewController ()
 
@@ -23,13 +24,19 @@
 
 @implementation ModelViewController
 
+@synthesize comInfo;
+@synthesize jsonForChart;
 @synthesize browseType;
 @synthesize savedStockList;
 @synthesize chartViewController;
+@synthesize disViewController;
 @synthesize savedTable;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(disViewController);
+    SAFE_RELEASE(comInfo);
+    SAFE_RELEASE(jsonForChart);
     SAFE_RELEASE(savedStockList);
     SAFE_RELEASE(savedTable);
     SAFE_RELEASE(chartViewController);
@@ -45,10 +52,18 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    if(browseType==MySavedType){
+        [self.savedTable reloadData];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    comInfo=delegate.comInfo;
+    [self getChartJsonData];
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
@@ -90,19 +105,42 @@
         [view release];
     }
     [_refreshHeaderView refreshLastUpdatedDate];
+    _count=0;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     SAFE_RELEASE(board);
 }
 
 -(void)getSavedStockList{
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id comInfo=delegate.comInfo;
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[Utiles getUserToken],@"token",@"googuu",@"from", nil];
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
         if(resObj!=nil){
             self.savedStockList=[resObj objectForKey:@"data"];
             [self.savedTable reloadData];
+            if(_count==1){
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                _count=0;
+            }else{
+                _count++;
+            }
+            
+        }
+    }];
+}
+
+-(void)getChartJsonData{
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
+        self.jsonForChart=[resObj JSONString];
+        self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
+        self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        disViewController=[[DiscountRateViewController alloc] init];
+        disViewController.jsonData=self.jsonForChart;
+        disViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
+        if(_count==1){
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            _count=0;
+        }else{
+            _count++;
         }
     }];
 }
@@ -149,11 +187,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    chartViewController=[[ChartViewController alloc] init];
-    chartViewController.sourceType=self.browseType;
-    chartViewController.globalDriverId=[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"itemcode"];
-    chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
-    [self presentViewController:chartViewController animated:YES completion:nil];
+    if([[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"data"] count]==1){
+        
+        [self presentViewController:disViewController animated:YES completion:nil];
+    }else{
+        chartViewController=[[ChartViewController alloc] init];
+        chartViewController.sourceType=self.browseType;
+        chartViewController.globalDriverId=[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"itemcode"];
+        chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
+        [self presentViewController:chartViewController animated:YES completion:nil];
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -174,8 +174,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
 }
 
--(id)getObjectDataFromJsFun:(NSString *)funName byDriverId:(NSString *)driverId{
-    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,driverId];
+-(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data{
+    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
     NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
     re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
     SAFE_RELEASE(arg);
@@ -186,13 +186,20 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
     
-    id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:driverId];
-    self.points=[temp objectForKey:@"array"];
+    id temp=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId];
+    NSMutableArray *tempHisPoints=[[NSMutableArray alloc] init];
+    for(id obj in [temp objectForKey:@"array"]){
+        if([[obj objectForKey:@"h"] boolValue]){
+            [tempHisPoints addObject:obj];
+        }
+    }
+    self.points=tempHisPoints;
     self.yAxisUnit=[temp objectForKey:@"unit"];
     graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
+    SAFE_RELEASE(tempHisPoints);
     
 }
 
@@ -212,10 +219,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
         
         //获取金融模型种类
-        NSString *arg=[[NSString alloc] initWithFormat:@"initFinancialData(\"%@\")",self.jsonForChart];
-        NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-        re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        id transObj=[re objectFromJSONString];
+        id transObj=[self getObjectDataFromJsFun:@"initFinancialData" byData:self.jsonForChart];
+        
         self.modelRatioViewController.jsonData=transObj;
         self.modelChartViewController.jsonData=transObj;
         self.modelOtherViewController.jsonData=transObj;
@@ -223,15 +228,10 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         self.modelChartViewController.indicator=@"listChart";
         self.modelOtherViewController.indicator=@"listOther";
         
-        id temp=[self getObjectDataFromJsFun:@"returnChartData" byDriverId:[[[transObj objectForKey:@"listRatio"] objectAtIndex:0] objectForKey:@"id"]];
-        self.points=[temp objectForKey:@"array"];
-        self.yAxisUnit=[temp objectForKey:@"unit"];
-        graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
-        [self setXYAxis];
+        [self modelClassChanged:[[[transObj objectForKey:@"listRatio"] objectAtIndex:0] objectForKey:@"id"]];
         barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
-        [graph reloadData];
-        SAFE_RELEASE(arg);
+
     }];
     
     

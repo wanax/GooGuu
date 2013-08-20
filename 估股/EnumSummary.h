@@ -23,7 +23,9 @@ typedef enum {
 typedef enum {
     ValuationModelType,
     MyConcernedType,
-    MySavedType
+    MySavedType,
+    ModelViewType,
+    ChartviewType
 } BrowseSourceType;
 
 //股票市场 CompanyListViewController

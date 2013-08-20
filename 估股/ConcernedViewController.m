@@ -30,7 +30,7 @@
 @implementation ConcernedViewController
 
 @synthesize companyFieldViewController;
-@synthesize com;
+@synthesize comFieldViewController;
 @synthesize loginViewController;
 @synthesize customTableView;
 @synthesize type;
@@ -43,7 +43,7 @@
 
 - (void)dealloc
 {
-    SAFE_RELEASE(com);
+    SAFE_RELEASE(comFieldViewController);
     SAFE_RELEASE(type);
     SAFE_RELEASE(companyFieldViewController);
     SAFE_RELEASE(customTableView);
@@ -137,8 +137,14 @@
                             nil];
     [Utiles postNetInfoWithPath:self.type andParams:params besidesBlock:^(id obj){
         if(![[obj objectForKey:@"status"] isEqualToString:@"0"]){
-            self.comInfoList=[NSMutableArray arrayWithArray:[obj objectForKey:@"data"]];
-            [customTableView reloadData];
+            @try {
+                self.comInfoList=[NSMutableArray arrayWithArray:[obj objectForKey:@"data"]];
+                [customTableView reloadData];
+            }
+            @catch (NSException *exception) {
+                NSLog(@"%@",exception);
+            }
+        
         }else{
             [Utiles ToastNotification:[obj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             self.comInfoList=[NSMutableArray arrayWithCapacity:0];
@@ -292,13 +298,18 @@
 
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
-    delegate.comInfo=[self.comInfoList objectAtIndex:row];
-    
-    com=[[ComFieldViewController alloc] init];
-    com.browseType=self.browseType;
-    com.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);    
-    [self presentViewController:com animated:YES completion:nil];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    @try {
+        delegate.comInfo=[[self.comInfoList objectAtIndex:row] retain];
+        
+        comFieldViewController=[[ComFieldViewController alloc] init];
+        comFieldViewController.browseType=self.browseType;
+        comFieldViewController.view.frame=CGRectMake(0,20,SCREEN_WIDTH,SCREEN_HEIGHT);
+        [self presentViewController:comFieldViewController animated:YES completion:nil];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
     
 }
 
@@ -351,18 +362,6 @@
     
 }
 
-
-
-/*-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    //NSLog(@"concern didRotateFromInterfaceOrientation");
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration NS_AVAILABLE_IOS(3_0)
-{
-    //NSLog(@"concern willAnimateRotationToInterfaceOrientation");
-    XYZAppDelegate *delegate1=[[UIApplication sharedApplication] delegate];
-    [[delegate1.tabBarController.childViewControllers objectAtIndex:5] willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}*/
 
 
 -(NSUInteger)supportedInterfaceOrientations{

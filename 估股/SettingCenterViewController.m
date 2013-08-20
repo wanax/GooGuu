@@ -292,9 +292,9 @@
             [set release];
         }
     }else if(section==1){
-        [Utiles deleteSandBoxContent];
+        //[Utiles deleteSandBoxContent];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@KB",[Utiles getCatchSize]];
+        cell.detailTextLabel.text=@"0";
     }else if(section==2){
         if(row==1){
             AboutUsAndCopyrightViewController *us=[[AboutUsAndCopyrightViewController alloc] init];

@@ -126,7 +126,6 @@
             	rtnstr+="]";
             	return rtnstr;
             }
-
           
             //根据driverid返回一组调整参数数据
             function returnChartData(driverid)
@@ -188,9 +187,48 @@
 				computerf();
 				return values[countId];
 			}
-			//根据传入的数据重新计算估股价
-            function chartCaluWacc(jsondata) 
-            {            
+			
+            
+            function returnSaveDicountData(comInfoStr){
+                
+                var comInfo=eval('(' + comInfoStr + ')');
+                var driverIds =jsonobjs.model.root.wacc;
+                var dataStr="{\"modeldata\":[";
+                var i=0;
+                for (var driverId in driverIds){
+                    var tempData=jsonobjs.model.driver[driverIds[driverId]];
+                    if(!tempData){
+                        continue;
+                    }
+                    if(i>=3){
+                        break;
+                    }
+                    dataStr+="{\"data\":[";
+                    for(var single in tempData.array){
+                        dataStr+="{\"h\":"+tempData.array[single].h+",";
+                        dataStr+="\"id\":\""+tempData.array[single].id+"\",";
+                        dataStr+="\"v\":"+values[tempData.array[single].id]+",";
+                        dataStr+="\"y\":\""+tempData.array[single].y+"\"},";
+                    }
+                    dataStr+="],";
+                    dataStr+="\"unit\":\""+tempData.unit+"\",";
+                    dataStr+="\"itemname\":\""+tempData.name+"\",";
+                    dataStr+="\"itemcode\":\""+driverIds[driverId]+"\",";
+                    dataStr+="\"stockcode\":\""+comInfo.stockcode+"\"";
+                    dataStr+="},";
+                    i++;
+                }
+                dataStr+="],";
+                dataStr+="\"price\":\""+comInfo.price+"\",";
+                dataStr+="\"companyname\":\""+comInfo.companyname+"\",";
+                dataStr+="\"stockcode\":\""+comInfo.stockcode+"\"";
+                dataStr+="}";
+                return dataStr;
+                
+            }
+            //根据传入的数据重新计算估股价
+            function chartCaluWacc(jsondata)
+            {
 	            var sValue = eval('(' + jsondata + ')');
 	            var strtmp="";
 				for ( var i = 0; i < sValue.length; i++) {
@@ -199,6 +237,7 @@
 				computerf();
 				return returnWaccData();
 			}
+            
             //金融数据所需信息
             function returnWaccData()
             {

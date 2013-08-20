@@ -211,7 +211,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         for(id obj in self.forecastDefaultPoints){
             [self.forecastPoints addObject:[obj mutableCopy]];
         }
-        //[self setStockPrice];
+        [[self.hisPoints lastObject] setObject:[[self.forecastDefaultPoints objectAtIndex:0] objectForKey:@"v"] forKey:@"v"];
+        [self setStockPrice];
         [self setXYAxis];
     }else if(bt.tag==BackToSuperView){
         bt.showsTouchWhenHighlighted=YES;
@@ -321,6 +322,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     self.yAxisUnit=[chartData objectForKey:@"unit"];
     graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
     [self setXYAxis];
+    [self setStockPrice];
 }
 
 #pragma mark -
@@ -344,8 +346,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.forecastPoints addObject:mutableObj];
     }
     //历史数据与预测数据线拼接
-    [self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
-    [self.forecastDefaultPoints insertObject:[self.hisPoints lastObject] atIndex:0];
+    [self.hisPoints addObject:[self.forecastPoints objectAtIndex:0]];
+    //[self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
+    //[self.forecastDefaultPoints insertObject:[self.forecastPoints objectAtIndex:0] atIndex:0];
     SAFE_RELEASE(mutableObj);
 }
 
@@ -370,7 +373,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
-                //[self setStockPrice];
             }
             [self modelClassChanged:globalDriverId];
         }
@@ -382,8 +384,13 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *jsonPrice=[self.forecastPoints JSONString];
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
-    [self.myGGpriceLabel setText:@"我的估股价"];
-    [self.priceLabel setText:[backInfo substringToIndex:5]];
+    [self.myGGpriceLabel setText:@"我的估值"];
+    @try {
+        [self.priceLabel setText:[backInfo substringToIndex:5]];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
 }
 
 -(void)viewPan:(UIPanGestureRecognizer *)tapGr
@@ -413,12 +420,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
         coordinate.x=(int)(coordinate.x+0.5);
         coordinate.x=(int)(coordinate.x+0.5);
-
-        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count]-1;        
+        
+        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count]-1;
         subscript=subscript<0?0:subscript;
         subscript=subscript>=[self.forecastPoints count]-1?[self.forecastPoints count]-1:subscript;
         NSAssert(subscript<=[self.forecastPoints count]-1&&coordinate.x>=0,@"over bounds");
-        
+
         if(linkage){            
             double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
 
@@ -426,8 +433,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             int i=0;
             for(id obj in self.forecastPoints){
                 double v = [[obj objectForKey:@"v"] doubleValue];
-                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i++));
+                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i));
                 [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+                if(i==0){
+                    [[self.hisPoints lastObject] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+                }
+                i++;
             }
             
             [self setStockPrice];
@@ -438,7 +449,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
             double v=[[self.standard objectAtIndex:subscript] doubleValue]+changeD;
             [[self.forecastPoints objectAtIndex:subscript] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
-            
+            if(subscript==0){
+                [[self.hisPoints lastObject] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+            }
             [self setStockPrice];
             [graph reloadData];
             
@@ -474,15 +487,16 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 }
 -(NSString *)formatTrans:(NSUInteger)index from:(NSMutableArray *)arr{
     NSString *numberString =nil;
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterPercentStyle];
     if([self.yAxisUnit isEqualToString:@"%"]){
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+       
         numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[arr objectAtIndex:index] objectForKey:@"v"] floatValue]]];
         SAFE_RELEASE(formatter);
     }else{
         numberString=[[[arr objectAtIndex:index] objectForKey:@"v"] stringValue];
-        if(numberString.length>4){
-            numberString=[numberString substringToIndex:4];
+        if(numberString.length>5){
+            numberString=[numberString substringToIndex:5];
         }
     }
     return numberString;
@@ -541,7 +555,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }else if([(NSString *)plot.identifier isEqualToString:COLUMNAR_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
-        
         if([key isEqualToString:@"x"]){
             num=[NSNumber numberWithDouble:[[[self.forecastPoints objectAtIndex:index] valueForKey:@"y"] doubleValue]+0.5];
         }else if([key isEqualToString:@"y"]){
@@ -700,10 +713,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         CPTPlotSymbol * plotSymbol = [CPTPlotSymbol diamondPlotSymbol];
         plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5]];
         plotSymbol.lineStyle     = symbolLineStyle;
-        plotSymbol.size          = CGSizeMake(10, 10);
+        plotSymbol.size          = CGSizeMake(13, 13);
         
         forecastLinePlot.plotSymbol = plotSymbol;
-        historyLinePlot.plotSymbol=plotSymbol;
+        //historyLinePlot.plotSymbol=plotSymbol;
         
         [graph addPlot:forecastDefaultLinePlot];
         [graph addPlot:historyLinePlot];

@@ -62,6 +62,9 @@
     
     [self getConcernStocksCode];
     [self.table reloadData];
+    if(isSearchList){
+        [self.search becomeFirstResponder];
+    }
 }
 
 
@@ -411,7 +414,7 @@
     [search resignFirstResponder];
     
 }
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+/*-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if([searchText length]==0)
     {
@@ -423,7 +426,7 @@
     }
     
     //有文字输入就把关键字传给handleSearchForTerm处理
-}
+}*/
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self resetSearch];
