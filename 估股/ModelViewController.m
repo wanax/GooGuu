@@ -63,7 +63,7 @@
     [super viewDidLoad];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
-    [self getChartJsonData];
+    
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
@@ -73,6 +73,7 @@
     
     if(self.browseType==MySavedType){
         [self initSavedTable];
+        [self getChartJsonData];
         [self getSavedStockList];
     }
     

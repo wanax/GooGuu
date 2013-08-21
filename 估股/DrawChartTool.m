@@ -86,7 +86,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
        yTap=(yMax-yMin)/[sortYArr count]; 
     }
     
-    long xLowBound=xMin-2;
+    long xLowBound=xMin-1;
     long xUpBound=xMax+1;
   
     double yLowBound=0.0;

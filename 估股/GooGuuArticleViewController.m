@@ -62,7 +62,7 @@
         articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width, self.view.bounds.size.height)];
         articleWeb.delegate=self;
         [articleWeb loadHTMLString:[article objectForKey:@"content"] baseURL:nil];
-        //articleWeb.scalesPageToFit=YES;
+        articleWeb.scalesPageToFit=YES;
         [hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
         [self.view addSubview:articleWeb];

@@ -21,6 +21,7 @@
 #import "CQMFloatingController.h"
 #import "DrawChartTool.h"
 #import "DiscountRateViewController.h"
+#import "UIButton+BGColor.h"
 #import <Crashlytics/Crashlytics.h>
 
 
@@ -63,6 +64,7 @@
 @synthesize webView;
 @synthesize priceLabel;
 @synthesize myGGpriceLabel;
+@synthesize saveBt;
 
 
 static NSString * FORECAST_DATALINE_IDENTIFIER =@"forecast_dataline_identifier";
@@ -73,6 +75,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(saveBt);
     SAFE_RELEASE(myGGpriceLabel);
     SAFE_RELEASE(globalDriverId);
     SAFE_RELEASE(comInfo);
@@ -108,7 +111,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 {
     [super viewDidLoad];
     linkage=YES;
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#8D99B2"]];
+    _isSaved=YES;
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
     
@@ -171,7 +175,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(100,55,80,25) fontSize:16.0 color:@"#8D99B2"];
     [tool addLabelToView:self.view withTile:@"市场价" Tag:11 frame:CGRectMake(180,35,109,20) fontSize:13.0 color:@"#8D99B2"];
     [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(180,55,109,25) fontSize:16.0 color:@"#8D99B2"];
-    [tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(415,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
+    saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(415,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2"];
     [tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(352,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
     [tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(289,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
     [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(384,0,96,35) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
@@ -192,10 +196,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
-            if([resObj objectForKey:@"status"]){
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            if([[resObj objectForKey:@"status"] isEqual:@"1"]){
+                [bt setBackgroundColor:[Utiles colorWithHexString:@"#d0d1d2"] forState:UIControlStateNormal];
+                [bt setEnabled:NO];
+                _isSaved=YES;
             }
+            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
         }];
+        
     }else if(bt.tag==DragChartType){
         if(linkage){
             [bt setTitle:@"联动" forState:UIControlStateNormal];
@@ -368,6 +376,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
         if(resObj!=nil){
             id saveData=[resObj objectForKey:@"data"];
+            modelMainViewController.savedData=saveData;
+            modelCapViewController.savedData=saveData;
+            modelFeeViewController.savedData=saveData;
             for(id data in saveData){
                 id tempChartData=[data objectForKey:@"data"];
                 NSString *chartStr=[tempChartData JSONString];
@@ -384,7 +395,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *jsonPrice=[self.forecastPoints JSONString];
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
-    [self.myGGpriceLabel setText:@"我的估值"];
+    if(self.sourceType==MySavedType){
+        [self.myGGpriceLabel setText:@"我的估值"];
+    }
     @try {
         [self.priceLabel setText:[backInfo substringToIndex:5]];
     }
@@ -456,7 +469,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             [graph reloadData];
             
         }
-        
+        [self.myGGpriceLabel setText:@"我的估值"];
+        if(_isSaved){
+            [saveBt setEnabled:YES];
+            [saveBt setBackgroundColor:[Utiles colorWithHexString:@"#2bc0a7"] forState:UIControlStateNormal];
+            _isSaved=NO;
+        }
     }
     
 }

@@ -18,6 +18,7 @@
 
 @property (nonatomic,retain) id com;
 @property (nonatomic,retain) id jsonData;
+@property (nonatomic,retain) NSArray *defaultTransData;
 @property (nonatomic,retain) NSMutableArray *transData;
 
 @property (nonatomic,retain) IBOutlet UIButton *resetBt;

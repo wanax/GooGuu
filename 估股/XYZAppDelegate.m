@@ -75,7 +75,7 @@
         [tool release];
     }else {
        
-        UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"估股动态" image:[UIImage imageNamed:@"googuuNewsBar"] tag:1];      
+        UITabBarItem *barItem=[[UITabBarItem alloc] initWithTitle:@"最新简报" image:[UIImage imageNamed:@"googuuNewsBar"] tag:1];      
         UITabBarItem *barItem2=[[UITabBarItem alloc] initWithTitle:@"我的估股" image:[UIImage imageNamed:@"myGooGuuBar"] tag:2];        
         UITabBarItem *barItem3=[[UITabBarItem alloc] initWithTitle:@"金融工具" image:[UIImage imageNamed:@"hammer.png"] tag:3];
         UITabBarItem *barItem4=[[UITabBarItem alloc] initWithTitle:@"功能设置" image:[UIImage imageNamed:@"moreAboutBar"] tag:4];

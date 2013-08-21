@@ -18,7 +18,6 @@
 		AE15104A17A79F9C007B9E66 /* myGooGuuBar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15104617A79F9C007B9E66 /* myGooGuuBar.png */; };
 		AE15104C17A7A104007B9E66 /* whiteDotLine.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15104B17A7A100007B9E66 /* whiteDotLine.png */; };
 		AE15104E17A7A1C5007B9E66 /* grayDotLine.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15104D17A7A1C3007B9E66 /* grayDotLine.png */; };
-		AE15105017A7A2CE007B9E66 /* dailyStockLittleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15104F17A7A2CD007B9E66 /* dailyStockLittleIcon.png */; };
 		AE15105217A7A300007B9E66 /* defaultCompanyLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105117A7A2FF007B9E66 /* defaultCompanyLogo.png */; };
 		AE15105417A7A3E1007B9E66 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105317A7A3E1007B9E66 /* appIcon.png */; };
 		AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105517A7A4A6007B9E66 /* defaultAvatar.png */; };
@@ -333,6 +332,9 @@
 		AE368F38179F693D000AF7BD /* UIImageView+Addition.h in Sources */ = {isa = PBXBuildFile; fileRef = AE368E95179F5F3E000AF7BD /* UIImageView+Addition.h */; };
 		AE368F3B179F81A7000AF7BD /* AnalyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */; };
 		AE368F3E179F85B4000AF7BD /* AnalyDetailContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */; };
+		AE4B4FC617C4607100180A93 /* fallarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B4FC417C4607100180A93 /* fallarrow.png */; };
+		AE4B4FC717C4607100180A93 /* risearrow.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B4FC517C4607100180A93 /* risearrow.png */; };
+		AE4B4FCD17C4674E00180A93 /* RTLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4B4FCC17C4674E00180A93 /* RTLabel.m */; };
 		AE4CF0D717AA32780060640E /* CQMFloatingContentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0CE17AA32780060640E /* CQMFloatingContentOverlayView.m */; };
 		AE4CF0D817AA32780060640E /* CQMFloatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0D017AA32780060640E /* CQMFloatingController.m */; };
 		AE4CF0D917AA32780060640E /* CQMFloatingFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4CF0D217AA32780060640E /* CQMFloatingFrameView.m */; };
@@ -350,6 +352,10 @@
 		AE5608D417BDFAF20064EA91 /* FeedBackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE5608D317BDFAF20064EA91 /* FeedBackView.xib */; };
 		AE5608D717BE02AB0064EA91 /* Indicator2View.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5608D617BE02AB0064EA91 /* Indicator2View.m */; };
 		AE5608DA17BE05580064EA91 /* StockSearchListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5608D917BE05580064EA91 /* StockSearchListViewController.m */; };
+		AE58FD0A17C345C500D23DCE /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58FD0917C345C500D23DCE /* Toast+UIView.m */; };
+		AE58FD0C17C3605F00D23DCE /* dailyStockLittleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE58FD0B17C3605F00D23DCE /* dailyStockLittleIcon.png */; };
+		AE58FD0E17C3667300D23DCE /* newscellbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = AE58FD0D17C3667300D23DCE /* newscellbackground.png */; };
+		AE58FD1017C367AA00D23DCE /* dailystockbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = AE58FD0F17C367AA00D23DCE /* dailystockbackground.png */; };
 		AE6B96E117A0F51200DBE0C6 /* MHTabBarIndicator2.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */; };
 		AE6B96E217A0F51200DBE0C6 /* MHTabBarIndicator3.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */; };
 		AE6B96E317A0F51200DBE0C6 /* MHTabBarIndicator4.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */; };
@@ -493,7 +499,6 @@
 		AE15104617A79F9C007B9E66 /* myGooGuuBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myGooGuuBar.png; sourceTree = "<group>"; };
 		AE15104B17A7A100007B9E66 /* whiteDotLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteDotLine.png; sourceTree = "<group>"; };
 		AE15104D17A7A1C3007B9E66 /* grayDotLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayDotLine.png; sourceTree = "<group>"; };
-		AE15104F17A7A2CD007B9E66 /* dailyStockLittleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dailyStockLittleIcon.png; sourceTree = "<group>"; };
 		AE15105117A7A2FF007B9E66 /* defaultCompanyLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultCompanyLogo.png; sourceTree = "<group>"; };
 		AE15105317A7A3E1007B9E66 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
 		AE15105517A7A4A6007B9E66 /* defaultAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultAvatar.png; sourceTree = "<group>"; };
@@ -836,6 +841,10 @@
 		AE368F3A179F81A7000AF7BD /* AnalyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailViewController.m; sourceTree = "<group>"; };
 		AE368F3C179F85B3000AF7BD /* AnalyDetailContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyDetailContainerViewController.h; sourceTree = "<group>"; };
 		AE368F3D179F85B3000AF7BD /* AnalyDetailContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyDetailContainerViewController.m; sourceTree = "<group>"; };
+		AE4B4FC417C4607100180A93 /* fallarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fallarrow.png; sourceTree = "<group>"; };
+		AE4B4FC517C4607100180A93 /* risearrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = risearrow.png; sourceTree = "<group>"; };
+		AE4B4FCB17C4674E00180A93 /* RTLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLabel.h; sourceTree = "<group>"; };
+		AE4B4FCC17C4674E00180A93 /* RTLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLabel.m; sourceTree = "<group>"; };
 		AE4CF0CD17AA32780060640E /* CQMFloatingContentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQMFloatingContentOverlayView.h; sourceTree = "<group>"; };
 		AE4CF0CE17AA32780060640E /* CQMFloatingContentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CQMFloatingContentOverlayView.m; sourceTree = "<group>"; };
 		AE4CF0CF17AA32780060640E /* CQMFloatingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQMFloatingController.h; sourceTree = "<group>"; };
@@ -867,6 +876,11 @@
 		AE5608D617BE02AB0064EA91 /* Indicator2View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Indicator2View.m; sourceTree = "<group>"; };
 		AE5608D817BE05580064EA91 /* StockSearchListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StockSearchListViewController.h; sourceTree = "<group>"; };
 		AE5608D917BE05580064EA91 /* StockSearchListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockSearchListViewController.m; sourceTree = "<group>"; };
+		AE58FD0817C345C500D23DCE /* Toast+UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Toast+UIView.h"; sourceTree = "<group>"; };
+		AE58FD0917C345C500D23DCE /* Toast+UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Toast+UIView.m"; sourceTree = "<group>"; };
+		AE58FD0B17C3605F00D23DCE /* dailyStockLittleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dailyStockLittleIcon.png; sourceTree = "<group>"; };
+		AE58FD0D17C3667300D23DCE /* newscellbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newscellbackground.png; sourceTree = "<group>"; };
+		AE58FD0F17C367AA00D23DCE /* dailystockbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dailystockbackground.png; sourceTree = "<group>"; };
 		AE6B96DE17A0F51200DBE0C6 /* MHTabBarIndicator2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator2.png; sourceTree = "<group>"; };
 		AE6B96DF17A0F51200DBE0C6 /* MHTabBarIndicator3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator3.png; sourceTree = "<group>"; };
 		AE6B96E017A0F51200DBE0C6 /* MHTabBarIndicator4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarIndicator4.png; sourceTree = "<group>"; };
@@ -1335,6 +1349,9 @@
 		AE2E91BE179D06890049B28E /* Plugs */ = {
 			isa = PBXGroup;
 			children = (
+				AE4B4FCB17C4674E00180A93 /* RTLabel.h */,
+				AE4B4FCC17C4674E00180A93 /* RTLabel.m */,
+				AE58FD0717C345C500D23DCE /* Toast */,
 				AE4CF0CC17AA32780060640E /* Classes */,
 				AEF9849517AA041200688473 /* TSPopover */,
 				AE368EE0179F68E4000AF7BD /* MWPhotoBrowser */,
@@ -1603,12 +1620,16 @@
 		AE2E9354179D09490049B28E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				AE4B4FC417C4607100180A93 /* fallarrow.png */,
+				AE4B4FC517C4607100180A93 /* risearrow.png */,
+				AE58FD0F17C367AA00D23DCE /* dailystockbackground.png */,
+				AE58FD0D17C3667300D23DCE /* newscellbackground.png */,
+				AE58FD0B17C3605F00D23DCE /* dailyStockLittleIcon.png */,
 				AE15105717A7A756007B9E66 /* addConcernBt.png */,
 				AE15105817A7A757007B9E66 /* cancelConcernBt.png */,
 				AE15105517A7A4A6007B9E66 /* defaultAvatar.png */,
 				AE15105317A7A3E1007B9E66 /* appIcon.png */,
 				AE15105117A7A2FF007B9E66 /* defaultCompanyLogo.png */,
-				AE15104F17A7A2CD007B9E66 /* dailyStockLittleIcon.png */,
 				AE15104D17A7A1C3007B9E66 /* grayDotLine.png */,
 				AE15104B17A7A100007B9E66 /* whiteDotLine.png */,
 				AE15103D17A79C52007B9E66 /* unread.png */,
@@ -1923,6 +1944,15 @@
 				AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */,
 			);
 			name = MultipleChart;
+			sourceTree = "<group>";
+		};
+		AE58FD0717C345C500D23DCE /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				AE58FD0817C345C500D23DCE /* Toast+UIView.h */,
+				AE58FD0917C345C500D23DCE /* Toast+UIView.m */,
+			);
+			path = Toast;
 			sourceTree = "<group>";
 		};
 		AE75B91917A217690046901F /* Test */ = {
@@ -2523,7 +2553,6 @@
 				AE15104A17A79F9C007B9E66 /* myGooGuuBar.png in Resources */,
 				AE15104C17A7A104007B9E66 /* whiteDotLine.png in Resources */,
 				AE15104E17A7A1C5007B9E66 /* grayDotLine.png in Resources */,
-				AE15105017A7A2CE007B9E66 /* dailyStockLittleIcon.png in Resources */,
 				AE15105217A7A300007B9E66 /* defaultCompanyLogo.png in Resources */,
 				AE15105417A7A3E1007B9E66 /* appIcon.png in Resources */,
 				AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */,
@@ -2536,6 +2565,11 @@
 				AE6C5EAD17B23A7E0080988E /* DiscountRateView.xib in Resources */,
 				AEFE65A017B8799B00E1FC8F /* Default-568h@2x.png in Resources */,
 				AE5608D417BDFAF20064EA91 /* FeedBackView.xib in Resources */,
+				AE58FD0C17C3605F00D23DCE /* dailyStockLittleIcon.png in Resources */,
+				AE58FD0E17C3667300D23DCE /* newscellbackground.png in Resources */,
+				AE58FD1017C367AA00D23DCE /* dailystockbackground.png in Resources */,
+				AE4B4FC617C4607100180A93 /* fallarrow.png in Resources */,
+				AE4B4FC717C4607100180A93 /* risearrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2861,6 +2895,8 @@
 				AE5608D217BDFADD0064EA91 /* FeedBackViewController.m in Sources */,
 				AE5608D717BE02AB0064EA91 /* Indicator2View.m in Sources */,
 				AE5608DA17BE05580064EA91 /* StockSearchListViewController.m in Sources */,
+				AE58FD0A17C345C500D23DCE /* Toast+UIView.m in Sources */,
+				AE4B4FCD17C4674E00180A93 /* RTLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

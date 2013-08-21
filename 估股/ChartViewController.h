@@ -69,6 +69,8 @@
     
     NSMutableArray *_standard;
     
+    BOOL _isSaved;
+    
 }
 
 @property BrowseSourceType sourceType;
@@ -104,6 +106,7 @@
 @property (nonatomic,retain) UIWebView *webView;
 @property (nonatomic,retain) UILabel *myGGpriceLabel;
 @property (nonatomic,retain) UILabel *priceLabel;
+@property (nonatomic,retain) UIButton *saveBt;
 
 //绘图view
 @property (nonatomic,retain) CPTXYGraph * graph ;

@@ -19,17 +19,19 @@
 
 @synthesize delegate;
 
+@synthesize savedData;
 @synthesize classTitle;
 @synthesize jsonData;
 @synthesize indicator;
 @synthesize indicatorClass;
-@synthesize indicatorClassKey;
+@synthesize savedDataName;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(savedDataName);
+    SAFE_RELEASE(savedData);
     SAFE_RELEASE(classTitle);
     [delegate release];delegate=nil;
-    [indicatorClassKey release];indicatorClassKey=nil;
     [jsonData release];jsonData=nil;
     [indicator release];indicator=nil;
     [indicatorClass release];indicatorClass=nil;
@@ -49,18 +51,16 @@
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:classTitle];
-    id tempClass=[jsonData objectForKey:indicator];
-    NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
-    NSMutableArray *tempArr=[[NSMutableArray alloc] init];
-    for(id obj in tempClass){
-        [tempDic setObject:[obj objectForKey:@"id"] forKey:[obj objectForKey:@"name"]];
-        [tempArr addObject:[obj objectForKey:@"name"]];
+    self.indicatorClass=[jsonData objectForKey:indicator];
+    NSMutableArray *tmpName=[[NSMutableArray alloc] init];
+    if(savedData){
+        for(id obj in savedData){
+            [tmpName addObject:[obj objectForKey:@"itemname"]];
+        }
     }
-    self.indicatorClass=tempDic;
-    self.indicatorClassKey=tempArr;
-    [tempArr release];
-    [tempDic release];
-    
+    self.savedDataName=tmpName;
+    SAFE_RELEASE(tmpName);
+
 }
 
 
@@ -69,7 +69,11 @@
 
 #pragma mark -
 #pragma mark UITableViewController
-
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if([self.savedDataName containsObject:[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"name"]]){
+      [cell setBackgroundColor:[Utiles colorWithHexString:@"#b083ef"]];
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [self.indicatorClass count];
@@ -82,7 +86,8 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 									   reuseIdentifier:ClassGrade2CellIdentifier] autorelease];
 	}
-	NSString *text =[self.indicatorClassKey objectAtIndex:indexPath.row];
+
+	NSString *text =[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"name"];
 	[cell.textLabel setText:text];
     cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
 	
@@ -94,7 +99,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
 	
-    [delegate modelClassChanged:[self.indicatorClass objectForKey:[self.indicatorClassKey objectAtIndex:indexPath.row]]];
+    [delegate modelClassChanged:[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"id"]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     [floatingController dismissAnimated:YES];

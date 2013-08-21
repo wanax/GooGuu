@@ -9,11 +9,12 @@
 //  2013-06-14 | Wanax | 估股新闻栏目新闻cell  
 
 #import <UIKit/UIKit.h>
+#import "RTLabel.h"
 
 @interface GooNewsCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *contentLabel;
+@property (strong, nonatomic) IBOutlet RTLabel *contentLabel;
 @property (nonatomic,retain) IBOutlet UILabel *timeDiferLabel;
 @property (nonatomic,retain) IBOutlet UIImageView *readMarkImg;
 

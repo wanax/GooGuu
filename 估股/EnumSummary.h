@@ -25,7 +25,9 @@ typedef enum {
     MyConcernedType,
     MySavedType,
     ModelViewType,
-    ChartviewType
+    ChartviewType,
+    DragableChart,
+    FinancalModelChart
 } BrowseSourceType;
 
 //股票市场 CompanyListViewController

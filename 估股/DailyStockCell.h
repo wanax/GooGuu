@@ -21,5 +21,6 @@
 @property (nonatomic,retain) IBOutlet UILabel *tradeLabel;
 @property (nonatomic,retain) IBOutlet UILabel *outLookLabel;
 @property (nonatomic,retain) IBOutlet UILabel *outLookTextLabel;
+@property (nonatomic,retain) IBOutlet UIImageView *arrowImg;
 
 @end

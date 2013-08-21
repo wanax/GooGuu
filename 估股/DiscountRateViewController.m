@@ -19,6 +19,7 @@
 
 @synthesize com;
 @synthesize jsonData;
+@synthesize defaultTransData;
 @synthesize transData;
 
 @synthesize resetBt;
@@ -43,6 +44,7 @@
 
 - (void)dealloc
 {
+    SAFE_RELEASE(defaultTransData);
     SAFE_RELEASE(com);
     SAFE_RELEASE(transData);
     SAFE_RELEASE(webView);
@@ -88,7 +90,6 @@
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     com=delegate.comInfo;
-    [self adjustChartDataForSaved:[com objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
     
 }
 
@@ -96,14 +97,25 @@
     
     [self getObjectDataFromJsFun:@"initData" param:self.jsonData];
    
+    id tempData=[self getObjectDataFromJsFun:@"returnWaccData" param:@""];
+    NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
+    for(id obj in tempData){
+        [tmpArr addObject:obj];
+    }
+    self.defaultTransData=tmpArr;
+    SAFE_RELEASE(tmpArr);
+    
     [self adjustChartDataForSaved:[com objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
 
-    
 }
 
 -(IBAction)btClick:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
     if(bt.tag==1){
+        [self.transData removeAllObjects];
+        for(id obj in self.defaultTransData){
+            [self.transData addObject:obj];
+        }
         [self updateComponents];
     }else if(bt.tag==2){
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[com objectForKey:@"stockcode"],@"stockcode",[com objectForKey:@"companyname"],@"companyname",[self.ggPriceLabel text],@"price", nil];

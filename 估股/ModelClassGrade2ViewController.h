@@ -17,11 +17,12 @@
 
 @property (nonatomic,retain) id<ModelClassGrade2Delegate> delegate;
 
+@property (nonatomic,retain) id savedData;
 @property (nonatomic,retain) NSString *classTitle;
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSString *indicator;
-@property (nonatomic,retain) NSDictionary *indicatorClass;
-@property (nonatomic,retain) NSArray *indicatorClassKey;
+@property (nonatomic,retain) id indicatorClass;
+@property (nonatomic,retain) NSArray *savedDataName;
 
 
 

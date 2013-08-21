@@ -11,6 +11,7 @@
 @implementation DailyStockCell
 
 @synthesize dailyStockImg;
+@synthesize arrowImg;
 @synthesize communityPriceLabel;
 @synthesize companyNameLabel;
 @synthesize gooGuuPriceLabel;
@@ -22,6 +23,7 @@
 
 - (void)dealloc
 {
+    SAFE_RELEASE(arrowImg);
     [outLookTextLabel release];outLookTextLabel=nil;
     [outLookLabel release];outLookLabel=nil;
     [communityPriceLabel release];communityPriceLabel=nil;

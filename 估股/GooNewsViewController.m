@@ -71,7 +71,7 @@
     [self getGooGuuNews];
     
     self.navigationController.navigationBar.tintColor=[Utiles colorWithHexString:@"#C86125"];
-    self.title=@"估股动态";
+    self.title=@"最新简报";
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     
    	customTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
@@ -161,7 +161,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section==0){
-        return 113;
+        return 98;
     }else{
         return 86.0;
     }
@@ -205,35 +205,37 @@
                                
                            }];
         }
+        NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
+        [formatter setPositiveFormat:@"##0.##"];
         NSNumber *marketPrice=[self.companyInfo objectForKey:@"marketprice"];
         NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
         float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
-        cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",marketPrice];
-        cell.companyNameLabel.text=[self.companyInfo objectForKey:@"companyname"];
-        cell.marketLabel.text=[NSString stringWithFormat:@"%@.%@",[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
-        
-        cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",ggPrice];
+        cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:marketPrice]];
+        cell.companyNameLabel.text=[NSString stringWithFormat:@"%@   (%@.%@)",[self.companyInfo objectForKey:@"companyname"],[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
+        cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:ggPrice]];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
-        cell.outLookTextLabel.textColor=[Utiles colorWithHexString:@"#6C5F3D"];
+        
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *fallColorStr=[NSString stringWithFormat:@"FallColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
         NSString *riseColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:riseColorStr inUserDomain:NO];
         NSString *fallColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:fallColorStr inUserDomain:NO];
+        
         if(outLook>0){
-            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
-            cell.outLookTextLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
+            [cell.outLookLabel setTextColor:[Utiles colorWithHexString:riseColor]];
+            [cell.arrowImg setImage:[UIImage imageNamed:@"risearrow"]];
         }else if(outLook==0){
-            cell.outLookLabel.backgroundColor=[UIColor whiteColor];
+            [cell.outLookLabel setTextColor:[UIColor whiteColor]];
         }else if(outLook<0){
-            cell.outLookLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
-            cell.outLookTextLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
+            [cell.outLookLabel setTextColor:[Utiles colorWithHexString:fallColor]];
+            [cell.arrowImg setImage:[UIImage imageNamed:@"fallarrow"]];
         }
+        
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
         backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
-      
+        SAFE_RELEASE(formatter);
         return cell;
         
     }else if(section==1){
@@ -256,15 +258,13 @@
         
         cell.title=[model objectForKey:@"title"];
         [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
-        cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
-        cell.content=[model objectForKey:@"concise"];
-        cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
+        cell.contentLabel.text=[model objectForKey:@"concise"];
         cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
         
-        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]];
-        [cell setBackgroundView:backView];
-        [backView release];backView=nil;
+        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+        [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
+        [cell setBackgroundView:bgImgView];
+        [bgImgView release];bgImgView=nil;
         
         [cell setBackgroundColor:[Utiles colorWithHexString:@"#FEF8F8"]];
         

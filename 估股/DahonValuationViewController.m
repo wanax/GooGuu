@@ -10,6 +10,7 @@
 #import "DrawChartTool.h"
 #import "XYZAppDelegate.h"
 #import "MBProgressHUD.h"
+#import "Toast+UIView.h"
 
 @interface DahonValuationViewController ()
 
@@ -290,13 +291,13 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     id data=[self.daHonDataDic objectForKey:date];
     NSString *msg=[[NSString alloc] init];
     for(id obj in data){
-        msg=[msg stringByAppendingFormat:@"%@:%@",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
+        msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
     }
-    msg=[msg stringByAppendingFormat:@"\n时间:%@",[[data objectAtIndex:0] objectForKey:@"date"]];
-    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
-    alert.alertViewStyle=UIAlertViewStyleDefault;
-    [alert show];
-    SAFE_RELEASE(alert);
+    [self.view makeToast:msg
+                duration:3.0
+                position:@"center"
+                   title:[[data objectAtIndex:0] objectForKey:@"date"]
+     ];
     
 }
 

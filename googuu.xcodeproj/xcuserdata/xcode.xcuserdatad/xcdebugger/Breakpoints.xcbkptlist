@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "239"
-         endingLineNumber = "239"
+         startingLineNumber = "240"
+         endingLineNumber = "240"
          landmarkName = "-numberOfRecordsForPlot:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "283"
+         endingLineNumber = "283"
          landmarkName = "-numberForPlot:field:recordIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587641.442678"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
+         startingLineNumber = "157"
+         endingLineNumber = "157"
          landmarkName = "-initData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "217"
-         endingLineNumber = "217"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "-setXYAxis"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "216"
-         endingLineNumber = "216"
+         startingLineNumber = "217"
+         endingLineNumber = "217"
          landmarkName = "-setXYAxis"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "224"
-         endingLineNumber = "224"
+         startingLineNumber = "225"
+         endingLineNumber = "225"
          landmarkName = "-setXYAxis"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,20 +164,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "365"
-         endingLineNumber = "365"
-         landmarkName = "-axis:shouldUpdateAxisLabelsAtLocations:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398740130.348631"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "366"
@@ -190,11 +177,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398740130.348631"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "364"
-         endingLineNumber = "364"
+         startingLineNumber = "367"
+         endingLineNumber = "367"
+         landmarkName = "-axis:shouldUpdateAxisLabelsAtLocations:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DahonValuationViewController.m"
+         timestampString = "398740130.348631"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "365"
+         endingLineNumber = "365"
          landmarkName = "-axis:shouldUpdateAxisLabelsAtLocations:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -203,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
+         timestampString = "398673905.748044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "191"
-         endingLineNumber = "191"
+         startingLineNumber = "203"
+         endingLineNumber = "203"
          landmarkName = "-getObjectDataFromJsFun:param:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -216,11 +216,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
+         timestampString = "398673905.748044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "194"
-         endingLineNumber = "194"
+         startingLineNumber = "206"
+         endingLineNumber = "206"
          landmarkName = "-getObjectDataFromJsFun:param:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -229,11 +229,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "195"
-         endingLineNumber = "195"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
          landmarkName = "-initData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -242,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "251"
-         endingLineNumber = "251"
+         startingLineNumber = "252"
+         endingLineNumber = "252"
          landmarkName = "-numberForPlot:field:recordIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -255,11 +255,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "288"
-         endingLineNumber = "288"
+         startingLineNumber = "289"
+         endingLineNumber = "289"
          landmarkName = "-scatterPlot:plotSymbolWasSelectedAtRecordIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DahonValuationViewController.m"
-         timestampString = "398587890.598067"
+         timestampString = "398673444.373179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "193"
-         endingLineNumber = "193"
+         startingLineNumber = "194"
+         endingLineNumber = "194"
          landmarkName = "-initData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -281,37 +281,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ModelClassGrade2ViewController.m"
-         timestampString = "398338824.95253"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "54"
          endingLineNumber = "54"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ModelClassGrade2ViewController.m"
-         timestampString = "398338824.95253"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ModelClassGrade2ViewController.m"
-         timestampString = "398338824.95253"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "52"
-         endingLineNumber = "52"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -333,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398591397.562776"
+         timestampString = "398677229.32849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "336"
-         endingLineNumber = "336"
+         startingLineNumber = "344"
+         endingLineNumber = "344"
          landmarkName = "-divideData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -346,11 +320,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398592431.448272"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "371"
-         endingLineNumber = "371"
+         startingLineNumber = "382"
+         endingLineNumber = "382"
          landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -372,11 +346,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398591397.562776"
+         timestampString = "398677229.32849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "283"
-         endingLineNumber = "283"
+         startingLineNumber = "291"
+         endingLineNumber = "291"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398591397.562776"
+         timestampString = "398677229.32849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "290"
+         endingLineNumber = "290"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -502,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398592431.448272"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "370"
-         endingLineNumber = "370"
+         startingLineNumber = "379"
+         endingLineNumber = "379"
          landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398592431.448272"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "388"
-         endingLineNumber = "388"
+         startingLineNumber = "401"
+         endingLineNumber = "401"
          landmarkName = "-setStockPrice"
          landmarkType = "5">
       </FileBreakpoint>
@@ -567,11 +541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398592431.448272"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "434"
-         endingLineNumber = "434"
+         startingLineNumber = "447"
+         endingLineNumber = "447"
          landmarkName = "-viewPan:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -580,11 +554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398593086.913891"
+         timestampString = "398678420.719484"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "439"
-         endingLineNumber = "439"
+         startingLineNumber = "452"
+         endingLineNumber = "452"
          landmarkName = "-viewPan:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -593,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398595029.765236"
+         timestampString = "398677229.32849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "276"
-         endingLineNumber = "276"
+         startingLineNumber = "284"
+         endingLineNumber = "284"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -606,7 +580,150 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "176"
+         endingLineNumber = "176"
+         landmarkName = "-adjustChartDataForSaved:andToken:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/ModelViewController.m"
+         timestampString = "398673525.913584"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
+         landmarkName = "-getSavedStockList"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/ModelViewController.m"
+         timestampString = "398673525.913584"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "192"
+         endingLineNumber = "192"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/ModelViewController.m"
+         timestampString = "398673525.913584"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "134"
+         endingLineNumber = "134"
+         landmarkName = "-getChartJsonData"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
+         landmarkName = "@implementation DiscountRateViewController"
+         landmarkType = "3">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
+         landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "181"
+         endingLineNumber = "181"
+         landmarkName = "-resetValue:index:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "185"
+         endingLineNumber = "185"
+         landmarkName = "-resetValue:index:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "179"
+         endingLineNumber = "179"
+         landmarkName = "-resetValue:index:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "178"
+         endingLineNumber = "178"
+         landmarkName = "-resetValue:index:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
+         landmarkName = "-resetValue:index:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "164"
@@ -618,39 +735,13 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ModelViewController.m"
-         timestampString = "398657428.789591"
+         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
+         timestampString = "398673905.748044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
-         landmarkName = "-getSavedStockList"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ModelViewController.m"
-         timestampString = "398657428.789591"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "191"
-         endingLineNumber = "191"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/ModelViewController.m"
-         timestampString = "398657428.789591"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "133"
-         endingLineNumber = "133"
-         landmarkName = "-getChartJsonData"
+         startingLineNumber = "172"
+         endingLineNumber = "172"
+         landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -658,102 +749,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
-         landmarkName = "@implementation DiscountRateViewController"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671514.025374"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "169"
-         endingLineNumber = "169"
-         landmarkName = "-resetValue:index:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "173"
-         endingLineNumber = "173"
-         landmarkName = "-resetValue:index:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
-         landmarkName = "-resetValue:index:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
+         timestampString = "398673905.748044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "166"
          endingLineNumber = "166"
-         landmarkName = "-resetValue:index:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "174"
-         endingLineNumber = "174"
-         landmarkName = "-resetValue:index:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671951.900291"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "152"
-         endingLineNumber = "152"
          landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -761,26 +761,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671785.37798"
+         filePath = "&#20272;&#32929;/ChartViewController.m"
+         timestampString = "398677229.32849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "160"
-         endingLineNumber = "160"
-         landmarkName = "-adjustChartDataForSaved:andToken:"
+         startingLineNumber = "201"
+         endingLineNumber = "201"
+         landmarkName = "-chartAction:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "&#20272;&#32929;/DiscountRateViewController.m"
-         timestampString = "398671990.296097"
+         filePath = "&#20272;&#32929;/GooNewsViewController.m"
+         timestampString = "398748023.909465"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
-         landmarkName = "-adjustChartDataForSaved:andToken:"
+         startingLineNumber = "264"
+         endingLineNumber = "264"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
