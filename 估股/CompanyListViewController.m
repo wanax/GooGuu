@@ -243,7 +243,7 @@
     row = [indexPath row];
     @try{
         NSDictionary *comInfo=[comList objectAtIndex:row];
-        cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"];
+        cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"]==nil?@"":[comInfo objectForKey:@"companyname"];
         cell.stockNameLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
         cell.concernBt.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:10.0f];
         if([Utiles isLogin]){

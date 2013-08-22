@@ -23,6 +23,7 @@
 #import "DiscountRateViewController.h"
 #import "UIButton+BGColor.h"
 #import <Crashlytics/Crashlytics.h>
+#import <CoreText/CoreText.h>
 
 
 
@@ -166,25 +167,41 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 
 -(void)initChartViewComponents{
+    UIImageView *topBar=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dragchartbar"]];
+    topBar.frame=CGRectMake(0,0,SCREEN_HEIGHT,40);
+    [self.view addSubview:topBar];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
-    UILabel *companyLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:0 frame:CGRectMake(0,35,100,45) fontSize:13.0 color:@"#8D99B2"];
-    companyLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    companyLabel.numberOfLines = 0;
-    myGGpriceLabel=[tool addLabelToView:self.view withTile:@"估股价" Tag:11 frame:CGRectMake(100,35,80,20) fontSize:13.0 color:@"#8D99B2"];
-    priceLabel=[tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]] Tag:11 frame:CGRectMake(100,55,80,25) fontSize:16.0 color:@"#8D99B2"];
-    [tool addLabelToView:self.view withTile:@"市场价" Tag:11 frame:CGRectMake(180,35,109,20) fontSize:13.0 color:@"#8D99B2"];
-    [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(180,55,109,25) fontSize:16.0 color:@"#8D99B2"];
-    saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(415,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2"];
-    [tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(352,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
-    [tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(289,45,53,28) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7"];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(384,0,96,35) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
-    [tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(3,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(99,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(195,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(291,2,90,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
+
+    UIButton *mainIncomeBt=[tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(77,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
+    [mainIncomeBt setBackgroundImage:[UIImage imageNamed:@"mainincomebt"] forState:UIControlStateNormal];
+    UIButton *mainFeeBt=[tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(177,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
+    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainfeebt"] forState:UIControlStateNormal];
+    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainincomebt"] forState:UIControlStateHighlighted];
+    UIButton *mainCapBt=[tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(277,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
+    [mainCapBt setBackgroundImage:[UIImage imageNamed:@"mainfeebt"] forState:UIControlStateNormal];
+    UIButton *discountBt=[tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(377,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
+    [discountBt setBackgroundImage:[UIImage imageNamed:@"discountbt"] forState:UIControlStateNormal];
+    UIButton *backBt=[tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(10,5,50,32) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000"];
+    [backBt setBackgroundImage:[UIImage imageNamed:@"backbt"] forState:UIControlStateNormal];
+
+    CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:13.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(10,40+(40-labelsize1.height)/2,labelsize1.width,labelsize1.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] font:@"Heiti SC" fontSize:10.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(10+labelsize1.width,40+(40+labelsize1.height)/2-labelsize2.height,labelsize2.width,labelsize2.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    
+    saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(418,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2" textColor:@"#FFFEFE"];
+    [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
+    UIButton *linkBt=[tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(300,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
+    [linkBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
+    UIButton *resetBt=[tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(359,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
+    [resetBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
+    
+    
     [self addScatterChart];
-    [tool release];
+    SAFE_RELEASE(topBar);
+    SAFE_RELEASE(tool);
+
 }
 
 #pragma mark -
@@ -197,11 +214,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
             if([[resObj objectForKey:@"status"] isEqual:@"1"]){
-                [bt setBackgroundColor:[Utiles colorWithHexString:@"#d0d1d2"] forState:UIControlStateNormal];
+                [bt setBackgroundImage:[UIImage imageNamed:@"savedbt"] forState:UIControlStateNormal];
                 [bt setEnabled:NO];
                 _isSaved=YES;
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }else if([[resObj objectForKey:@"status"] isEqual:@"2"]){
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }else{
+                [Utiles ToastNotification:@"保存失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
         }];
         
     }else if(bt.tag==DragChartType){
@@ -327,8 +348,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     globalDriverId=driverId;
     
     [self divideData:chartData];
+  
     self.yAxisUnit=[chartData objectForKey:@"unit"];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[chartData objectForKey:@"unit"]];
+    NSDictionary *pointData=[Utiles unitConversionData:[[[self.forecastPoints objectAtIndex:0] objectForKey:@"v"] stringValue] andUnit:self.yAxisUnit];
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[pointData objectForKey:@"unit"]];
     [self setXYAxis];
     [self setStockPrice];
 }
@@ -432,9 +455,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if([tapGr state]==UIGestureRecognizerStateChanged){
 
         coordinate.x=(int)(coordinate.x+0.5);
-        coordinate.x=(int)(coordinate.x+0.5);
+        //coordinate.x=(int)(coordinate.x+0.5);
         
-        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count]-1;
+        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count];
         subscript=subscript<0?0:subscript;
         subscript=subscript>=[self.forecastPoints count]-1?[self.forecastPoints count]-1:subscript;
         NSAssert(subscript<=[self.forecastPoints count]-1&&coordinate.x>=0,@"over bounds");
@@ -472,7 +495,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [self.myGGpriceLabel setText:@"我的估值"];
         if(_isSaved){
             [saveBt setEnabled:YES];
-            [saveBt setBackgroundColor:[Utiles colorWithHexString:@"#2bc0a7"] forState:UIControlStateNormal];
+            [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
             _isSaved=NO;
         }
     }
@@ -513,9 +536,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         SAFE_RELEASE(formatter);
     }else{
         numberString=[[[arr objectAtIndex:index] objectForKey:@"v"] stringValue];
-        if(numberString.length>5){
-            numberString=[numberString substringToIndex:5];
-        }
+        NSDictionary *pointData=[Utiles unitConversionData:numberString andUnit:self.yAxisUnit];
+        numberString=[pointData objectForKey:@"result"];
     }
     return numberString;
 }
@@ -635,16 +657,19 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             CPTTextStyle *theLabelTextStyle;
 
             CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            newStyle.fontSize=12.0;
+            newStyle.fontName=@"Heiti SC";
             positiveStyle  = newStyle;
-            
+       
             theLabelTextStyle = positiveStyle;
             
             NSString * labelString      = [Utiles yearFilled:[formatter stringForObjectValue:tickLocation]];
+        
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
-            [newLabelLayer sizeToFit];
+            //[newLabelLayer sizeThatFits];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             =  0;
+            newLabel.offset             =  3;
             newLabel.rotation     = 5.5;
             [newLabels addObject:newLabel];
         }

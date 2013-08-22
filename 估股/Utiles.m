@@ -18,6 +18,7 @@
 #define DEFAULT_VOID_COLOR [UIColor whiteColor]
 
 static NSDateFormatter *formatter;
+static NSNumberFormatter *numFormatter;
 
 - (void)dealloc
 {
@@ -137,34 +138,52 @@ static NSDateFormatter *formatter;
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
-    [getAction getPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
-        
-        id resObj=[operation.responseString objectFromJSONString];
-        if(block){
-            block(resObj);
-        }
-        
-    }failure:^(AFHTTPRequestOperation *operation,NSError *error){
-        NSLog(@"%@",error.localizedDescription);
-    }];
-    [getAction release];
+    @try {
+        AFHTTPClient *getAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
+        [getAction getPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO] parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+            
+            id resObj=[operation.responseString objectFromJSONString];
+            if(block){
+                block(resObj);
+            }
+            
+        }failure:^(AFHTTPRequestOperation *operation,NSError *error){
+            NSLog(@"%@",error.localizedDescription);
+        }];
+        [getAction release];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    @finally {
+        //NSLog(@"get net failed");
+    }
+    
 }
 
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void (^)(id))block{
     
-    AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
-    [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
-        NSString *tempRes=[operation.responseString stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-        id resObj=[tempRes objectFromJSONString];
-        if(block){
-            block(resObj);
-        }
-        
-    }failure:^(AFHTTPRequestOperation *operation,NSError *error){
-        NSLog(@"%@",error.localizedDescription);
-    }];
-    [postAction release];
+    @try {
+        AFHTTPClient *postAction=[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
+        [postAction postPath:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:url inUserDomain:NO]parameters:params success:^(AFHTTPRequestOperation *operation,id responseObject){
+            NSString *tempRes=[operation.responseString stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+            id resObj=[tempRes objectFromJSONString];
+            if(block){
+                block(resObj);
+            }
+            
+        }failure:^(AFHTTPRequestOperation *operation,NSError *error){
+            NSLog(@"%@",error.localizedDescription);
+        }];
+        [postAction release];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    @finally {
+        //NSLog(@"post net failed");
+    }
+    
 }
 
 
@@ -335,12 +354,22 @@ static NSDateFormatter *formatter;
 +(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price{
     
     NSString *returnStr=[NSString stringWithFormat:@"{\"modeldata\":[{\"data\":["];
-    for(id obj in [chartData objectForKey:@"arraynew"]){
-        returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+    @try {
+        if(![Utiles isBlankString:[chartData JSONString]]){
+            for(id obj in [chartData objectForKey:@"arraynew"]){
+                returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+            }
+            returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"}],",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],driverId,[chartData objectForKey:@"title"]];
+            returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
+            returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+        }else{
+            returnStr=@"";
+        }
     }
-    returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"}],",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],driverId,[chartData objectForKey:@"title"]];
-    returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
-    returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+  
     return returnStr;
 }
 
@@ -372,7 +401,39 @@ static NSDateFormatter *formatter;
         return nil;
 }
 
++(NSString *)unitConversionData:(NSString *)data andUnit:(NSString *)unit{
+    
+    NSString *resultStr=@"";
+    NSString *unitStr=@"";
 
+    if(![Utiles isBlankString:data]&&![Utiles isBlankString:unit]){
+        
+        if ([unit isEqualToString:@"%"]) {
+            resultStr = data;
+            unitStr = @"百分比";
+        } else if ([unit isEqualToString:@"day"]) {
+            resultStr = [NSString stringWithFormat:@"%d",[data intValue]];
+            unitStr = @"天";
+        } else {
+            double unitNum = [unit doubleValue];
+            double dataNum=[data doubleValue];
+            double result=dataNum * unitNum;
+            if (result > 100000000) {
+                resultStr =[NSString stringWithFormat:@"%.2f",result/100000000];
+                unitStr = @"亿";
+            } else if (result > 10000) {
+                resultStr =[NSString stringWithFormat:@"%.2f",result/10000];
+                unitStr = @"万";
+            } else {
+                resultStr = [NSString stringWithFormat:@"%.0f",result];
+                unitStr = @"1.0";
+            }
+        }
+        
+    }
+    return [NSDictionary dictionaryWithObjectsAndKeys:resultStr,@"result",unitStr,@"unit", nil];
+
+}
 
 
 

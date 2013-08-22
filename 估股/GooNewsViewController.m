@@ -198,15 +198,20 @@
             [cell.dailyStockImg setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.imageUrl]]
                   placeholderImage:[UIImage imageNamed:@"defaultCompanyLogo"]
                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
-                               cell.dailyStockImg.image=image;
-                               
+                               if(image){
+                                   cell.dailyStockImg.image=image;
+                               }           
                            }
                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
                                
                            }];
         }
-        NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
-        [formatter setPositiveFormat:@"##0.##"];
+        static NSNumberFormatter *formatter;
+        if(formatter==nil){
+            formatter=[[NSNumberFormatter alloc] init];
+            [formatter setPositiveFormat:@"##0.##"];
+        }
+        
         NSNumber *marketPrice=[self.companyInfo objectForKey:@"marketprice"];
         NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
         float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
@@ -262,7 +267,15 @@
         cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
         
         UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,86)];
-        [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
+        if(readingMarksDic){
+            if ([[readingMarksDic allKeys] containsObject:[model objectForKey:@"title"]]) {
+                [bgImgView setImage:nil];
+            }else{
+                [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
+            }
+        }else{
+            [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
+        }
         [cell setBackgroundView:bgImgView];
         [bgImgView release];bgImgView=nil;
         
@@ -310,6 +323,7 @@
     }else if(indexPath.section==1){
         NSString *artId=[NSString stringWithFormat:@"%@",[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
         GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
+        articleViewController.articleTitle=[[arrList objectAtIndex:indexPath.row] objectForKey:@"title"];
         articleViewController.articleId=artId;
         articleViewController.title=@"研究报告";
         ArticleCommentViewController *articleCommentViewController=[[ArticleCommentViewController alloc] init];

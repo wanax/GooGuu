@@ -19,32 +19,46 @@
     [super dealloc];
 }
 
--(UILabel *)addLabelToView:(UIView *)view withTile:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size color:(NSString *)color{
+-(UILabel *)addLabelToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size color:(NSString *)color textColor:(NSString *)txtColor location:(NSTextAlignment)location{
     
     UILabel *label=[[UILabel alloc] initWithFrame:rect];
     [label setText:title];
-    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setTextColor:[Utiles colorWithHexString:txtColor]];
+    [label setTextAlignment:location];
     [label setFont:[UIFont fontWithName:@"Heiti SC" size:size]];
     label.tag=tag;
     label.backgroundColor=[Utiles colorWithHexString:color];
+    //[[label layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    //[[label layer] setBorderWidth:1.0];
     [view addSubview:label];
     return [label autorelease];
     
 }
 
--(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun withType:(UIButtonType)buttonType andColor:(NSString *)color{
+-(CGSize)getLabelSizeFromString:(NSString *)str font:(NSString *)font fontSize:(float)fontSize{
+    CGSize size = CGSizeMake(320,2000);
+    return [str sizeWithFont:[UIFont fontWithName:font size:fontSize] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+}
+
+-(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun withType:(UIButtonType)buttonType andColor:(NSString *)color textColor:(NSString *)txtColor{
     
     UIButton *button=[UIButton buttonWithType:buttonType];
     button.frame=rect;
     [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[Utiles colorWithHexString:txtColor] forState:UIControlStateNormal];
+    //[button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     button.tag=tag;
-    if (buttonType==UIButtonTypeCustom) {
-        [button setBackgroundColor:[Utiles colorWithHexString:color]];
-    }else if(buttonType==UIButtonTypeRoundedRect){
-        [button setBackgroundColorString:color forState:UIControlStateNormal];
+    if(color){
+        if (buttonType==UIButtonTypeCustom) {
+            [button setBackgroundColor:[Utiles colorWithHexString:color]];
+        }else if(buttonType==UIButtonTypeRoundedRect){
+            [button setBackgroundColorString:color forState:UIControlStateNormal];
+        }
+    }else{
+        [button setBackgroundColor:[UIColor clearColor]];
     }
-    
-    button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0f];
+  
+    button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:12.0f];
     [button addTarget:standIn action:fun forControlEvents:UIControlEventTouchDown];
     [view addSubview:button];
     return button;
@@ -73,7 +87,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
    
     NSArray *sortXArr=[xArr sortedArrayUsingComparator:cmptr];
     NSArray *sortYArr=[yArr sortedArrayUsingComparator:cmptr];
-    
+
     NSInteger xMax=[[sortXArr lastObject] integerValue];
     NSInteger xMin=[[sortXArr objectAtIndex:0] integerValue];
     //NSInteger xTap=1;

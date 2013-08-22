@@ -53,6 +53,8 @@
 +(BOOL)isLogin;
 +(NSString *)getUserToken;
 
++(NSDictionary *)unitConversionData:(NSString *)data andUnit:(NSString *)unit;
+
 
 
 

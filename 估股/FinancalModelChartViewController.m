@@ -136,11 +136,11 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     tool.standIn=self;
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
-    [tool addLabelToView:self.view withTile:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:14.0 color:@"#007ab7"];
-    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc"];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e"];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:14.0 color:@"#007ab7" textColor:@"#000000" location:NSTextAlignmentCenter];
+    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
+    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
+    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e" textColor:@"#000000"];
     [tool release];
     
 }
@@ -195,7 +195,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     }
     self.points=tempHisPoints;
     self.yAxisUnit=[temp objectForKey:@"unit"];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[temp objectForKey:@"unit"]];
+    NSDictionary *pointData=[Utiles unitConversionData:[[[self.points objectAtIndex:0] objectForKey:@"v"] stringValue] andUnit:self.yAxisUnit];
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[pointData objectForKey:@"unit"]];
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
@@ -244,13 +245,12 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 // 添加数据标签
 -( CPTLayer *)dataLabelForPlot:( CPTPlot *)plot recordIndex:( NSUInteger )index
 {
-    // 定义一个白色的 TextStyle
     static CPTMutableTextStyle *whiteText = nil ;
     if ( !whiteText ) {
         whiteText = [[ CPTMutableTextStyle alloc ] init ];
         whiteText.color=[CPTColor colorWithComponentRed:85/255.0 green:16/255.0 blue:118/255.0 alpha:1.0];
     }
-    // 定义一个 TextLayer
+
     CPTTextLayer *newLayer = nil ;
     NSString *numberString =nil;
     if([self.yAxisUnit isEqualToString:@"%"]){
@@ -260,15 +260,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         SAFE_RELEASE(formatter);
     }else{
         numberString=[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue];
-        if(numberString.length>4){
-            numberString=[numberString substringToIndex:4];
-        }
+        NSDictionary *pointData=[Utiles unitConversionData:numberString andUnit:self.yAxisUnit];
+        numberString=[pointData objectForKey:@"result"];
     }
     newLayer=[[CPTTextLayer alloc] initWithText:numberString style:whiteText];
     return [newLayer autorelease];
 }
 
-//散点数据源委托实现
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot{
     return [self.points count];
 }
@@ -311,6 +309,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             CPTTextStyle *theLabelTextStyle;
             
             CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
+            newStyle.fontSize=12.0;
+            newStyle.fontName=@"Heiti SC";
             positiveStyle  = newStyle;
             
             theLabelTextStyle = positiveStyle;
@@ -320,8 +320,8 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             CPTTextLayer * newLabelLayer= [[CPTTextLayer alloc] initWithText:labelString style:theLabelTextStyle];
             CPTAxisLabel * newLabel     = [[CPTAxisLabel alloc] initWithContentLayer:newLabelLayer];
             newLabel.tickLocation       = tickLocation.decimalValue;
-            newLabel.offset             = 0;
-            newLabel.rotation     = 5.5;
+            newLabel.offset             = 3.0;
+            //newLabel.rotation     = 5.5;
             //newLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0];
             [newLabels addObject:newLabel];
             SAFE_RELEASE(newLabel);

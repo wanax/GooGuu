@@ -17,11 +17,13 @@
 
 @implementation GooGuuArticleViewController
 
+@synthesize articleTitle;
 @synthesize articleId;
 @synthesize articleWeb;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(articleTitle);
     [articleWeb release];
     [articleId release];
     [super dealloc];
@@ -52,17 +54,25 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor whiteColor];
+    self.parentViewController.title=@"公司简报";
+
     MBProgressHUD *hud=[[MBProgressHUD alloc] initWithView:self.view];
     [Utiles showHUD:@"Loading..." andView:self.view andHUD:hud];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
-    
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,40)];
+    [titleLabel setBackgroundColor:[Utiles colorWithHexString:@"#FDFBE4"]];
+    [titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:16.0]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setText:articleTitle];
+    [self.view addSubview:titleLabel];
+    SAFE_RELEASE(titleLabel);
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"ArticleURL" andParams:params besidesBlock:^(id article){
 
-        articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width, self.view.bounds.size.height)];
+        articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,40,self.view.bounds.size.width, self.view.bounds.size.height)];
         articleWeb.delegate=self;
         [articleWeb loadHTMLString:[article objectForKey:@"content"] baseURL:nil];
-        articleWeb.scalesPageToFit=YES;
+        //articleWeb.scalesPageToFit=YES;
         [hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
         [self.view addSubview:articleWeb];

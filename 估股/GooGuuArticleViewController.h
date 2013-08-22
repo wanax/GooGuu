@@ -14,6 +14,7 @@
 
 @interface GooGuuArticleViewController : UIViewController<UIWebViewDelegate>
 
+@property (nonatomic,retain) NSString *articleTitle;
 @property (nonatomic,retain) NSString *articleId;
 @property (nonatomic,retain) UIWebView *articleWeb;
 

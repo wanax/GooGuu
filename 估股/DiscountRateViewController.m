@@ -154,23 +154,32 @@
 -(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
-        if(resObj!=nil){
-            NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
-            for(id data in [resObj objectForKey:@"data"]){
-                if([[data objectForKey:@"data"] count]==1){
-                    NSDictionary *pie=[NSDictionary dictionaryWithObjectsAndKeys:[data objectForKey:@"itemname"],@"name",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"data",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"datanew",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"id"],@"id", nil];
-                    [tmpArr addObject:pie];
+        if(resObj){
+            @try {
+                NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
+                for(id data in [resObj objectForKey:@"data"]){
+                    if([[data objectForKey:@"data"] count]==1){
+                        NSDictionary *pie=[NSDictionary dictionaryWithObjectsAndKeys:[data objectForKey:@"itemname"],@"name",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"data",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"datanew",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"id"],@"id", nil];
+                        [tmpArr addObject:pie];
+                    }
+                    
                 }
+                NSString *jsonForChart=[[tmpArr JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+                id tempData=[self getObjectDataFromJsFun:@"chartCaluWacc" param:jsonForChart];
                 
+                [self.transData removeAllObjects];
+                for(id obj in tempData){
+                    [self.transData addObject:obj];
+                }
+                [self updateComponents];
             }
-            NSString *jsonForChart=[[tmpArr JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-            id tempData=[self getObjectDataFromJsFun:@"chartCaluWacc" param:jsonForChart];
+            @catch (NSException *exception) {
+                NSLog(@"%@",exception);
+            }
+            @finally {
+                NSLog(@"adjust failed");
+            }
             
-            [self.transData removeAllObjects];
-            for(id obj in tempData){
-                [self.transData addObject:obj];
-            }
-            [self updateComponents];
         }
     }];
 }
