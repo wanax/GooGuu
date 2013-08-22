@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DrawChartTool.m"
-         timestampString = "398835581.65161"
+         timestampString = "398849620.271215"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
          landmarkName = "+drawXYAxisIn:toPlot:withXRANGEBEGIN:XRANGELENGTH:YRANGEBEGIN:YRANGELENGTH:XINTERVALLENGTH:XORTHOGONALCOORDINATE:XTICKSPERINTERVAL:YINTERVALLENGTH:YORTHOGONALCOORDINATE:YTICKSPERINTERVAL:to:isY:isX:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DrawChartTool.m"
-         timestampString = "398835581.65161"
+         timestampString = "398849620.271215"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "135"
-         endingLineNumber = "135"
+         startingLineNumber = "147"
+         endingLineNumber = "147"
          landmarkName = "+getXYAxisRangeFromxArr:andyArr:fromWhere:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DrawChartTool.m"
-         timestampString = "398835581.65161"
+         timestampString = "398849620.271215"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "140"
-         endingLineNumber = "140"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
          landmarkName = "+getXYAxisRangeFromxArr:andyArr:fromWhere:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -151,11 +151,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/DrawChartTool.m"
-         timestampString = "398835581.65161"
+         timestampString = "398849620.271215"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "106"
-         endingLineNumber = "106"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
          landmarkName = "+getXYAxisRangeFromxArr:andyArr:fromWhere:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -294,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "366"
-         endingLineNumber = "366"
+         startingLineNumber = "399"
+         endingLineNumber = "399"
          landmarkName = "-divideData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "404"
-         endingLineNumber = "404"
+         startingLineNumber = "437"
+         endingLineNumber = "437"
          landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -333,11 +333,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "311"
-         endingLineNumber = "311"
+         startingLineNumber = "344"
+         endingLineNumber = "344"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -437,11 +437,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "310"
-         endingLineNumber = "310"
+         startingLineNumber = "343"
+         endingLineNumber = "343"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -450,11 +450,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "401"
-         endingLineNumber = "401"
+         startingLineNumber = "434"
+         endingLineNumber = "434"
          landmarkName = "-adjustChartDataForSaved:andToken:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "423"
-         endingLineNumber = "423"
+         startingLineNumber = "456"
+         endingLineNumber = "456"
          landmarkName = "-setStockPrice"
          landmarkType = "5">
       </FileBreakpoint>
@@ -515,11 +515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "469"
-         endingLineNumber = "469"
+         startingLineNumber = "505"
+         endingLineNumber = "505"
          landmarkName = "-viewPan:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -528,11 +528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "474"
-         endingLineNumber = "474"
+         startingLineNumber = "510"
+         endingLineNumber = "510"
          landmarkName = "-viewPan:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "304"
-         endingLineNumber = "304"
+         startingLineNumber = "337"
+         endingLineNumber = "337"
          landmarkName = "-webViewDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -697,11 +697,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "217"
-         endingLineNumber = "217"
+         startingLineNumber = "250"
+         endingLineNumber = "250"
          landmarkName = "-chartAction:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -775,11 +775,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "457"
-         endingLineNumber = "457"
+         startingLineNumber = "493"
+         endingLineNumber = "493"
          landmarkName = "-viewPan:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -814,11 +814,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "216"
-         endingLineNumber = "216"
+         startingLineNumber = "249"
+         endingLineNumber = "249"
          landmarkName = "-chartAction:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -827,11 +827,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "&#20272;&#32929;/ChartViewController.m"
-         timestampString = "398834927.893226"
+         timestampString = "398849151.754051"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "214"
-         endingLineNumber = "214"
+         startingLineNumber = "247"
+         endingLineNumber = "247"
          landmarkName = "-chartAction:"
          landmarkType = "5">
       </FileBreakpoint>

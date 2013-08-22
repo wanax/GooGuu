@@ -158,6 +158,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
+    //plotSpace.allowsUserInteraction=YES;
     DrawXYAxis;
     [self initChartViewComponents];
     
@@ -184,19 +185,51 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [discountBt setBackgroundImage:[UIImage imageNamed:@"discountbt"] forState:UIControlStateNormal];
     UIButton *backBt=[tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(10,5,50,32) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000"];
     [backBt setBackgroundImage:[UIImage imageNamed:@"backbt"] forState:UIControlStateNormal];
-
-    CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:13.0];
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(10,40+(40-labelsize1.height)/2,labelsize1.width,labelsize1.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
-    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] font:@"Heiti SC" fontSize:10.0];
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(10+labelsize1.width,40+(40+labelsize1.height)/2-labelsize2.height,labelsize2.width,labelsize2.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
-    
-    saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(418,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2" textColor:@"#FFFEFE"];
+  
+    saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(418,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2" textColor:@"#FFFEFE"];
     [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
-    UIButton *linkBt=[tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(300,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
+    UIButton *linkBt=[tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(300,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
     [linkBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
-    UIButton *resetBt=[tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(359,48,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
+    UIButton *resetBt=[tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(359,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
     [resetBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
     
+    //公司名称label
+    CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:14.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(3,40+(40-labelsize1.height)/2,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    
+    //公司股票行业label
+    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] font:@"Heiti SC" fontSize:11.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(3+labelsize1.width,40+(40+labelsize1.height)/2-labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    
+    NSString *ggPrice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]];
+    if([ggPrice length]>5){
+        ggPrice=[ggPrice substringToIndex:5];
+    }
+    CGFloat companyNameLabelLenght=labelsize1.width+labelsize2.width+3;
+    //估值label
+    CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估值:HK$" font:@"Heiti SC" fontSize:10.0];
+    //我的估值数值label
+    CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:ggPrice font:@"Heiti SC" fontSize:13.0];
+    [tool addLabelToView:self.view withTitle:@"估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    
+    [tool addLabelToView:self.view withTitle:ggPrice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
+    
+    //我的估值label
+    CGSize myGGpriceLabelSize=[tool getLabelSizeFromString:@"我的估值:HK$" font:@"Heiti SC" fontSize:10.0];
+    //我的估值数值label
+    CGSize priceLabelSize=[tool getLabelSizeFromString:ggPrice font:@"Heiti SC" fontSize:13.0];
+    CGFloat priceLabelTap=300-myGGpriceLabelSize.width-priceLabelSize.width-5;
+    
+    myGGpriceLabel=[tool addLabelToView:self.view withTitle:@"我的估值:HK$" Tag:11 frame:CGRectMake(priceLabelTap,63,myGGpriceLabelSize.width,myGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    priceLabel=[tool addLabelToView:self.view withTitle:ggPrice Tag:11 frame:CGRectMake(priceLabelTap+myGGpriceLabelSize.width,63+myGGpriceLabelSize.height-priceLabelSize.height,priceLabelSize.width,priceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
+    
+    //市场价label
+    CGSize markPriceLabelSize=[tool getLabelSizeFromString:@"市场价:HK$" font:@"Heiti SC" fontSize:10.0];
+    [tool addLabelToView:self.view withTitle:@"市场价:HK$" Tag:11 frame:CGRectMake(priceLabelTap,45,markPriceLabelSize.width,markPriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    
+    //市场价数值label
+    CGSize markPriceSize=[tool getLabelSizeFromString:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] font:@"Heiti SC" fontSize:10.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(priceLabelTap+markPriceLabelSize.width,45,markPriceSize.width,markPriceSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
     [self addScatterChart];
     SAFE_RELEASE(topBar);
@@ -419,10 +452,13 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
     if(self.sourceType==MySavedType){
-        [self.myGGpriceLabel setText:@"我的估值"];
+        //[self.myGGpriceLabel setText:@"我的估值"];
     }
     @try {
-        [self.priceLabel setText:[backInfo substringToIndex:5]];
+        if([backInfo length]>5){
+            backInfo=[backInfo substringToIndex:5];
+        }
+        [self.priceLabel setText:backInfo];
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -457,7 +493,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         coordinate.x=(int)(coordinate.x+0.5);
         //coordinate.x=(int)(coordinate.x+0.5);
         
-        int subscript=coordinate.x-XRANGEBEGIN-[self.hisPoints count];
+        int subscript=coordinate.x-XRANGEBEGIN-3;
         subscript=subscript<0?0:subscript;
         subscript=subscript>=[self.forecastPoints count]-1?[self.forecastPoints count]-1:subscript;
         NSAssert(subscript<=[self.forecastPoints count]-1&&coordinate.x>=0,@"over bounds");
@@ -492,7 +528,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             [graph reloadData];
             
         }
-        [self.myGGpriceLabel setText:@"我的估值"];
+        //[self.myGGpriceLabel setText:@"我的估值"];
         if(_isSaved){
             [saveBt setEnabled:YES];
             [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
@@ -659,6 +695,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
             newStyle.fontSize=12.0;
             newStyle.fontName=@"Heiti SC";
+            //newStyle.color=[CPTColor colorWithComponentRed:129/255.0 green:122/255.0 blue:107/255.0 alpha:1.0];
             positiveStyle  = newStyle;
        
             theLabelTextStyle = positiveStyle;
@@ -725,7 +762,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         forecastLinePlot=[[[CPTScatterPlot alloc] init] autorelease];
         lineStyle.miterLimit=2.0f;
         lineStyle.lineWidth=2.0f;
-        lineStyle.lineColor=[CPTColor whiteColor];
+        lineStyle.lineColor=[CPTColor colorWithComponentRed:87/255.0 green:168/255.0 blue:9/255.0 alpha:1.0];
         forecastLinePlot.dataLineStyle=lineStyle;
         forecastLinePlot.identifier=FORECAST_DATALINE_IDENTIFIER;
         //forecastLinePlot.labelOffset=5;
@@ -741,7 +778,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         
         
         //创建历史数据线段
-        lineStyle.lineColor=[CPTColor redColor];
+        lineStyle.lineColor=[CPTColor colorWithComponentRed:144/255.0 green:142/255.0 blue:140/255.0 alpha:1.0];
         historyLinePlot = [[CPTScatterPlot alloc] init];
         historyLinePlot.dataLineStyle = lineStyle;
         historyLinePlot.identifier = HISTORY_DATALINE_IDENTIFIER;
@@ -750,16 +787,19 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         // Add plot symbols: 表示数值的符号的形状
         //
         CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
-        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5];
-        symbolLineStyle.lineWidth = 2.0;
+        symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:207/255.0 green:175/255.0 blue:114/255.0 alpha:1.0];
+        symbolLineStyle.lineWidth = 1.0;
         
-        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol diamondPlotSymbol];
-        plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5]];
+        CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+        plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:222/255.0 green:119/255.0 blue:47/255.0 alpha:1.0]];
         plotSymbol.lineStyle     = symbolLineStyle;
         plotSymbol.size          = CGSizeMake(13, 13);
         
         forecastLinePlot.plotSymbol = plotSymbol;
-        //historyLinePlot.plotSymbol=plotSymbol;
+        symbolLineStyle.lineColor = [CPTColor whiteColor];
+        plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor whiteColor]];
+        plotSymbol.size          = CGSizeMake(1, 1);
+        historyLinePlot.plotSymbol=plotSymbol;
         
         [graph addPlot:forecastDefaultLinePlot];
         [graph addPlot:historyLinePlot];

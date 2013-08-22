@@ -88,8 +88,20 @@ NSComparator cmptr = ^(id obj1, id obj2){
     NSArray *sortXArr=[xArr sortedArrayUsingComparator:cmptr];
     NSArray *sortYArr=[yArr sortedArrayUsingComparator:cmptr];
 
-    NSInteger xMax=[[sortXArr lastObject] integerValue];
-    NSInteger xMin=[[sortXArr objectAtIndex:0] integerValue];
+    float xMax=[[sortXArr lastObject] integerValue];
+    float xMin=0;
+    if(tag==DragabelModel){
+        int n=0;
+        for(id year in sortXArr){
+            n++;
+            if([year intValue]==10){
+                break;
+            }
+        }
+        xMin=[[sortXArr objectAtIndex:n] floatValue];
+    }else{
+        xMin=[[sortXArr objectAtIndex:0] floatValue];
+    }
     //NSInteger xTap=1;
     double yMax=[[sortYArr lastObject] doubleValue];
     double yMin=[[sortYArr objectAtIndex:0] doubleValue];
@@ -100,8 +112,8 @@ NSComparator cmptr = ^(id obj1, id obj2){
        yTap=(yMax-yMin)/[sortYArr count]; 
     }
     
-    long xLowBound=xMin-1;
-    long xUpBound=xMax+1;
+    float xLowBound=xMin-1.5;
+    float xUpBound=xMax+1.5;
   
     double yLowBound=0.0;
     if(yMin>0){
@@ -125,13 +137,13 @@ NSComparator cmptr = ^(id obj1, id obj2){
     }else 
         yUpBound=yMax+4*yTap;
     
-    long xBegin=xLowBound;
-    long xLength=xUpBound-xLowBound;
+    float xBegin=xLowBound;
+    float xLength=xUpBound-xLowBound;
     
     double yBegin=yLowBound;
     double yLength=yUpBound-yLowBound;
     
-    long xInterval=1;
+    float xInterval=1;
     double xOrigin=0.0f;
  
     double yInterval=0;
@@ -144,9 +156,9 @@ NSComparator cmptr = ^(id obj1, id obj2){
     }
    
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithLong:xBegin],@"xBegin",
-            [NSNumber numberWithLong:xLength],@"xLength",
-            [NSNumber numberWithLong:xInterval],@"xInterval",
+            [NSNumber numberWithFloat:xBegin],@"xBegin",
+            [NSNumber numberWithFloat:xLength],@"xLength",
+            [NSNumber numberWithFloat:xInterval],@"xInterval",
             [NSNumber numberWithDouble:xOrigin],@"xOrigin",
             [NSNumber numberWithDouble:yBegin],@"yBegin",
             [NSNumber numberWithDouble:yLength],@"yLength",
@@ -156,7 +168,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
     
 }
 
-+(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(long)XRANGEBEGIN XRANGELENGTH:(long)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(long)XINTERVALLENGTH XORTHOGONALCOORDINATE:(double)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(long)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY isX:(BOOL)isX{
++(void)drawXYAxisIn:(CPTXYGraph *)graph toPlot:(CPTXYPlotSpace *)plotSpace withXRANGEBEGIN:(float)XRANGEBEGIN XRANGELENGTH:(float)XRANGELENGTH YRANGEBEGIN:(double)YRANGEBEGIN YRANGELENGTH:(double)YRANGELENGTH XINTERVALLENGTH:(float)XINTERVALLENGTH XORTHOGONALCOORDINATE:(double)XORTHOGONALCOORDINATE XTICKSPERINTERVAL:(float)XTICKSPERINTERVAL YINTERVALLENGTH:(double)YINTERVALLENGTH YORTHOGONALCOORDINATE:(double)YORTHOGONALCOORDINATE YTICKSPERINTERVAL:(double)YTICKSPERINTERVAL to:(id)delegate isY:(BOOL)isY isX:(BOOL)isX{
 
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
     textStyle.color                   = [CPTColor grayColor];
@@ -169,8 +181,8 @@ NSComparator cmptr = ^(id obj1, id obj2){
     /*NSLog(@"\nXRANGEBEGIN%f\nXRANGELENGTH%f\nXORTHOGONALCOORDINATE%f\nXTICKSPERINTERVAL%f\nYRANGEBEGIN%f\nYRANGELENGTH%f\nYORTHOGONALCOORDINATE%f\nYTICKSPERINTERVAL%f\n",XRANGEBEGIN,XRANGELENGTH,XORTHOGONALCOORDINATE,XTICKSPERINTERVAL,YRANGEBEGIN,YRANGELENGTH,YORTHOGONALCOORDINATE,YINTERVALLENGTH);*/
     
     //设置x，y坐标范围
-    plotSpace.xRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromLong(XRANGEBEGIN)
-                                                  length:CPTDecimalFromLong(XRANGELENGTH)];
+    plotSpace.xRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(XRANGEBEGIN)
+                                                  length:CPTDecimalFromFloat(XRANGELENGTH)];
     plotSpace.yRange=[CPTPlotRange plotRangeWithLocation:
                       CPTDecimalFromCGFloat(YRANGEBEGIN)  length:CPTDecimalFromCGFloat(YRANGELENGTH)];
     //plotSpace.allowsUserInteraction=YES;
@@ -182,7 +194,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1.5;
     lineStyle.lineCap=kCGLineCapButt;
-    lineStyle.lineColor = [CPTColor colorWithComponentRed:112/255.0 green:124/255.0 blue:4/255.0 alpha:1.0];
+    lineStyle.lineColor = [CPTColor colorWithComponentRed:120/255.0 green:118/255.0 blue:116/255.0 alpha:1.0];
     if(!isX){
         lineStyle.lineWidth=0;
     }

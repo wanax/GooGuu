@@ -15,20 +15,20 @@
 
 @interface DahonValuationViewController : UIViewController<CPTScatterPlotDataSource,CPTScatterPlotDelegate,CPTAxisDelegate>{
     //x轴起点
-    long XRANGEBEGIN;
+    float XRANGEBEGIN;
     //x轴在屏幕可视范围内的范围
-    long XRANGELENGTH;
+    float XRANGELENGTH;
     //y轴起点
     double YRANGEBEGIN;
     //y轴在屏幕可视范围内的范围
     double YRANGELENGTH;
     
     //x轴屏幕范围内大坐标间距
-    long XINTERVALLENGTH;
+    float XINTERVALLENGTH;
     //x轴坐标的原点（x轴在y轴上的坐标）
     double XORTHOGONALCOORDINATE;
     //x轴每两个大坐标间小坐标个数
-    long XTICKSPERINTERVAL;
+    float XTICKSPERINTERVAL;
     
     double YINTERVALLENGTH;
     double YORTHOGONALCOORDINATE;
