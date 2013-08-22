@@ -176,9 +176,6 @@
             @catch (NSException *exception) {
                 NSLog(@"%@",exception);
             }
-            @finally {
-                NSLog(@"adjust failed");
-            }
             
         }
     }];

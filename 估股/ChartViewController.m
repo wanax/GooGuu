@@ -168,30 +168,31 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 
 -(void)initChartViewComponents{
-    UIImageView *topBar=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dragchartbar"]];
+    UIImageView *topBar=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dragChartBar"]];
     topBar.frame=CGRectMake(0,0,SCREEN_HEIGHT,40);
     [self.view addSubview:topBar];
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
 
     UIButton *mainIncomeBt=[tool addButtonToView:self.view withTitle:@"主营收入" Tag:MainIncome frame:CGRectMake(77,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
-    [mainIncomeBt setBackgroundImage:[UIImage imageNamed:@"mainincomebt"] forState:UIControlStateNormal];
+    [mainIncomeBt setBackgroundImage:[UIImage imageNamed:@"mainIncomeBt"] forState:UIControlStateNormal];
     UIButton *mainFeeBt=[tool addButtonToView:self.view withTitle:@"运营费用" Tag:OperaFee frame:CGRectMake(177,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
-    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainfeebt"] forState:UIControlStateNormal];
-    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainincomebt"] forState:UIControlStateHighlighted];
+    [mainFeeBt setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainFeeBt"] forState:UIControlStateNormal];
+    [mainFeeBt setBackgroundImage:[UIImage imageNamed:@"mainIncomeBt"] forState:UIControlStateHighlighted];
     UIButton *mainCapBt=[tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(277,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
-    [mainCapBt setBackgroundImage:[UIImage imageNamed:@"mainfeebt"] forState:UIControlStateNormal];
+    [mainCapBt setBackgroundImage:[UIImage imageNamed:@"mainFeeBt"] forState:UIControlStateNormal];
     UIButton *discountBt=[tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(377,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000"];
-    [discountBt setBackgroundImage:[UIImage imageNamed:@"discountbt"] forState:UIControlStateNormal];
+    [discountBt setBackgroundImage:[UIImage imageNamed:@"discountBt"] forState:UIControlStateNormal];
     UIButton *backBt=[tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(10,5,50,32) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000"];
-    [backBt setBackgroundImage:[UIImage imageNamed:@"backbt"] forState:UIControlStateNormal];
+    [backBt setBackgroundImage:[UIImage imageNamed:@"backBt"] forState:UIControlStateNormal];
   
     saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(418,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2" textColor:@"#FFFEFE"];
-    [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
+    [saveBt setBackgroundImage:[UIImage imageNamed:@"saveBt"] forState:UIControlStateNormal];
     UIButton *linkBt=[tool addButtonToView:self.view withTitle:@"点动" Tag:DragChartType frame:CGRectMake(300,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
-    [linkBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
+    [linkBt setBackgroundImage:[UIImage imageNamed:@"resetBt"] forState:UIControlStateNormal];
     UIButton *resetBt=[tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(359,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE"];
-    [resetBt setBackgroundImage:[UIImage imageNamed:@"resetbt"] forState:UIControlStateNormal];
+    [resetBt setBackgroundImage:[UIImage imageNamed:@"resetBt"] forState:UIControlStateNormal];
     
     //公司名称label
     CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:14.0];
@@ -247,7 +248,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
             if([[resObj objectForKey:@"status"] isEqual:@"1"]){
-                [bt setBackgroundImage:[UIImage imageNamed:@"savedbt"] forState:UIControlStateNormal];
+                [bt setBackgroundImage:[UIImage imageNamed:@"savedBt"] forState:UIControlStateNormal];
                 [bt setEnabled:NO];
                 _isSaved=YES;
                 [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
@@ -531,7 +532,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //[self.myGGpriceLabel setText:@"我的估值"];
         if(_isSaved){
             [saveBt setEnabled:YES];
-            [saveBt setBackgroundImage:[UIImage imageNamed:@"savebt"] forState:UIControlStateNormal];
+            [saveBt setBackgroundImage:[UIImage imageNamed:@"saveBt"] forState:UIControlStateNormal];
             _isSaved=NO;
         }
     }

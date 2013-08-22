@@ -16,42 +16,42 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.frame=CGRectMake(0,0,320,22);
-        [self setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
+        self.frame=CGRectMake(0,0,320,30);
+        [self setBackgroundColor:[Utiles colorWithHexString:@"#553D24"]];
         
-        UILabel *companyNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(32,1,55,21)];
+        UILabel *companyNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(32,4,55,21)];
         [companyNameLabel setFont:[UIFont fontWithName:@"Heiti SC" size:11.0]];
         [companyNameLabel setTextAlignment:NSTextAlignmentCenter];
         [companyNameLabel setText:@"公司名称"];
         [companyNameLabel setTextColor:[Utiles colorWithHexString:@"#B9B9B6"]];
-        [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
+        [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#553D24"]];
         [self addSubview:companyNameLabel];
         [companyNameLabel release];
         
-        UILabel *marketPriceLabel=[[UILabel alloc] initWithFrame:CGRectMake(108,1,55,21)];
+        UILabel *marketPriceLabel=[[UILabel alloc] initWithFrame:CGRectMake(108,4,55,21)];
         [marketPriceLabel setFont:[UIFont fontWithName:@"Heiti SC" size:11.0]];
         [marketPriceLabel setTextAlignment:NSTextAlignmentCenter];
         [marketPriceLabel setText:@"市场价"];
         [marketPriceLabel setTextColor:[Utiles colorWithHexString:@"#B9B9B6"]];
-        [marketPriceLabel setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
+        [marketPriceLabel setBackgroundColor:[Utiles colorWithHexString:@"#553D24"]];
         [self addSubview:marketPriceLabel];
         [marketPriceLabel release];
         
-        UILabel *googuuPriceLabel=[[UILabel alloc] initWithFrame:CGRectMake(166,1,55,21)];
+        UILabel *googuuPriceLabel=[[UILabel alloc] initWithFrame:CGRectMake(166,4,55,21)];
         [googuuPriceLabel setFont:[UIFont fontWithName:@"Heiti SC" size:11.0]];
         [googuuPriceLabel setTextAlignment:NSTextAlignmentCenter];
         [googuuPriceLabel setText:@"估股价"];
         [googuuPriceLabel setTextColor:[Utiles colorWithHexString:@"#B9B9B6"]];
-        [googuuPriceLabel setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
+        [googuuPriceLabel setBackgroundColor:[Utiles colorWithHexString:@"#553D24"]];
         [self addSubview:googuuPriceLabel];
         [googuuPriceLabel release];
         
-        UILabel *outLookingLabel=[[UILabel alloc] initWithFrame:CGRectMake(243,1,55,21)];
+        UILabel *outLookingLabel=[[UILabel alloc] initWithFrame:CGRectMake(243,4,55,21)];
         [outLookingLabel setFont:[UIFont fontWithName:@"Heiti SC" size:11.0]];
         [outLookingLabel setTextAlignment:NSTextAlignmentCenter];
         [outLookingLabel setText:@"潜在空间"];
         [outLookingLabel setTextColor:[Utiles colorWithHexString:@"#B9B9B6"]];
-        [outLookingLabel setBackgroundColor:[Utiles colorWithHexString:@"#6C603E"]];
+        [outLookingLabel setBackgroundColor:[Utiles colorWithHexString:@"#553D24"]];
         [self addSubview:outLookingLabel];
         [outLookingLabel release];
     }

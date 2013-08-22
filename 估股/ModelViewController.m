@@ -67,9 +67,20 @@
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
 
-    [self addNewButton:@"查看财务数据" Tag:1 frame:CGRectMake(165, 10, 145, 50)];
-    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(10, 10, 145, 50)];
-    [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(10, 70, 300, 50)];
+    UIImageView *backGround1=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"valuationModelBack"]];
+    backGround1.frame=CGRectMake(0,0, SCREEN_WIDTH,60);
+    [self.view addSubview:backGround1];
+    UIImageView *backGround2=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"valuationModelBack"]];
+    backGround2.frame=CGRectMake(0,60, SCREEN_WIDTH,60);
+    [self.view addSubview:backGround2];
+    
+    [self addNewButton:@"查看财务数据" Tag:1 frame:CGRectMake(163, 15, 150, 26)];
+    [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(8, 15, 150, 26)];
+    [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(84, 78, 150, 26)];
+    
+    [self addActionButtonTag:AddAttention frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+    [self addActionButtonTag:AddComment frame:CGRectMake(106, 345, 106, 45) img:@"modelComment"];
+    [self addActionButtonTag:AddShare frame:CGRectMake(212, 345, 108, 45) img:@"modelShareBt"];
     
     if(self.browseType==MySavedType){
         [self initSavedTable];
@@ -80,8 +91,19 @@
     UIPanGestureRecognizer *pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [self.view addGestureRecognizer:pan];
     [pan release];
+    SAFE_RELEASE(backGround1);
+    SAFE_RELEASE(backGround2);
 
 }
+-(void)addActionButtonTag:(NSInteger)tag frame:(CGRect)rect img:(NSString *)img{
+    UIButton *bt1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bt1.frame = rect;
+    [bt1 setBackgroundImage:[UIImage imageNamed:img] forState:UIControlStateNormal];
+    bt1.tag = tag;
+    [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bt1];
+}
+
 
 -(void)initSavedTable{
     UILabel *board=[[UILabel alloc] initWithFrame:CGRectMake(0,125,SCREEN_WIDTH,30)];
@@ -209,7 +231,8 @@
     [bt1 setTitle:title forState: UIControlStateNormal];
     [bt1 setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
     [bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    bt1.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    [bt1 setBackgroundImage:[UIImage imageNamed:@"valueModelBt"] forState:UIControlStateNormal];
+    bt1.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
     bt1.tag = tag;
     [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bt1];
@@ -236,6 +259,24 @@
     }else if(bt.tag==3){
         DahonValuationViewController *dahon=[[DahonValuationViewController alloc] init];
         [self presentViewController:dahon animated:YES completion:nil];
+    }else if(bt.tag==AddAttention){
+        
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+        
+        [Utiles postNetInfoWithPath:@"AddAttention" andParams:params besidesBlock:^(id resObj){
+            
+            if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }else{
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }
+            
+        }];
+        
+    }else if(bt.tag==AddComment){
+        
+    }else if(bt.tag==AddShare){
+        
     }
     
 }

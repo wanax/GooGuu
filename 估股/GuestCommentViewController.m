@@ -68,12 +68,14 @@
 -(void)viewDidAppear:(BOOL)animated{
 
     if([Utiles isLogin]){
-        UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-        
-        self.parentViewController.parentViewController.navigationController.navigationItem.rightBarButtonItem=wanSay;
-        
+        UIButton *wanSay= [[UIButton alloc] initWithFrame:CGRectMake(280, 10.0, 40, 30.0)];
+        [wanSay setImage:[UIImage imageNamed:@"addComment"] forState:UIControlStateNormal];
+        [wanSay addTarget:self action:@selector(wanSay:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *nextStepBarBtn = [[UIBarButtonItem alloc] initWithCustomView:wanSay];
+        [nextStepBarBtn setWidth:425];
+      
         NSMutableArray *arr=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-        [arr addObject:wanSay];
+        [arr addObject:nextStepBarBtn];
         
         PrettyToolbar *toolBar=[(ComFieldViewController *)self.parentViewController.parentViewController.parentViewController top];
         [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];

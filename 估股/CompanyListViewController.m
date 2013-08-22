@@ -80,17 +80,17 @@
     
     [self getCompanyList];
    
-    table=[[UITableView alloc] initWithFrame:CGRectMake(0,60,320,320)];
-    search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,40)];
+    table=[[UITableView alloc] initWithFrame:CGRectMake(0,62,320,320)];
+    search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,35)];
     [[self.search.subviews objectAtIndex:0] removeFromSuperview];
     self.search.backgroundColor = [UIColor grayColor];
     search.delegate=self;
-    [self.view addSubview:search];
+    
     IndicatorComView *indicator=[[IndicatorComView alloc] init];
     indicator.center=CGPointMake(SCREEN_WIDTH/2,50);
     [self.view insertSubview:indicator aboveSubview:self.table];
     [indicator release];
-    
+    [self.view addSubview:search];
     [table setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     table.dataSource=self;
     table.delegate=self;
@@ -214,7 +214,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 62.0;
+    return 40.0;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -244,8 +244,7 @@
     @try{
         NSDictionary *comInfo=[comList objectAtIndex:row];
         cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"]==nil?@"":[comInfo objectForKey:@"companyname"];
-        cell.stockNameLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
-        cell.concernBt.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:10.0f];
+
         if([Utiles isLogin]){
             if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){
                 [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];

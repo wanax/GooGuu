@@ -228,12 +228,12 @@
         
         if(outLook>0){
             [cell.outLookLabel setTextColor:[Utiles colorWithHexString:riseColor]];
-            [cell.arrowImg setImage:[UIImage imageNamed:@"risearrow"]];
+            [cell.arrowImg setImage:[UIImage imageNamed:@"riseArrow"]];
         }else if(outLook==0){
             [cell.outLookLabel setTextColor:[UIColor whiteColor]];
         }else if(outLook<0){
             [cell.outLookLabel setTextColor:[Utiles colorWithHexString:fallColor]];
-            [cell.arrowImg setImage:[UIImage imageNamed:@"fallarrow"]];
+            [cell.arrowImg setImage:[UIImage imageNamed:@"fallArrow"]];
         }
         
         UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];

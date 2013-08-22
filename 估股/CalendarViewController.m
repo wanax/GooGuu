@@ -80,7 +80,7 @@
     }
     if(tap.state==UIGestureRecognizerStateChanged){
         
-        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-120),320,442);
+        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-110),320,442);
         
     }else if(tap.state==UIGestureRecognizerStateEnded){
         standard=self.view.frame.origin;

@@ -57,7 +57,11 @@ typedef enum{
     DiscountRate=44
 } IndustoryModelType;
 
-
+typedef enum{
+    AddAttention=11,
+    AddComment=22,
+    AddShare=33
+}ValuationModelAction;
 
 
 

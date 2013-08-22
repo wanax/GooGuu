@@ -46,7 +46,7 @@
     button.frame=rect;
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[Utiles colorWithHexString:txtColor] forState:UIControlStateNormal];
-    //[button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
     button.tag=tag;
     if(color){
         if (buttonType==UIButtonTypeCustom) {

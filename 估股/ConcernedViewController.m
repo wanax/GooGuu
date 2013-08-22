@@ -88,7 +88,7 @@
         [indicator release];
     }
     
-   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,22,320,308)];
+   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,30,320,312)];
     [customTableView setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     customTableView.dataSource=self;
     customTableView.delegate=self;
@@ -290,7 +290,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    return 48.0;
+    return 40.0;
 
 }
 #pragma mark Table Delegate Methods

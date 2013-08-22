@@ -104,7 +104,17 @@
     
     [self.view setBackgroundColor:[UIColor grayColor]];
     top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
+    UILabel *companyNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(60, 0, 200, 40)];
+    [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#E27A24"]];
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    id comInfo=delegate.comInfo;
+    [companyNameLabel setText:[comInfo objectForKey:@"companyname"]];
+    [companyNameLabel setTextAlignment:NSTextAlignmentCenter];
+    [companyNameLabel setTextColor:[UIColor whiteColor]];
+    [top addSubview:companyNameLabel];
+    SAFE_RELEASE(companyNameLabel);
     UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
+    [back setBackgroundImage:[UIImage imageNamed:@"backBt"] forState:UIControlStateNormal barMetrics:nil];
     myToolBarItems=[[NSMutableArray alloc] init];
     [myToolBarItems addObject:back];
     [top setItems:myToolBarItems];
