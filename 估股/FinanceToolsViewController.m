@@ -30,7 +30,7 @@
     if(![Utiles isLogin]){
         ClientLoginViewController *loginViewController = [[ClientLoginViewController alloc] init];
         
-        loginViewController.view.frame=CGRectMake(0, 20, 320, 480);
+        loginViewController.view.frame=CGRectMake(0, 20, SCREEN_WIDTH, 480);
         
         [self.view addSubview:loginViewController.view];
         [self addChildViewController:loginViewController];

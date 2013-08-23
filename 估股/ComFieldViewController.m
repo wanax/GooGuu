@@ -103,7 +103,7 @@
 -(void)addToolBar{
     
     [self.view setBackgroundColor:[UIColor grayColor]];
-    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
+    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,44)];
     UILabel *companyNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(60, 0, 200, 40)];
     [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#E27A24"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];

@@ -37,6 +37,7 @@
 @synthesize browseType;
 @synthesize nibsRegistered;
 @synthesize nibsRegistered2;
+@synthesize isEditing;
 
 @synthesize comInfoList;
 
@@ -73,7 +74,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=@"小马财经";
+
     _showToast=NO;
     nibsRegistered=NO;
     nibsRegistered2=NO;
@@ -88,7 +89,7 @@
         [indicator release];
     }
     
-   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,30,320,312)];
+   	customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,30,SCREEN_WIDTH,312)];
     [customTableView setBackgroundColor:[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"NormalCellColor" inUserDomain:NO]]];
     customTableView.dataSource=self;
     customTableView.delegate=self;
@@ -110,6 +111,17 @@
     }
     [_refreshHeaderView refreshLastUpdatedDate];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    /*UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+    [self.view addGestureRecognizer:tap];
+    SAFE_RELEASE(tap);*/
+}
+
+-(void)tapAction:(UITapGestureRecognizer *)tap{
+    if(isEditing){
+        [customTableView setEditing:NO animated:YES];
+        isEditing=NO;
+    }
 }
 
 -(void)panView:(UIPanGestureRecognizer *)tap{
@@ -216,18 +228,11 @@
         NSString *fallColor=[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:fallColorStr inUserDomain:NO];
         if(outLook>0){
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:riseColor].CGColor;
         }else if(outLook==0){
             cell.percentLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
-        }
-
-        cell.percentLabel.layer.cornerRadius = 5;
-        cell.percentLabel.layer.borderWidth = 1;
-        
-        
+        }  
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -237,16 +242,33 @@
     
     UILongPressGestureRecognizer *longP=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longAction:andCellIndex:)];
     [cell addGestureRecognizer:longP];
-    [longP release];
-    
+   
+    SAFE_RELEASE(longP);
     return cell;
     
 }
 
+
 -(void)longAction:(UILongPressGestureRecognizer *)press andCellIndex:(NSIndexPath *)indexPath{
+
     [customTableView setEditing:YES animated:YES];
+    isEditing=YES;
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    UINavigationController *test=delegate.myGooGuuNavController;
+
+
+    UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+    test.navigationItem.rightBarButtonItem=wanSay;
+    CATransition *transition=[CATransition animation];
+    transition.duration=0.4f;
+    transition.fillMode=kCAFillModeForwards;
+    transition.type=kCATruncationMiddle;
+    transition.subtype=kCATransitionFromRight;
+    [test.navigationBar.layer addAnimation:transition forKey:@"animation"];//self.parentViewController.parentViewController.parentViewController.parentViewController.navigationItem.rightBarButtonItem=cancelEdit;
+    //[self.parentViewController.parentViewController.parentViewController.parentViewController.navigationItem setRightBarButtonItem:leftButton animated:YES];
+    
     if(!_showToast){
-        [Utiles ToastNotification:@"下拉取消删除" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        [Utiles ToastNotification:@"拖动取消删除" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
         _showToast=YES;
     }
     
@@ -296,6 +318,7 @@
 #pragma mark Table Delegate Methods
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
+
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
     @try {
@@ -310,7 +333,8 @@
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
     }
-    
+
+ 
 }
 
 

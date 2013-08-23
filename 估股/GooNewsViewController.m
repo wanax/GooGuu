@@ -62,6 +62,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [self.customTableView reloadData];
+    //[[self.tabBarController tabBar] setHidden:NO];
 }
 
 - (void)viewDidLoad
@@ -74,7 +75,7 @@
     self.title=@"最新简报";
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     
-   	customTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
+   	customTableView=[[CustomTableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,370)];
     
     customTableView.dataSource=self;
     customTableView.delegate=self;
@@ -236,7 +237,7 @@
             [cell.arrowImg setImage:[UIImage imageNamed:@"fallArrow"]];
         }
         
-        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+        UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
         backView.backgroundColor=[Utiles colorWithHexString:[Utiles getConfigureInfoFrom:@"colorconfigure" andKey:@"DailyStockCellBackGroundColor" inUserDomain:NO]];
         [cell setBackgroundView:backView];
         [backView release];backView=nil;
@@ -266,7 +267,7 @@
         cell.contentLabel.text=[model objectForKey:@"concise"];
         cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
         
-        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
         if(readingMarksDic){
             if ([[readingMarksDic allKeys] containsObject:[model objectForKey:@"title"]]) {
                 [bgImgView setImage:nil];
@@ -323,6 +324,7 @@
     }else if(indexPath.section==1){
         NSString *artId=[NSString stringWithFormat:@"%@",[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
         GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
+        //articleViewController.view.frame=CGRectMake(0,0,SCREEN_WIDTH,440);
         articleViewController.articleTitle=[[arrList objectAtIndex:indexPath.row] objectForKey:@"title"];
         articleViewController.articleId=artId;
         articleViewController.title=@"研究报告";

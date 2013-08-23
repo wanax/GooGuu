@@ -52,7 +52,7 @@
     saveModelViewControler.type=@"SavedData";
     saveModelViewControler.browseType=MySavedType;
     calendarViewController=[[CalendarViewController alloc] init];
-    calendarViewController.view.frame=CGRectMake(0,100,320,600);
+    calendarViewController.view.frame=CGRectMake(0,100,SCREEN_WIDTH,600);
     concernedViewController.title=@"我的关注";
     saveModelViewControler.title=@"我的模型";
     calendarViewController.title=@"投资日历";
@@ -61,11 +61,11 @@
     
 	NSArray *viewControllers = [NSArray arrayWithObjects:concernedViewController, saveModelViewControler,calendarViewController, nil];
 	tabBarController = [[MHTabBarController alloc] init];
-    
 	tabBarController.viewControllers = viewControllers;
     
-    [self.view addSubview:tabBarController.view];
     [self addChildViewController:tabBarController];
+    [self.view addSubview:tabBarController.view];
+    
 }
 
 

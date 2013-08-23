@@ -30,6 +30,8 @@
 
 +(void)getNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
 +(void)postNetInfoWithPath:(NSString *)url andParams:(NSDictionary *)params besidesBlock:(void(^)(id obj))block;
+
+
 //字符串判空
 + (BOOL) isBlankString:(NSString *)string;
 //字符串转bool

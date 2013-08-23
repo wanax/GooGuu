@@ -47,7 +47,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     
-    imageView.frame=CGRectMake(0,0,320,2400);
+    imageView.frame=CGRectMake(0,0,SCREEN_WIDTH,2400);
     
 }
 
@@ -107,7 +107,7 @@
 
     if(tapGr.state==UIGestureRecognizerStateChanged){
         
-        imageView.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-2300),320,2600);
+        imageView.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-2300),SCREEN_WIDTH,2600);
 
     }else if(tapGr.state==UIGestureRecognizerStateEnded){
         standard=imageView.frame.origin;

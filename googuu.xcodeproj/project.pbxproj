@@ -3154,8 +3154,8 @@
 		AE2E91BC179D061A0049B28E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -3174,6 +3174,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = googuu;
+				PROVISIONING_PROFILE = "E84AC48A-29D6-4395-A592-C51F58DB041A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E84AC48A-29D6-4395-A592-C51F58DB041A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3181,8 +3183,8 @@
 		AE2E91BD179D061A0049B28E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: XIAOJU WANG (49TDX2PQGF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -3201,6 +3203,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = googuu;
+				PROVISIONING_PROFILE = "E84AC48A-29D6-4395-A592-C51F58DB041A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E84AC48A-29D6-4395-A592-C51F58DB041A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

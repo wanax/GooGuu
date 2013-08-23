@@ -205,23 +205,28 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSString *ggPrice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]];
     if([ggPrice length]>5){
         ggPrice=[ggPrice substringToIndex:5];
+    }else if([ggPrice length]<5){
+        ggPrice=[ggPrice stringByAppendingFormat:@"0"];
     }
     CGFloat companyNameLabelLenght=labelsize1.width+labelsize2.width+3;
     //估值label
     CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估值:HK$" font:@"Heiti SC" fontSize:10.0];
-    //我的估值数值label
-    CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:ggPrice font:@"Heiti SC" fontSize:13.0];
+    //估值数值label
+    NSString *defaultGprice=[ggPrice mutableCopy];
+    defaultGprice=[defaultGprice length]>=5?[defaultGprice substringToIndex:4]:defaultGprice;
+    CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:defaultGprice font:@"Heiti SC" fontSize:13.0];
     [tool addLabelToView:self.view withTitle:@"估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
-    [tool addLabelToView:self.view withTitle:ggPrice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
+    [tool addLabelToView:self.view withTitle:defaultGprice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
     
+    float beforeLenght=companyNameLabelLenght+defaultGGpriceLabelSize.width+8+defaultPriceLabelSize.width+3;
     //我的估值label
     CGSize myGGpriceLabelSize=[tool getLabelSizeFromString:@"我的估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //我的估值数值label
     CGSize priceLabelSize=[tool getLabelSizeFromString:ggPrice font:@"Heiti SC" fontSize:13.0];
     CGFloat priceLabelTap=300-myGGpriceLabelSize.width-priceLabelSize.width-5;
     
-    myGGpriceLabel=[tool addLabelToView:self.view withTitle:@"我的估值:HK$" Tag:11 frame:CGRectMake(priceLabelTap,63,myGGpriceLabelSize.width,myGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    myGGpriceLabel=[tool addLabelToView:self.view withTitle:@"我的估值:HK$" Tag:11 frame:CGRectMake(priceLabelTap,63,myGGpriceLabelSize.width+3,myGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     priceLabel=[tool addLabelToView:self.view withTitle:ggPrice Tag:11 frame:CGRectMake(priceLabelTap+myGGpriceLabelSize.width,63+myGGpriceLabelSize.height-priceLabelSize.height,priceLabelSize.width,priceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
     
     //市场价label
@@ -290,7 +295,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     sender.showsTouchWhenHighlighted=YES;
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
-    floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
+    floatingController.frameColor=[Utiles colorWithHexString:@"#e26b17"];
     if(sender.tag==MainIncome){
         [floatingController presentWithContentViewController:modelMainViewController
                                                     animated:YES];

@@ -28,7 +28,9 @@
 @property (nonatomic,retain) id comInfo;
 @property BrowseSourceType browseType;
 @property (nonatomic,retain) id savedStockList;
+@property BOOL isAttention;
 
+@property (nonatomic,retain) UIButton *attentionBt;
 @property (nonatomic,retain) DiscountRateViewController *disViewController;
 @property (nonatomic,retain) ChartViewController *chartViewController;
 @property (nonatomic,retain) UITableView *savedTable;

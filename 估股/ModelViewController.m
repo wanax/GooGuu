@@ -31,9 +31,12 @@
 @synthesize chartViewController;
 @synthesize disViewController;
 @synthesize savedTable;
+@synthesize isAttention;
+@synthesize attentionBt;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(attentionBt);
     SAFE_RELEASE(disViewController);
     SAFE_RELEASE(comInfo);
     SAFE_RELEASE(jsonForChart);
@@ -61,6 +64,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isAttention=NO;
+    [self getConcernStatus];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
     
@@ -78,7 +83,11 @@
     [self addNewButton:@"查看大行估值" Tag:3 frame:CGRectMake(8, 15, 150, 26)];
     [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(84, 78, 150, 26)];
     
-    [self addActionButtonTag:AddAttention frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+    if(isAttention){
+        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+    }else{
+        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+    }
     [self addActionButtonTag:AddComment frame:CGRectMake(106, 345, 106, 45) img:@"modelComment"];
     [self addActionButtonTag:AddShare frame:CGRectMake(212, 345, 108, 45) img:@"modelShareBt"];
     
@@ -95,13 +104,14 @@
     SAFE_RELEASE(backGround2);
 
 }
--(void)addActionButtonTag:(NSInteger)tag frame:(CGRect)rect img:(NSString *)img{
+-(UIButton *)addActionButtonTag:(NSInteger)tag frame:(CGRect)rect img:(NSString *)img{
     UIButton *bt1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     bt1.frame = rect;
     [bt1 setBackgroundImage:[UIImage imageNamed:img] forState:UIControlStateNormal];
     bt1.tag = tag;
     [bt1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bt1];
+    return bt1;
 }
 
 
@@ -259,25 +269,65 @@
     }else if(bt.tag==3){
         DahonValuationViewController *dahon=[[DahonValuationViewController alloc] init];
         [self presentViewController:dahon animated:YES completion:nil];
-    }else if(bt.tag==AddAttention){
+    }else if(bt.tag==AttentionAction){
         
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
-        
-        [Utiles postNetInfoWithPath:@"AddAttention" andParams:params besidesBlock:^(id resObj){
-            
-            if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-            }else{
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-            }
-            
-        }];
+        [self attentionAction];
         
     }else if(bt.tag==AddComment){
         
     }else if(bt.tag==AddShare){
         
     }
+    
+}
+-(void)attentionAction{
+
+    NSString *url=nil;
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+    if(isAttention){
+        url=@"DeleteAttention";
+    }else{
+        url=@"AddAttention";
+    }
+    
+    [Utiles postNetInfoWithPath:url andParams:params besidesBlock:^(id resObj){
+        
+        if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        }else if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+            if([url isEqualToString:@"AddAttention"]){
+                isAttention=YES;
+                [attentionBt setBackgroundImage:[UIImage imageNamed:@"modelConcernBt"] forState:UIControlStateNormal];
+                [Utiles ToastNotification:@"已成功关注" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }else if([url isEqualToString:@"DeleteAttention"]){
+                isAttention=NO;
+                [attentionBt setBackgroundImage:[UIImage imageNamed:@"modelConcernBt"] forState:UIControlStateNormal];
+                [Utiles ToastNotification:@"已取消关注" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                
+            }
+        }
+        
+    }];
+
+}
+
+-(void)getConcernStatus{
+    
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from", nil];
+    [Utiles postNetInfoWithPath:@"AttentionData" andParams:params besidesBlock:^(id resObj){
+        if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+            NSArray *temp=[resObj objectForKey:@"data"];
+            for(id obj in temp){
+                if([[obj objectForKey:@"stockcode"] isEqual:[comInfo objectForKey:@"stockcode"]]){
+                    isAttention=YES;
+                    break;
+                }
+            }
+        }else{
+            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            isAttention=NO;
+        }
+    }];
     
 }
 

@@ -27,6 +27,7 @@
 @property (nonatomic,retain) NSString *type;
 @property BOOL nibsRegistered;
 @property BOOL nibsRegistered2;
+@property BOOL isEditing;
 @property (nonatomic,retain) ClientLoginViewController *loginViewController;
 @property (nonatomic,retain) UITableView *customTableView;
 

@@ -80,8 +80,8 @@
     
     [self getCompanyList];
    
-    table=[[UITableView alloc] initWithFrame:CGRectMake(0,62,320,320)];
-    search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,35)];
+    table=[[UITableView alloc] initWithFrame:CGRectMake(0,62,SCREEN_WIDTH,320)];
+    search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,35)];
     [[self.search.subviews objectAtIndex:0] removeFromSuperview];
     self.search.backgroundColor = [UIColor grayColor];
     search.delegate=self;
@@ -280,15 +280,11 @@
 
         if(outLook>0){
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:riseColor];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:riseColor].CGColor;
         }else if(outLook==0){
             cell.percentLabel.backgroundColor=[UIColor whiteColor];
         }else if(outLook<0){
             cell.percentLabel.backgroundColor=[Utiles colorWithHexString:fallColor];
-            cell.percentLabel.layer.borderColor = [Utiles colorWithHexString:fallColor].CGColor;
         }
-        cell.percentLabel.layer.cornerRadius = 5;        
-        cell.percentLabel.layer.borderWidth = 1;
   
     }@catch (NSException *e) {
         NSLog(@"%@",e);

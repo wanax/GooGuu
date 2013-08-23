@@ -49,7 +49,7 @@
     [super viewDidLoad];
     [self setTitle:@"设置"];
     
-    self.customTabel=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,380) style:UITableViewStyleGrouped];
+    self.customTabel=[[UITableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,380) style:UITableViewStyleGrouped];
     self.customTabel.delegate=self;
     self.customTabel.dataSource=self;
     [self.view addSubview:self.customTabel];
@@ -131,7 +131,7 @@
     label.text = sectionTitle;
     
     // Create header view and add label as a subview
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
     [view autorelease];
     [view addSubview:label];
     

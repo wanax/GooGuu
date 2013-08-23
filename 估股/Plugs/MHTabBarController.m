@@ -149,9 +149,9 @@ static const NSInteger TAG_OFFSET = 1000;
 	//[self.view addSubview:contentContainerView];
     [self.view insertSubview:contentContainerView atIndex:0];
 
-    NSString *imgName=[NSString stringWithFormat:@"MHTabBarIndicator%d",_viewControllers.count];
-	indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-	[self.view addSubview:indicatorImageView];
+    //NSString *imgName=[NSString stringWithFormat:@"MHTabBarIndicator%d",_viewControllers.count];
+	//indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+	//[self.view addSubview:indicatorImageView];
 
 	[self reloadTabButtons];
 }

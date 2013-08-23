@@ -78,6 +78,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [self.indicatorClass count];
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 35.0;
+}
 
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -89,7 +92,10 @@
 
 	NSString *text =[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"name"];
 	[cell.textLabel setText:text];
-    cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
+    cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0f];
+    cell.textLabel.textColor=[Utiles colorWithHexString:@"#9f3c0b"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView.backgroundColor = [Utiles colorWithHexString:@"d57631"];
 	
 	return cell;
 }

@@ -35,9 +35,11 @@
 @synthesize loginTimer;
 @synthesize comInfo;
 @synthesize popoverController;
+@synthesize myGooGuuNavController;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(myGooGuuNavController);
     [popoverController release];
     [loginTimer release];
     [comInfo release];
@@ -84,7 +86,7 @@
         //股票关注
         MyGooguuViewController *myGooGuu=[[MyGooguuViewController alloc] init];
         myGooGuu.tabBarItem=barItem2;
-        PrettyNavigationController *myGooGuuNavController=[[PrettyNavigationController alloc] initWithRootViewController:myGooGuu];
+        myGooGuuNavController=[[UINavigationController alloc] initWithRootViewController:myGooGuu];
 
         
         //客户设置
@@ -104,10 +106,7 @@
         universeViewController.tabBarItem=barItem5;
         PrettyNavigationController *universeNav=[[PrettyNavigationController alloc] initWithRootViewController:universeViewController];
         
-        
-        
-        
-        
+      
         self.tabBarController = [[PrettyTabBarViewController alloc] init];
 
         self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,universeNav,myGooGuuNavController, clientCenterNav ,nil];
@@ -127,7 +126,6 @@
         SAFE_RELEASE(gooNewsNavController);
         SAFE_RELEASE(universeViewController);
 
-        SAFE_RELEASE(myGooGuuNavController);
         SAFE_RELEASE(clientCenterNav);
         SAFE_RELEASE(gooNewsNavController);
         SAFE_RELEASE(universeNav);

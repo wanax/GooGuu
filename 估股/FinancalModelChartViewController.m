@@ -153,7 +153,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     sender.showsTouchWhenHighlighted=YES;
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
-    floatingController.frameColor=[Utiles colorWithHexString:@"#8cb990"];
+    floatingController.frameColor=[Utiles colorWithHexString:@"#e26b17"];
     if(sender.tag==1){
         [floatingController presentWithContentViewController:modelRatioViewController
                                                     animated:YES];

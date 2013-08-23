@@ -186,7 +186,6 @@ static NSNumberFormatter *numFormatter;
     
 }
 
-
 + (BOOL) isBlankString:(NSString *)string {
     if (string == nil || string == NULL) {
         return YES;

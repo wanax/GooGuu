@@ -9,6 +9,7 @@
 #import "GooGuuArticleViewController.h"
 #import "MHTabBarController.h"
 #import "MBProgressHUD.h"
+#import "MHTabBarController.h"
 
 
 @interface GooGuuArticleViewController ()
@@ -47,15 +48,21 @@
     transition.subtype=kCATransitionFromRight;
     [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
     self.parentViewController.navigationItem.rightBarButtonItem=nil;
+    //[[(UITabBarController *)(self.parentViewController.parentViewController.parentViewController) tabBar] setHidden:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     self.view.backgroundColor=[UIColor whiteColor];
     self.parentViewController.title=@"公司简报";
-
+    UIButton *bt=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [bt setTitle:@"here" forState:UIControlStateNormal];
+    bt.frame=CGRectMake(0,400,40,40);
+    [self.view addSubview:bt];
+    
     MBProgressHUD *hud=[[MBProgressHUD alloc] initWithView:self.view];
     [Utiles showHUD:@"Loading..." andView:self.view andHUD:hud];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
@@ -69,7 +76,7 @@
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid", nil];
     [Utiles getNetInfoWithPath:@"ArticleURL" andParams:params besidesBlock:^(id article){
 
-        articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,40,self.view.bounds.size.width, self.view.bounds.size.height)];
+        articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,40,self.view.bounds.size.width, self.view.bounds.size.height+20)];
         articleWeb.delegate=self;
         [articleWeb loadHTMLString:[article objectForKey:@"content"] baseURL:nil];
         //articleWeb.scalesPageToFit=YES;

@@ -62,7 +62,7 @@
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     [self getAnalyrePort];
-    customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,370)];
+    customTableView=[[UITableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,370)];
     [self.customTableView setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
     customTableView.dataSource=self;
     customTableView.delegate=self;
@@ -165,7 +165,7 @@
     cell.content=[model objectForKey:@"brief"];
     cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
     cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
-    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
     backView.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
     [cell setBackgroundView:backView];
     [backView release];backView=nil;

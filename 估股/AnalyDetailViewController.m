@@ -54,7 +54,7 @@
 -(void)addToolBar{
     
     [self.view setBackgroundColor:[UIColor grayColor]];
-    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
+    top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,44)];
     UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
     myToolBarItems=[[NSMutableArray alloc] init];
     [myToolBarItems addObject:back];

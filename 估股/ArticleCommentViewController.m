@@ -61,13 +61,8 @@
     if([Utiles isLogin]){
         if(self.type==News){
             UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-            self.parentViewController.navigationItem.rightBarButtonItem=wanSay;
-            CATransition *transition=[CATransition animation];
-            transition.duration=0.4f;
-            transition.fillMode=kCAFillModeForwards;
-            transition.type=kCATruncationMiddle;
-            transition.subtype=kCATransitionFromRight;
-            [self.parentViewController.navigationController.navigationBar.layer addAnimation:transition forKey:@"animation"];
+            [self.parentViewController.navigationItem setRightBarButtonItem:wanSay animated:YES];
+            
         }else{
             NSAssert(self.type==StockCompany,@"Analy Report");
             UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];

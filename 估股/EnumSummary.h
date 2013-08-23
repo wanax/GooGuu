@@ -58,7 +58,7 @@ typedef enum{
 } IndustoryModelType;
 
 typedef enum{
-    AddAttention=11,
+    AttentionAction=11,
     AddComment=22,
     AddShare=33
 }ValuationModelAction;

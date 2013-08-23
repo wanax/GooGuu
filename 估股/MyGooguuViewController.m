@@ -108,9 +108,9 @@
     
     GooGuuContainerViewController *content=[[GooGuuContainerViewController alloc] init];
     content.view.frame=CGRectMake(0,-21,SCREEN_WIDTH,SCREEN_HEIGHT);
-
-    [self.view addSubview:content.view];
     [self addChildViewController:content];
+    [self.view addSubview:content.view];
+    
     SAFE_RELEASE(content);
     
 }

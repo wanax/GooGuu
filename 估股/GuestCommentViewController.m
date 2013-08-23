@@ -107,7 +107,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor redColor]];
     
-    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,383)];
+    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,383)];
     [self.table setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
     self.table.delegate=self;
     self.table.dataSource=self;
@@ -215,7 +215,7 @@
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
     }
-    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,320,86)];
+    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
     backView.backgroundColor=[Utiles colorWithHexString:@"#EFEBD9"];
     [cell setBackgroundView:backView];
     return cell;

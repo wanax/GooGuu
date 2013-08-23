@@ -52,7 +52,7 @@
     calendar.userInteractionEnabled=YES;
     self.view.userInteractionEnabled=YES;
     
-    dateIndicator=[[UILabel alloc] initWithFrame:CGRectMake(0,292,320,30)];
+    dateIndicator=[[UILabel alloc] initWithFrame:CGRectMake(0,292,SCREEN_WIDTH,30)];
     dateIndicator.backgroundColor=[Utiles colorWithHexString:@"#7B140E"];
     dateIndicator.numberOfLines = 0;
     dateIndicator.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
@@ -61,7 +61,7 @@
     [self.view addSubview:dateIndicator];
     
     
-    messageLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,322,320,120)];
+    messageLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,322,SCREEN_WIDTH,120)];
     messageLabel.backgroundColor=[Utiles colorWithHexString:@"#892D24"];
     messageLabel.numberOfLines =5;
     messageLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
@@ -80,7 +80,7 @@
     }
     if(tap.state==UIGestureRecognizerStateChanged){
         
-        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-110),320,442);
+        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-110),SCREEN_WIDTH,442);
         
     }else if(tap.state==UIGestureRecognizerStateEnded){
         standard=self.view.frame.origin;
