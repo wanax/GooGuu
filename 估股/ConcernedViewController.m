@@ -253,25 +253,16 @@
 
     [customTableView setEditing:YES animated:YES];
     isEditing=YES;
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    UINavigationController *test=delegate.myGooGuuNavController;
 
+    UIBarButtonItem *cancelEdit=[[UIBarButtonItem alloc] initWithTitle:@"取消删除" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelAction)];
+    [self.parentViewController.parentViewController.parentViewController.navigationItem setRightBarButtonItem:cancelEdit animated:NO];
+    SAFE_RELEASE(cancelEdit);
 
-    UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
-    test.navigationItem.rightBarButtonItem=wanSay;
-    CATransition *transition=[CATransition animation];
-    transition.duration=0.4f;
-    transition.fillMode=kCAFillModeForwards;
-    transition.type=kCATruncationMiddle;
-    transition.subtype=kCATransitionFromRight;
-    [test.navigationBar.layer addAnimation:transition forKey:@"animation"];//self.parentViewController.parentViewController.parentViewController.parentViewController.navigationItem.rightBarButtonItem=cancelEdit;
-    //[self.parentViewController.parentViewController.parentViewController.parentViewController.navigationItem setRightBarButtonItem:leftButton animated:YES];
     
-    if(!_showToast){
-        [Utiles ToastNotification:@"拖动取消删除" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-        _showToast=YES;
-    }
-    
+}
+-(void)cancelAction{
+    [customTableView setEditing:NO animated:YES];
+    [self.parentViewController.parentViewController.parentViewController.navigationItem setRightBarButtonItem:nil animated:NO];
 }
 
 
@@ -356,7 +347,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    [customTableView setEditing:NO animated:YES];
+    //[customTableView setEditing:NO animated:YES];
     _showToast=NO;
 }
 

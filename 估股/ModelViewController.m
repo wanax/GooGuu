@@ -17,6 +17,7 @@
 #import "XYZAppDelegate.h"
 #import "MBProgressHUD.h"
 #import "DiscountRateViewController.h"
+#import "MHTabBarController.h"
 
 @interface ModelViewController ()
 
@@ -33,9 +34,13 @@
 @synthesize savedTable;
 @synthesize isAttention;
 @synthesize attentionBt;
+@synthesize inputField;
+@synthesize tabController;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(tabController);
+    SAFE_RELEASE(inputField);
     SAFE_RELEASE(attentionBt);
     SAFE_RELEASE(disViewController);
     SAFE_RELEASE(comInfo);
@@ -60,12 +65,35 @@
         [self.savedTable reloadData];
     }
 }
+-(void)initTextFeild{
+    inputField=[[UITextField alloc] initWithFrame:CGRectMake(0,135,SCREEN_WIDTH,30)];
+    inputField.borderStyle = UITextBorderStyleRoundedRect;
+    inputField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    inputField.returnKeyType=UIReturnKeySend;
+    inputField.delegate=self;
+}
+
+-(void)removeTextField{
+    [inputField removeFromSuperview];
+    CATransition *animation = [CATransition animation];
+    animation.duration = 0.1f;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.fillMode = kCAFilterLinear;
+    animation.type = kCATransitionPush;
+    animation.subtype = kCATransitionFromTop;
+    [[inputField layer] addAnimation:animation forKey:@"animation"];
+    animation=nil;
+    [inputField resignFirstResponder];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self initTextFeild];
     isAttention=NO;
     [self getConcernStatus];
+    self.tabController=(MHTabBarController *)self.parentViewController;
+    
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
     
@@ -84,12 +112,12 @@
     [self addNewButton:@"调整模型参数" Tag:2 frame:CGRectMake(84, 78, 150, 26)];
     
     if(isAttention){
-        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"deleteAttentionBt"];
     }else{
-        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"modelConcernBt"];
+        attentionBt=[self addActionButtonTag:AttentionAction frame:CGRectMake(0, 345, 106, 45) img:@"addAttentionBt"];
     }
-    [self addActionButtonTag:AddComment frame:CGRectMake(106, 345, 106, 45) img:@"modelComment"];
-    [self addActionButtonTag:AddShare frame:CGRectMake(212, 345, 108, 45) img:@"modelShareBt"];
+    [self addActionButtonTag:AddComment frame:CGRectMake(106, 345, 106, 45) img:@"addCommentBt"];
+    [self addActionButtonTag:AddShare frame:CGRectMake(212, 345, 108, 45) img:@"addShareBt"];
     
     if(self.browseType==MySavedType){
         [self initSavedTable];
@@ -256,7 +284,7 @@
 }
 
 -(void)buttonClicked:(UIButton *)bt{
-    
+    [self removeTextField];
     if(bt.tag==1){
         FinancalModelChartViewController *model=[[FinancalModelChartViewController alloc] init];
         [self presentViewController:model animated:YES completion:nil];
@@ -274,12 +302,46 @@
         [self attentionAction];
         
     }else if(bt.tag==AddComment){
+
+        [self.view addSubview:inputField];
+        CATransition *animation = [CATransition animation];
+        animation.duration = 0.1f;
+        animation.timingFunction = UIViewAnimationCurveEaseInOut;
+        animation.fillMode = kCAFilterLinear;
+        animation.type = kCATransitionPush;
+        animation.subtype = kCATransitionFromTop;
+        [[inputField layer] addAnimation:animation forKey:@"animation"];
+        animation=nil;
+        [inputField becomeFirstResponder];
         
     }else if(bt.tag==AddShare){
         
     }
     
 }
+
+#pragma mark -
+#pragma mark Text Field Methods Delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    if(![Utiles isBlankString:[self.inputField text]]){
+        [self removeTextField];
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",inputField.text,@"msg",[Utiles getUserToken],@"token",@"googuu",@"from",nil];
+        [Utiles postNetInfoWithPath:@"CompanyReview" andParams:params besidesBlock:^(id obj){
+            if([[obj objectForKey:@"status"] isEqualToString:@"1"]){
+                self.inputField.text=@"";
+                [self.tabController setSelectedIndex:3 animated:YES];
+            }else{
+                [Utiles ToastNotification:@"发布失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }
+        }];
+    }else{
+        [Utiles ToastNotification:@"请填写内容" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+    }
+    
+    return YES;
+}
+
 -(void)attentionAction{
 
     NSString *url=nil;
@@ -297,11 +359,11 @@
         }else if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
             if([url isEqualToString:@"AddAttention"]){
                 isAttention=YES;
-                [attentionBt setBackgroundImage:[UIImage imageNamed:@"modelConcernBt"] forState:UIControlStateNormal];
+                [attentionBt setBackgroundImage:[UIImage imageNamed:@"deleteAttentionBt"] forState:UIControlStateNormal];
                 [Utiles ToastNotification:@"已成功关注" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }else if([url isEqualToString:@"DeleteAttention"]){
                 isAttention=NO;
-                [attentionBt setBackgroundImage:[UIImage imageNamed:@"modelConcernBt"] forState:UIControlStateNormal];
+                [attentionBt setBackgroundImage:[UIImage imageNamed:@"addAttentionBt"] forState:UIControlStateNormal];
                 [Utiles ToastNotification:@"已取消关注" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
                 
             }

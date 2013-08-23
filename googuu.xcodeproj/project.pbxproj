@@ -28,15 +28,17 @@
 		AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105517A7A4A6007B9E66 /* defaultAvatar.png */; };
 		AE15105917A7A758007B9E66 /* addConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105717A7A756007B9E66 /* addConcernBt.png */; };
 		AE15105A17A7A758007B9E66 /* cancelConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105817A7A757007B9E66 /* cancelConcernBt.png */; };
+		AE272E5A17C75FD900CC55BA /* addAttentionBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5517C75FD900CC55BA /* addAttentionBt.png */; };
+		AE272E5B17C75FD900CC55BA /* addCommentBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5617C75FD900CC55BA /* addCommentBt.png */; };
+		AE272E5C17C75FD900CC55BA /* addShareBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5717C75FD900CC55BA /* addShareBt.png */; };
+		AE272E5D17C75FD900CC55BA /* deleteAttentionBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5817C75FD900CC55BA /* deleteAttentionBt.png */; };
+		AE272E5E17C75FD900CC55BA /* enterCompanyBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5917C75FD900CC55BA /* enterCompanyBt.png */; };
 		AE286DB817C604710068DB27 /* tabUnSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DB617C6046F0068DB27 /* tabUnSelected.png */; };
 		AE286DB917C604710068DB27 /* tabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DB717C604700068DB27 /* tabSelected.png */; };
 		AE286DBB17C605A20068DB27 /* addComment.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DBA17C605A20068DB27 /* addComment.png */; };
 		AE286DBD17C60F810068DB27 /* valuationModelBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DBC17C60F800068DB27 /* valuationModelBack.png */; };
 		AE286DBF17C6128E0068DB27 /* myGGCellBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DBE17C6128D0068DB27 /* myGGCellBack.png */; };
 		AE286DC117C613840068DB27 /* valueModelBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DC017C613830068DB27 /* valueModelBt.png */; };
-		AE286DC517C615560068DB27 /* modelComment.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DC217C615530068DB27 /* modelComment.png */; };
-		AE286DC617C615560068DB27 /* modelConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DC317C615540068DB27 /* modelConcernBt.png */; };
-		AE286DC717C615560068DB27 /* modelShareBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DC417C615550068DB27 /* modelShareBt.png */; };
 		AE286DC917C61B170068DB27 /* myGGOutLookingLable.png in Resources */ = {isa = PBXBuildFile; fileRef = AE286DC817C61B150068DB27 /* myGGOutLookingLable.png */; };
 		AE2CFA4517A0B0A00082F292 /* colorconfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */; };
 		AE2CFA4717A0C0FC0082F292 /* MHTabBarInactiveTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */; };
@@ -529,15 +531,17 @@
 		AE15105817A7A757007B9E66 /* cancelConcernBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelConcernBt.png; sourceTree = "<group>"; };
 		AE19BECC17B3457F007F3FA7 /* DahonValuationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DahonValuationViewController.h; sourceTree = "<group>"; };
 		AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DahonValuationViewController.m; sourceTree = "<group>"; };
+		AE272E5517C75FD900CC55BA /* addAttentionBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addAttentionBt.png; sourceTree = "<group>"; };
+		AE272E5617C75FD900CC55BA /* addCommentBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addCommentBt.png; sourceTree = "<group>"; };
+		AE272E5717C75FD900CC55BA /* addShareBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addShareBt.png; sourceTree = "<group>"; };
+		AE272E5817C75FD900CC55BA /* deleteAttentionBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deleteAttentionBt.png; sourceTree = "<group>"; };
+		AE272E5917C75FD900CC55BA /* enterCompanyBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enterCompanyBt.png; sourceTree = "<group>"; };
 		AE286DB617C6046F0068DB27 /* tabUnSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabUnSelected.png; sourceTree = "<group>"; };
 		AE286DB717C604700068DB27 /* tabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabSelected.png; sourceTree = "<group>"; };
 		AE286DBA17C605A20068DB27 /* addComment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addComment.png; sourceTree = "<group>"; };
 		AE286DBC17C60F800068DB27 /* valuationModelBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valuationModelBack.png; sourceTree = "<group>"; };
 		AE286DBE17C6128D0068DB27 /* myGGCellBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myGGCellBack.png; sourceTree = "<group>"; };
 		AE286DC017C613830068DB27 /* valueModelBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = valueModelBt.png; sourceTree = "<group>"; };
-		AE286DC217C615530068DB27 /* modelComment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modelComment.png; sourceTree = "<group>"; };
-		AE286DC317C615540068DB27 /* modelConcernBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modelConcernBt.png; sourceTree = "<group>"; };
-		AE286DC417C615550068DB27 /* modelShareBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modelShareBt.png; sourceTree = "<group>"; };
 		AE286DC817C61B150068DB27 /* myGGOutLookingLable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myGGOutLookingLable.png; sourceTree = "<group>"; };
 		AE2CFA4417A0B0A00082F292 /* colorconfigure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colorconfigure.plist; sourceTree = "<group>"; };
 		AE2CFA4617A0C0FC0082F292 /* MHTabBarInactiveTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MHTabBarInactiveTab.png; sourceTree = "<group>"; };
@@ -1671,10 +1675,12 @@
 		AE2E9354179D09490049B28E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				AE272E5517C75FD900CC55BA /* addAttentionBt.png */,
+				AE272E5617C75FD900CC55BA /* addCommentBt.png */,
+				AE272E5717C75FD900CC55BA /* addShareBt.png */,
+				AE272E5817C75FD900CC55BA /* deleteAttentionBt.png */,
+				AE272E5917C75FD900CC55BA /* enterCompanyBt.png */,
 				AE286DC817C61B150068DB27 /* myGGOutLookingLable.png */,
-				AE286DC217C615530068DB27 /* modelComment.png */,
-				AE286DC317C615540068DB27 /* modelConcernBt.png */,
-				AE286DC417C615550068DB27 /* modelShareBt.png */,
 				AE286DC017C613830068DB27 /* valueModelBt.png */,
 				AE286DBE17C6128D0068DB27 /* myGGCellBack.png */,
 				AE286DBC17C60F800068DB27 /* valuationModelBack.png */,
@@ -2646,10 +2652,12 @@
 				AE286DBD17C60F810068DB27 /* valuationModelBack.png in Resources */,
 				AE286DBF17C6128E0068DB27 /* myGGCellBack.png in Resources */,
 				AE286DC117C613840068DB27 /* valueModelBt.png in Resources */,
-				AE286DC517C615560068DB27 /* modelComment.png in Resources */,
-				AE286DC617C615560068DB27 /* modelConcernBt.png in Resources */,
-				AE286DC717C615560068DB27 /* modelShareBt.png in Resources */,
 				AE286DC917C61B170068DB27 /* myGGOutLookingLable.png in Resources */,
+				AE272E5A17C75FD900CC55BA /* addAttentionBt.png in Resources */,
+				AE272E5B17C75FD900CC55BA /* addCommentBt.png in Resources */,
+				AE272E5C17C75FD900CC55BA /* addShareBt.png in Resources */,
+				AE272E5D17C75FD900CC55BA /* deleteAttentionBt.png in Resources */,
+				AE272E5E17C75FD900CC55BA /* enterCompanyBt.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

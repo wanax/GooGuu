@@ -12,7 +12,6 @@
 @class ConcernedViewController;
 @class Company;
 @class PrettyTabBarViewController;
-@class PrettyNavigationController;
 
 @interface XYZAppDelegate : NSObject <UIApplicationDelegate>{
     IBOutlet UIWindow *window;
@@ -22,7 +21,6 @@
 @property (nonatomic,retain) UIScrollView *scrollView;
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic,retain)  PrettyTabBarViewController *tabBarController;
-@property (nonatomic,retain) UINavigationController *myGooGuuNavController;
 
 @property (retain,nonatomic) UIPageControl * pageControl;
 @property (nonatomic,strong) id comInfo;

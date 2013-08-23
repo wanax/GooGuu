@@ -13,8 +13,9 @@
 
 @class ChartViewController;
 @class DiscountRateViewController;
+@class MHTabBarController;
 
-@interface ModelViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate,UIScrollViewDelegate>{
+@interface ModelViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate,UIScrollViewDelegate,UITextFieldDelegate>{
 
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;//主要是记录是否在刷新中
@@ -30,9 +31,11 @@
 @property (nonatomic,retain) id savedStockList;
 @property BOOL isAttention;
 
+@property (nonatomic,retain) UITextField *inputField;
 @property (nonatomic,retain) UIButton *attentionBt;
 @property (nonatomic,retain) DiscountRateViewController *disViewController;
 @property (nonatomic,retain) ChartViewController *chartViewController;
 @property (nonatomic,retain) UITableView *savedTable;
+@property (nonatomic,retain) MHTabBarController *tabController;
 
 @end
