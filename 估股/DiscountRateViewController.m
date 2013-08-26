@@ -115,10 +115,10 @@
         self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
         [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
     }
-    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
+    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnDefaultWaccData" byData:@"" shouldTrans:YES];
     NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
     for(id obj in tempData){
-        [tmpArr addObject:obj];
+        [tmpArr addObject:[obj mutableCopy]];
     }
     self.defaultTransData=tmpArr;
     SAFE_RELEASE(tmpArr);
@@ -133,6 +133,7 @@
         for(id obj in self.defaultTransData){
             [self.transData addObject:obj];
         }
+        [self caluPrice];
         [self updateComponents];
     }else if(bt.tag==2){
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"companyname"],@"companyname",[self.ggPriceLabel text],@"price", nil];
@@ -204,6 +205,16 @@
     }];
 }
 
+-(void)caluPrice{
+    NSString *jsonForChart=[[self.transData JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
+    
+    [self.transData removeAllObjects];
+    for(id obj in tempData){
+        [self.transData addObject:obj];
+    }
+}
+
 -(void)resetValue:(float)progress index:(NSInteger)index{
     NSMutableDictionary * temp=[[NSMutableDictionary alloc] initWithDictionary:[self.transData objectAtIndex:index]];
     if(index!=1){
@@ -211,14 +222,8 @@
     }
     [temp setObject:[NSNumber numberWithFloat:progress] forKey:@"datanew"];
     [self.transData setObject:temp atIndexedSubscript:index];
-
-    NSString *jsonForChart=[[self.transData JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
-
-    [self.transData removeAllObjects];
-    for(id obj in tempData){
-        [self.transData addObject:obj];
-    }
+    [self caluPrice];
+    
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
     self.myRateLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue]*100]]];
@@ -229,6 +234,7 @@
 
 
 -(void)updateComponents{
+    
     
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
@@ -249,8 +255,8 @@
     self.marketBetaLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:marketBeta]]];
     self.marketPremiumLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:marketPremium*100]]];
     
-    [self.marketBetaSlider setMaximumValue:marketBeta+1];
-    [self.marketBetaSlider setMinimumValue:marketBeta-1];
+    [self.marketBetaSlider setMaximumValue:[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]+1];
+    [self.marketBetaSlider setMinimumValue:[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]-1];
     [self.unRiskRateSlider setValue:unRisk*100 animated:YES];
     [self.marketBetaSlider setValue:marketBeta animated:YES];
     [self.marketPremiumSlider setValue:marketPremium*100 animated:YES];
