@@ -248,8 +248,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"data"] count]==1){
-        
+    if([[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"data"] count]==1){        
         [self presentViewController:disViewController animated:YES completion:nil];
     }else{
         chartViewController=[[ChartViewController alloc] init];

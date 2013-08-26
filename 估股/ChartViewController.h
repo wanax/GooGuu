@@ -73,9 +73,11 @@
     
 }
 
+@property BOOL webIsLoaded;
 @property BrowseSourceType sourceType;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSString *globalDriverId;
+@property (nonatomic,retain) NSString *valuesStr;
 
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelMainViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelFeeViewController;

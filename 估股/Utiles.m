@@ -434,7 +434,21 @@ static NSNumberFormatter *numFormatter;
 
 }
 
-
++(id)getObjectDataFromJsFun:(UIWebView *)webView funName:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans{
+    NSString *arg=nil;
+    if(data==nil){
+        arg=[[NSString alloc] initWithFormat:@"%@()",funName];
+    }else{
+        arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
+    }
+    NSString *re=[webView stringByEvaluatingJavaScriptFromString:arg];
+    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
+    SAFE_RELEASE(arg);
+    if(isTrans)
+        return [re objectFromJSONString];
+    else
+        return re;
+}
 
 
 

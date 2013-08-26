@@ -57,6 +57,12 @@
 
 +(NSDictionary *)unitConversionData:(NSString *)data andUnit:(NSString *)unit;
 
++(id)getObjectDataFromJsFun:(UIWebView *)webView funName:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans;
+
+
+
+
+
 
 
 
