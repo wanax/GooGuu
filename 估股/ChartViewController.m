@@ -36,6 +36,8 @@
 @synthesize sourceType;
 @synthesize comInfo;
 @synthesize globalDriverId;
+@synthesize valuesStr;
+@synthesize webIsLoaded;
 
 @synthesize modelMainViewController;
 @synthesize modelFeeViewController;
@@ -80,6 +82,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(myGGpriceLabel);
     SAFE_RELEASE(globalDriverId);
     SAFE_RELEASE(comInfo);
+    SAFE_RELEASE(valuesStr);
     
     SAFE_RELEASE(modelMainViewController);
     SAFE_RELEASE(modelFeeViewController);
@@ -108,11 +111,23 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [super dealloc];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    if(webIsLoaded){
+        if(![Utiles isBlankString:self.valuesStr]){
+            self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+            [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
+            [self modelClassChanged:globalDriverId];
+        }
+
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     linkage=YES;
     _isSaved=YES;
+    webIsLoaded=NO;
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
@@ -140,7 +155,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
+        CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
         [graph applyTheme:theme];
         
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,SCREEN_WIDTH,280) ];
@@ -218,8 +233,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [tool addLabelToView:self.view withTitle:@"估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
     [tool addLabelToView:self.view withTitle:defaultGprice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
-    
-    float beforeLenght=companyNameLabelLenght+defaultGGpriceLabelSize.width+8+defaultPriceLabelSize.width+3;
+
     //我的估值label
     CGSize myGGpriceLabelSize=[tool getLabelSizeFromString:@"我的估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //我的估值数值label
@@ -248,7 +262,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)chartAction:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
     if(bt.tag==SaveData){
-        id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:globalDriverId shouldTrans:YES];
+        id chartData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnChartData" byData:globalDriverId shouldTrans:YES];
         NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
@@ -306,37 +320,20 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         [floatingController presentWithContentViewController:modelCapViewController
                                                     animated:YES];
     }else if(sender.tag==DiscountRate){
+        NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
         DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
         rateViewController.view.frame=CGRectMake(0,40,480,320);
         rateViewController.jsonData=self.jsonForChart;
+        rateViewController.valuesStr=values;
+        rateViewController.chartViewController=self;
         [self presentViewController:rateViewController animated:YES completion:nil];
-        SAFE_RELEASE(rateViewController);
     }
     
 }
-
--(void)addBarChart{
-    
-    if(![graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
-
-        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3] horizontalBars:NO];
-        barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
-        barPlot.dataSource = self;
-        barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
-        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:174/255.0 green:10/255.0 blue:148/255.0 alpha:0.3]];
-        barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
-        barPlot.barWidth=CPTDecimalFromFloat(0.5f);
-        [graph addPlot:barPlot];
-        linkage=NO;
-        [barPlot release];
-    }
-   
-}
-
-
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
 
+    webIsLoaded=YES;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
@@ -345,8 +342,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
 
+        id resTmp=[Utiles getObjectDataFromJsFun:self.webView funName:@"initData" byData:self.jsonForChart shouldTrans:YES];
+        
 
-        id resTmp=[self getObjectDataFromJsFun:@"initData" byData:self.jsonForChart shouldTrans:YES];
         if(self.sourceType==MySavedType){
             [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
         }
@@ -383,7 +381,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
     
-    id chartData=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId shouldTrans:YES];
+    id chartData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnChartData" byData:driverId shouldTrans:YES];
     globalDriverId=driverId;
     
     [self divideData:chartData];
@@ -422,16 +420,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(mutableObj);
 }
 
--(id)getObjectDataFromJsFun:(NSString *)funName byData:(NSString *)data shouldTrans:(BOOL)isTrans{
-    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
-    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-    SAFE_RELEASE(arg);
-    if(isTrans)
-        return [re objectFromJSONString];
-    else
-        return re;
-}
+
     
 -(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
@@ -445,7 +434,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 id tempChartData=[data objectForKey:@"data"];
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-                [self getObjectDataFromJsFun:@"chartCalu" byData:chartStr shouldTrans:NO];
+                [Utiles getObjectDataFromJsFun:self.webView funName: @"chartCalu" byData:chartStr shouldTrans:NO];
             }
             [self modelClassChanged:globalDriverId];
         }
@@ -456,7 +445,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     NSString *jsonPrice=[self.forecastPoints JSONString];
     jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    NSString *backInfo=[self getObjectDataFromJsFun:@"chartCalu" byData:jsonPrice shouldTrans:NO];
+    NSString *backInfo=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCalu" byData:jsonPrice shouldTrans:NO];
     if(self.sourceType==MySavedType){
         //[self.myGGpriceLabel setText:@"我的估值"];
     }
@@ -751,6 +740,29 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(xTmp);
     SAFE_RELEASE(yTmp);
     [graph reloadData];
+}
+
+-(void)addBarChart{
+    
+    if(![graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+        lineStyle.miterLimit=0.0f;
+        lineStyle.lineWidth=0.0f;
+        lineStyle.lineColor=[CPTColor colorWithComponentRed:87/255.0 green:168/255.0 blue:9/255.0 alpha:1.0];
+        
+        barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3] horizontalBars:NO];
+        barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
+        barPlot.dataSource = self;
+        barPlot.barOffset  = CPTDecimalFromFloat(-0.5f);
+        barPlot.lineStyle=lineStyle;
+        barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:174/255.0 green:10/255.0 blue:148/255.0 alpha:0.3]];
+        barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
+        barPlot.barWidth=CPTDecimalFromFloat(0.5f);
+        [graph addPlot:barPlot];
+        linkage=NO;
+        [barPlot release];
+    }
+    
 }
 
 -(void)addScatterChart{

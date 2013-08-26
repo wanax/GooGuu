@@ -90,17 +90,24 @@ NSComparator cmptr = ^(id obj1, id obj2){
 
     float xMax=[[sortXArr lastObject] integerValue];
     float xMin=0;
-    if(tag==DragabelModel){
-        int n=0;
-        for(id year in sortXArr){
-            n++;
-            if([year intValue]==10){
-                break;
+    @try {
+        if(tag==DragabelModel){
+            int n=0;
+            if([[sortXArr objectAtIndex:0] intValue]<10){
+                for(id year in sortXArr){
+                    n++;
+                    if([year intValue]==10){
+                        break;
+                    }
+                }
             }
+            xMin=[[sortXArr objectAtIndex:n] floatValue];
+        }else{
+            xMin=[[sortXArr objectAtIndex:0] floatValue];
         }
-        xMin=[[sortXArr objectAtIndex:n] floatValue];
-    }else{
-        xMin=[[sortXArr objectAtIndex:0] floatValue];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
     }
     //NSInteger xTap=1;
     double yMax=[[sortYArr lastObject] doubleValue];

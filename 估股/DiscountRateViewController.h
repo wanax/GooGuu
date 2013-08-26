@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class ChartViewController;
+
 @interface DiscountRateViewController : UIViewController<UIWebViewDelegate>{
     float ggPrice;
     float myRate;
@@ -16,8 +18,10 @@
     float marketPremium;
 }
 
-@property (nonatomic,retain) id com;
+@property BOOL webIsLoaded;
+@property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) id jsonData;
+@property (nonatomic,retain) NSString *valuesStr;
 @property (nonatomic,retain) NSArray *defaultTransData;
 @property (nonatomic,retain) NSMutableArray *transData;
 
@@ -39,6 +43,7 @@
 @property (nonatomic,retain) IBOutlet UISlider *marketPremiumSlider;
 
 @property (nonatomic,retain) UIWebView *webView;
+@property (nonatomic,retain) ChartViewController *chartViewController;
 
 -(IBAction)btClick:(UIButton *)bt;
 -(IBAction)sliderChanged:(UISlider *)slider;

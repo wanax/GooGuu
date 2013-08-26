@@ -19,6 +19,7 @@
             
             function setValues(tmpVal){
                 this.values=eval('(' + tmpVal + ')');
+                return json2str(this.values);
             }
             function json2str(o) {
                  var arr = [];
@@ -255,10 +256,6 @@
 				return returnWaccData();
 			}
             
-            function getGGprice(){
-                return values[countId];
-            }
-            
             //金融数据所需信息
             function returnWaccData()
             {
@@ -290,6 +287,7 @@
 	        		}
 				}
                 rtnstr+="{\"ggPrice\":\""+values[countId]+"\"}";
+            	//rtnstr=rtnstr.substring(0,rtnstr.length-1);
             	rtnstr+="]";
             	return rtnstr;
             }

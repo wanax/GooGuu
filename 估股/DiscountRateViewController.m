@@ -8,6 +8,7 @@
 
 #import "DiscountRateViewController.h"
 #import "DrawChartTool.h"
+#import "ChartViewController.h"
 #import "XYZAppDelegate.h"
 
 
@@ -17,10 +18,12 @@
 
 @implementation DiscountRateViewController
 
-@synthesize com;
+@synthesize comInfo;
 @synthesize jsonData;
+@synthesize valuesStr;
 @synthesize defaultTransData;
 @synthesize transData;
+@synthesize webIsLoaded;
 
 @synthesize resetBt;
 @synthesize saveBt;
@@ -40,12 +43,14 @@
 @synthesize marketPremiumSlider;
 
 @synthesize webView;
-
+@synthesize chartViewController;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(chartViewController);
+    SAFE_RELEASE(valuesStr);
     SAFE_RELEASE(defaultTransData);
-    SAFE_RELEASE(com);
+    SAFE_RELEASE(comInfo);
     SAFE_RELEASE(transData);
     SAFE_RELEASE(webView);
     SAFE_RELEASE(companyNameLabel);
@@ -75,11 +80,20 @@
     }
     return self;
 }
-
+-(void)viewDidAppear:(BOOL)animated{
+    if(webIsLoaded){
+        if(![Utiles isBlankString:self.valuesStr]){
+            self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+            [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];            
+        }
+        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
+    }
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    webIsLoaded=NO;
 	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#D1AB6D"]];
     self.transData=[[NSMutableArray alloc] init];
     
@@ -89,23 +103,26 @@
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    com=delegate.comInfo;
+    comInfo=delegate.comInfo;
     
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     
-    [self getObjectDataFromJsFun:@"initData" param:self.jsonData];
-   
-    id tempData=[self getObjectDataFromJsFun:@"returnWaccData" param:@""];
+    webIsLoaded=YES;
+    [Utiles getObjectDataFromJsFun:self.webView funName:@"initData" byData:self.jsonData shouldTrans:YES];
+    if(![Utiles isBlankString:self.valuesStr]){
+        self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
+    }
+    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
     NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
     for(id obj in tempData){
         [tmpArr addObject:obj];
     }
     self.defaultTransData=tmpArr;
     SAFE_RELEASE(tmpArr);
-    
-    [self adjustChartDataForSaved:[com objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
+    [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
 
 }
 
@@ -118,9 +135,9 @@
         }
         [self updateComponents];
     }else if(bt.tag==2){
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[com objectForKey:@"stockcode"],@"stockcode",[com objectForKey:@"companyname"],@"companyname",[self.ggPriceLabel text],@"price", nil];
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"companyname"],@"companyname",[self.ggPriceLabel text],@"price", nil];
         NSString *paramStr=[[params JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-        id backInfo=[self getObjectDataFromJsFun:@"returnSaveDicountData" param:paramStr];
+        id backInfo=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnSaveDicountData" byData:paramStr shouldTrans:YES];
 
         params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[backInfo JSONString],@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
@@ -129,6 +146,8 @@
             }
         }];
     }else if(bt.tag==3){
+        NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
+        self.chartViewController.valuesStr=values;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -161,11 +180,15 @@
                     if([[data objectForKey:@"data"] count]==1){
                         NSDictionary *pie=[NSDictionary dictionaryWithObjectsAndKeys:[data objectForKey:@"itemname"],@"name",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"data",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"v"],@"datanew",[[[data objectForKey:@"data"] objectAtIndex:0] objectForKey:@"id"],@"id", nil];
                         [tmpArr addObject:pie];
+                    }else{
+                        NSString *jsonPrice=[[data objectForKey:@"data"] JSONString];
+                        jsonPrice=[jsonPrice stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+                        [Utiles getObjectDataFromJsFun:self.webView funName:@"chartCalu" byData:jsonPrice shouldTrans:NO];
                     }
                     
                 }
                 NSString *jsonForChart=[[tmpArr JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-                id tempData=[self getObjectDataFromJsFun:@"chartCaluWacc" param:jsonForChart];
+                id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
                 
                 [self.transData removeAllObjects];
                 for(id obj in tempData){
@@ -190,7 +213,7 @@
     [self.transData setObject:temp atIndexedSubscript:index];
 
     NSString *jsonForChart=[[self.transData JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    id tempData=[self getObjectDataFromJsFun:@"chartCaluWacc" param:jsonForChart];
+    id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
 
     [self.transData removeAllObjects];
     for(id obj in tempData){
@@ -204,23 +227,17 @@
     SAFE_RELEASE(temp);
 }
 
--(id)getObjectDataFromJsFun:(NSString *)funName param:(NSString *)data{
-    NSString *arg=[[NSString alloc] initWithFormat:@"%@(\"%@\")",funName,data];
-    NSString *re=[self.webView stringByEvaluatingJavaScriptFromString:arg];
-    re=[re stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
-    SAFE_RELEASE(arg);
-    return [re objectFromJSONString];
-}
 
 -(void)updateComponents{
-    [self.companyNameLabel setText:[NSString stringWithFormat:@"%@(%@.%@)",[com objectForKey:@"companyname"],[com objectForKey:@"stockcode"],[com objectForKey:@"marketname"]]];
-    [self.marketPriceLabel setText:[[com objectForKey:@"marketprice"] stringValue]];
-    [self.ggPriceLabel setText:[[com objectForKey:@"googuuprice"] stringValue]];
-    ggPrice=[[com objectForKey:@"googuuprice"] floatValue];
     
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
     
+    [self.companyNameLabel setText:[NSString stringWithFormat:@"%@(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]]];
+    [self.marketPriceLabel setText:[[comInfo objectForKey:@"marketprice"] stringValue]];
+    self.ggPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:6] objectForKey:@"ggPrice"] floatValue]]]];
+    ggPrice=[[[self.transData objectAtIndex:6] objectForKey:@"ggPrice"] floatValue];
+ 
     myRate=[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue];
     unRisk=[[[self.transData objectAtIndex:0] objectForKey:@"datanew"] floatValue];
     marketBeta=[[[self.transData objectAtIndex:1] objectForKey:@"datanew"] floatValue];

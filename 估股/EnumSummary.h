@@ -63,6 +63,13 @@ typedef enum{
     AddShare=33
 }ValuationModelAction;
 
+typedef enum{
+    OneMonth=1,
+    ThreeMonth=2,
+    SixMonth=3,
+    OneYear=4
+}DahonTimeInterval;
+
 
 
 
