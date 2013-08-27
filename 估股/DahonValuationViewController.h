@@ -40,6 +40,7 @@
 @property (nonatomic,retain) NSNumberFormatter * f;
 
 @property (nonatomic,retain) id jsonData;
+@property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSArray *dateArr;
 @property (nonatomic,retain) id chartData;
 @property (nonatomic,retain) NSDictionary *daHonDataDic;
@@ -50,6 +51,8 @@
 @property (nonatomic,retain) UIButton *threeMonth;
 @property (nonatomic,retain) UIButton *sixMonth;
 @property (nonatomic,retain) UIButton *oneYear;
+@property (nonatomic,retain) UIButton *lastMarkBt;
+@property (nonatomic,retain) UILabel *titleLabel;
 
 @property (nonatomic,retain) CPTScatterPlot * daHonLinePlot;
 @property (nonatomic,retain) CPTScatterPlot * historyLinePlot;

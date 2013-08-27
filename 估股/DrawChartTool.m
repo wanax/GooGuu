@@ -65,8 +65,13 @@
     [label setTextColor:[Utiles colorWithHexString:txtColor]];
     [label setTextAlignment:location];
     [label setFont:[UIFont fontWithName:@"Heiti SC" size:size]];
-    label.tag=tag;
-    label.backgroundColor=[Utiles colorWithHexString:color];
+    [label setTag:tag];
+    
+    if(color){
+        [label setBackgroundColor:[Utiles colorWithHexString:color]];
+    }else{
+        [label setBackgroundColor:[UIColor clearColor]];
+    }
     //[[label layer] setBorderColor:[[UIColor blackColor] CGColor]];
     //[[label layer] setBorderWidth:1.0];
     [view addSubview:label];
@@ -79,14 +84,16 @@
     return [str sizeWithFont:[UIFont fontWithName:font size:fontSize] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
 }
 
--(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun withType:(UIButtonType)buttonType andColor:(NSString *)color textColor:(NSString *)txtColor{
+-(UIButton *)addButtonToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect andFun:(SEL)fun withType:(UIButtonType)buttonType andColor:(NSString *)color textColor:(NSString *)txtColor normalBackGroundImg:(NSString *)bUrl highBackGroundImg:(NSString *)hUrl{
     
     UIButton *button=[UIButton buttonWithType:buttonType];
-    button.frame=rect;
+    [button setFrame:rect];
     [button setTitle:title forState:UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:12.0f]];
     [button setTitleColor:[Utiles colorWithHexString:txtColor] forState:UIControlStateNormal];
     [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    button.tag=tag;
+    [button setTag:tag];
+    
     if(color){
         if (buttonType==UIButtonTypeCustom) {
             [button setBackgroundColor:[Utiles colorWithHexString:color]];
@@ -96,10 +103,16 @@
     }else{
         [button setBackgroundColor:[UIColor clearColor]];
     }
+    if(bUrl){
+        [button setBackgroundImage:[UIImage imageNamed:bUrl] forState:UIControlStateNormal];
+    }
+    if(hUrl){
+        [button setBackgroundImage:[UIImage imageNamed:hUrl] forState:UIControlStateHighlighted];
+    }
   
-    button.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:12.0f];
     [button addTarget:standIn action:fun forControlEvents:UIControlEventTouchDown];
     [view addSubview:button];
+    
     return button;
     
 }
@@ -258,6 +271,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
     if(!isY){
         lineStyle.lineWidth=0.0;
     }
+    lineStyle.lineColor = [CPTColor colorWithComponentRed:153/255.0 green:129/255.0 blue:64/255.0 alpha:1.0];
     CPTXYAxis *y=axisSet.yAxis;
     y.axisLineStyle=lineStyle;
     y.majorIntervalLength=CPTDecimalFromFloat(YINTERVALLENGTH);

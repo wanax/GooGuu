@@ -137,10 +137,10 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:14.0 color:@"#007ab7" textColor:@"#000000" location:NSTextAlignmentCenter];
-    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
-    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
-    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000"];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e" textColor:@"#000000"];
+    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
     [tool release];
     
 }

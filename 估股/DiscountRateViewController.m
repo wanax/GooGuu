@@ -88,7 +88,6 @@
         if(![Utiles isBlankString:self.valuesStr]){
             self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
             [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
-            NSLog(@"view did appear");
             id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
             NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
             for(id obj in tempData){
