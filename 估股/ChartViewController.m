@@ -35,9 +35,11 @@
 
 @synthesize sourceType;
 @synthesize comInfo;
+@synthesize disCountIsChanged;
 @synthesize globalDriverId;
 @synthesize valuesStr;
 @synthesize webIsLoaded;
+@synthesize changedDriverIds;
 
 @synthesize modelMainViewController;
 @synthesize modelFeeViewController;
@@ -78,6 +80,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(changedDriverIds);
     SAFE_RELEASE(saveBt);
     SAFE_RELEASE(myGGpriceLabel);
     SAFE_RELEASE(globalDriverId);
@@ -111,6 +114,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark General Methods
+-(void)addToDriverIds:(NSString *)driverId{
+    if(![self.changedDriverIds containsObject:driverId]){
+        [self.changedDriverIds addObject:driverId];
+    }
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     if(webIsLoaded){
         if(![Utiles isBlankString:self.valuesStr]){
@@ -131,6 +142,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
+    self.changedDriverIds=[[NSMutableArray alloc] init];
     
     self.modelMainViewController=[[ModelClassGrade2ViewController alloc] init];
     self.modelFeeViewController=[[ModelClassGrade2ViewController alloc] init];
@@ -262,9 +274,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)chartAction:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
     if(bt.tag==SaveData){
-        id chartData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnChartData" byData:globalDriverId shouldTrans:YES];
-        NSString *saveData=[Utiles dataRecombinant:chartData comInfo:self.comInfo driverId:globalDriverId price:self.priceLabel.text];
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",saveData,@"data", nil];
+
+        id combinedData=[DrawChartTool changedDataCombinedWebView:self.webView comInfo:comInfo ggPrice:self.priceLabel.text dragChartChangedDriverIds:self.changedDriverIds disCountIsChanged:self.disCountIsChanged];
+        
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[combinedData JSONString],@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
             if([[resObj objectForKey:@"status"] isEqual:@"1"]){
                 [bt setBackgroundImage:[UIImage imageNamed:@"savedBt"] forState:UIControlStateNormal];
@@ -277,6 +290,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
                 [Utiles ToastNotification:@"保存失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
         }];
+        [self.changedDriverIds removeAllObjects];
         
     }else if(bt.tag==DragChartType){
         if(linkage){
@@ -325,6 +339,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         rateViewController.view.frame=CGRectMake(0,40,480,320);
         rateViewController.jsonData=self.jsonForChart;
         rateViewController.valuesStr=values;
+        rateViewController.dragChartChangedDriverIds=self.changedDriverIds;
         rateViewController.chartViewController=self;
         [self presentViewController:rateViewController animated:YES completion:nil];
     }
@@ -380,7 +395,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 #pragma mark -
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
-    
+
     id chartData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnChartData" byData:driverId shouldTrans:YES];
     globalDriverId=driverId;
     
@@ -529,6 +544,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             [saveBt setBackgroundImage:[UIImage imageNamed:@"saveBt"] forState:UIControlStateNormal];
             _isSaved=NO;
         }
+        [self addToDriverIds:globalDriverId];
     }
     
 }

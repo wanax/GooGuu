@@ -48,7 +48,7 @@
 
 +(NSArray *)sortDateArr:(NSArray *)dateArr;
 
-+(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price;
++(NSString *)dataRecombinant:(NSArray *)chartDatas comInfo:(id)comInfo driverIds:(NSArray *)driverIds price:(NSString *)price;
 
 +(NSString *)yearFilled:(NSString *)year;
 

@@ -11,15 +11,9 @@
 
 @interface DrawChartTool : NSObject
 
-typedef enum {
-    
-    FinancalModel,//金融模型
-    DragabelModel,//可调整参数模型
-    DahonModel//大行数据
-    
-} ChartType;
-
 @property (nonatomic,retain) id standIn;
+
++(NSDictionary *)changedDataCombinedWebView:(UIWebView *)webView comInfo:(id)comInfo ggPrice:(NSString *)price dragChartChangedDriverIds:(NSArray *)dragChartChangedDriverIds disCountIsChanged:(BOOL)isChanged;
 
 -(UILabel *)addLabelToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size color:(NSString *)color textColor:(NSString *)txtColor location:(NSTextAlignment)location;
 

@@ -350,15 +350,20 @@ static NSNumberFormatter *numFormatter;
     return [tempDate autorelease];
 }
 
-+(NSString *)dataRecombinant:(id)chartData comInfo:(id)comInfo driverId:(NSString *)driverId price:(NSString *)price{
++(NSString *)dataRecombinant:(NSArray *)chartDatas comInfo:(id)comInfo driverIds:(NSArray *)driverIds price:(NSString *)price{
     
-    NSString *returnStr=[NSString stringWithFormat:@"{\"modeldata\":[{\"data\":["];
+    NSString *returnStr=[NSString stringWithFormat:@"{\"modeldata\":["];
     @try {
-        if(![Utiles isBlankString:[chartData JSONString]]){
-            for(id obj in [chartData objectForKey:@"arraynew"]){
-                returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+        if(![Utiles isBlankString:[chartDatas JSONString]]){
+            int n=0;            
+            for(id chartData in chartDatas){
+                returnStr=[returnStr stringByAppendingFormat:@"{\"data\":["];
+                for(id obj in [chartData objectForKey:@"arraynew"]){
+                    returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+                }
+                returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"},",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],[driverIds objectAtIndex:n++],[chartData objectForKey:@"title"]];
             }
-            returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"}],",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],driverId,[chartData objectForKey:@"title"]];
+            returnStr=[returnStr stringByAppendingFormat:@"],"];
             returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
             returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         }else{

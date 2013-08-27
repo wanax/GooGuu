@@ -19,8 +19,10 @@
 }
 
 @property BOOL webIsLoaded;
+@property BOOL disCountIsChanged;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) id jsonData;
+@property (nonatomic,retain) NSArray *dragChartChangedDriverIds;
 @property (nonatomic,retain) NSString *valuesStr;
 @property (nonatomic,retain) NSArray *defaultTransData;
 @property (nonatomic,retain) NSMutableArray *transData;

@@ -70,6 +70,16 @@ typedef enum{
     OneYear=4
 }DahonTimeInterval;
 
+typedef enum {
+    
+    FinancalModel,//金融模型
+    DragabelModel,//可调整参数模型
+    DahonModel//大行数据
+    
+} ChartType;
+
+
+
 
 
 

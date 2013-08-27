@@ -19,11 +19,13 @@
 @implementation DiscountRateViewController
 
 @synthesize comInfo;
+@synthesize disCountIsChanged;
 @synthesize jsonData;
 @synthesize valuesStr;
 @synthesize defaultTransData;
 @synthesize transData;
 @synthesize webIsLoaded;
+@synthesize dragChartChangedDriverIds;
 
 @synthesize resetBt;
 @synthesize saveBt;
@@ -47,6 +49,7 @@
 
 - (void)dealloc
 {
+    SAFE_RELEASE(dragChartChangedDriverIds);
     SAFE_RELEASE(chartViewController);
     SAFE_RELEASE(valuesStr);
     SAFE_RELEASE(defaultTransData);
@@ -84,9 +87,20 @@
     if(webIsLoaded){
         if(![Utiles isBlankString:self.valuesStr]){
             self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-            [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];            
+            [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
+            NSLog(@"view did appear");
+            id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
+            NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
+            for(id obj in tempData){
+                [tmpArr addObject:[obj mutableCopy]];
+            }
+            self.transData=tmpArr;
+            [self caluPriceWithData:self.transData];
+            [self updateComponents];
+            SAFE_RELEASE(tmpArr);
+        }else{
+           [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]]; 
         }
-        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
     }
 }
 
@@ -111,10 +125,7 @@
     
     webIsLoaded=YES;
     [Utiles getObjectDataFromJsFun:self.webView funName:@"initData" byData:self.jsonData shouldTrans:YES];
-    if(![Utiles isBlankString:self.valuesStr]){
-        self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-        [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
-    }
+
     id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnDefaultWaccData" byData:@"" shouldTrans:YES];
     NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
     for(id obj in tempData){
@@ -122,37 +133,41 @@
     }
     self.defaultTransData=tmpArr;
     SAFE_RELEASE(tmpArr);
-    [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
-
 }
+
+#pragma mark -
+#pragma mark Button Action
 
 -(IBAction)btClick:(UIButton *)bt{
     bt.showsTouchWhenHighlighted=YES;
-    if(bt.tag==1){
+    if(bt.tag==ResetChart){
+        self.disCountIsChanged=NO;
         [self.transData removeAllObjects];
         for(id obj in self.defaultTransData){
             [self.transData addObject:obj];
         }
-        [self caluPrice];
+        [self caluPriceWithData:self.transData];
         [self updateComponents];
-    }else if(bt.tag==2){
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"companyname"],@"companyname",[self.ggPriceLabel text],@"price", nil];
-        NSString *paramStr=[[params JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-        id backInfo=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnSaveDicountData" byData:paramStr shouldTrans:YES];
-
-        params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[backInfo JSONString],@"data", nil];
+    }else if(bt.tag==SaveData){
+        
+        id combinedData=[DrawChartTool changedDataCombinedWebView:self.webView comInfo:comInfo ggPrice:[self.ggPriceLabel text] dragChartChangedDriverIds:self.dragChartChangedDriverIds disCountIsChanged:self.disCountIsChanged];
+        
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[combinedData JSONString],@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
             if([resObj objectForKey:@"status"]){
                 [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                self.disCountIsChanged=NO;
             }
         }];
-    }else if(bt.tag==3){
+    }else if(bt.tag==BackToSuperView){
         NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
         self.chartViewController.valuesStr=values;
+        self.chartViewController.disCountIsChanged=self.disCountIsChanged;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 -(IBAction)sliderChanged:(UISlider *)slider{
+    self.disCountIsChanged=YES;
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
     float progress = slider.value;
@@ -169,9 +184,12 @@
     SAFE_RELEASE(formatter);
 }
 
+#pragma mark -
+#pragma mark General Methods
 
 
 -(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
+
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
         if(resObj){
@@ -188,13 +206,7 @@
                     }
                     
                 }
-                NSString *jsonForChart=[[tmpArr JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-                id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
-                
-                [self.transData removeAllObjects];
-                for(id obj in tempData){
-                    [self.transData addObject:obj];
-                }
+                [self caluPriceWithData:tmpArr];
                 [self updateComponents];
             }
             @catch (NSException *exception) {
@@ -205,8 +217,8 @@
     }];
 }
 
--(void)caluPrice{
-    NSString *jsonForChart=[[self.transData JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+-(void)caluPriceWithData:(id)obj{
+    NSString *jsonForChart=[[obj JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"chartCaluWacc" byData:jsonForChart shouldTrans:YES];
     
     [self.transData removeAllObjects];
@@ -222,7 +234,7 @@
     }
     [temp setObject:[NSNumber numberWithFloat:progress] forKey:@"datanew"];
     [self.transData setObject:temp atIndexedSubscript:index];
-    [self caluPrice];
+    [self caluPriceWithData:self.transData];
     
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
@@ -234,8 +246,7 @@
 
 
 -(void)updateComponents{
-    
-    
+
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
     

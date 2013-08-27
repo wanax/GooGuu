@@ -19,6 +19,45 @@
     [super dealloc];
 }
 
++(NSDictionary *)changedDataCombinedWebView:(UIWebView *)webView comInfo:(id)comInfo ggPrice:(NSString *)ggPrice dragChartChangedDriverIds:(NSArray *)dragChartChangedDriverIds disCountIsChanged:(BOOL)isChanged{
+    
+    NSDictionary *returnData=nil;    
+    id disCountChangedData=nil;
+    id dragChartChangedData=nil;
+    
+    if(isChanged){
+        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"companyname"],@"companyname",ggPrice,@"price", nil];
+        NSString *paramStr=[[params JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        disCountChangedData=[Utiles getObjectDataFromJsFun:webView funName:@"returnSaveDicountData" byData:paramStr shouldTrans:YES];
+    }
+    
+    if([dragChartChangedDriverIds count]>0){
+        NSMutableArray *tmpChartsData=[[NSMutableArray alloc] init];
+        for(id key in dragChartChangedDriverIds){
+            id chartData=[Utiles getObjectDataFromJsFun:webView funName:@"returnChartData" byData:key shouldTrans:YES];
+            [tmpChartsData addObject:chartData];
+        }
+        dragChartChangedData=[[Utiles dataRecombinant:tmpChartsData comInfo:comInfo driverIds:dragChartChangedDriverIds price:ggPrice] objectFromJSONString];
+    }
+    
+    NSMutableArray *tmpModelData=[[NSMutableArray alloc] init];
+    if(disCountChangedData){
+        for(id obj in [disCountChangedData objectForKey:@"modeldata"]){
+            [tmpModelData addObject:obj];
+        }
+    }
+    if(dragChartChangedData){
+        for(id obj in [dragChartChangedData objectForKey:@"modeldata"]){
+            [tmpModelData addObject:obj];
+        }
+    }
+    
+    returnData=[NSDictionary dictionaryWithObjectsAndKeys:tmpModelData,@"modeldata",ggPrice,@"price",[comInfo objectForKey:@"companyname"],@"companyname",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+    SAFE_RELEASE(tmpModelData);
+    return returnData;
+    
+}
+
 -(UILabel *)addLabelToView:(UIView *)view withTitle:(NSString *)title Tag:(NSInteger)tag frame:(CGRect)rect fontSize:(float)size color:(NSString *)color textColor:(NSString *)txtColor location:(NSTextAlignment)location{
     
     UILabel *label=[[UILabel alloc] initWithFrame:rect];
