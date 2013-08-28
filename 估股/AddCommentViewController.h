@@ -18,5 +18,7 @@
 @property (nonatomic,retain) NSString *articleId;
 @property CommentType type;
 
+- (IBAction)backgroundTap:(id)sender;
+
 
 @end

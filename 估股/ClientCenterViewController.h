@@ -20,6 +20,10 @@
 }
 
 @property (nonatomic,retain) IBOutlet UILabel *userNameLabel;
+@property (nonatomic,retain) IBOutlet UILabel *userIdLabel;
+@property (nonatomic,retain) IBOutlet UILabel *favoriteLabel;
+@property (nonatomic,retain) IBOutlet UILabel *tradeLabel;
+@property (nonatomic,retain) IBOutlet UILabel *regtimeLabel;
 @property (nonatomic,retain) IBOutlet UIButton *logoutBt;
 @property (nonatomic,retain) IBOutlet UIImageView *avatar;
 

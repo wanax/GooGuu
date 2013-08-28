@@ -29,6 +29,16 @@
 		AE15105617A7A4A7007B9E66 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105517A7A4A6007B9E66 /* defaultAvatar.png */; };
 		AE15105917A7A758007B9E66 /* addConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105717A7A756007B9E66 /* addConcernBt.png */; };
 		AE15105A17A7A758007B9E66 /* cancelConcernBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15105817A7A757007B9E66 /* cancelConcernBt.png */; };
+		AE261D9E17CDE1BA00AFCFA4 /* discountLabelBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261D9D17CDE1BA00AFCFA4 /* discountLabelBack.png */; };
+		AE261DA617CDE88200AFCFA4 /* chartBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA017CDE88200AFCFA4 /* chartBt.png */; };
+		AE261DA717CDE88200AFCFA4 /* otherBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA117CDE88200AFCFA4 /* otherBt.png */; };
+		AE261DA817CDE88200AFCFA4 /* ratioBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA217CDE88200AFCFA4 /* ratioBt.png */; };
+		AE261DA917CDE88200AFCFA4 /* selectedChartBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA317CDE88200AFCFA4 /* selectedChartBt.png */; };
+		AE261DAA17CDE88200AFCFA4 /* selectedOtherBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA417CDE88200AFCFA4 /* selectedOtherBt.png */; };
+		AE261DAB17CDE88200AFCFA4 /* selectedRatioBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DA517CDE88200AFCFA4 /* selectedRatioBt.png */; };
+		AE261DB017CE000B00AFCFA4 /* userAtten.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DAD17CE000B00AFCFA4 /* userAtten.png */; };
+		AE261DB117CE000B00AFCFA4 /* userInfoBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DAE17CE000B00AFCFA4 /* userInfoBack.png */; };
+		AE261DB217CE000B00AFCFA4 /* userSetting.png in Resources */ = {isa = PBXBuildFile; fileRef = AE261DAF17CE000B00AFCFA4 /* userSetting.png */; };
 		AE272E5A17C75FD900CC55BA /* addAttentionBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5517C75FD900CC55BA /* addAttentionBt.png */; };
 		AE272E5B17C75FD900CC55BA /* addCommentBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5617C75FD900CC55BA /* addCommentBt.png */; };
 		AE272E5C17C75FD900CC55BA /* addShareBt.png in Resources */ = {isa = PBXBuildFile; fileRef = AE272E5717C75FD900CC55BA /* addShareBt.png */; };
@@ -499,7 +509,6 @@
 		AE75BABB17A220750046901F /* userconfigure.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE75BABA17A220750046901F /* userconfigure.plist */; };
 		AEF2EF9B17BB13A800B7B9A2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF2EF9A17BB13A800B7B9A2 /* Crashlytics.framework */; };
 		AEF80DE417CD8C380010E3AA /* discountBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AEF80DE217CD8C380010E3AA /* discountBack.png */; };
-		AEF80DE517CD8C380010E3AA /* discountLabelBack.png in Resources */ = {isa = PBXBuildFile; fileRef = AEF80DE317CD8C380010E3AA /* discountLabelBack.png */; };
 		AEF984A117AA041200688473 /* TSActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF9849717AA041200688473 /* TSActionSheet.m */; };
 		AEF984A217AA041200688473 /* TSPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF9849917AA041200688473 /* TSPopoverController.m */; };
 		AEF984A317AA041200688473 /* TSPopoverPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF9849B17AA041200688473 /* TSPopoverPopoverView.m */; };
@@ -540,6 +549,16 @@
 		AE15105817A7A757007B9E66 /* cancelConcernBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelConcernBt.png; sourceTree = "<group>"; };
 		AE19BECC17B3457F007F3FA7 /* DahonValuationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DahonValuationViewController.h; sourceTree = "<group>"; };
 		AE19BECD17B3457F007F3FA7 /* DahonValuationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DahonValuationViewController.m; sourceTree = "<group>"; };
+		AE261D9D17CDE1BA00AFCFA4 /* discountLabelBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discountLabelBack.png; sourceTree = "<group>"; };
+		AE261DA017CDE88200AFCFA4 /* chartBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chartBt.png; sourceTree = "<group>"; };
+		AE261DA117CDE88200AFCFA4 /* otherBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = otherBt.png; sourceTree = "<group>"; };
+		AE261DA217CDE88200AFCFA4 /* ratioBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ratioBt.png; sourceTree = "<group>"; };
+		AE261DA317CDE88200AFCFA4 /* selectedChartBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedChartBt.png; sourceTree = "<group>"; };
+		AE261DA417CDE88200AFCFA4 /* selectedOtherBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedOtherBt.png; sourceTree = "<group>"; };
+		AE261DA517CDE88200AFCFA4 /* selectedRatioBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedRatioBt.png; sourceTree = "<group>"; };
+		AE261DAD17CE000B00AFCFA4 /* userAtten.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userAtten.png; sourceTree = "<group>"; };
+		AE261DAE17CE000B00AFCFA4 /* userInfoBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userInfoBack.png; sourceTree = "<group>"; };
+		AE261DAF17CE000B00AFCFA4 /* userSetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userSetting.png; sourceTree = "<group>"; };
 		AE272E5517C75FD900CC55BA /* addAttentionBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addAttentionBt.png; sourceTree = "<group>"; };
 		AE272E5617C75FD900CC55BA /* addCommentBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addCommentBt.png; sourceTree = "<group>"; };
 		AE272E5717C75FD900CC55BA /* addShareBt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addShareBt.png; sourceTree = "<group>"; };
@@ -1234,7 +1253,6 @@
 		AE75BABA17A220750046901F /* userconfigure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = userconfigure.plist; sourceTree = "<group>"; };
 		AEF2EF9A17BB13A800B7B9A2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AEF80DE217CD8C380010E3AA /* discountBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discountBack.png; sourceTree = "<group>"; };
-		AEF80DE317CD8C380010E3AA /* discountLabelBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discountLabelBack.png; sourceTree = "<group>"; };
 		AEF9849617AA041200688473 /* TSActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSActionSheet.h; sourceTree = "<group>"; };
 		AEF9849717AA041200688473 /* TSActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSActionSheet.m; sourceTree = "<group>"; };
 		AEF9849817AA041200688473 /* TSPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSPopoverController.h; sourceTree = "<group>"; };
@@ -1320,6 +1338,29 @@
 				AE5F331917C4C81A007AAC8A /* mainFeeBt.png */,
 			);
 			name = ChartImg;
+			sourceTree = "<group>";
+		};
+		AE261D9F17CDE86900AFCFA4 /* FinancialProportionImg */ = {
+			isa = PBXGroup;
+			children = (
+				AE261DA017CDE88200AFCFA4 /* chartBt.png */,
+				AE261DA117CDE88200AFCFA4 /* otherBt.png */,
+				AE261DA217CDE88200AFCFA4 /* ratioBt.png */,
+				AE261DA317CDE88200AFCFA4 /* selectedChartBt.png */,
+				AE261DA417CDE88200AFCFA4 /* selectedOtherBt.png */,
+				AE261DA517CDE88200AFCFA4 /* selectedRatioBt.png */,
+			);
+			name = FinancialProportionImg;
+			sourceTree = "<group>";
+		};
+		AE261DAC17CDFFC800AFCFA4 /* ClientCenterImg */ = {
+			isa = PBXGroup;
+			children = (
+				AE261DAD17CE000B00AFCFA4 /* userAtten.png */,
+				AE261DAE17CE000B00AFCFA4 /* userInfoBack.png */,
+				AE261DAF17CE000B00AFCFA4 /* userSetting.png */,
+			);
+			name = ClientCenterImg;
 			sourceTree = "<group>";
 		};
 		AE2E9195179D061A0049B28E = {
@@ -1695,9 +1736,11 @@
 		AE2E9354179D09490049B28E /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				AEF80DE117CD8C2A0010E3AA /* discountImg */,
-				AE2FAB7117CC889300FAE043 /* daHonImg */,
-				AE2FAB7017CC885900FAE043 /* viewActionBt */,
+				AE261DAC17CDFFC800AFCFA4 /* ClientCenterImg */,
+				AE261D9F17CDE86900AFCFA4 /* FinancialProportionImg */,
+				AEF80DE117CD8C2A0010E3AA /* DiscountImg */,
+				AE2FAB7117CC889300FAE043 /* DaHonImg */,
+				AE2FAB7017CC885900FAE043 /* ViewActionBt */,
 				AE286DC817C61B150068DB27 /* myGGOutLookingLable.png */,
 				AE286DC017C613830068DB27 /* valueModelBt.png */,
 				AE286DBE17C6128D0068DB27 /* myGGCellBack.png */,
@@ -1946,7 +1989,7 @@
 			name = DataBase;
 			sourceTree = "<group>";
 		};
-		AE2FAB7017CC885900FAE043 /* viewActionBt */ = {
+		AE2FAB7017CC885900FAE043 /* ViewActionBt */ = {
 			isa = PBXGroup;
 			children = (
 				AE272E5517C75FD900CC55BA /* addAttentionBt.png */,
@@ -1955,16 +1998,16 @@
 				AE272E5817C75FD900CC55BA /* deleteAttentionBt.png */,
 				AE272E5917C75FD900CC55BA /* enterCompanyBt.png */,
 			);
-			name = viewActionBt;
+			name = ViewActionBt;
 			sourceTree = "<group>";
 		};
-		AE2FAB7117CC889300FAE043 /* daHonImg */ = {
+		AE2FAB7117CC889300FAE043 /* DaHonImg */ = {
 			isa = PBXGroup;
 			children = (
 				AE3ADC5517CC8BDD0015445A /* monthChoosenBt.png */,
 				AE3ADC5617CC8BDD0015445A /* reflashBt.png */,
 			);
-			name = daHonImg;
+			name = DaHonImg;
 			sourceTree = "<group>";
 		};
 		AE368EE0179F68E4000AF7BD /* MWPhotoBrowser */ = {
@@ -2508,13 +2551,13 @@
 			path = "Vurig Calendar";
 			sourceTree = "<group>";
 		};
-		AEF80DE117CD8C2A0010E3AA /* discountImg */ = {
+		AEF80DE117CD8C2A0010E3AA /* DiscountImg */ = {
 			isa = PBXGroup;
 			children = (
+				AE261D9D17CDE1BA00AFCFA4 /* discountLabelBack.png */,
 				AEF80DE217CD8C380010E3AA /* discountBack.png */,
-				AEF80DE317CD8C380010E3AA /* discountLabelBack.png */,
 			);
-			name = discountImg;
+			name = DiscountImg;
 			sourceTree = "<group>";
 		};
 		AEF9849517AA041200688473 /* TSPopover */ = {
@@ -2713,7 +2756,16 @@
 				AE3ADC5717CC8BDD0015445A /* monthChoosenBt.png in Resources */,
 				AE3ADC5817CC8BDD0015445A /* reflashBt.png in Resources */,
 				AEF80DE417CD8C380010E3AA /* discountBack.png in Resources */,
-				AEF80DE517CD8C380010E3AA /* discountLabelBack.png in Resources */,
+				AE261D9E17CDE1BA00AFCFA4 /* discountLabelBack.png in Resources */,
+				AE261DA617CDE88200AFCFA4 /* chartBt.png in Resources */,
+				AE261DA717CDE88200AFCFA4 /* otherBt.png in Resources */,
+				AE261DA817CDE88200AFCFA4 /* ratioBt.png in Resources */,
+				AE261DA917CDE88200AFCFA4 /* selectedChartBt.png in Resources */,
+				AE261DAA17CDE88200AFCFA4 /* selectedOtherBt.png in Resources */,
+				AE261DAB17CDE88200AFCFA4 /* selectedRatioBt.png in Resources */,
+				AE261DB017CE000B00AFCFA4 /* userAtten.png in Resources */,
+				AE261DB117CE000B00AFCFA4 /* userInfoBack.png in Resources */,
+				AE261DB217CE000B00AFCFA4 /* userSetting.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,16 +25,23 @@
 
 @implementation ClientCenterViewController
 
+@synthesize userIdLabel;
+@synthesize favoriteLabel;
+@synthesize tradeLabel;
+@synthesize regtimeLabel;
 @synthesize userNameLabel;
 @synthesize logoutBt;
 @synthesize avatar;
-
 
 @synthesize eventArr=_eventArr;
 @synthesize dateDic=_dateDic;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(userIdLabel);
+    SAFE_RELEASE(favoriteLabel);
+    SAFE_RELEASE(tradeLabel);
+    SAFE_RELEASE(regtimeLabel);
     SAFE_RELEASE(avatar);
     SAFE_RELEASE(logoutBt);
     SAFE_RELEASE(_dateDic);
@@ -64,6 +71,15 @@
            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
                id userInfo=[resObj objectForKey:@"data"];
                [userNameLabel setText:[userInfo objectForKey:@"nickname"]];
+               [userIdLabel setText:[userInfo objectForKey:@"userid"]];
+               [favoriteLabel setText:[Utiles isBlankString:[userInfo objectForKey:@"favorite"]]?@"":[userInfo objectForKey:@"favorite"]];
+               [tradeLabel setText:[Utiles isBlankString:[userInfo objectForKey:@"trade"]]?@"":[userInfo objectForKey:@"trade"]];
+               NSDateFormatter *date=[[NSDateFormatter alloc] init];
+               [date setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+               NSDate *d=[date dateFromString:[userInfo objectForKey:@"regtime"]];
+               [date setDateFormat:@"yyyy-MM-dd"];
+               [regtimeLabel setText:[date stringFromDate:d]];
+               SAFE_RELEASE(date);
            }else{
                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
            }
@@ -85,10 +101,7 @@
     
     self.view.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
     [self.logoutBt setBackgroundColorString:@"#C96125" forState:UIControlStateNormal];
-    
-    avatar.layer.cornerRadius=5;
-    avatar.layer.borderWidth=2;
-    
+
     UIBarButtonItem *setting=[[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleBordered target:self action:@selector(setting:)];
     self.navigationItem.rightBarButtonItem=setting;
     

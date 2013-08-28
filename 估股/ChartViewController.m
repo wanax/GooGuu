@@ -129,9 +129,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         isShowDiscountView=YES;
         [self.view addSubview:self.rateViewController.view];
         CATransition *transition=[CATransition animation];
-        transition.duration=0.5f;
+        transition.duration=0.1f;
         transition.fillMode=kCAFillRuleNonZero;
-        transition.type=kCATransitionMoveIn;
+        transition.type=kCATransitionFade;
         transition.subtype=kCATransitionFromTop;
         [self.rateViewController.view.layer addAnimation:transition forKey:@"animation"];
     }
@@ -140,7 +140,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if(isShowDiscountView){
         isShowDiscountView=NO;
         CATransition *transition=[CATransition animation];
-        transition.duration=0.5f;
+        transition.duration=0.1f;
         transition.delegate=self;
         transition.fillMode=kCAFillRuleNonZero;
         transition.type=kCATransitionFade;
@@ -257,18 +257,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
-    NSString *ggPrice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]];
-    if([ggPrice length]>5){
-        ggPrice=[ggPrice substringToIndex:5];
-    }else if([ggPrice length]<5){
-        ggPrice=[ggPrice stringByAppendingFormat:@"0"];
-    }
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setPositiveFormat:@"###0.##"];
+    NSString *ggPrice=[NSString stringWithFormat:@"%@",[numberFormatter stringFromNumber:[NSNumber numberWithFloat:[[comInfo objectForKey:@"googuuprice"] floatValue]]]];
+
     CGFloat companyNameLabelLenght=maxWidthLenght+10;
     //估值label
     CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //估值数值label
     NSString *defaultGprice=[ggPrice mutableCopy];
-    defaultGprice=[defaultGprice length]>=5?[defaultGprice substringToIndex:4]:defaultGprice;
     CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:defaultGprice font:@"Heiti SC" fontSize:13.0];
     [tool addLabelToView:self.view withTitle:@"估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
@@ -294,6 +291,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self addScatterChart];
     SAFE_RELEASE(topBar);
     SAFE_RELEASE(tool);
+    SAFE_RELEASE(numberFormatter);
 
 }
 
@@ -496,10 +494,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         //[self.myGGpriceLabel setText:@"我的估值"];
     }
     @try {
-        if([backInfo length]>5){
-            backInfo=[backInfo substringToIndex:5];
-        }
-        [self.priceLabel setText:backInfo];
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setPositiveFormat:@"###0.##"];
+        NSString *ggPrice = [numberFormatter stringFromNumber:[numberFormatter numberFromString:backInfo]];
+        [self.priceLabel setText:ggPrice];
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -591,9 +589,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     static CPTMutableTextStyle *whiteText = nil ;
     if ( !whiteText ) {
         whiteText = [[ CPTMutableTextStyle alloc ] init ];
-        whiteText.color=[CPTColor colorWithComponentRed:152/255.0 green:251/255.0 blue:152/255.0 alpha:1.0];
+        whiteText.color=[CPTColor blackColor];
+        whiteText.fontName=@"Heiti SC";
+        whiteText.fontSize=10.0;
     }
-
     // 定义一个 TextLayer
     CPTTextLayer *newLayer = nil ;
     NSString * identifier=( NSString *)[plot identifier];
@@ -604,12 +603,14 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }
     return newLayer;
 }
+
 -(NSString *)formatTrans:(NSUInteger)index from:(NSMutableArray *)arr{
     NSString *numberString =nil;
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+    
     if([self.yAxisUnit isEqualToString:@"%"]){
-       
+       [formatter setPositiveFormat:@"0.0%;0.0%;-0.0%"];
         numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[arr objectAtIndex:index] objectForKey:@"v"] floatValue]]];
         SAFE_RELEASE(formatter);
     }else{
@@ -796,7 +797,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         lineStyle.miterLimit=0.0f;
         lineStyle.lineWidth=0.0f;
         lineStyle.lineColor=[CPTColor colorWithComponentRed:87/255.0 green:168/255.0 blue:9/255.0 alpha:1.0];
-        
+    
         barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:153/255.0 green:100/255.0 blue:49/255.0 alpha:0.3] horizontalBars:NO];
         barPlot.baseValue  = CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         barPlot.dataSource = self;
@@ -806,6 +807,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         barPlot.identifier = COLUMNAR_DATALINE_IDENTIFIER;
         barPlot.barWidth=CPTDecimalFromFloat(0.5f);
         [graph addPlot:barPlot];
+        lineStyle.lineWidth=0.0f;
+        forecastLinePlot.dataLineStyle=lineStyle;
         linkage=NO;
         [barPlot release];
     }
@@ -817,6 +820,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     linkage=YES;
     if([graph plotWithIdentifier:COLUMNAR_DATALINE_IDENTIFIER]){
         [graph removePlot:barPlot];
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+        lineStyle.lineWidth=2.0f;
+        lineStyle.lineColor=[CPTColor colorWithComponentRed:87/255.0 green:168/255.0 blue:9/255.0 alpha:1.0];
+        forecastLinePlot.dataLineStyle=lineStyle;
     }
     
     if(!([graph plotWithIdentifier:FORECAST_DATALINE_IDENTIFIER]&&[graph plotWithIdentifier:FORECAST_DEFAULT_DATALINE_IDENTIFIER])){

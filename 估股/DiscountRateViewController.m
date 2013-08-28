@@ -18,6 +18,7 @@
 
 @implementation DiscountRateViewController
 
+@synthesize isSaved;
 @synthesize comInfo;
 @synthesize disCountIsChanged;
 @synthesize jsonData;
@@ -113,6 +114,7 @@
 {
     [super viewDidLoad];
     webIsLoaded=NO;
+    isSaved=NO;
     self.transData=[[NSMutableArray alloc] init];
     
     webView=[[UIWebView alloc] init];
@@ -176,6 +178,9 @@
             if([resObj objectForKey:@"status"]){
                 [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.chartViewController.view andLoading:NO andIsBottom:NO andIsHide:YES];
                 self.disCountIsChanged=NO;
+                [saveBt setBackgroundImage:[UIImage imageNamed:@"savedBt"] forState:UIControlStateNormal];
+                [saveBt setEnabled:NO];
+                isSaved=YES;
             }
         }];
     }else if(bt.tag==BackToSuperView){
@@ -197,6 +202,11 @@
 }
 
 -(IBAction)sliderChanged:(UISlider *)slider{
+    if(isSaved){
+        [saveBt setEnabled:YES];
+        [saveBt setBackgroundImage:[UIImage imageNamed:@"saveBt"] forState:UIControlStateNormal];
+        isSaved=NO;
+    }
     self.disCountIsChanged=YES;
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];

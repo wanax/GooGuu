@@ -55,7 +55,7 @@
     dateIndicator=[[UILabel alloc] initWithFrame:CGRectMake(0,292,SCREEN_WIDTH,30)];
     dateIndicator.backgroundColor=[Utiles colorWithHexString:@"#7B140E"];
     dateIndicator.numberOfLines = 0;
-    dateIndicator.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
+    dateIndicator.font=[UIFont fontWithName:@"Heiti SC" size:13.0f];
     dateIndicator.textColor=[UIColor whiteColor];
 
     [self.view addSubview:dateIndicator];
@@ -64,7 +64,7 @@
     messageLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,322,SCREEN_WIDTH,120)];
     messageLabel.backgroundColor=[Utiles colorWithHexString:@"#892D24"];
     messageLabel.numberOfLines =5;
-    messageLabel.font=[UIFont fontWithName:@"Heiti SC" size:16.0f];
+    messageLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0f];
     messageLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:messageLabel];
     
@@ -80,7 +80,7 @@
     }
     if(tap.state==UIGestureRecognizerStateChanged){
         
-        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-110),SCREEN_WIDTH,442);
+        self.view.frame=CGRectMake(0,MAX(MIN(standard.y+change.y,0),-100),SCREEN_WIDTH,442);
         
     }else if(tap.state==UIGestureRecognizerStateEnded){
         standard=self.view.frame.origin;
@@ -88,11 +88,6 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark -
 #pragma mark Calendar Delegate Methods
@@ -143,8 +138,8 @@
             msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
         }
         [self.messageLabel setText:msg];
-        
         [messageLabel alignTop];
+        self.view.center=CGPointMake(SCREEN_WIDTH/2,70);
     }
    
     [dateFormat release];
@@ -152,6 +147,11 @@
 }
 
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 
 

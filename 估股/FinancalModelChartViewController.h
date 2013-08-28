@@ -51,14 +51,17 @@
    
 }
 
-@property (nonatomic,retain) UIButton *button;
+@property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSMutableArray *points;
+@property (nonatomic,retain) NSArray *colorArr;
 @property (nonatomic,retain) NSString *jsonForChart;
 @property (nonatomic,retain) NSString *yAxisUnit;
 
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelRatioViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelChartViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelOtherViewController;
+
+@property (nonatomic,retain) UILabel *financalTitleLabel;
 
 @property (nonatomic,retain) UIWebView *webView;
 @property (nonatomic,retain) CPTXYGraph * graph ;

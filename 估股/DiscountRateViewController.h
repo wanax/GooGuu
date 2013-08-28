@@ -18,6 +18,7 @@
     float marketPremium;
 }
 
+@property BOOL isSaved;
 @property BOOL webIsLoaded;
 @property BOOL disCountIsChanged;
 @property BrowseSourceType sourceType;

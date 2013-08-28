@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.commentField.returnKeyType=UIReturnKeyGo;
+    self.commentField.returnKeyType=UIReturnKeySend;
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     if(self.type==CompanyType||self.type==ArticleType){
         UIButton *back=[UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -55,6 +55,10 @@
 
 -(void)btClick:(id)sender{
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)backgroundTap:(id)sender {
+    [commentField resignFirstResponder];
 }
 
 #pragma mark -

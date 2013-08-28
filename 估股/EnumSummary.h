@@ -58,6 +58,13 @@ typedef enum{
 } IndustoryModelType;
 
 typedef enum{
+    FinancialRatio=1,
+    FinancialChart=2,
+    FinancialOther=3,
+    FinancialBack=4
+}FinancialProportion;
+
+typedef enum{
     AttentionAction=11,
     AddComment=22,
     AddShare=33

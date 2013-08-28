@@ -409,19 +409,7 @@
     [search resignFirstResponder];
     
 }
-/*-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    if([searchText length]==0)
-    {
-        [self resetSearch];
-        [table reloadData];
-        return;
-    }else{
-        [self handleSearchForTerm:searchText];
-    }
-    
-    //有文字输入就把关键字传给handleSearchForTerm处理
-}*/
+
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self resetSearch];
@@ -434,11 +422,8 @@
     
 }
 
-
-
 #pragma mark -
 #pragma mark - Table Header View Methods
-
 
 - (void)doneLoadingTableViewData{
     [self getCompanyList];

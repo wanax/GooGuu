@@ -29,7 +29,8 @@
 
 static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
-
+@synthesize comInfo;
+@synthesize colorArr;
 @synthesize points;
 @synthesize jsonForChart;
 @synthesize barPlot;
@@ -41,9 +42,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 @synthesize modelRatioViewController;
 @synthesize modelChartViewController;
 @synthesize modelOtherViewController;
+@synthesize financalTitleLabel;
 
 - (void)dealloc
 {
+    SAFE_RELEASE(colorArr);
+    SAFE_RELEASE(financalTitleLabel);
+    SAFE_RELEASE(comInfo);
     [yAxisUnit release];yAxisUnit=nil;
     [modelRatioViewController release];modelRatioViewController=nil;
     [modelChartViewController release];modelChartViewController=nil;
@@ -70,8 +75,12 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#6E5F3E"]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
     
+    colorArr=[NSArray arrayWithObjects:@"e92058",@"b700b7",@"216dcb",@"13bbca",@"65d223",@"f09c32",@"f15a38",nil];
+    
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    comInfo=delegate.comInfo;
     self.modelRatioViewController=[[ModelClassGrade2ViewController alloc] init];
     self.modelRatioViewController.delegate=self;
     self.modelChartViewController=[[ModelClassGrade2ViewController alloc] init];
@@ -82,35 +91,49 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     self.modelChartViewController.classTitle=@"财务图表";
     self.modelOtherViewController.classTitle=@"其它指标";
     
-    XRANGEBEGIN=9.0;
-    XRANGELENGTH=14.0;
-    YRANGEBEGIN=-0.3;
-    YRANGELENGTH=0.9;
-    
-    XINTERVALLENGTH=3.0;
-    XORTHOGONALCOORDINATE=0.0;
-    XTICKSPERINTERVAL=0;
-    
-    YINTERVALLENGTH= 0.1;
-    YORTHOGONALCOORDINATE =11.0;
-    YTICKSPERINTERVAL =0;
-    
     webView=[[UIWebView alloc] init];
     webView.delegate=self;
-    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"c" ofType:@"html"];
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];
-    
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath: path]]];    
     self.points=[[NSMutableArray alloc] init];
     
+    [self initFinancalModelViewComponents];
+    [self initBarChart];
+
+}
+
+-(void)initFinancalModelViewComponents{
+    UIImageView *topBar=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dragChartBar"]];
+    topBar.frame=CGRectMake(0,0,SCREEN_HEIGHT,40);
+    [self.view addSubview:topBar];
+    DrawChartTool *tool=[[DrawChartTool alloc] init];
+    tool.standIn=self;
+    
+    UILabel *nameLabel=[tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(65,0,100, 40) fontSize:12.0 color:nil textColor:@"#3e2000" location:NSTextAlignmentCenter];
+    nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    nameLabel.numberOfLines = 0;
+    
+    financalTitleLabel=[tool addLabelToView:self.view withTitle:@"" Tag:11 frame:CGRectMake(0,40,SCREEN_HEIGHT,30) fontSize:12.0 color:nil textColor:@"#63573d" location:NSTextAlignmentCenter];
+    
+    
+    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:FinancialRatio frame:CGRectMake(165,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"ratioBt" highBackGroundImg:@"selectedRatioBt"];
+    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:FinancialChart frame:CGRectMake(265,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"chartBt" highBackGroundImg:@"selectedChartBt"];
+    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:FinancialOther frame:CGRectMake(365,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"otherBt" highBackGroundImg:@"selectedChartBt"];
+    
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:FinancialBack frame:CGRectMake(10,5,50,32) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
+
+    [tool release];
+}
+
+-(void)initBarChart{
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTSlateTheme];
+        CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
         [graph applyTheme:theme];
-        graph.cornerRadius  = 0.0f;
+        graph.cornerRadius  = 15.0f;
         
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,480,280)];
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(10,70,SCREEN_HEIGHT-20,220)];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
         hostView.collapsesLayers = YES;
@@ -121,28 +144,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
     graph . paddingLeft = 0.0f ;
     graph . paddingRight = 0.0f ;
-    graph . paddingTop = GRAPAHTOPPAD ;
-    graph . paddingBottom = 20 ;
-    
-    
-    graph.title=@"金融模型";
+    graph . paddingTop = 0 ;
+    graph . paddingBottom = 0 ;
+
     //绘制图形空间
     plotSpace=(CPTXYPlotSpace *)graph.defaultPlotSpace;
-    //plotSpace.allowsUserInteraction=YES;
-    
     DrawXYAxisWithoutYAxis;
     [self initBarPlot];
-    DrawChartTool *tool=[[DrawChartTool alloc] init];
-    tool.standIn=self;
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id comInfo=delegate.comInfo;
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(0,0,160, 40) fontSize:14.0 color:@"#007ab7" textColor:@"#000000" location:NSTextAlignmentCenter];
-    [tool addButtonToView:self.view withTitle:@"财务比例" Tag:1 frame:CGRectMake(163,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
-    [tool addButtonToView:self.view withTitle:@"财务图表" Tag:2 frame:CGRectMake(243,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
-    [tool addButtonToView:self.view withTitle:@"其它指标" Tag:3 frame:CGRectMake(323,2,74,36) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#f5f5dc" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:4 frame:CGRectMake(400,0,80,40) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:@"#145d5e" textColor:@"#000000" normalBackGroundImg:nil highBackGroundImg:nil];
-    [tool release];
-    
 }
 
 #pragma mark -
@@ -154,13 +162,13 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 	CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[Utiles colorWithHexString:@"#e26b17"];
-    if(sender.tag==1){
+    if(sender.tag==FinancialRatio){
         [floatingController presentWithContentViewController:modelRatioViewController
                                                     animated:YES];
-    }else if(sender.tag==2){
+    }else if(sender.tag==FinancialChart){
         [floatingController presentWithContentViewController:modelChartViewController
                                                     animated:YES];
-    }else if(sender.tag==3){
+    }else if(sender.tag==FinancialOther){
         [floatingController presentWithContentViewController:modelOtherViewController
                                                     animated:YES];
     }
@@ -196,7 +204,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     self.points=tempHisPoints;
     self.yAxisUnit=[temp objectForKey:@"unit"];
     NSDictionary *pointData=[Utiles unitConversionData:[[[self.points objectAtIndex:0] objectForKey:@"v"] stringValue] andUnit:self.yAxisUnit];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[pointData objectForKey:@"unit"]];
+    self.financalTitleLabel.text=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[pointData objectForKey:@"unit"]];
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
@@ -209,8 +217,6 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    id comInfo=delegate.comInfo;
     //[MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
@@ -248,7 +254,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     static CPTMutableTextStyle *whiteText = nil ;
     if ( !whiteText ) {
         whiteText = [[ CPTMutableTextStyle alloc ] init ];
-        whiteText.color=[CPTColor colorWithComponentRed:85/255.0 green:16/255.0 blue:118/255.0 alpha:1.0];
+        whiteText.color=[CPTColor blackColor];
+        whiteText.fontSize=9.0;
+        whiteText.fontName=@"Heiti SC";
     }
 
     CPTTextLayer *newLayer = nil ;
@@ -309,8 +317,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
             CPTTextStyle *theLabelTextStyle;
             
             CPTMutableTextStyle * newStyle = [axis.labelTextStyle mutableCopy];
-            newStyle.fontSize=12.0;
+            newStyle.fontSize=11.0;
             newStyle.fontName=@"Heiti SC";
+            newStyle.color=[CPTColor colorWithComponentRed:153/255.0 green:129/255.0 blue:64/255.0 alpha:1.0];
             positiveStyle  = newStyle;
             
             theLabelTextStyle = positiveStyle;
@@ -338,18 +347,23 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 }
 
 -(void)initBarPlot{
+    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+    lineStyle.miterLimit=0.0f;
+    lineStyle.lineWidth=0.0f;
+    lineStyle.lineColor=[CPTColor colorWithComponentRed:87/255.0 green:168/255.0 blue:9/255.0 alpha:1.0];
     barPlot = [CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:1.0] horizontalBars:NO];
     barPlot. dataSource = self ;
     barPlot.delegate=self;
-    barPlot.fill=[CPTFill fillWithColor:[CPTColor colorWithComponentRed:134/255.0 green:171/255.0 blue:125/255.0 alpha:0.7]];
+    barPlot.lineStyle=lineStyle;
+    barPlot.fill=[CPTFill fillWithColor:[Utiles cptcolorWithHexString:[colorArr objectAtIndex:arc4random()%7] andAlpha:0.6]];
     // 图形向右偏移： 0.25
     barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
     // 在 SDK 中， barCornerRadius 被 cornerRadius 替代
+    barPlot.barCornerRadius=3.0;
     barPlot.barWidth=CPTDecimalFromFloat(1.0f);
     barPlot.barWidthScale=0.5f;
     barPlot.labelOffset=0;
     barPlot.identifier = BAR_IDENTIFIER;
-    barPlot.opacity = 0.0f;
     barPlot.opacity=0.0f;
     
     
@@ -394,8 +408,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,40,480,280);
-        //self.graph.frame=CGRectMake(0,40,480,280);
+        self.hostView.frame=CGRectMake(10,70,SCREEN_HEIGHT-20,220);
     }
 }
 

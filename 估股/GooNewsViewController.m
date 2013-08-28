@@ -162,9 +162,9 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section==0){
-        return 98;
-    }else{
         return 86.0;
+    }else{
+        return 71.0;
     }
 }
 
@@ -217,7 +217,7 @@
         NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
         float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
         cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:marketPrice]];
-        cell.companyNameLabel.text=[NSString stringWithFormat:@"%@   (%@.%@)",[self.companyInfo objectForKey:@"companyname"],[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
+        cell.companyNameLabel.text=[NSString stringWithFormat:@"%@\n(%@.%@)",[self.companyInfo objectForKey:@"companyname"],[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:ggPrice]];
         cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];

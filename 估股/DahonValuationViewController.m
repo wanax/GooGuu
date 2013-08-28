@@ -256,6 +256,8 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 }
 
 -(void)setXYAxis{
+
+    [self lineShowWithAnimation];
     NSMutableArray *xTmp=[[NSMutableArray alloc] init];
     NSMutableArray *yTmp=[[NSMutableArray alloc] init];
     int n=0;
@@ -364,7 +366,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
         msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
     }
     [self.view makeToast:msg
-                duration:3.0
+                duration:2.0
                 position:@"center"
                    title:[[data objectAtIndex:0] objectForKey:@"date"]
      ];
@@ -494,10 +496,23 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     plotSymbol.size          = CGSizeMake(20, 20);
     
     daHonLinePlot.plotSymbol = plotSymbol;
+    
+    historyLinePlot.opacity = 0.0f;
+    daHonLinePlot.opacity = 0.0f;
+    [self lineShowWithAnimation];
    
     [graph addPlot:historyLinePlot];
     [graph addPlot:daHonLinePlot];
 
+}
+-(void)lineShowWithAnimation{
+    CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    fadeInAnimation.duration            = 1.0f;
+    fadeInAnimation.removedOnCompletion = NO;
+    fadeInAnimation.fillMode            = kCAFillModeBoth;
+    fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
+    [daHonLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
+    [historyLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
 }
 
 - (void)didReceiveMemoryWarning
