@@ -20,6 +20,7 @@
 
 @property BOOL webIsLoaded;
 @property BOOL disCountIsChanged;
+@property BrowseSourceType sourceType;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) id jsonData;
 @property (nonatomic,retain) NSArray *dragChartChangedDriverIds;
@@ -36,9 +37,18 @@
 @property (nonatomic,retain) IBOutlet UILabel *ggPriceLabel;
 @property (nonatomic,retain) IBOutlet UILabel *suggestRateLabel;
 @property (nonatomic,retain) IBOutlet UILabel *myRateLabel;
+@property (nonatomic,retain) IBOutlet UILabel *defaultUnRiskRateLabel;
+@property (nonatomic,retain) IBOutlet UILabel *defaultMarketBetaLabel;
+@property (nonatomic,retain) IBOutlet UILabel *defaultMarketPremiumLabel;
 @property (nonatomic,retain) IBOutlet UILabel *unRiskRateLabel;
 @property (nonatomic,retain) IBOutlet UILabel *marketBetaLabel;
 @property (nonatomic,retain) IBOutlet UILabel *marketPremiumLabel;
+@property (nonatomic,retain) IBOutlet UILabel *unRiskRateMinLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketBetaMinLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketPremiumMinLabel;
+@property (nonatomic,retain) IBOutlet UILabel *unRiskRateMaxLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketBetaMaxLabel;
+@property (nonatomic,retain) IBOutlet UILabel *marketPremiumMaxLabel;
 
 @property (nonatomic,retain) IBOutlet UISlider *unRiskRateSlider;
 @property (nonatomic,retain) IBOutlet UISlider *marketBetaSlider;

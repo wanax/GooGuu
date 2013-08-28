@@ -14,6 +14,7 @@
 #import "ModelClassGrade2ViewController.h"
 
 @class CQMFloatingController;
+@class DiscountRateViewController;
 
 //数据点个数
 #define NUM 10
@@ -75,13 +76,14 @@
 
 @property BOOL webIsLoaded;
 @property BOOL disCountIsChanged;
+@property BOOL isShowDiscountView;
 @property BrowseSourceType sourceType;
 @property (nonatomic,retain) id comInfo;
 @property (nonatomic,retain) NSString *globalDriverId;
 @property (nonatomic,retain) NSString *valuesStr;
 @property (nonatomic,retain) NSMutableArray *changedDriverIds;
 
-
+@property (nonatomic,retain) DiscountRateViewController *rateViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelMainViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelFeeViewController;
 @property (nonatomic,retain) ModelClassGrade2ViewController *modelCapViewController;

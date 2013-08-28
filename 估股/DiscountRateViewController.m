@@ -26,6 +26,7 @@
 @synthesize transData;
 @synthesize webIsLoaded;
 @synthesize dragChartChangedDriverIds;
+@synthesize sourceType;
 
 @synthesize resetBt;
 @synthesize saveBt;
@@ -39,6 +40,15 @@
 @synthesize unRiskRateLabel;
 @synthesize marketBetaLabel;
 @synthesize marketPremiumLabel;
+@synthesize defaultUnRiskRateLabel;
+@synthesize defaultMarketBetaLabel;
+@synthesize defaultMarketPremiumLabel;
+@synthesize unRiskRateMinLabel;
+@synthesize unRiskRateMaxLabel;
+@synthesize marketBetaMinLabel;
+@synthesize marketBetaMaxLabel;
+@synthesize marketPremiumMinLabel;
+@synthesize marketPremiumMaxLabel;
 
 @synthesize unRiskRateSlider;
 @synthesize marketBetaSlider;
@@ -49,6 +59,15 @@
 
 - (void)dealloc
 {
+    SAFE_RELEASE(unRiskRateMinLabel);
+    SAFE_RELEASE(unRiskRateMaxLabel);
+    SAFE_RELEASE(marketBetaMinLabel);
+    SAFE_RELEASE(marketBetaMaxLabel);
+    SAFE_RELEASE(marketPremiumMinLabel);
+    SAFE_RELEASE(marketPremiumMaxLabel);
+    SAFE_RELEASE(defaultUnRiskRateLabel);
+    SAFE_RELEASE(defaultMarketBetaLabel);
+    SAFE_RELEASE(defaultMarketPremiumLabel);
     SAFE_RELEASE(dragChartChangedDriverIds);
     SAFE_RELEASE(chartViewController);
     SAFE_RELEASE(valuesStr);
@@ -83,31 +102,17 @@
     }
     return self;
 }
--(void)viewDidAppear:(BOOL)animated{
-    if(webIsLoaded){
-        if(![Utiles isBlankString:self.valuesStr]){
-            self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-            [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
-            id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
-            NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
-            for(id obj in tempData){
-                [tmpArr addObject:[obj mutableCopy]];
-            }
-            self.transData=tmpArr;
-            [self caluPriceWithData:self.transData];
-            [self updateComponents];
-            SAFE_RELEASE(tmpArr);
-        }else{
-           [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]]; 
-        }
-    }
+-(void)viewDidDisappear:(BOOL)animated{
+    self.chartViewController.isShowDiscountView=NO;
+    NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
+    self.chartViewController.valuesStr=values;
+    self.chartViewController.disCountIsChanged=self.disCountIsChanged;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     webIsLoaded=NO;
-	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#D1AB6D"]];
     self.transData=[[NSMutableArray alloc] init];
     
     webView=[[UIWebView alloc] init];
@@ -132,6 +137,21 @@
     }
     self.defaultTransData=tmpArr;
     SAFE_RELEASE(tmpArr);
+    if(![Utiles isBlankString:self.valuesStr]){
+        self.valuesStr=[self.valuesStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        [Utiles getObjectDataFromJsFun:self.webView funName:@"setValues" byData:self.valuesStr shouldTrans:NO];
+        id tempData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnWaccData" byData:@"" shouldTrans:YES];
+        NSMutableArray *tmpArr=[[NSMutableArray alloc] init];
+        for(id obj in tempData){
+            [tmpArr addObject:[obj mutableCopy]];
+        }
+        self.transData=tmpArr;
+        [self caluPriceWithData:self.transData];
+        [self updateComponents];
+        SAFE_RELEASE(tmpArr);
+    }else{
+        [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
+    }
 }
 
 #pragma mark -
@@ -154,17 +174,28 @@
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[combinedData JSONString],@"data", nil];
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
             if([resObj objectForKey:@"status"]){
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.chartViewController.view andLoading:NO andIsBottom:NO andIsHide:YES];
                 self.disCountIsChanged=NO;
             }
         }];
     }else if(bt.tag==BackToSuperView){
-        NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
-        self.chartViewController.valuesStr=values;
-        self.chartViewController.disCountIsChanged=self.disCountIsChanged;
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        if(sourceType==MySavedType){            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }else{
+            CATransition *transition=[CATransition animation];
+            transition.duration=0.5f;
+            transition.fillMode=kCAFillRuleNonZero;
+            transition.type=kCATransitionFade;
+            transition.subtype=kCATransitionFromTop;
+            [self.view removeFromSuperview];
+            [self.chartViewController.view.layer addAnimation:transition forKey:@"animation"];
+            [self.chartViewController viewDidAppear:YES];
+        }
+        
     }
 }
+
 -(IBAction)sliderChanged:(UISlider *)slider{
     self.disCountIsChanged=YES;
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
@@ -249,7 +280,7 @@
     NSNumberFormatter *formatter=[[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"##0.##"];
     
-    [self.companyNameLabel setText:[NSString stringWithFormat:@"%@(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]]];
+    [self.companyNameLabel setText:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]]];
     [self.marketPriceLabel setText:[[comInfo objectForKey:@"marketprice"] stringValue]];
     self.ggPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:6] objectForKey:@"ggPrice"] floatValue]]]];
     ggPrice=[[[self.transData objectAtIndex:6] objectForKey:@"ggPrice"] floatValue];
@@ -258,13 +289,22 @@
     unRisk=[[[self.transData objectAtIndex:0] objectForKey:@"datanew"] floatValue];
     marketBeta=[[[self.transData objectAtIndex:1] objectForKey:@"datanew"] floatValue];
     marketPremium=[[[self.transData objectAtIndex:2] objectForKey:@"datanew"] floatValue];
+    float defaultunRisk=[[[self.transData objectAtIndex:0] objectForKey:@"data"] floatValue];
+    float defaultmarketBeta=[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue];
+    float defaultmarketPremium=[[[self.transData objectAtIndex:2] objectForKey:@"data"] floatValue];
 
+    self.defaultUnRiskRateLabel.text=[NSString stringWithFormat:@"无风险利率%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:defaultunRisk*100]]];
+    self.defaultMarketBetaLabel.text=[NSString stringWithFormat:@"市场贝塔值%@",[formatter stringFromNumber:[NSNumber numberWithFloat:defaultmarketBeta]]];
+    self.defaultMarketPremiumLabel.text=[NSString stringWithFormat:@"市场溢价%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:defaultmarketPremium*100]]];
+    
     self.myRateLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:myRate*100]]];
     self.suggestRateLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.transData objectAtIndex:5] objectForKey:@"datanew"] floatValue]*100]]];
     self.unRiskRateLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:unRisk*100]]];
     self.marketBetaLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:marketBeta]]];
     self.marketPremiumLabel.text=[NSString stringWithFormat:@"%@%%",[formatter stringFromNumber:[NSNumber numberWithFloat:marketPremium*100]]];
     
+    [self.marketPremiumMaxLabel setText:[NSString stringWithFormat:@"%.2f",[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]+1]];
+    [self.marketPremiumMinLabel setText:[NSString stringWithFormat:@"%.2f",[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]-1]];
     [self.marketBetaSlider setMaximumValue:[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]+1];
     [self.marketBetaSlider setMinimumValue:[[[self.transData objectAtIndex:1] objectForKey:@"data"] floatValue]-1];
     [self.unRiskRateSlider setValue:unRisk*100 animated:YES];
@@ -277,7 +317,7 @@
 
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
     } else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        //self.view.frame=CGRectMake(0,40,SCREEN_HEIGHT,260);
+        self.view.frame=CGRectMake(0,40,480,280);
     }
 }
 

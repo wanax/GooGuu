@@ -40,7 +40,9 @@
 @synthesize valuesStr;
 @synthesize webIsLoaded;
 @synthesize changedDriverIds;
+@synthesize isShowDiscountView;
 
+@synthesize rateViewController;
 @synthesize modelMainViewController;
 @synthesize modelFeeViewController;
 @synthesize modelCapViewController;
@@ -87,6 +89,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     SAFE_RELEASE(comInfo);
     SAFE_RELEASE(valuesStr);
     
+    SAFE_RELEASE(rateViewController);
     SAFE_RELEASE(modelMainViewController);
     SAFE_RELEASE(modelFeeViewController);
     SAFE_RELEASE(modelCapViewController);
@@ -120,6 +123,35 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if(![self.changedDriverIds containsObject:driverId]){
         [self.changedDriverIds addObject:driverId];
     }
+}
+-(void)addDiscountView{
+    if(!isShowDiscountView){
+        isShowDiscountView=YES;
+        [self.view addSubview:self.rateViewController.view];
+        CATransition *transition=[CATransition animation];
+        transition.duration=0.5f;
+        transition.fillMode=kCAFillRuleNonZero;
+        transition.type=kCATransitionMoveIn;
+        transition.subtype=kCATransitionFromTop;
+        [self.rateViewController.view.layer addAnimation:transition forKey:@"animation"];
+    }
+}
+-(void)removeDiscountView{
+    if(isShowDiscountView){
+        isShowDiscountView=NO;
+        CATransition *transition=[CATransition animation];
+        transition.duration=0.5f;
+        transition.delegate=self;
+        transition.fillMode=kCAFillRuleNonZero;
+        transition.type=kCATransitionFade;
+        transition.subtype=kCATransitionFromBottom;
+        [self.rateViewController.view removeFromSuperview];
+        [self.view.layer addAnimation:transition forKey:@"animation"];
+    }
+}
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
+{
+    [self viewDidAppear:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -192,8 +224,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 }
 
-
-
 -(void)initChartViewComponents{
     UIImageView *topBar=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dragChartBar"]];
     topBar.frame=CGRectMake(0,0,SCREEN_HEIGHT,40);
@@ -219,11 +249,13 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     //公司名称label
     CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:14.0];
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(3,40+(40-labelsize1.height)/2,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
-    
     //公司股票行业label
     CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] font:@"Heiti SC" fontSize:11.0];
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(3+labelsize1.width,40+(40+labelsize1.height)/2-labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    float maxWidthLenght=MAX(labelsize1.width,labelsize2.width);
+    
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(labelsize1.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize1.width)/2,45,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
     NSString *ggPrice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"googuuprice"]];
     if([ggPrice length]>5){
@@ -231,7 +263,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     }else if([ggPrice length]<5){
         ggPrice=[ggPrice stringByAppendingFormat:@"0"];
     }
-    CGFloat companyNameLabelLenght=labelsize1.width+labelsize2.width+3;
+    CGFloat companyNameLabelLenght=maxWidthLenght+10;
     //估值label
     CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //估值数值label
@@ -321,23 +353,27 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     floatingController.frameSize=CGSizeMake(280,280);
     floatingController.frameColor=[Utiles colorWithHexString:@"#e26b17"];
     if(sender.tag==MainIncome){
+        [self removeDiscountView];
         [floatingController presentWithContentViewController:modelMainViewController
                                                     animated:YES];
     }else if(sender.tag==OperaFee){
+        [self removeDiscountView];
         [floatingController presentWithContentViewController:modelFeeViewController
                                                     animated:YES];
     }else if(sender.tag==OperaCap){
+        [self removeDiscountView];
         [floatingController presentWithContentViewController:modelCapViewController
                                                     animated:YES];
     }else if(sender.tag==DiscountRate){
         NSString *values=[Utiles getObjectDataFromJsFun:self.webView funName:@"getValues" byData:nil shouldTrans:NO];
-        DiscountRateViewController *rateViewController=[[DiscountRateViewController alloc] init];
-        rateViewController.view.frame=CGRectMake(0,40,480,320);
+        rateViewController=[[DiscountRateViewController alloc] init];
+        rateViewController.view.frame=CGRectMake(0,40,480,280);
         rateViewController.jsonData=self.jsonForChart;
         rateViewController.valuesStr=values;
         rateViewController.dragChartChangedDriverIds=self.changedDriverIds;
         rateViewController.chartViewController=self;
-        [self presentViewController:rateViewController animated:YES completion:nil];
+        rateViewController.sourceType=ChartViewType;
+        [self addDiscountView];
     }
     
 }
@@ -391,7 +427,6 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 #pragma mark -
 #pragma mark ModelClass Methods Delegate
 -(void)modelClassChanged:(NSString *)driverId{
-
     id chartData=[Utiles getObjectDataFromJsFun:self.webView funName:@"returnChartData" byData:driverId shouldTrans:YES];
     globalDriverId=driverId;
     
