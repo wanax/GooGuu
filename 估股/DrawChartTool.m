@@ -276,9 +276,11 @@ NSComparator cmptr = ^(id obj1, id obj2){
     y.axisLineStyle=lineStyle;
     y.majorIntervalLength=CPTDecimalFromFloat(YINTERVALLENGTH);
     y.orthogonalCoordinateDecimal=CPTDecimalFromFloat(YORTHOGONALCOORDINATE);
-    y.minorTicksPerInterval=YTICKSPERINTERVAL;    
-    y.majorTickLength=15000.0;
+    y.minorTicksPerInterval=YTICKSPERINTERVAL;
+      
     lineStyle.lineWidth=1.0;
+    y.tickDirection=CPTSignNegative;  
+    y.majorGridLineStyle=lineStyle;
     y.majorTickLineStyle=lineStyle;
     y.minorTickLineStyle = lineStyle;
     y.delegate=delegate;

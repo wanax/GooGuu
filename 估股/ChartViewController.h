@@ -114,6 +114,7 @@
 @property (nonatomic,retain) UILabel *myGGpriceLabel;
 @property (nonatomic,retain) UILabel *priceLabel;
 @property (nonatomic,retain) UIButton *saveBt;
+@property (nonatomic,retain) UIButton *discountBt;
 
 //绘图view
 @property (nonatomic,retain) CPTXYGraph * graph ;

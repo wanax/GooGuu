@@ -63,8 +63,7 @@
    
     MWPhoto *photo;
     photo = [MWPhoto photoWithURL:[NSURL URLWithString:url]];
-    NSString *legend=[NSString stringWithFormat:@"%@-%@%@\n                                                                                 The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.",[comInfo objectForKey:@"market"],[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"trade"]];
-    photo.caption = legend;
+
     NSMutableArray *tempPhotos = [[NSMutableArray alloc] init];
     [tempPhotos addObject:photo];
     self.photos=tempPhotos;

@@ -151,7 +151,7 @@
     [board setText:@"已保存数据"];
     [board setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:board];
-    self.savedTable=[[UITableView alloc] initWithFrame:CGRectMake(0,155,SCREEN_WIDTH,218) style:UITableViewStylePlain];
+    self.savedTable=[[UITableView alloc] initWithFrame:CGRectMake(0,155,SCREEN_WIDTH,230) style:UITableViewStylePlain];
     [self.savedTable setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
     self.savedTable.dataSource=self;
     self.savedTable.delegate=self;

@@ -120,7 +120,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [tool addButtonToView:self.view withTitle:@"财务图表" Tag:FinancialChart frame:CGRectMake(265,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"chartBt" highBackGroundImg:@"selectedChartBt"];
     [tool addButtonToView:self.view withTitle:@"其它指标" Tag:FinancialOther frame:CGRectMake(365,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"otherBt" highBackGroundImg:@"selectedChartBt"];
     
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:FinancialBack frame:CGRectMake(10,5,50,32) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:FinancialBack frame:CGRectMake(10,5,50,32) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:nil textColor:@"#FFFEFE" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
 
     [tool release];
 }
@@ -129,10 +129,10 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
-        [graph applyTheme:theme];
-        graph.cornerRadius  = 15.0f;
-        
+        //CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
+        //[graph applyTheme:theme];
+        graph.fill=[CPTFill fillWithImage:[CPTImage imageWithCGImage:[UIImage imageNamed:@"discountBack"].CGImage]];
+        //graph.cornerRadius  = 15.0f;        
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(10,70,SCREEN_HEIGHT-20,220)];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];

@@ -62,7 +62,7 @@
     
     viewController1.title=@"公司图解";
     viewController2.title=@"估值模型";
-    viewController3.title=@"研究报告";
+    viewController3.title=@"公司简报";
     viewController4.title=@"用户评论";
     viewController2.browseType=self.browseType;
     

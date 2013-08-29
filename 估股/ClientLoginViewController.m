@@ -91,11 +91,11 @@
         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
         [Utiles showHUD:@"正在加载" andView:self.view andHUD:hud];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES ;
-        //NSString *name=[loginView userNameField].text;
-        //NSString *pwd=[loginView userPwdField].text;
+        NSString *name=[loginView userNameField].text;
+        NSString *pwd=[loginView userPwdField].text;
         
-        NSString *name=@"mxchenry@163.com";
-        NSString *pwd=@"123456";
+        //NSString *name=@"mxchenry@163.com";
+        //NSString *pwd=@"123456";
         
         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[name lowercaseString],@"username",[Utiles md5:pwd],@"password",@"googuu",@"from", nil];
         [Utiles getNetInfoWithPath:@"Login" andParams:params besidesBlock:^(id info){

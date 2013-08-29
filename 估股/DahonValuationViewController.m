@@ -27,21 +27,26 @@
 @synthesize titleLabel;
 
 @synthesize daHonLinePlot;
+@synthesize gooGuuLinePlot;
 @synthesize historyLinePlot;
 
 @synthesize jsonData;
 @synthesize comInfo;
 @synthesize dateArr;
 @synthesize chartData;
+@synthesize daHonIndexDateMap;
 @synthesize daHonDataDic;
-@synthesize indexDateMap;
 @synthesize daHonIndexSets;
+@synthesize gooGuuIndexDateMap;
+@synthesize gooGuuDataDic;
+@synthesize gooGuuIndexSets;
 
 @synthesize graph;
 @synthesize hostView;
 @synthesize plotSpace;
 
 static NSString * DAHON_DATALINE_IDENTIFIER =@"dahon_dataline_identifier";
+static NSString * GOOGUU_DATALINE_IDENTIFIER =@"googuu_dataline_identifier";
 static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 
 - (void)dealloc
@@ -50,14 +55,18 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     SAFE_RELEASE(lastMarkBt);
     SAFE_RELEASE(comInfo);
     SAFE_RELEASE(daHonIndexSets);
-    SAFE_RELEASE(indexDateMap);
+    SAFE_RELEASE(daHonIndexDateMap);
     SAFE_RELEASE(daHonDataDic);
+    SAFE_RELEASE(gooGuuIndexDateMap);
+    SAFE_RELEASE(gooGuuDataDic);
+    SAFE_RELEASE(gooGuuIndexSets);
     SAFE_RELEASE(oneMonth);
     SAFE_RELEASE(oneYear);
     SAFE_RELEASE(threeMonth);
     SAFE_RELEASE(sixMonth);
     SAFE_RELEASE(historyLinePlot);
     SAFE_RELEASE(daHonLinePlot);
+    SAFE_RELEASE(gooGuuLinePlot);
     SAFE_RELEASE(dateArr);
     SAFE_RELEASE(chartData);
     SAFE_RELEASE(jsonData);
@@ -85,7 +94,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     [self initData];
     [self initChart];
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#efe2c6"]];
+	[self.view setBackgroundColor:[Utiles colorWithHexString:@"#F6F1E6"]];
     [self initDahonViewComponents];
 }
 
@@ -100,7 +109,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     
     titleLabel=[tool addLabelToView:self.view withTitle:@"" Tag:6 frame:CGRectMake(0,40,480,30) fontSize:11.0 color:nil textColor:@"#63573d" location:NSTextAlignmentCenter];
     
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(15,5,54,30) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:5 frame:CGRectMake(15,5,54,30) andFun:@selector(backTo:) withType:UIButtonTypeCustom andColor:nil textColor:@"#FFFEFE" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
     [tool addButtonToView:self.view withTitle:@"刷新" Tag:6 frame:CGRectMake(406,5,54,30) andFun:@selector(reflash:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000" normalBackGroundImg:@"reflashBt" highBackGroundImg:nil];
     
     oneMonth=[tool addButtonToView:self.view withTitle:@"一个月" Tag:OneMonth frame:CGRectMake(145,272,40,22) andFun:@selector(changeDateInter:) withType:UIButtonTypeCustom andColor:nil textColor:@"#e97a31" normalBackGroundImg:nil highBackGroundImg:nil];
@@ -151,7 +160,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     [lastMarkBt setBackgroundImage:nil forState:UIControlStateNormal];
     [lastMarkBt.titleLabel setTextColor:[Utiles colorWithHexString:@"#e97a31"]];
     [nowBt setBackgroundImage:[UIImage imageNamed:@"monthChoosenBt"] forState:UIControlStateNormal];
-    [nowBt setTitleColor:[Utiles colorWithHexString:@"FFFEFE"] forState:UIControlStateNormal];
+    [nowBt setTitleColor:[Utiles colorWithHexString:@"#FFFEFE"] forState:UIControlStateNormal];
     CATransition *transition=[CATransition animation];
     transition.duration=0.3f;
     transition.fillMode=kCAFillRuleNonZero;
@@ -168,8 +177,9 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
-        [graph applyTheme:theme];
+        //CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
+        //[graph applyTheme:theme];
+        graph.fill=[CPTFill fillWithImage:[CPTImage imageWithCGImage:[UIImage imageNamed:@"discountBack"].CGImage]];
         
         hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(20,80,SCREEN_WIDTH-20,180) ];
         [self.view addSubview:hostView];
@@ -212,8 +222,11 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             NSString *volume=[NSString stringWithFormat:@"%@",[info objectForKey:@"volume"]==nil?@"":[info objectForKey:@"volume"]];
             NSString *indicator=[NSString stringWithFormat:@"昨开盘:%@ 昨收盘:%@ 最高价:%@ 最低价:%@ 成交量:%@",open,close,high,low,volume];
             [titleLabel setText:indicator];
+            
             self.dateArr=[Utiles sortDateArr:self.chartData];
             self.daHonDataDic=[resObj objectForKey:@"dahonData"];
+            self.gooGuuDataDic=[resObj objectForKey:@"googuuData"];
+            
             NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
             for(int i=0;i<[self.dateArr count];i++){
                 [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
@@ -229,8 +242,23 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
                 }
                 
             }
-            self.indexDateMap=tempMap;
-            self.daHonIndexSets=[self.indexDateMap allKeys];
+            self.daHonIndexDateMap=tempMap;
+            self.daHonIndexSets=[self.daHonIndexDateMap allKeys];
+            
+            NSMutableDictionary *tempMap2=[[NSMutableDictionary alloc] init];
+            NSMutableArray *scoreCounter2=[[NSMutableArray alloc] init];
+            for(id key in self.gooGuuDataDic){
+                if([tempDic objectForKey:key]){
+                    [tempMap2 setValue:key forKey:[tempDic objectForKey:key]];
+                    [scoreCounter2 addObject:[tempDic objectForKey:key]];
+                }else{
+                    [tempMap2 setValue:key forKey:[NSString stringWithFormat:@"%d",[[scoreCounter2 lastObject] integerValue]+1]];
+                }
+                
+            }
+            self.gooGuuIndexDateMap=tempMap2;
+            self.gooGuuIndexSets=[self.gooGuuIndexDateMap allKeys];
+            
             int count=[self.dateArr count];
             XRANGEBEGIN=count-269;
             XRANGELENGTH=269;
@@ -238,6 +266,8 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             SAFE_RELEASE(tempDic);
             SAFE_RELEASE(tempMap);
             SAFE_RELEASE(scoreCounter);
+            SAFE_RELEASE(tempMap2);
+            SAFE_RELEASE(scoreCounter2);
             SAFE_RELEASE(formatter);
     }
     @catch (NSException *exception) {
@@ -275,7 +305,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
         YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] doubleValue];
         YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] doubleValue];
         plotSpace.globalYRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(YRANGEBEGIN) length:CPTDecimalFromDouble(YRANGELENGTH)];
-        //plotSpace.globalXRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(130) length:CPTDecimalFromDouble(-300)];
+        plotSpace.globalXRange=[CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(-30) length:CPTDecimalFromDouble(300)];
         DrawXYAxisWithoutXAxisOrYAxis;
         [graph reloadData];
     }
@@ -311,7 +341,12 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
         }else{
             count=0;
         }
-        count= [self.daHonIndexSets count];
+    }else if([(NSString *)plot.identifier isEqualToString:GOOGUU_DATALINE_IDENTIFIER]){
+        if(self.gooGuuIndexSets){
+            count=[self.gooGuuIndexSets count];
+        }else{
+            count=0;
+        }
     }
     return count;
 }
@@ -351,6 +386,22 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             }
         }
     
+    }else if([(NSString *)plot.identifier isEqualToString:GOOGUU_DATALINE_IDENTIFIER]){
+        if(index<[self.gooGuuIndexSets count]){
+            @try {
+                NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
+                NSInteger trueIndex=[[self.gooGuuIndexSets objectAtIndex:index] intValue];
+                if([key isEqualToString:@"x"]){
+                    num=[NSNumber numberWithInt:trueIndex];
+                }else if([key isEqualToString:@"y"]){
+                    num=[[self.chartData valueForKey:[self.dateArr objectAtIndex:trueIndex]] objectForKey:@"close"];
+                }
+            }
+            @catch (NSException *exception) {
+                NSLog(@"%@",exception);
+            }
+        }
+        
     }
     return  num;
 }
@@ -359,7 +410,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 #pragma mark Scatter Plot Methods Delegate
 -(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx{
     NSNumber *trueIndex=[NSNumber numberWithInt:[[self.daHonIndexSets objectAtIndex:idx] intValue]];
-    NSString *date=[self.indexDateMap objectForKey:trueIndex];
+    NSString *date=[self.daHonIndexDateMap objectForKey:trueIndex];
     id data=[self.daHonDataDic objectForKey:date];
     NSString *msg=[[NSString alloc] init];
     for(id obj in data){
@@ -486,23 +537,42 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     daHonLinePlot.dataSource=self;
     daHonLinePlot.delegate=self;
     
+    gooGuuLinePlot=[[CPTScatterPlot alloc] init];
+    lineStyle.miterLimit=0.0f;
+    lineStyle.lineWidth=0.0f;
+    lineStyle.lineColor=[CPTColor clearColor];
+    gooGuuLinePlot.dataLineStyle=lineStyle;
+    gooGuuLinePlot.identifier=GOOGUU_DATALINE_IDENTIFIER;
+    gooGuuLinePlot.labelOffset=5;
+    gooGuuLinePlot.dataSource=self;
+    gooGuuLinePlot.delegate=self;
+    
     CPTMutableLineStyle * symbolLineStyle = [CPTMutableLineStyle lineStyle];
     symbolLineStyle.lineColor = [CPTColor colorWithComponentRed:102/255.0 green:204/255.0 blue:255/255.0 alpha:0.5];
     symbolLineStyle.lineWidth = 2.0;
     
     CPTPlotSymbol * plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-    plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:226/255.0 green:93/255.0 blue:31/255.0 alpha:0.5]];
+    plotSymbol.fill          = [CPTFill fillWithColor: [CPTColor colorWithComponentRed:226/255.0 green:93/255.0 blue:31/255.0 alpha:0.7]];
     plotSymbol.lineStyle     = symbolLineStyle;
     plotSymbol.size          = CGSizeMake(20, 20);
     
     daHonLinePlot.plotSymbol = plotSymbol;
     
+    plotSymbol = [CPTPlotSymbol trianglePlotSymbol];
+    plotSymbol.lineStyle     = symbolLineStyle;
+    symbolLineStyle.lineWidth = 0.0;
+    plotSymbol.fill          = [CPTFill fillWithColor:[Utiles cptcolorWithHexString:@"#b2f7b2" andAlpha:0.7]];
+    plotSymbol.size          = CGSizeMake(17, 17);
+    gooGuuLinePlot.plotSymbol=plotSymbol;
+    
     historyLinePlot.opacity = 0.0f;
     daHonLinePlot.opacity = 0.0f;
+    gooGuuLinePlot.opacity=0.0f;
     [self lineShowWithAnimation];
    
     [graph addPlot:historyLinePlot];
     [graph addPlot:daHonLinePlot];
+    [graph addPlot:gooGuuLinePlot];
 
 }
 -(void)lineShowWithAnimation{
@@ -513,6 +583,7 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
     [daHonLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
     [historyLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
+    [gooGuuLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
 }
 
 - (void)didReceiveMemoryWarning

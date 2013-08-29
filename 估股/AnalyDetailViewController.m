@@ -9,6 +9,7 @@
 #import "AnalyDetailViewController.h"
 #import "UILabel+VerticalAlign.h"
 #import "PrettyToolbar.h"
+#import "XYZAppDelegate.h"
 #import "AnalyDetailContainerViewController.h"
 
 @interface AnalyDetailViewController ()
@@ -55,10 +56,19 @@
     
     [self.view setBackgroundColor:[UIColor grayColor]];
     top=[[PrettyToolbar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,44)];
-    UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
+    UIBarButtonItem *back=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
     myToolBarItems=[[NSMutableArray alloc] init];
     [myToolBarItems addObject:back];
     [top setItems:myToolBarItems];
+    UILabel *companyNameLabel=[[UILabel alloc] initWithFrame:CGRectMake(60, 0, 200, 40)];
+    [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#E27A24"]];
+    XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
+    id comInfo=delegate.comInfo;
+    [companyNameLabel setText:[comInfo objectForKey:@"companyname"]];
+    [companyNameLabel setTextAlignment:NSTextAlignmentCenter];
+    [companyNameLabel setTextColor:[UIColor whiteColor]];
+    [top addSubview:companyNameLabel];
+    SAFE_RELEASE(companyNameLabel);
     [self.view addSubview:top];
     [back release];
     [top release];

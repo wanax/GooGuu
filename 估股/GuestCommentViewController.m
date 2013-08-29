@@ -107,8 +107,8 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor redColor]];
     
-    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,383)];
-    [self.table setBackgroundColor:[Utiles colorWithHexString:@"#F3EFE1"]];
+    self.table=[[UITableView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,388)];
+    [self.table setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     self.table.delegate=self;
     self.table.dataSource=self;
     
@@ -161,11 +161,7 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 #pragma mark -
 #pragma mark Table Data Source Methods
@@ -294,7 +290,11 @@
 
 
 
-
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 
 

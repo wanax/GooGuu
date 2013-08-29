@@ -8,6 +8,7 @@
 
 #import "AddCommentViewController.h"
 #import "AFImageRequestOperation.h"
+#import "UIButton+BGColor.h"
 
 @interface AddCommentViewController ()
 
@@ -45,9 +46,12 @@
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#EFEBD9"]];
     if(self.type==CompanyType||self.type==ArticleType){
         UIButton *back=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-        back.frame=CGRectMake(30,150,60,40);
-        [back setTitle:@"取消" forState:UIControlStateNormal];
-        back.tintColor=[UIColor blackColor];
+        [back setFrame:CGRectMake(30,150,50,30)];
+        [back setTitle:@"返回" forState:UIControlStateNormal];
+        [back setBackgroundColor:[UIColor clearColor]];
+        [back.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:13.0]];
+        [back setBackgroundImage:[UIImage imageNamed:@"resetBt"] forState:UIControlStateNormal];
+        [back setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [back addTarget:self action:@selector(btClick:) forControlEvents:UIControlEventTouchDown];
         [self.view addSubview:back];
     }

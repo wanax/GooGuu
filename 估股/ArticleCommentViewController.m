@@ -63,11 +63,17 @@
             UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
             [self.parentViewController.navigationItem setRightBarButtonItem:wanSay animated:YES];
             
-        }else{
+        }else if(self.type==StockCompany){
             NSAssert(self.type==StockCompany,@"Analy Report");
-            UIBarButtonItem *wanSay=[[UIBarButtonItem alloc] initWithTitle:@"添加评论" style:UIBarButtonItemStyleBordered target:self action:@selector(wanSay:)];
+            
+            UIButton *wanSay= [[UIButton alloc] initWithFrame:CGRectMake(280, 10.0, 40, 30.0)];
+            [wanSay setImage:[UIImage imageNamed:@"addComment"] forState:UIControlStateNormal];
+            [wanSay addTarget:self action:@selector(wanSay:) forControlEvents:UIControlEventTouchUpInside];
+            UIBarButtonItem *nextStepBarBtn = [[UIBarButtonItem alloc] initWithCustomView:wanSay];
+            [nextStepBarBtn setWidth:425];
+            
             NSMutableArray *arr=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController myToolBarItems];
-            [arr addObject:wanSay];
+            [arr addObject:nextStepBarBtn];
             
             PrettyToolbar *toolBar=[(AnalyDetailViewController *)self.parentViewController.parentViewController.parentViewController top];
             [toolBar setItems:[NSArray arrayWithArray:arr] animated:YES];

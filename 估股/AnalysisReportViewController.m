@@ -127,7 +127,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    return 86.0;
+    return 71.0;
 
 }
 
@@ -161,18 +161,13 @@
     
     cell.title=[model objectForKey:@"title"];
     [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
-    cell.titleLabel.font=[UIFont fontWithName:@"Heiti SC" size:14.0f];
     cell.content=[model objectForKey:@"brief"];
-    cell.contentLabel.font=[UIFont fontWithName:@"Heiti SC" size:12.0f];
     cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
-    UIView *backView=[[UIView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
-    backView.backgroundColor=[Utiles colorWithHexString:@"#F3EFE1"];
-    [cell setBackgroundView:backView];
-    [backView release];backView=nil;
-    
-    [cell setBackgroundColor:[Utiles colorWithHexString:@"#FEF8F8"]];
-    
-    
+    UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,71)];
+    [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
+    [cell setBackgroundView:bgImgView];
+    SAFE_RELEASE(bgImgView);
+ 
     return cell;
 
     
@@ -208,7 +203,6 @@
     //[self.navigationController pushViewController:container animated:YES];
     [self presentViewController:detail animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [detail release];
     
     [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.analyReportList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];

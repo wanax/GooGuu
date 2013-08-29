@@ -84,6 +84,7 @@
     search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,35)];
     [[self.search.subviews objectAtIndex:0] removeFromSuperview];
     self.search.backgroundColor = [UIColor grayColor];
+    [self.search setPlaceholder:@"输入股票代码/名称"];
     search.delegate=self;
     
     IndicatorComView *indicator=[[IndicatorComView alloc] init];
@@ -376,9 +377,7 @@
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     if(!isSearchList){
-        CompanyListViewController *searchList=[[CompanyListViewController alloc] init];
-        searchList.isSearchList=YES;
-        searchList.type=ALL;
+        StockSearchListViewController *searchList=[[StockSearchListViewController alloc] init];
         [self.navigationController pushViewController:searchList animated:YES];
         SAFE_RELEASE(searchList);
         [search resignFirstResponder];

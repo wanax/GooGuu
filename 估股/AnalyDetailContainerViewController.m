@@ -43,7 +43,7 @@
 	// Do any additional setup after loading the view.
     GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
     articleViewController.articleId=self.articleId;
-    articleViewController.title=@"研究报告";
+    articleViewController.title=@"公司简报";
     ArticleCommentViewController *articleCommentViewController=[[ArticleCommentViewController alloc] init];
     articleCommentViewController.articleId=self.articleId;
     articleCommentViewController.title=@"评论";

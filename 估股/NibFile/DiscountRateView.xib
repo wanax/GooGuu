@@ -90,7 +90,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{422, 210}, {19, 18}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -741,7 +740,7 @@
 				<reference key="NSNextKeyView" ref="570339637"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC45NjQ3MDU4ODI0IDAuOTQ5MDE5NjA3OCAwLjkwNTg4MjM1MjkAA</bytes>
+					<bytes key="NSRGB">MC45NjQ3MDU4ODI0IDAuOTQ1MDk4MDM5MiAwLjkwMTk2MDc4NDMAA</bytes>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">

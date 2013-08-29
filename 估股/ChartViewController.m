@@ -72,6 +72,7 @@
 @synthesize priceLabel;
 @synthesize myGGpriceLabel;
 @synthesize saveBt;
+@synthesize discountBt;
 
 
 static NSString * FORECAST_DATALINE_IDENTIFIER =@"forecast_dataline_identifier";
@@ -82,6 +83,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 - (void)dealloc
 {
+    SAFE_RELEASE(discountBt);
     SAFE_RELEASE(changedDriverIds);
     SAFE_RELEASE(saveBt);
     SAFE_RELEASE(myGGpriceLabel);
@@ -127,6 +129,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)addDiscountView{
     if(!isShowDiscountView){
         isShowDiscountView=YES;
+        [self.discountBt setEnabled:NO];
         [self.view addSubview:self.rateViewController.view];
         CATransition *transition=[CATransition animation];
         transition.duration=0.1f;
@@ -139,6 +142,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 -(void)removeDiscountView{
     if(isShowDiscountView){
         isShowDiscountView=NO;
+        [self.discountBt setEnabled:YES];
         CATransition *transition=[CATransition animation];
         transition.duration=0.1f;
         transition.delegate=self;
@@ -171,7 +175,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     linkage=YES;
     _isSaved=YES;
     webIsLoaded=NO;
-    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
+    [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F6F1E6"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
     self.changedDriverIds=[[NSMutableArray alloc] init];
@@ -199,10 +203,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     //初始化图形视图
     @try {
         graph=[[CPTXYGraph alloc] initWithFrame:CGRectZero];
-        CPTTheme *theme=[CPTTheme themeNamed:kCPTPlainWhiteTheme];
-        [graph applyTheme:theme];
-        
-        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,SCREEN_WIDTH,280) ];
+        graph.fill=[CPTFill fillWithImage:[CPTImage imageWithCGImage:[UIImage imageNamed:@"discountBack"].CGImage]];
+        //graph.cornerRadius  = 5.0f;
+        hostView=[[ CPTGraphHostingView alloc ] initWithFrame :CGRectMake(0,40,SCREEN_WIDTH,270) ];
         [self.view addSubview:hostView];
         [hostView setHostedGraph : graph ];
     }
@@ -237,9 +240,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     [tool addButtonToView:self.view withTitle:@"运营资本" Tag:OperaCap frame:CGRectMake(277,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"mainFeeBt" highBackGroundImg:@"selectedMainfee"];
 
-    [tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(377,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"discountBt" highBackGroundImg:@"selectedDiscount"];
+    self.discountBt=[tool addButtonToView:self.view withTitle:@"折现率" Tag:DiscountRate frame:CGRectMake(377,5,100,31) andFun:@selector(selectIndustry:forEvent:) withType:UIButtonTypeRoundedRect andColor:@"#FFFEFE" textColor:@"#000000" normalBackGroundImg:@"discountBt" highBackGroundImg:@"selectedDiscount"];
 
-    [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(10,5,50,32) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:nil textColor:@"#000000" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
+    [tool addButtonToView:self.view withTitle:@"返回" Tag:BackToSuperView frame:CGRectMake(10,5,50,32) andFun:@selector(chartAction:) withType:UIButtonTypeCustom andColor:nil textColor:@"#FFFEFE" normalBackGroundImg:@"backBt" highBackGroundImg:nil];
   
     saveBt=[tool addButtonToView:self.view withTitle:@"保存" Tag:SaveData frame:CGRectMake(418,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#d0d1d2" textColor:@"#FFFEFE" normalBackGroundImg:@"saveBt" highBackGroundImg:nil];
 
@@ -250,12 +253,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     //公司名称label
     CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:14.0];
     //公司股票行业label
-    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] font:@"Heiti SC" fontSize:11.0];
+    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@.%@)",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] font:@"Heiti SC" fontSize:11.0];
     float maxWidthLenght=MAX(labelsize1.width,labelsize2.width);
     
     [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(labelsize1.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize1.width)/2,45,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@%@)",[comInfo objectForKey:@"marketname"],[comInfo objectForKey:@"stockcode"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@.%@)",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setPositiveFormat:@"###0.##"];
@@ -263,18 +266,19 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     CGFloat companyNameLabelLenght=maxWidthLenght+10;
     //估值label
-    CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估值:HK$" font:@"Heiti SC" fontSize:10.0];
+    CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估股估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //估值数值label
-    NSString *defaultGprice=[ggPrice mutableCopy];
-    CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:defaultGprice font:@"Heiti SC" fontSize:13.0];
-    [tool addLabelToView:self.view withTitle:@"估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    NSString *defaultGprice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]];
+    CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:defaultGprice font:@"Heiti SC" fontSize:10.0];
+    [tool addLabelToView:self.view withTitle:@"估股估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
-    [tool addLabelToView:self.view withTitle:defaultGprice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:13.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
+    [tool addLabelToView:self.view withTitle:defaultGprice Tag:11 frame:CGRectMake(companyNameLabelLenght+defaultGGpriceLabelSize.width+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height+defaultGGpriceLabelSize.height-defaultPriceLabelSize.height,defaultPriceLabelSize.width,defaultPriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#e18e14" location:NSTextAlignmentLeft];
 
     //我的估值label
     CGSize myGGpriceLabelSize=[tool getLabelSizeFromString:@"我的估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //我的估值数值label
     CGSize priceLabelSize=[tool getLabelSizeFromString:ggPrice font:@"Heiti SC" fontSize:13.0];
+    priceLabelSize.width=priceLabelSize.width+10;
     CGFloat priceLabelTap=300-myGGpriceLabelSize.width-priceLabelSize.width-5;
     
     myGGpriceLabel=[tool addLabelToView:self.view withTitle:@"我的估值:HK$" Tag:11 frame:CGRectMake(priceLabelTap,63,myGGpriceLabelSize.width+3,myGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
@@ -334,6 +338,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
             [self.forecastPoints addObject:[obj mutableCopy]];
         }
         [[self.hisPoints lastObject] setObject:[[self.forecastDefaultPoints objectAtIndex:0] objectForKey:@"v"] forKey:@"v"];
+        [self addToDriverIds:globalDriverId];
         [self setStockPrice];
         [self setXYAxis];
     }else if(bt.tag==BackToSuperView){
@@ -894,7 +899,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        self.hostView.frame=CGRectMake(0,80,SCREEN_HEIGHT,230);
+        self.hostView.frame=CGRectMake(5,80,SCREEN_HEIGHT-10,210);
     }
 }
 

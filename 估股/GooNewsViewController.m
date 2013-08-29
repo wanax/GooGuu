@@ -267,7 +267,7 @@
         cell.contentLabel.text=[model objectForKey:@"concise"];
         cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
         
-        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,86)];
+        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,71)];
         if(readingMarksDic){
             if ([[readingMarksDic allKeys] containsObject:[model objectForKey:@"title"]]) {
                 [bgImgView setImage:nil];
