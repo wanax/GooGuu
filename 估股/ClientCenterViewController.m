@@ -64,24 +64,22 @@
     if([Utiles isLogin]){
         
         logoutBt.hidden=NO;
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [Utiles getUserToken], @"token",@"googuu",@"from",
-                                nil];
+        NSDictionary *params = @{@"token": [Utiles getUserToken],@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"UserInfo" andParams:params besidesBlock:^(id resObj){
-           if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
-               id userInfo=[resObj objectForKey:@"data"];
-               [userNameLabel setText:[userInfo objectForKey:@"nickname"]];
-               [userIdLabel setText:[userInfo objectForKey:@"userid"]];
-               [favoriteLabel setText:[Utiles isBlankString:[userInfo objectForKey:@"favorite"]]?@"":[userInfo objectForKey:@"favorite"]];
-               [tradeLabel setText:[Utiles isBlankString:[userInfo objectForKey:@"trade"]]?@"":[userInfo objectForKey:@"trade"]];
+           if(![resObj[@"status"] isEqualToString:@"0"]){
+               id userInfo=resObj[@"data"];
+               [userNameLabel setText:userInfo[@"nickname"]];
+               [userIdLabel setText:userInfo[@"userid"]];
+               [favoriteLabel setText:[Utiles isBlankString:userInfo[@"favorite"]]?@"":userInfo[@"favorite"]];
+               [tradeLabel setText:[Utiles isBlankString:userInfo[@"trade"]]?@"":userInfo[@"trade"]];
                NSDateFormatter *date=[[NSDateFormatter alloc] init];
                [date setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-               NSDate *d=[date dateFromString:[userInfo objectForKey:@"regtime"]];
+               NSDate *d=[date dateFromString:userInfo[@"regtime"]];
                [date setDateFormat:@"yyyy-MM-dd"];
                [regtimeLabel setText:[date stringFromDate:d]];
                SAFE_RELEASE(date);
            }else{
-               [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+               [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
            }
             
             
@@ -117,20 +115,18 @@
     NSString *token= [Utiles getUserToken];
     if(token){
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                token, @"token",@"googuu",@"from",
-                                nil];
+        NSDictionary *params = @{@"token": token,@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"LogOut" andParams:params besidesBlock:^(id info){
            
-            if([[info objectForKey:@"status"] isEqualToString:@"1"]){
+            if([info[@"status"] isEqualToString:@"1"]){
                 NSLog(@"logout success");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LogOut" object:nil];
                 logoutBt.hidden=YES;
                 userNameLabel.text=@"";
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserToken"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserInfo"];
-            }else if([[info objectForKey:@"status"] isEqualToString:@"0"]){
-                NSLog(@"logout failed:%@",[info objectForKey:@"msg"]);
+            }else if([info[@"status"] isEqualToString:@"0"]){
+                NSLog(@"logout failed:%@",info[@"msg"]);
             }
             
         }];

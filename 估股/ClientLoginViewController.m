@@ -97,17 +97,17 @@
         //NSString *name=@"mxchenry@163.com";
         //NSString *pwd=@"123456";
         
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[name lowercaseString],@"username",[Utiles md5:pwd],@"password",@"googuu",@"from", nil];
+        NSDictionary *params=@{@"username": [name lowercaseString],@"password": [Utiles md5:pwd],@"from": @"googuu"};
         [Utiles getNetInfoWithPath:@"Login" andParams:params besidesBlock:^(id info){
 
-            if([[info objectForKey:@"status"] isEqualToString:@"1"]){
+            if([info[@"status"] isEqualToString:@"1"]){
              
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginKeeping" object:nil];
-                [[NSUserDefaults standardUserDefaults] setObject:[info objectForKey:@"token"] forKey:@"UserToken"];
-                NSDictionary *userInfo=[NSDictionary dictionaryWithObjectsAndKeys:name,@"username",pwd,@"password", nil];
+                [[NSUserDefaults standardUserDefaults] setObject:info[@"token"] forKey:@"UserToken"];
+                NSDictionary *userInfo=@{@"username": name,@"password": pwd};
                 [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"UserInfo"];
                 
-                NSLog(@"%@",[info objectForKey:@"token"]);
+                NSLog(@"%@",info[@"token"]);
                 isGoIn=YES;
                 [self viewDisMiss];
                 [textField resignFirstResponder];
@@ -122,7 +122,7 @@
                     }
                 }
             }else {
-                NSLog(@"%@",[info objectForKey:@"msg"]);
+                NSLog(@"%@",info[@"msg"]);
             }
             
         }];

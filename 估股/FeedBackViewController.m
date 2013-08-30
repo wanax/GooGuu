@@ -45,9 +45,9 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:textField.text,@"content",nil];
+    NSDictionary *params=@{@"content": textField.text};
     [Utiles postNetInfoWithPath:@"FeedBack" andParams:params besidesBlock:^(id obj){
-        if([[obj objectForKey:@"status"] isEqualToString:@"1"]){
+        if([obj[@"status"] isEqualToString:@"1"]){
             [self.navigationController popViewControllerAnimated:YES];
         }else{
             [Utiles ToastNotification:@"发布失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];

@@ -94,7 +94,7 @@
 - (void) setTitles:(NSArray *)titles {
     self.numberOfElements = [titles count];
     for (int i = 0; i < self.numberOfElements; i++) {
-        [self setText:[titles objectAtIndex:i] atIndex:i];
+        [self setText:titles[i] atIndex:i];
     }
     [self restartSelectedIndex];
 }

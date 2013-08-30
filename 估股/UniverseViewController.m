@@ -86,7 +86,7 @@
 -(NSUInteger)supportedInterfaceOrientations{
     
     if([[self childViewControllers] count]>0){
-        return [[self.childViewControllers objectAtIndex:0] supportedInterfaceOrientations];
+        return [(self.childViewControllers)[0] supportedInterfaceOrientations];
     }else{
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
@@ -95,7 +95,7 @@
 - (BOOL)shouldAutorotate
 {
     if([[self childViewControllers] count]>0){
-        return [[self.childViewControllers objectAtIndex:0] shouldAutorotate];
+        return [(self.childViewControllers)[0] shouldAutorotate];
     }else{
         return NO;
     }

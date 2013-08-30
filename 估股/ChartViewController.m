@@ -251,24 +251,24 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [tool addButtonToView:self.view withTitle:@"复位" Tag:ResetChart frame:CGRectMake(359,47,54,26) andFun:@selector(chartAction:) withType:UIButtonTypeRoundedRect andColor:@"#2bc0a7" textColor:@"#FFFEFE" normalBackGroundImg:@"resetBt" highBackGroundImg:nil];
     
     //公司名称label
-    CGSize labelsize1 = [tool getLabelSizeFromString:[comInfo objectForKey:@"companyname"] font:@"Heiti SC" fontSize:14.0];
+    CGSize labelsize1 = [tool getLabelSizeFromString:comInfo[@"companyname"] font:@"Heiti SC" fontSize:14.0];
     //公司股票行业label
-    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@.%@)",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] font:@"Heiti SC" fontSize:11.0];
+    CGSize labelsize2 = [tool getLabelSizeFromString:[NSString stringWithFormat:@"(%@.%@)",comInfo[@"stockcode"],comInfo[@"marketname"]] font:@"Heiti SC" fontSize:11.0];
     float maxWidthLenght=MAX(labelsize1.width,labelsize2.width);
     
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companyname"]] Tag:0 frame:CGRectMake(labelsize1.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize1.width)/2,45,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",comInfo[@"companyname"]] Tag:0 frame:CGRectMake(labelsize1.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize1.width)/2,45,labelsize1.width,labelsize1.height) fontSize:14.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@.%@)",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"(%@.%@)",comInfo[@"stockcode"],comInfo[@"marketname"]] Tag:0 frame:CGRectMake(labelsize2.width==maxWidthLenght?10:10+(maxWidthLenght-labelsize2.width)/2,48+labelsize2.height,labelsize2.width,labelsize2.height) fontSize:11.0 color:@"#F2EFE1" textColor:@"#63573d" location:NSTextAlignmentLeft];
     
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setPositiveFormat:@"###0.##"];
-    NSString *ggPrice=[NSString stringWithFormat:@"%@",[numberFormatter stringFromNumber:[NSNumber numberWithFloat:[[comInfo objectForKey:@"googuuprice"] floatValue]]]];
+    NSString *ggPrice=[NSString stringWithFormat:@"%@",[numberFormatter stringFromNumber:@([comInfo[@"googuuprice"] floatValue])]];
 
     CGFloat companyNameLabelLenght=maxWidthLenght+10;
     //估值label
     CGSize defaultGGpriceLabelSize=[tool getLabelSizeFromString:@"估股估值:HK$" font:@"Heiti SC" fontSize:10.0];
     //估值数值label
-    NSString *defaultGprice=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]];
+    NSString *defaultGprice=[NSString stringWithFormat:@"%@",comInfo[@"marketprice"]];
     CGSize defaultPriceLabelSize=[tool getLabelSizeFromString:defaultGprice font:@"Heiti SC" fontSize:10.0];
     [tool addLabelToView:self.view withTitle:@"估股估值:HK$" Tag:11 frame:CGRectMake(companyNameLabelLenght+8,40+(40+labelsize1.height)/2-defaultGGpriceLabelSize.height,defaultGGpriceLabelSize.width,defaultGGpriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
@@ -289,8 +289,8 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [tool addLabelToView:self.view withTitle:@"市场价:HK$" Tag:11 frame:CGRectMake(priceLabelTap,45,markPriceLabelSize.width,markPriceLabelSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
     //市场价数值label
-    CGSize markPriceSize=[tool getLabelSizeFromString:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] font:@"Heiti SC" fontSize:10.0];
-    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"marketprice"]] Tag:11 frame:CGRectMake(priceLabelTap+markPriceLabelSize.width,45,markPriceSize.width,markPriceSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
+    CGSize markPriceSize=[tool getLabelSizeFromString:[NSString stringWithFormat:@"%@",comInfo[@"marketprice"]] font:@"Heiti SC" fontSize:10.0];
+    [tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@",comInfo[@"marketprice"]] Tag:11 frame:CGRectMake(priceLabelTap+markPriceLabelSize.width,45,markPriceSize.width,markPriceSize.height) fontSize:10.0 color:@"#F2EFE1" textColor:@"#817a6b" location:NSTextAlignmentLeft];
     
     [self addScatterChart];
     SAFE_RELEASE(topBar);
@@ -307,15 +307,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
         id combinedData=[DrawChartTool changedDataCombinedWebView:self.webView comInfo:comInfo ggPrice:self.priceLabel.text dragChartChangedDriverIds:self.changedDriverIds disCountIsChanged:self.disCountIsChanged];
         
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[combinedData JSONString],@"data", nil];
+        NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu",@"data": [combinedData JSONString]};
         [Utiles postNetInfoWithPath:@"AddModelData" andParams:params besidesBlock:^(id resObj){
-            if([[resObj objectForKey:@"status"] isEqual:@"1"]){
+            if([resObj[@"status"] isEqual:@"1"]){
                 [bt setBackgroundImage:[UIImage imageNamed:@"savedBt"] forState:UIControlStateNormal];
                 [bt setEnabled:NO];
                 _isSaved=YES;
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-            }else if([[resObj objectForKey:@"status"] isEqual:@"2"]){
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            }else if([resObj[@"status"] isEqual:@"2"]){
+                [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }else{
                 [Utiles ToastNotification:@"保存失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
@@ -337,7 +337,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         for(id obj in self.forecastDefaultPoints){
             [self.forecastPoints addObject:[obj mutableCopy]];
         }
-        [[self.hisPoints lastObject] setObject:[[self.forecastDefaultPoints objectAtIndex:0] objectForKey:@"v"] forKey:@"v"];
+        [self.hisPoints lastObject][@"v"] = (self.forecastDefaultPoints)[0][@"v"];
         [self addToDriverIds:globalDriverId];
         [self setStockPrice];
         [self setXYAxis];
@@ -385,7 +385,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     webIsLoaded=YES;
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    NSDictionary *params=@{@"stockCode": comInfo[@"stockcode"]};
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
         self.jsonForChart=[resObj JSONString];
@@ -396,7 +396,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         
 
         if(self.sourceType==MySavedType){
-            [self adjustChartDataForSaved:[comInfo objectForKey:@"stockcode"] andToken:[Utiles getUserToken]];
+            [self adjustChartDataForSaved:comInfo[@"stockcode"] andToken:[Utiles getUserToken]];
         }
         self.industryClass=resTmp;
         id transObj=resTmp;
@@ -408,7 +408,7 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         self.modelCapViewController.indicator=@"listCap";
 
         if(globalDriverId==0){
-            globalDriverId=[[[self.industryClass objectForKey:@"listMain"] objectAtIndex:0] objectForKey:@"id"];
+            globalDriverId=(self.industryClass)[@"listMain"][0][@"id"];
         }
         [self modelClassChanged:globalDriverId];
         
@@ -435,9 +435,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     [self divideData:chartData];
   
-    self.yAxisUnit=[chartData objectForKey:@"unit"];
-    NSDictionary *pointData=[Utiles unitConversionData:[[[self.forecastPoints objectAtIndex:0] objectForKey:@"v"] stringValue] andUnit:self.yAxisUnit];
-    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",[chartData objectForKey:@"title"],[pointData objectForKey:@"unit"]];
+    self.yAxisUnit=chartData[@"unit"];
+    NSDictionary *pointData=[Utiles unitConversionData:[(self.forecastPoints)[0][@"v"] stringValue] andUnit:self.yAxisUnit];
+    graph.title=[NSString stringWithFormat:@"%@(单位:%@)",chartData[@"title"],pointData[@"unit"]];
     [self setXYAxis];
     [self setStockPrice];
 }
@@ -450,20 +450,20 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     [self.forecastPoints removeAllObjects];
     //构造折点数据键值对 key：年份 value：估值 方便后面做临近折点的判断
     NSMutableDictionary *mutableObj=nil;
-    for(id obj in [sourceData objectForKey:@"array"]){
+    for(id obj in sourceData[@"array"]){
         mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
-        if([[mutableObj objectForKey:@"h"] boolValue]){
+        if([mutableObj[@"h"] boolValue]){
             [self.hisPoints addObject:mutableObj];
         }else{
             [self.forecastDefaultPoints addObject:[[mutableObj mutableCopy] autorelease]];
         }
     }
-    for(id obj in [sourceData objectForKey:@"arraynew"]){
+    for(id obj in sourceData[@"arraynew"]){
         mutableObj=[[NSMutableDictionary alloc] initWithDictionary:obj];
         [self.forecastPoints addObject:mutableObj];
     }
     //历史数据与预测数据线拼接
-    [self.hisPoints addObject:[self.forecastPoints objectAtIndex:0]];
+    [self.hisPoints addObject:(self.forecastPoints)[0]];
     //[self.forecastPoints insertObject:[self.hisPoints lastObject] atIndex:0];
     //[self.forecastDefaultPoints insertObject:[self.forecastPoints objectAtIndex:0] atIndex:0];
     SAFE_RELEASE(mutableObj);
@@ -472,15 +472,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
 
     
 -(void)adjustChartDataForSaved:(NSString *)stockCode andToken:(NSString*)token{
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode",token,@"token",@"googuu",@"from", nil];
+    NSDictionary *params=@{@"stockcode": stockCode,@"token": token,@"from": @"googuu"};
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
         if(resObj!=nil){
-            id saveData=[resObj objectForKey:@"data"];
+            id saveData=resObj[@"data"];
             modelMainViewController.savedData=saveData;
             modelCapViewController.savedData=saveData;
             modelFeeViewController.savedData=saveData;
             for(id data in saveData){
-                id tempChartData=[data objectForKey:@"data"];
+                id tempChartData=data[@"data"];
                 NSString *chartStr=[tempChartData JSONString];
                 chartStr=[chartStr stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
                 [Utiles getObjectDataFromJsFun:self.webView funName: @"chartCalu" byData:chartStr shouldTrans:NO];
@@ -518,15 +518,15 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if(tapGr.state==UIGestureRecognizerStateBegan){
         [self.standard removeAllObjects];
         for(id obj in self.forecastPoints){
-            [self.standard addObject:[obj objectForKey:@"v"]];
+            [self.standard addObject:obj[@"v"]];
         }
         
     }else if(tapGr.state==UIGestureRecognizerStateEnded){
         [self.standard removeAllObjects];
         
         for(id obj in self.forecastPoints){
-            double v = [[obj objectForKey:@"v"] doubleValue];
-            [self.standard addObject:[NSNumber numberWithDouble:v]];
+            double v = [obj[@"v"] doubleValue];
+            [self.standard addObject:@(v)];
         }
         //结束拖动重绘坐标轴 适应新尺寸
         [self setXYAxis];
@@ -535,24 +535,23 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     if([tapGr state]==UIGestureRecognizerStateChanged){
 
         coordinate.x=(int)(coordinate.x+0.5);
-        //coordinate.x=(int)(coordinate.x+0.5);
-        
-        int subscript=coordinate.x-XRANGEBEGIN-3;
+     
+        int subscript=coordinate.x-XRANGEBEGIN-([self.hisPoints count]<3?[self.hisPoints count]:3);
         subscript=subscript<0?0:subscript;
         subscript=subscript>=[self.forecastPoints count]-1?[self.forecastPoints count]-1:subscript;
         NSAssert(subscript<=[self.forecastPoints count]-1&&coordinate.x>=0,@"over bounds");
 
-        if(linkage){            
+        if(linkage){
             double l4 = YRANGELENGTH*change.y/hostView.frame.size.height/ (1 - exp(-2));
 
-            double l7 = 2 / ([[[self.forecastPoints objectAtIndex:subscript] objectForKey:@"y"] doubleValue]);
+            double l7 = 2 / ([(self.forecastPoints)[subscript][@"y"] doubleValue]);
             int i=0;
             for(id obj in self.forecastPoints){
-                double v = [[obj objectForKey:@"v"] doubleValue];
-                v =[[self.standard objectAtIndex:i] doubleValue]- l4 * (1 - exp(-l7 * i));
-                [obj setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+                double v = [obj[@"v"] doubleValue];
+                v =[(self.standard)[i] doubleValue]- l4 * (1 - exp(-l7 * i));
+                obj[@"v"] = @(v);
                 if(i==0){
-                    [[self.hisPoints lastObject] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+                    [self.hisPoints lastObject][@"v"] = @(v);
                 }
                 i++;
             }
@@ -563,10 +562,10 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         }else{
             
             double changeD=-YRANGELENGTH*change.y/hostView.frame.size.height;
-            double v=[[self.standard objectAtIndex:subscript] doubleValue]+changeD;
-            [[self.forecastPoints objectAtIndex:subscript] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+            double v=[(self.standard)[subscript] doubleValue]+changeD;
+            (self.forecastPoints)[subscript][@"v"] = @(v);
             if(subscript==0){
-                [[self.hisPoints lastObject] setObject:[NSNumber numberWithDouble:v] forKey:@"v"];
+                [self.hisPoints lastObject][@"v"] = @(v);
             }
             [self setStockPrice];
             [graph reloadData];
@@ -616,12 +615,12 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     
     if([self.yAxisUnit isEqualToString:@"%"]){
        [formatter setPositiveFormat:@"0.0%;0.0%;-0.0%"];
-        numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[arr objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+        numberString = [formatter stringFromNumber:@([arr[index][@"v"] floatValue])];
         SAFE_RELEASE(formatter);
     }else{
-        numberString=[[[arr objectAtIndex:index] objectForKey:@"v"] stringValue];
+        numberString=[arr[index][@"v"] stringValue];
         NSDictionary *pointData=[Utiles unitConversionData:numberString andUnit:self.yAxisUnit];
-        numberString=[pointData objectForKey:@"result"];
+        numberString=pointData[@"result"];
     }
     return numberString;
 }
@@ -652,9 +651,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
    
         if([key isEqualToString:@"x"]){
-            num=[[self.hisPoints objectAtIndex:index] valueForKey:@"y"];
+            num=[(self.hisPoints)[index] valueForKey:@"y"];
         }else if([key isEqualToString:@"y"]){
-            num=[[self.hisPoints objectAtIndex:index] valueForKey:@"v"];
+            num=[(self.hisPoints)[index] valueForKey:@"v"];
         }
 
     }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DATALINE_IDENTIFIER]){
@@ -662,9 +661,9 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         
         if([key isEqualToString:@"x"]){
-            num=[[self.forecastPoints objectAtIndex:index] valueForKey:@"y"];
+            num=[(self.forecastPoints)[index] valueForKey:@"y"];
         }else if([key isEqualToString:@"y"]){
-            num=[[self.forecastPoints objectAtIndex:index] valueForKey:@"v"];
+            num=[(self.forecastPoints)[index] valueForKey:@"v"];
         }
 
     }else if([(NSString *)plot.identifier isEqualToString:FORECAST_DEFAULT_DATALINE_IDENTIFIER]){
@@ -672,17 +671,17 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         
         if([key isEqualToString:@"x"]){
-            num=[[self.forecastDefaultPoints objectAtIndex:index] valueForKey:@"y"];
+            num=[(self.forecastDefaultPoints)[index] valueForKey:@"y"];
         }else if([key isEqualToString:@"y"]){
-            num=[[self.forecastDefaultPoints objectAtIndex:index] valueForKey:@"v"];
+            num=[(self.forecastDefaultPoints)[index] valueForKey:@"v"];
         }        
     }else if([(NSString *)plot.identifier isEqualToString:COLUMNAR_DATALINE_IDENTIFIER]){
         
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         if([key isEqualToString:@"x"]){
-            num=[NSNumber numberWithDouble:[[[self.forecastPoints objectAtIndex:index] valueForKey:@"y"] doubleValue]+0.5];
+            num=@([[(self.forecastPoints)[index] valueForKey:@"y"] doubleValue]+0.5);
         }else if([key isEqualToString:@"y"]){
-            num=[[self.forecastPoints objectAtIndex:index] valueForKey:@"v"];
+            num=[(self.forecastPoints)[index] valueForKey:@"v"];
         }
         
     }
@@ -772,23 +771,23 @@ static NSString * COLUMNAR_DATALINE_IDENTIFIER =@"columnar_dataline_identifier";
     NSMutableArray *xTmp=[[NSMutableArray alloc] init];
     NSMutableArray *yTmp=[[NSMutableArray alloc] init];
     for(id obj in self.hisPoints){
-        [xTmp addObject:[obj objectForKey:@"y"]];
-        [yTmp addObject:[obj objectForKey:@"v"]];
+        [xTmp addObject:obj[@"y"]];
+        [yTmp addObject:obj[@"v"]];
     }
     for(id obj in self.forecastPoints){
-        [xTmp addObject:[obj objectForKey:@"y"]];
-        [yTmp addObject:[obj objectForKey:@"v"]];
+        [xTmp addObject:obj[@"y"]];
+        [yTmp addObject:obj[@"v"]];
     }
 
     NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp fromWhere:DragabelModel];
-    XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
-    XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
-    XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];
-    XINTERVALLENGTH=[[xyDic objectForKey:@"xInterval"] floatValue];
-    YRANGEBEGIN=[[xyDic objectForKey:@"yBegin"] floatValue];
-    YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
-    YORTHOGONALCOORDINATE=[[[self.hisPoints lastObject] objectForKey:@"y"] floatValue];
-    YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
+    XRANGEBEGIN=[xyDic[@"xBegin"] floatValue];
+    XRANGELENGTH=[xyDic[@"xLength"] floatValue];
+    XORTHOGONALCOORDINATE=[xyDic[@"xOrigin"] floatValue];
+    XINTERVALLENGTH=[xyDic[@"xInterval"] floatValue];
+    YRANGEBEGIN=[xyDic[@"yBegin"] floatValue];
+    YRANGELENGTH=[xyDic[@"yLength"] floatValue];
+    YORTHOGONALCOORDINATE=[[self.hisPoints lastObject][@"y"] floatValue];
+    YINTERVALLENGTH=[xyDic[@"yInterval"] floatValue];
     DrawXYAxis;
     SAFE_RELEASE(xTmp);
     SAFE_RELEASE(yTmp);

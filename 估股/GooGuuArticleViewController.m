@@ -69,12 +69,12 @@
     [titleLabel setText:articleTitle];
     [self.view addSubview:titleLabel];
     SAFE_RELEASE(titleLabel);
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid", nil];
+    NSDictionary *params=@{@"articleid": articleId};
     [Utiles getNetInfoWithPath:@"ArticleURL" andParams:params besidesBlock:^(id article){
 
         articleWeb=[[UIWebView alloc] initWithFrame:CGRectMake(0,40,self.view.bounds.size.width, self.view.bounds.size.height-35)];
         articleWeb.delegate=self;
-        [articleWeb loadHTMLString:[article objectForKey:@"content"] baseURL:nil];
+        [articleWeb loadHTMLString:article[@"content"] baseURL:nil];
         //articleWeb.scalesPageToFit=YES;
         [hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;

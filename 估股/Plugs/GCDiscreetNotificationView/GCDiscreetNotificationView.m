@@ -228,10 +228,10 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
         
         for (NSString* key in [self.animationDict allKeys]) {
             if (key == GCDiscreetNotificationViewActivityKey) {
-                self.showActivity = [[self.animationDict objectForKey:key] boolValue];
+                self.showActivity = [(self.animationDict)[key] boolValue];
             }
             else if (key == GCDiscreetNotificationViewTextKey) {
-                self.textLabel = [self.animationDict objectForKey:key];
+                self.textLabel = (self.animationDict)[key];
             }
         }
         
@@ -354,24 +354,24 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 
 - (void) setTextLabel:(NSString *)aText animated:(BOOL)animated {
     if (animated && (self.showing || self.animating)) {
-        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewTextKey]
-                                      values:[NSArray arrayWithObject:aText]];
+        [self changePropretyAnimatedWithKeys:@[GCDiscreetNotificationViewTextKey]
+                                      values:@[aText]];
     }
     else self.textLabel = aText;
 }
 
 - (void) setShowActivity:(BOOL)activity animated:(BOOL)animated {
     if (animated && (self.showing || self.animating)) {
-        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewActivityKey]
-                                      values:[NSArray arrayWithObject:[NSNumber numberWithBool:activity]]];
+        [self changePropretyAnimatedWithKeys:@[GCDiscreetNotificationViewActivityKey]
+                                      values:@[@(activity)]];
     }
     else self.showActivity = activity;
 }
 
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated {
     if (animated && (self.showing || self.animating)) {
-        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObjects:GCDiscreetNotificationViewTextKey, GCDiscreetNotificationViewActivityKey, nil]
-                                      values:[NSArray arrayWithObjects:aText, [NSNumber numberWithBool:activity], nil]];
+        [self changePropretyAnimatedWithKeys:@[GCDiscreetNotificationViewTextKey, GCDiscreetNotificationViewActivityKey]
+                                      values:@[aText, @(activity)]];
     }
     else {
         self.textLabel = aText;

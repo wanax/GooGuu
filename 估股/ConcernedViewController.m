@@ -144,13 +144,11 @@
 
 -(void)getComList{
    
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [Utiles getUserToken], @"token",@"googuu",@"from",
-                            nil];
+    NSDictionary *params = @{@"token": [Utiles getUserToken],@"from": @"googuu"};
     [Utiles postNetInfoWithPath:self.type andParams:params besidesBlock:^(id obj){
-        if(![[obj objectForKey:@"status"] isEqualToString:@"0"]){
+        if(![obj[@"status"] isEqualToString:@"0"]){
             @try {
-                self.comInfoList=[NSMutableArray arrayWithArray:[obj objectForKey:@"data"]];
+                self.comInfoList=[NSMutableArray arrayWithArray:obj[@"data"]];
                 [customTableView reloadData];
             }
             @catch (NSException *exception) {
@@ -158,7 +156,7 @@
             }
         
         }else{
-            [Utiles ToastNotification:[obj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            [Utiles ToastNotification:obj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             self.comInfoList=[NSMutableArray arrayWithCapacity:0];
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -210,16 +208,16 @@
     
     @try {
         NSUInteger row = [indexPath row];
-        id comInfo=[self.comInfoList objectAtIndex:row];
-        cell.name=[comInfo objectForKey:@"companyname"];
+        id comInfo=(self.comInfoList)[row];
+        cell.name=comInfo[@"companyname"];
    
-        NSNumber *gPriceStr=[comInfo objectForKey:@"googuuprice"];
+        NSNumber *gPriceStr=comInfo[@"googuuprice"];
         float g=[gPriceStr floatValue];
         cell.gPrice=[NSString stringWithFormat:@"%.2f",g];
-        NSNumber *priceStr=[comInfo objectForKey:@"marketprice"];
+        NSNumber *priceStr=comInfo[@"marketprice"];
         float p = [priceStr floatValue];
         cell.price=[NSString stringWithFormat:@"%.2f",p];
-        cell.belong=[NSString stringWithFormat:@"%@.%@",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]];
+        cell.belong=[NSString stringWithFormat:@"%@.%@",comInfo[@"stockcode"],comInfo[@"marketname"]];
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
@@ -271,10 +269,10 @@
     @try {
         if (editingStyle==UITableViewCellEditingStyleDelete) {
             NSInteger row = [indexPath row];
-            NSString *stockCode=[[[self.comInfoList objectAtIndex:row] objectForKey:@"stockcode"] copy];
+            NSString *stockCode=[(self.comInfoList)[row][@"stockcode"] copy];
             [self.comInfoList removeObjectAtIndex:row];
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu",@"stockcode": stockCode};
             NSString *netAction=nil;
             if(self.browseType==MyConcernedType){
                 netAction=@"DeleteAttention";
@@ -282,8 +280,8 @@
                 netAction=@"DeleteModelData";
             }
             [Utiles postNetInfoWithPath:netAction andParams:params besidesBlock:^(id resObj){
-                if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
-                    [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                if(![resObj[@"status"] isEqualToString:@"1"]){
+                    [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
                 }
             }];
             [stockCode release];
@@ -313,7 +311,7 @@
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
     @try {
-        delegate.comInfo=[[self.comInfoList objectAtIndex:row] retain];
+        delegate.comInfo=[(self.comInfoList)[row] retain];
         
         comFieldViewController=[[ComFieldViewController alloc] init];
         comFieldViewController.browseType=self.browseType;

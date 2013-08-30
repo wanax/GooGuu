@@ -99,7 +99,7 @@ static SDWebImageManager *instance;
     // Check the on-disk cache async so we don't block the main thread
     [cacheDelegates addObject:delegate];
     [cacheURLs addObject:url];
-    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:delegate, @"delegate", url, @"url", [NSNumber numberWithInt:options], @"options", nil];
+    NSDictionary *info = @{@"delegate": delegate, @"url": url, @"options": [NSNumber numberWithInt:options]};
     [[SDImageCache sharedImageCache] queryDiskCacheForKey:[url absoluteString] delegate:self userInfo:info];
 }
 
@@ -114,7 +114,7 @@ static SDWebImageManager *instance;
 
     while ((idx = [downloadDelegates indexOfObjectIdenticalTo:delegate]) != NSNotFound)
     {
-        SDWebImageDownloader *downloader = [[downloaders objectAtIndex:idx] retain];
+        SDWebImageDownloader *downloader = [downloaders[idx] retain];
 
         [downloadDelegates removeObjectAtIndex:idx];
         [downloaders removeObjectAtIndex:idx];
@@ -138,7 +138,7 @@ static SDWebImageManager *instance;
     NSUInteger idx;
     for (idx = 0; idx < [cacheDelegates count]; idx++)
     {
-        if ([cacheDelegates objectAtIndex:idx] == delegate && [[cacheURLs objectAtIndex:idx] isEqual:url])
+        if (cacheDelegates[idx] == delegate && [cacheURLs[idx] isEqual:url])
         {
             return idx;
         }
@@ -148,8 +148,8 @@ static SDWebImageManager *instance;
 
 - (void)imageCache:(SDImageCache *)imageCache didFindImage:(UIImage *)image forKey:(NSString *)key userInfo:(NSDictionary *)info
 {
-    NSURL *url = [info objectForKey:@"url"];
-    id<SDWebImageManagerDelegate> delegate = [info objectForKey:@"delegate"];
+    NSURL *url = info[@"url"];
+    id<SDWebImageManagerDelegate> delegate = info[@"delegate"];
 
     NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:url];
     if (idx == NSNotFound)
@@ -169,9 +169,9 @@ static SDWebImageManager *instance;
 
 - (void)imageCache:(SDImageCache *)imageCache didNotFindImageForKey:(NSString *)key userInfo:(NSDictionary *)info
 {
-    NSURL *url = [info objectForKey:@"url"];
-    id<SDWebImageManagerDelegate> delegate = [info objectForKey:@"delegate"];
-    SDWebImageOptions options = [[info objectForKey:@"options"] intValue];
+    NSURL *url = info[@"url"];
+    id<SDWebImageManagerDelegate> delegate = info[@"delegate"];
+    SDWebImageOptions options = [info[@"options"] intValue];
 
     NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:url];
     if (idx == NSNotFound)
@@ -184,12 +184,12 @@ static SDWebImageManager *instance;
     [cacheURLs removeObjectAtIndex:idx];
 
     // Share the same downloader for identical URLs so we don't download the same URL several times
-    SDWebImageDownloader *downloader = [downloaderForURL objectForKey:url];
+    SDWebImageDownloader *downloader = downloaderForURL[url];
 
     if (!downloader)
     {
         downloader = [SDWebImageDownloader downloaderWithURL:url delegate:self userInfo:info lowPriority:(options & SDWebImageLowPriority)];
-        [downloaderForURL setObject:downloader forKey:url];
+        downloaderForURL[url] = downloader;
     }
     else
     {
@@ -207,16 +207,16 @@ static SDWebImageManager *instance;
 - (void)imageDownloader:(SDWebImageDownloader *)downloader didFinishWithImage:(UIImage *)image
 {
     [downloader retain];
-    SDWebImageOptions options = [[downloader.userInfo objectForKey:@"options"] intValue];
+    SDWebImageOptions options = [(downloader.userInfo)[@"options"] intValue];
 
     // Notify all the downloadDelegates with this downloader
     for (NSInteger idx = (NSInteger)[downloaders count] - 1; idx >= 0; idx--)
     {
         NSUInteger uidx = (NSUInteger)idx;
-        SDWebImageDownloader *aDownloader = [downloaders objectAtIndex:uidx];
+        SDWebImageDownloader *aDownloader = downloaders[uidx];
         if (aDownloader == downloader)
         {
-            id<SDWebImageManagerDelegate> delegate = [[[downloadDelegates objectAtIndex:uidx] retain] autorelease];
+            id<SDWebImageManagerDelegate> delegate = [[downloadDelegates[uidx] retain] autorelease];
 
             if (image)
             {
@@ -267,10 +267,10 @@ static SDWebImageManager *instance;
     for (NSInteger idx = (NSInteger)[downloaders count] - 1; idx >= 0; idx--)
     {
         NSUInteger uidx = (NSUInteger)idx;
-        SDWebImageDownloader *aDownloader = [downloaders objectAtIndex:uidx];
+        SDWebImageDownloader *aDownloader = downloaders[uidx];
         if (aDownloader == downloader)
         {
-            id<SDWebImageManagerDelegate> delegate = [[[downloadDelegates objectAtIndex:uidx] retain] autorelease];
+            id<SDWebImageManagerDelegate> delegate = [[downloadDelegates[uidx] retain] autorelease];
 
             if ([delegate respondsToSelector:@selector(webImageManager:didFailWithError:)])
             {

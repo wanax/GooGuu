@@ -57,7 +57,7 @@
 	// Do any additional setup after loading the view.
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
-    NSString *url=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"companypicurl"]];
+    NSString *url=[NSString stringWithFormat:@"%@",comInfo[@"companypicurl"]];
     
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#E2DCC7"]];
    
@@ -87,7 +87,7 @@
 
 - (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
     if (index < self.photos.count)
-        return [self.photos objectAtIndex:index];
+        return (self.photos)[index];
     return nil;
 }
 

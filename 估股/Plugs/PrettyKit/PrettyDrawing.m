@@ -44,7 +44,7 @@
     
     CGColorRef startColor = from.CGColor;
     CGColorRef endColor = to.CGColor;    
-    NSArray *colors = [NSArray arrayWithObjects:(id)startColor, (id)endColor, nil];
+    NSArray *colors = @[(id)startColor, (id)endColor];
     
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, 
                                                         (CFArrayRef) colors, locations);

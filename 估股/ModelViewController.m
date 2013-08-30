@@ -172,10 +172,10 @@
 }
 
 -(void)getSavedStockList{
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[Utiles getUserToken],@"token",@"googuu",@"from", nil];
+    NSDictionary *params=@{@"stockcode": comInfo[@"stockcode"],@"token": [Utiles getUserToken],@"from": @"googuu"};
     [Utiles getNetInfoWithPath:@"AdjustedData" andParams:params besidesBlock:^(id resObj){
         if(resObj!=nil){
-            self.savedStockList=[resObj objectForKey:@"data"];
+            self.savedStockList=resObj[@"data"];
             [self.savedTable reloadData];
             if(_count==1){
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -189,7 +189,7 @@
 }
 
 -(void)getChartJsonData{
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    NSDictionary *params=@{@"stockCode": comInfo[@"stockcode"]};
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         self.jsonForChart=[resObj JSONString];
         self.jsonForChart=[self.jsonForChart stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\\\\\""];
@@ -236,8 +236,8 @@
                 reuseIdentifier:SavedStockCellIdentifier];
     }
     
-    id info=[self.savedStockList objectAtIndex:indexPath.row];
-    [cell.textLabel setText:[info objectForKey:@"itemname"]];
+    id info=(self.savedStockList)[indexPath.row];
+    [cell.textLabel setText:info[@"itemname"]];
     [cell.textLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0]];
     
     return cell;
@@ -248,13 +248,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"data"] count]==1){
+    if([(self.savedStockList)[indexPath.row][@"data"] count]==1){
         disViewController.sourceType=MySavedType;
         [self presentViewController:disViewController animated:YES completion:nil];
     }else{
         chartViewController=[[ChartViewController alloc] init];
         chartViewController.sourceType=self.browseType;
-        chartViewController.globalDriverId=[[self.savedStockList objectAtIndex:indexPath.row] objectForKey:@"itemcode"];
+        chartViewController.globalDriverId=(self.savedStockList)[indexPath.row][@"itemcode"];
         chartViewController.view.frame=CGRectMake(0,0,SCREEN_HEIGHT,SCREEN_WIDTH);
         [self presentViewController:chartViewController animated:YES completion:nil];
     }
@@ -326,9 +326,9 @@
     
     if(![Utiles isBlankString:[self.inputField text]]){
         [self removeTextField];
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",inputField.text,@"msg",[Utiles getUserToken],@"token",@"googuu",@"from",nil];
+        NSDictionary *params=@{@"stockcode": comInfo[@"stockcode"],@"msg": inputField.text,@"token": [Utiles getUserToken],@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"CompanyReview" andParams:params besidesBlock:^(id obj){
-            if([[obj objectForKey:@"status"] isEqualToString:@"1"]){
+            if([obj[@"status"] isEqualToString:@"1"]){
                 self.inputField.text=@"";
                 [self.tabController setSelectedIndex:3 animated:YES];
             }else{
@@ -345,7 +345,7 @@
 -(void)attentionAction{
 
     NSString *url=nil;
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+    NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu",@"stockcode": comInfo[@"stockcode"]};
     if(isAttention){
         url=@"DeleteAttention";
     }else{
@@ -354,9 +354,9 @@
     
     [Utiles postNetInfoWithPath:url andParams:params besidesBlock:^(id resObj){
         
-        if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-        }else if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+        if(![resObj[@"status"] isEqualToString:@"1"]){
+            [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        }else if([resObj[@"status"] isEqualToString:@"1"]){
             if([url isEqualToString:@"AddAttention"]){
                 isAttention=YES;
                 [attentionBt setBackgroundImage:[UIImage imageNamed:@"deleteAttentionBt"] forState:UIControlStateNormal];
@@ -375,18 +375,18 @@
 
 -(void)getConcernStatus{
     
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from", nil];
+    NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu"};
     [Utiles postNetInfoWithPath:@"AttentionData" andParams:params besidesBlock:^(id resObj){
-        if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
-            NSArray *temp=[resObj objectForKey:@"data"];
+        if(![resObj[@"status"] isEqualToString:@"0"]){
+            NSArray *temp=resObj[@"data"];
             for(id obj in temp){
-                if([[obj objectForKey:@"stockcode"] isEqual:[comInfo objectForKey:@"stockcode"]]){
+                if([obj[@"stockcode"] isEqual:comInfo[@"stockcode"]]){
                     isAttention=YES;
                     break;
                 }
             }
         }else{
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             isAttention=NO;
         }
     }];

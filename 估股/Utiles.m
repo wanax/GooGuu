@@ -136,7 +136,7 @@ static NSDateFormatter *formatter;
     NSDictionary *dictionary=nil;
     if(isIn){
         NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory , NSUserDomainMask , YES );
-        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *documentsDirectory = paths[0];
         NSString* filePath = [NSString stringWithFormat:@"%@/%@.plist",documentsDirectory,fileName];
         dictionary = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     }else{
@@ -145,7 +145,7 @@ static NSDateFormatter *formatter;
     }
     
     if(key!=nil){
-        return [dictionary objectForKey:key];
+        return dictionary[key];
     }else{
         return dictionary;
     }
@@ -156,7 +156,7 @@ static NSDateFormatter *formatter;
 
     NSMutableDictionary *dTmp;
     NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory , NSUserDomainMask , YES );
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [NSString stringWithFormat:@"%@/%@.plist",documentsDirectory,fileName];
     dTmp=[[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
     if(dTmp==nil){
@@ -287,7 +287,7 @@ static NSDateFormatter *formatter;
 
 +(NSString *)getCatchSize{
     
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     float folderSize = 0;
     if([fileManager fileExistsAtPath:path]){
@@ -310,7 +310,7 @@ static NSDateFormatter *formatter;
     NSString *extension = @"plist";
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     
     NSArray *contents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
     NSEnumerator *e = [contents objectEnumerator];
@@ -403,13 +403,13 @@ static NSDateFormatter *formatter;
             int n=0;            
             for(id chartData in chartDatas){
                 returnStr=[returnStr stringByAppendingFormat:@"{\"data\":["];
-                for(id obj in [chartData objectForKey:@"arraynew"]){
-                    returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",[obj objectForKey:@"h"],[obj objectForKey:@"id"],[obj objectForKey:@"v"],[obj objectForKey:@"y"]];
+                for(id obj in chartData[@"arraynew"]){
+                    returnStr=[returnStr stringByAppendingFormat:@"{\"h\":%@,\"id\":\"%@\",\"v\":%@,\"y\":\"%@\"},",obj[@"h"],obj[@"id"],obj[@"v"],obj[@"y"]];
                 }
-                returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"},",[chartData objectForKey:@"unit"],[comInfo objectForKey:@"stockcode"],[driverIds objectAtIndex:n++],[chartData objectForKey:@"title"]];
+                returnStr=[returnStr stringByAppendingFormat:@"],\"unit\":\"%@\",\"stockcode\":\"%@\",\"itemcode\":%@,\"itemname\":\"%@\"},",chartData[@"unit"],comInfo[@"stockcode"],driverIds[n++],chartData[@"title"]];
             }
             returnStr=[returnStr stringByAppendingFormat:@"],"];
-            returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"]];
+            returnStr=[returnStr stringByAppendingFormat:@"\"price\":\"%@\",\"companyname\":\"%@\",\"stockcode\":\"%@\"}",price,comInfo[@"companyname"],comInfo[@"stockcode"]];
             returnStr=[returnStr stringByReplacingOccurrencesOfString:@",]" withString:@"]"];
         }else{
             returnStr=@"";
@@ -480,7 +480,7 @@ static NSDateFormatter *formatter;
         }
         
     }
-    return [NSDictionary dictionaryWithObjectsAndKeys:resultStr,@"result",unitStr,@"unit", nil];
+    return @{@"result": resultStr,@"unit": unitStr};
 
 }
 

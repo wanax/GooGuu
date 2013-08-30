@@ -49,7 +49,7 @@
     articleCommentViewController.title=@"评论";
     articleCommentViewController.type=StockCompany;
     container=[[MHTabBarController alloc] init];
-    NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
+    NSArray *controllers=@[articleViewController,articleCommentViewController];
     container.viewControllers=controllers;
     [self.view addSubview:container.view];
     [self addChildViewController:container];

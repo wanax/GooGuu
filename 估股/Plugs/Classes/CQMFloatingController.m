@@ -227,7 +227,7 @@
 		[contentViewController_ release];
 		contentViewController_ = [viewController retain];
 
-		NSArray *viewControllers = [NSArray arrayWithObject:contentViewController_];
+		NSArray *viewControllers = @[contentViewController_];
 		[self.navigationController setViewControllers:viewControllers];
 	}
 	

@@ -71,18 +71,18 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
 
     if(self.type==CompanyType){
-         NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"stockcode",textField.text,@"msg",[Utiles getUserToken],@"token",@"googuu",@"from",nil];
+         NSDictionary *params=@{@"stockcode": articleId,@"msg": textField.text,@"token": [Utiles getUserToken],@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"CompanyReview" andParams:params besidesBlock:^(id obj){
-            if([[obj objectForKey:@"status"] isEqualToString:@"1"]){
+            if([obj[@"status"] isEqualToString:@"1"]){
                 [self dismissViewControllerAnimated:YES completion:nil];
             }else{
                 [Utiles ToastNotification:@"发布失败" andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
         }];        
     }else{
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:articleId,@"articleid",textField.text,@"msg",[Utiles getUserToken],@"token",@"googuu",@"from",nil];
+        NSDictionary *params=@{@"articleid": articleId,@"msg": textField.text,@"token": [Utiles getUserToken],@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"ContentrReply" andParams:params besidesBlock:^(id resObj){
-            if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+            if([resObj[@"status"] isEqualToString:@"1"]){
                 if(self.type==NewsType){
                    [(UINavigationController *)self.parentViewController popViewControllerAnimated:YES]; 
                 }else if(self.type==ArticleType){

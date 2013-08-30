@@ -27,7 +27,7 @@
     NSArray *documentsPaths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory
                                                                 , NSUserDomainMask
                                                                 , YES);
-    NSString *databaseFilePath=[[documentsPaths objectAtIndex:0] stringByAppendingPathComponent:@"PonyData.rdb"];
+    NSString *databaseFilePath=[documentsPaths[0] stringByAppendingPathComponent:@"PonyData.rdb"];
     //NSLog(@"%@",databaseFilePath);
     
     if (sqlite3_open([databaseFilePath UTF8String], &database)!=SQLITE_OK) {
@@ -74,7 +74,7 @@
                     NSMutableArray *comArr=[operation.responseString objectFromJSONString];
                     NSString *sql=[[NSString alloc] initWithString:@"INSERT INTO CompanyList(companyName,trade,market,stockCode ,googuuPrice ,communityPrice,marketPrice,comanyLogoUrl,companyPicUrl,interestNum) VALUES "];
                     for(id obj in comArr){
-                        sql=[sql stringByAppendingFormat:@"('%@','%@','%@','%@',%f,%f,%f,'%@','%@',%d),",[obj objectForKey:@"companyname"],[obj objectForKey:@"trade"],[obj objectForKey:@"market"],[obj objectForKey:@"stockcode"],[[obj objectForKey:@"googuuprice"] doubleValue],[[obj objectForKey:@"communityprice"] doubleValue],[[obj objectForKey:@"marketprice"] doubleValue],[obj objectForKey:@"comanylogourl"],[obj objectForKey:@"companypicurl"],[[obj objectForKey:@"interestnum"] integerValue]];
+                        sql=[sql stringByAppendingFormat:@"('%@','%@','%@','%@',%f,%f,%f,'%@','%@',%d),",obj[@"companyname"],obj[@"trade"],obj[@"market"],obj[@"stockcode"],[obj[@"googuuprice"] doubleValue],[obj[@"communityprice"] doubleValue],[obj[@"marketprice"] doubleValue],obj[@"comanylogourl"],obj[@"companypicurl"],[obj[@"interestnum"] integerValue]];
                         
                     }
                     sql=[sql substringWithRange:NSMakeRange(0,[sql length]-1)];
@@ -129,13 +129,13 @@
         char* industry = (char*)sqlite3_column_text(statement, 2);
         char* classify = (char*)sqlite3_column_text(statement, 3);
         char* code = (char*)sqlite3_column_text(statement, 10);
-        NSNumber *comId=[NSNumber numberWithInteger:comID];
-        NSString* nameStr= [NSString stringWithUTF8String:name];
-        NSString* industryStr = [NSString stringWithUTF8String:industry];
-        NSString* classifyStr = [NSString stringWithUTF8String:classify];
-        NSString* codeStr = [NSString stringWithUTF8String:code];
+        NSNumber *comId=@(comID);
+        NSString* nameStr= @(name);
+        NSString* industryStr = @(industry);
+        NSString* classifyStr = @(classify);
+        NSString* codeStr = @(code);
         NSLog(@"userName=%@  类型=%@,分类=%@,编码=%@,id=%@", nameStr, industryStr,classifyStr,codeStr,comId);
-        dic = [NSDictionary dictionaryWithObjectsAndKeys:comId,@"comID",nameStr, @"name",industryStr,@"industry",classifyStr,@"classify",codeStr,@"code", nil];
+        dic = @{@"comID": comId,@"name": nameStr,@"industry": industryStr,@"classify": classifyStr,@"code": codeStr};
         [arr addObject:dic];
     }
     sqlite3_finalize(statement);
@@ -161,10 +161,10 @@
     while (sqlite3_step(statement) == SQLITE_ROW)
     {
         char* classify = (char*)sqlite3_column_text(statement, 0);
-        NSString* classifyStr = [NSString stringWithUTF8String:classify];
+        NSString* classifyStr = @(classify);
 
         //NSLog(@"classify=%@", classifyStr);
-        dic = [NSDictionary dictionaryWithObjectsAndKeys:classifyStr, @"classify", nil];
+        dic = @{@"classify": classifyStr};
         [arr addObject:dic];
     }
     sqlite3_finalize(statement);
@@ -199,14 +199,14 @@
         char* classify = (char*)sqlite3_column_text(statement, 3);
         char* comPicUrl=(char*)sqlite3_column_text(statement,7);
         char* code = (char*)sqlite3_column_text(statement, 9);
-        NSNumber *comId=[NSNumber numberWithInteger:comID];
-        NSString* nameStr= [NSString stringWithUTF8String:name];
-        NSString* industryStr = [NSString stringWithUTF8String:industry];
-        NSString* classifyStr = [NSString stringWithUTF8String:classify];
-        NSString* comPicStr=[NSString stringWithUTF8String:comPicUrl];
-        NSString* codeStr = [NSString stringWithUTF8String:code];
+        NSNumber *comId=@(comID);
+        NSString* nameStr= @(name);
+        NSString* industryStr = @(industry);
+        NSString* classifyStr = @(classify);
+        NSString* comPicStr=@(comPicUrl);
+        NSString* codeStr = @(code);
         //NSLog(@"userName=%@  类型=%@,分类=%@,编码=%@,id=%@", nameStr, industryStr,classifyStr,codeStr,comId);
-        dic = [NSDictionary dictionaryWithObjectsAndKeys:comId,@"comID",nameStr, @"name",industryStr,@"industry",classifyStr,@"classify",comPicStr,@"companypicurl", codeStr,@"stockcode", nil];
+        dic = @{@"comID": comId,@"name": nameStr,@"industry": industryStr,@"classify": classifyStr,@"companypicurl": comPicStr, @"stockcode": codeStr};
         [arr addObject:dic];
     }
     sqlite3_finalize(statement);
@@ -225,7 +225,7 @@
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     if (block) {
                         id info=[operation.responseString objectFromJSONString];                        
-                        block([info objectForKey:@"status"],[info objectForKey:@"token"]);
+                        block(info[@"status"],info[@"token"]);
                     }
                 }
                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -243,9 +243,7 @@
 
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[Utiles getConfigureInfoFrom:@"netrequesturl" andKey:@"GooGuuBaseURL" inUserDomain:NO]]];
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            token, @"token",@"googuu",@"from",
-                            nil];
+    NSDictionary *params = @{@"token": token,@"from": @"googuu"};
     [httpClient postPath:url
               parameters:params
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {

@@ -71,12 +71,12 @@
 	}
 
     if(indexPath.row!=3){
-        NSString *text = [industry objectForKey:[self.modelClass objectAtIndex:[indexPath row]]];
+        NSString *text = industry[(self.modelClass)[[indexPath row]]];
         [cell.textLabel setText:text];
         cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }else{
-        NSString *text = [industry objectForKey:[self.modelClass objectAtIndex:[indexPath row]]];
+        NSString *text = industry[(self.modelClass)[[indexPath row]]];
         [cell.textLabel setText:text];
         cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:15.0f];
     }
@@ -92,7 +92,7 @@
     if(indexPath.row!=3){
         ModelClassGrade2ViewController *grade2=[[ModelClassGrade2ViewController alloc] init];
         grade2.delegate=self;
-        grade2.indicator=[self.modelClass objectAtIndex:indexPath.row];
+        grade2.indicator=(self.modelClass)[indexPath.row];
         grade2.jsonData=self.jsonData;
         [self.navigationController pushViewController:grade2 animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];

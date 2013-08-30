@@ -107,7 +107,7 @@
       
         self.tabBarController = [[PrettyTabBarViewController alloc] init];
 
-        self.tabBarController.viewControllers = [NSArray arrayWithObjects:gooNewsNavController,universeNav,myGooGuuNavController, clientCenterNav ,nil];
+        self.tabBarController.viewControllers = @[gooNewsNavController,universeNav,myGooGuuNavController, clientCenterNav];
         
         self.window.backgroundColor=[UIColor clearColor];       
         self.window.rootViewController = self.tabBarController;
@@ -192,18 +192,18 @@
 - (void) handleTimer: (NSTimer *) timer{
     
     NSUserDefaults *userDeaults=[NSUserDefaults standardUserDefaults];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[[[userDeaults objectForKey:@"UserInfo"] objectForKey:@"username"] lowercaseString],@"username",[Utiles md5:[[userDeaults objectForKey:@"UserInfo"] objectForKey:@"password"]],@"password",@"googuu",@"from", nil];
+    NSDictionary *params=@{@"username": [[userDeaults objectForKey:@"UserInfo"][@"username"] lowercaseString],@"password": [Utiles md5:[userDeaults objectForKey:@"UserInfo"][@"password"]],@"from": @"googuu"};
     [Utiles getNetInfoWithPath:@"Login" andParams:params besidesBlock:^(id resObj){
     
-        if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+        if([resObj[@"status"] isEqualToString:@"1"]){
             NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
             [userDefaults removeObjectForKey:@"UserToke"];
-            [userDefaults setObject:[resObj objectForKey:@"token"] forKey:@"UserToken"];
+            [userDefaults setObject:resObj[@"token"] forKey:@"UserToken"];
             
-            NSLog(@"%@",[resObj objectForKey:@"token"]);
+            NSLog(@"%@",resObj[@"token"]);
 
         }else {
-            NSLog(@"%@",[resObj objectForKey:@"msg"]);
+            NSLog(@"%@",resObj[@"msg"]);
         }
         
     }];

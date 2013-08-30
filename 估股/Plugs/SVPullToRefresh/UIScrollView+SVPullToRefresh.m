@@ -215,7 +215,7 @@ static char UIScrollViewPullToRefreshView;
             [otherView removeFromSuperview];
     }
     
-    id customView = [self.viewForState objectAtIndex:self.state];
+    id customView = (self.viewForState)[self.state];
     BOOL hasCustomView = [customView isKindOfClass:[UIView class]];
     
     self.titleLabel.hidden = hasCustomView;
@@ -273,9 +273,9 @@ static char UIScrollViewPullToRefreshView;
         CGFloat marginY = 2;
         CGFloat labelMaxWidth = self.bounds.size.width - margin - leftViewWidth;
         
-        self.titleLabel.text = [self.titles objectAtIndex:self.state];
+        self.titleLabel.text = (self.titles)[self.state];
         
-        NSString *subtitle = [self.subtitles objectAtIndex:self.state];
+        NSString *subtitle = (self.subtitles)[self.state];
         self.subtitleLabel.text = subtitle.length > 0 ? subtitle : nil;
         
         
@@ -512,7 +512,7 @@ static char UIScrollViewPullToRefreshView;
     if(state == SVPullToRefreshStateAll)
         [self.titles replaceObjectsInRange:NSMakeRange(0, 3) withObjectsFromArray:@[title, title, title]];
     else
-        [self.titles replaceObjectAtIndex:state withObject:title];
+        (self.titles)[state] = title;
     
     [self setNeedsLayout];
 }
@@ -524,7 +524,7 @@ static char UIScrollViewPullToRefreshView;
     if(state == SVPullToRefreshStateAll)
         [self.subtitles replaceObjectsInRange:NSMakeRange(0, 3) withObjectsFromArray:@[subtitle, subtitle, subtitle]];
     else
-        [self.subtitles replaceObjectAtIndex:state withObject:subtitle];
+        (self.subtitles)[state] = subtitle;
     
     [self setNeedsLayout];
 }
@@ -538,7 +538,7 @@ static char UIScrollViewPullToRefreshView;
     if(state == SVPullToRefreshStateAll)
         [self.viewForState replaceObjectsInRange:NSMakeRange(0, 3) withObjectsFromArray:@[viewPlaceholder, viewPlaceholder, viewPlaceholder]];
     else
-        [self.viewForState replaceObjectAtIndex:state withObject:viewPlaceholder];
+        (self.viewForState)[state] = viewPlaceholder;
     
     [self setNeedsLayout];
 }
@@ -689,10 +689,8 @@ static char UIScrollViewPullToRefreshView;
     
 	CGGradientRef alphaGradient = nil;
     if([[[UIDevice currentDevice] systemVersion]floatValue] >= 5){
-        NSArray* alphaGradientColors = [NSArray arrayWithObjects:
-                                        (id)[self.arrowColor colorWithAlphaComponent:0].CGColor,
-                                        (id)[self.arrowColor colorWithAlphaComponent:1].CGColor,
-                                        nil];
+        NSArray* alphaGradientColors = @[(id)[self.arrowColor colorWithAlphaComponent:0].CGColor,
+                                        (id)[self.arrowColor colorWithAlphaComponent:1].CGColor];
         alphaGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)alphaGradientColors, alphaGradientLocations);
     }else{
         const CGFloat * components = CGColorGetComponents([self.arrowColor CGColor]);

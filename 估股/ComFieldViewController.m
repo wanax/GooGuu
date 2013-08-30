@@ -108,7 +108,7 @@
     [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#E27A24"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
-    [companyNameLabel setText:[comInfo objectForKey:@"companyname"]];
+    [companyNameLabel setText:comInfo[@"companyname"]];
     [companyNameLabel setTextAlignment:NSTextAlignmentCenter];
     [companyNameLabel setTextColor:[UIColor whiteColor]];
     [top addSubview:companyNameLabel];
@@ -135,7 +135,7 @@
 -(NSUInteger)supportedInterfaceOrientations{
     
     if([[self childViewControllers] count]>0){
-        return [[self.childViewControllers objectAtIndex:0] supportedInterfaceOrientations];
+        return [(self.childViewControllers)[0] supportedInterfaceOrientations];
     }else{
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
@@ -144,7 +144,7 @@
 - (BOOL)shouldAutorotate
 {
     if([[self childViewControllers] count]>0){
-        return [[self.childViewControllers objectAtIndex:0] shouldAutorotate];
+        return [(self.childViewControllers)[0] shouldAutorotate];
     }else{
         return NO;
     }

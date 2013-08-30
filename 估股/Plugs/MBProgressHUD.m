@@ -493,7 +493,7 @@
 }
 
 - (void)hide:(BOOL)animated afterDelay:(NSTimeInterval)delay {
-	[self performSelector:@selector(hideDelayed:) withObject:[NSNumber numberWithBool:animated] afterDelay:delay];
+	[self performSelector:@selector(hideDelayed:) withObject:@(animated) afterDelay:delay];
 }
 
 - (void)hideDelayed:(NSNumber *)animated {

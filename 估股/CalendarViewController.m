@@ -96,27 +96,25 @@
     if (month==[[NSDate date] month]){
         id dateNow=[NSDate date];
         
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [Utiles getUserToken], @"token",
-                                [NSString stringWithFormat:@"%d",[dateNow year]],@"year",[NSString stringWithFormat:@"0%d",[dateNow month]],@"month",@"googuu",@"from",
-                                nil];
+        NSDictionary *params = @{@"token": [Utiles getUserToken],
+                                @"year": [NSString stringWithFormat:@"%d",[dateNow year]],@"month": [NSString stringWithFormat:@"0%d",[dateNow month]],@"from": @"googuu"};
         [Utiles postNetInfoWithPath:@"UserStockCalendar" andParams:params besidesBlock:^(id resObj){
-            if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+            if(![resObj[@"status"] isEqualToString:@"0"]){
                 NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                 NSMutableArray *dates=[[NSMutableArray alloc] init];
-                self.eventArr=[resObj objectForKey:@"data"];
+                self.eventArr=resObj[@"data"];
                 for(id obj in self.eventArr){
-                    [dates addObject:[f numberFromString:[obj objectForKey:@"day"]]];
+                    [dates addObject:[f numberFromString:obj[@"day"]]];
                 }
                 [calendarView markDates:dates];
                 self.dateDic=[[NSMutableDictionary alloc] init];
                 for(id key in self.eventArr){
-                    [self.dateDic setObject:[key objectForKey:@"data"] forKey:[key objectForKey:@"day"]];
+                    (self.dateDic)[key[@"day"]] = key[@"data"];
                 }
                 SAFE_RELEASE(dates);
                 SAFE_RELEASE(f);
             }else{
-                [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+                [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             }
           
         }];
@@ -134,8 +132,8 @@
     [self.messageLabel setText:@""];
     if ([[self.dateDic allKeys] containsObject:currentDateStr]){
         NSString *msg=[[NSString alloc] init];
-        for(id obj in [self.dateDic objectForKey:currentDateStr]){
-            msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"companyname"],[obj objectForKey:@"desc"]];
+        for(id obj in (self.dateDic)[currentDateStr]){
+            msg=[msg stringByAppendingFormat:@"%@:%@\n",obj[@"companyname"],obj[@"desc"]];
         }
         [self.messageLabel setText:msg];
         [messageLabel alignTop];

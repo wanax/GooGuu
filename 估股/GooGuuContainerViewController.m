@@ -59,7 +59,7 @@
 
     
     
-	NSArray *viewControllers = [NSArray arrayWithObjects:concernedViewController, saveModelViewControler,calendarViewController, nil];
+	NSArray *viewControllers = @[concernedViewController, saveModelViewControler,calendarViewController];
 	tabBarController = [[MHTabBarController alloc] init];
 	tabBarController.viewControllers = viewControllers;
     

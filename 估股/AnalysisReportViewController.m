@@ -105,7 +105,7 @@
 - (void)getAnalyrePort{
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[delegate.comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+    NSDictionary *params=@{@"stockcode": (delegate.comInfo)[@"stockcode"]};
     [Utiles postNetInfoWithPath:@"CompanyAnalyReportURL" andParams:params besidesBlock:^(id obj){
         if([obj JSONString].length>5){
             self.analyReportList=obj;
@@ -157,12 +157,12 @@
     }
     
     int row=[indexPath row];
-    id model=[analyReportList objectAtIndex:row];
+    id model=analyReportList[row];
     
-    cell.title=[model objectForKey:@"title"];
-    [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
-    cell.content=[model objectForKey:@"brief"];
-    cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
+    cell.title=model[@"title"];
+    [self setReadingMark:cell andTitle:model[@"title"]];
+    cell.content=model[@"brief"];
+    cell.timeDiferLabel.text=[Utiles intervalSinceNow:model[@"updatetime"]];
     UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,71)];
     [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
     [cell setBackgroundView:bgImgView];
@@ -196,7 +196,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *artId=[NSString stringWithFormat:@"%@",[[self.analyReportList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
+    NSString *artId=[NSString stringWithFormat:@"%@",(self.analyReportList)[indexPath.row][@"articleid"]];
     AnalyDetailViewController *detail=[[AnalyDetailViewController alloc] init];
     detail.articleId=artId;
     
@@ -204,7 +204,7 @@
     [self presentViewController:detail animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.analyReportList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
+    [Utiles setConfigureInfoTo:@"readingmarks" forKey:(self.analyReportList)[indexPath.row][@"title"] andContent:@"1"];
     self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
     
 }

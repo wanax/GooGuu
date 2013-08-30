@@ -64,7 +64,7 @@
     [companyNameLabel setBackgroundColor:[Utiles colorWithHexString:@"#E27A24"]];
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
-    [companyNameLabel setText:[comInfo objectForKey:@"companyname"]];
+    [companyNameLabel setText:comInfo[@"companyname"]];
     [companyNameLabel setTextAlignment:NSTextAlignmentCenter];
     [companyNameLabel setTextColor:[UIColor whiteColor]];
     [top addSubview:companyNameLabel];

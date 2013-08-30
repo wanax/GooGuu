@@ -231,7 +231,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
     if(state == SVInfiniteScrollingStateAll)
         [self.viewForState replaceObjectsInRange:NSMakeRange(0, 3) withObjectsFromArray:@[viewPlaceholder, viewPlaceholder, viewPlaceholder]];
     else
-        [self.viewForState replaceObjectAtIndex:state withObject:viewPlaceholder];
+        (self.viewForState)[state] = viewPlaceholder;
     
     self.state = self.state;
 }
@@ -268,7 +268,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
             [otherView removeFromSuperview];
     }
     
-    id customView = [self.viewForState objectAtIndex:newState];
+    id customView = (self.viewForState)[newState];
     BOOL hasCustomView = [customView isKindOfClass:[UIView class]];
     
     if(hasCustomView) {

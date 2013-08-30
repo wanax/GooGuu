@@ -48,7 +48,7 @@
 	self.title=@"股票搜索";
     searchTable=[[UITableView alloc] initWithFrame:CGRectMake(0,62,SCREEN_WIDTH,310)];
     searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,35)];
-    [[self.searchBar.subviews objectAtIndex:0] removeFromSuperview];
+    [(self.searchBar.subviews)[0] removeFromSuperview];
     [self.searchBar setPlaceholder:@"输入股票代码/名称"];
     self.searchBar.backgroundColor = [UIColor grayColor];
     searchBar.delegate=self;
@@ -81,7 +81,7 @@
 
 -(void)getcomListByKey:(NSString *)key{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:key,@"q", nil];
+    NSDictionary *params=@{@"q": key};
     [Utiles postNetInfoWithPath:@"Query" andParams:params besidesBlock:^(id resObj){
         
         self.comList=resObj;
@@ -91,14 +91,14 @@
 }
 
 -(void)requestValution:(UIButton *)bt{
-    NSString *stockCode=[[self.comList objectAtIndex:bt.tag-1] objectForKey:@"stockcode"];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode", nil];
+    NSString *stockCode=(self.comList)[bt.tag-1][@"stockcode"];
+    NSDictionary *params=@{@"stockcode": stockCode};
     [Utiles postNetInfoWithPath:@"Request" andParams:params besidesBlock:^(id resObj){       
         if(resObj){
-            if([[resObj objectForKey:@"status"] boolValue]){
+            if([resObj[@"status"] boolValue]){
                 [bt setBackgroundImage:[UIImage imageNamed:@"hasDoneRequestedBt"] forState:UIControlStateNormal];
                 [bt setTitle:@"请求送达" forState:UIControlStateNormal];
-                [self.view makeToast:[NSString stringWithFormat:@"共计已发送%@次请求,我们会尽快处理.",[resObj objectForKey:@"data"]]
+                [self.view makeToast:[NSString stringWithFormat:@"共计已发送%@次请求,我们会尽快处理.",resObj[@"data"]]
                             duration:2.0
                             position:@"center"
                                title:@"谢谢"
@@ -141,11 +141,11 @@
     NSUInteger row;
     row = [indexPath row];
     @try{
-        id comInfo=[comList objectAtIndex:row];
-        [cell.companyNameLabel setText:[comInfo objectForKey:@"companyname"]==nil?@"":[comInfo objectForKey:@"companyname"]];
-        [cell.stockCodeLabel setText:[NSString stringWithFormat:@"%@.%@",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"market"]]];
+        id comInfo=comList[row];
+        [cell.companyNameLabel setText:comInfo[@"companyname"]==nil?@"":comInfo[@"companyname"]];
+        [cell.stockCodeLabel setText:[NSString stringWithFormat:@"%@.%@",comInfo[@"stockcode"],comInfo[@"market"]]];
         [cell.requestValuationsBt setTag:row+1];
-        if([[comInfo objectForKey:@"hasmodel"] boolValue]){
+        if([comInfo[@"hasmodel"] boolValue]){
             [cell.comModelImg setImage:[UIImage imageNamed:@"hasModelSymbol"]];
             [cell.requestValuationsBt setHidden:YES];
         }else{
@@ -156,7 +156,7 @@
             [cell.requestValuationsBt setHidden:NO];
         }
         
-        if([[comInfo objectForKey:@"hasreport"] boolValue]){
+        if([comInfo[@"hasreport"] boolValue]){
             [cell.comBriefImg setImage:[UIImage imageNamed:@"hasBriefSymbol"]];
         }else{
             [cell.comBriefImg setImage:[UIImage imageNamed:@"hasnoBriefSymbol"]];
@@ -190,7 +190,7 @@
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
-    delegate.comInfo=[self.comList objectAtIndex:row];
+    delegate.comInfo=(self.comList)[row];
     
     ComFieldViewController *com=[[ComFieldViewController alloc] init];
     com.browseType=ValuationModelType;

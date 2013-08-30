@@ -56,14 +56,12 @@
                borderColor:(UIColor*)borderColor 
                      block:(void (^)())block
 {
-    [buttonsMutableArray addObject:[NSArray arrayWithObjects:
-                                    block ? [block copy] : [NSNull null],
+    [buttonsMutableArray addObject:@[block ? [block copy] : [NSNull null],
                                     title,
                                     color,
                                     titleColor,
                                     [NSNumber numberWithInteger:borderWidth],
-                                    borderColor,
-                                    nil]];
+                                    borderColor]];
 }
 
 - (void)addButtonWithTitle:(NSString *)title block:(void (^)())block 
@@ -126,11 +124,11 @@
     NSUInteger buttonY = BORDER;
     for (NSArray *button in buttonsMutableArray)
     {
-        NSString *title = [button objectAtIndex:1];
-        UIColor *color = [button objectAtIndex:2];
-        UIColor *titleColor = [button objectAtIndex:3];
-        NSUInteger borderWidth = [[button objectAtIndex:4]intValue];
-        UIColor *borderColor = [button objectAtIndex:5];
+        NSString *title = button[1];
+        UIColor *color = button[2];
+        UIColor *titleColor = button[3];
+        NSUInteger borderWidth = [button[4]intValue];
+        UIColor *borderColor = button[5];
         
         UIImage *image = [self buttonImage:color borderWidth:borderWidth borderColor:borderColor];
         
@@ -175,7 +173,7 @@
 {
     if (buttonIndex >= 0 && buttonIndex < [buttonsMutableArray count])
     {
-        id obj = [[buttonsMutableArray objectAtIndex: buttonIndex] objectAtIndex:0];
+        id obj = buttonsMutableArray[buttonIndex][0];
         if (![obj isEqual:[NSNull null]])
         {
             ((void (^)())obj)();
@@ -218,13 +216,12 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Gradient Declarations
-    NSArray* gradientColors = [NSArray arrayWithObjects: 
-                               (id)[UIColor colorWithWhite:1.0 alpha:0.4].CGColor, 
+    NSArray* gradientColors = @[(id)[UIColor colorWithWhite:1.0 alpha:0.4].CGColor, 
                                (id)[UIColor colorWithWhite: 1.0 alpha: 0.3].CGColor, 
                                (id)[UIColor colorWithWhite: 1.0 alpha: 0.2].CGColor, 
                                (id)[UIColor clearColor].CGColor, 
                                (id)[UIColor colorWithWhite: 1.0 alpha: 0.1].CGColor, 
-                               (id)[UIColor colorWithWhite:1.0 alpha:0.2].CGColor, nil];
+                               (id)[UIColor colorWithWhite:1.0 alpha:0.2].CGColor];
     CGFloat gradientLocations[] = {0, 0.1, 0.49, 0.5, 0.51, 1};
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradientColors, gradientLocations);
     

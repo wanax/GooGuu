@@ -66,7 +66,7 @@
     viewController4.title=@"用户评论";
     viewController2.browseType=self.browseType;
     
-    NSArray *viewControllers = [NSArray arrayWithObjects:viewController2, viewController1,viewController3,viewController4, nil];
+    NSArray *viewControllers = @[viewController2, viewController1,viewController3,viewController4];
 	tabBarController = [[MHTabBarController alloc] init];
     
 	tabBarController.viewControllers = viewControllers;

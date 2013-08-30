@@ -179,7 +179,7 @@
                                      LabelSwitchCellIdentifier];
             if (cell == nil) {
                 NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"LabelSwitchCell" owner:self options:nil];
-                cell = [array objectAtIndex:0];
+                cell = array[0];
             }
             BOOL isOn=[Utiles stringToBool:[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"wifiImg" inUserDomain:YES]];
             cell.titleLabel.text = @"仅在wifi下加载图片";
@@ -197,7 +197,7 @@
                                      LabelSwitchCellIdentifier];
             if (cell == nil) {
                 NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"LabelSwitchCell" owner:self options:nil];
-                cell = [array objectAtIndex:0];
+                cell = array[0];
             }
             BOOL isOn=[Utiles stringToBool:[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"checkUpdate" inUserDomain:YES]];
             [cell.controlSwitch setOn:isOn animated:YES];

@@ -618,7 +618,7 @@ typedef enum {
 {
     CGFloat locations[] = { 0, 1 };    
     
-    NSArray *colors = [NSArray arrayWithObjects:(id)self.selectionGradientStartColor.CGColor, (id)self.selectionGradientEndColor.CGColor, nil];
+    NSArray *colors = @[(id)self.selectionGradientStartColor.CGColor, (id)self.selectionGradientEndColor.CGColor];
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, 
                                                         (CFArrayRef) colors, locations);
@@ -636,7 +636,7 @@ typedef enum {
 {
     CGFloat locations[] = { 0, 1 };    
     
-    NSArray *colors = [NSArray arrayWithObjects:(id)self.gradientStartColor.CGColor, (id)self.gradientEndColor.CGColor, nil];
+    NSArray *colors = @[(id)self.gradientStartColor.CGColor, (id)self.gradientEndColor.CGColor];
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, 
                                                         (CFArrayRef) colors, locations);

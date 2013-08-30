@@ -31,7 +31,7 @@ static SDImageCache *instance;
 
         // Init the disk cache
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        diskCachePath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"ImageCache"] retain];
+        diskCachePath = [[paths[0] stringByAppendingPathComponent:@"ImageCache"] retain];
 
         if (![[NSFileManager defaultManager] fileExistsAtPath:diskCachePath])
         {
@@ -117,8 +117,8 @@ static SDImageCache *instance;
     // Can't use defaultManager another thread
     NSFileManager *fileManager = [[NSFileManager alloc] init];
 
-    NSString *key = [keyAndData objectAtIndex:0];
-    NSData *data = [keyAndData count] > 1 ? [keyAndData objectAtIndex:1] : nil;
+    NSString *key = keyAndData[0];
+    NSData *data = [keyAndData count] > 1 ? keyAndData[1] : nil;
 
     if (data)
     {
@@ -147,14 +147,14 @@ static SDImageCache *instance;
 
 - (void)notifyDelegate:(NSDictionary *)arguments
 {
-    NSString *key = [arguments objectForKey:@"key"];
-    id <SDImageCacheDelegate> delegate = [arguments objectForKey:@"delegate"];
-    NSDictionary *info = [arguments objectForKey:@"userInfo"];
-    UIImage *image = [arguments objectForKey:@"image"];
+    NSString *key = arguments[@"key"];
+    id <SDImageCacheDelegate> delegate = arguments[@"delegate"];
+    NSDictionary *info = arguments[@"userInfo"];
+    UIImage *image = arguments[@"image"];
 
     if (image)
     {
-        [memCache setObject:image forKey:key];
+        memCache[key] = image;
 
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
@@ -172,7 +172,7 @@ static SDImageCache *instance;
 
 - (void)queryDiskCacheOperation:(NSDictionary *)arguments
 {
-    NSString *key = [arguments objectForKey:@"key"];
+    NSString *key = arguments[@"key"];
     NSMutableDictionary *mutableArguments = [[arguments mutableCopy] autorelease];
 
     UIImage *image = [[[UIImage alloc] initWithContentsOfFile:[self cachePathForKey:key]] autorelease];
@@ -185,7 +185,7 @@ static SDImageCache *instance;
             image = decodedImage;
         }
 #endif
-        [mutableArguments setObject:image forKey:@"image"];
+        mutableArguments[@"image"] = image;
     }
 
     [self performSelectorOnMainThread:@selector(notifyDelegate:) withObject:mutableArguments waitUntilDone:NO];
@@ -200,7 +200,7 @@ static SDImageCache *instance;
         return;
     }
 
-    [memCache setObject:image forKey:key];
+    memCache[key] = image;
 
     if (toDisk)
     {
@@ -208,11 +208,11 @@ static SDImageCache *instance;
         NSArray *keyWithData;
         if (data)
         {
-            keyWithData = [NSArray arrayWithObjects:key, data, nil];
+            keyWithData = @[key, data];
         }
         else
         {
-            keyWithData = [NSArray arrayWithObjects:key, nil];
+            keyWithData = @[key];
         }
         [cacheInQueue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self
                                                                          selector:@selector(storeKeyWithDataToDisk:)
@@ -243,14 +243,14 @@ static SDImageCache *instance;
         return nil;
     }
 
-    UIImage *image = [memCache objectForKey:key];
+    UIImage *image = memCache[key];
 
     if (!image && fromDisk)
     {
         image = [[[UIImage alloc] initWithContentsOfFile:[self cachePathForKey:key]] autorelease];
         if (image)
         {
-            [memCache setObject:image forKey:key];
+            memCache[key] = image;
         }
     }
 
@@ -274,7 +274,7 @@ static SDImageCache *instance;
     }
 
     // First check the in-memory cache...
-    UIImage *image = [memCache objectForKey:key];
+    UIImage *image = memCache[key];
     if (image)
     {
         // ...notify delegate immediately, no need to go async
@@ -286,11 +286,11 @@ static SDImageCache *instance;
     }
 
     NSMutableDictionary *arguments = [NSMutableDictionary dictionaryWithCapacity:3];
-    [arguments setObject:key forKey:@"key"];
-    [arguments setObject:delegate forKey:@"delegate"];
+    arguments[@"key"] = key;
+    arguments[@"delegate"] = delegate;
     if (info)
     {
-        [arguments setObject:info forKey:@"userInfo"];
+        arguments[@"userInfo"] = info;
     }
     [cacheOutQueue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(queryDiskCacheOperation:) object:arguments] autorelease]];
 }

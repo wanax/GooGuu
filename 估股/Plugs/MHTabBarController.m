@@ -228,7 +228,7 @@ static const NSInteger TAG_OFFSET = 1000;
 
 	if ([self.delegate respondsToSelector:@selector(mh_tabBarController:shouldSelectViewController:atIndex:)])
 	{
-		UIViewController *toViewController = [self.viewControllers objectAtIndex:newSelectedIndex];
+		UIViewController *toViewController = (self.viewControllers)[newSelectedIndex];
 		if (![self.delegate mh_tabBarController:self shouldSelectViewController:toViewController atIndex:newSelectedIndex])
 			return;
 	}
@@ -325,7 +325,7 @@ static const NSInteger TAG_OFFSET = 1000;
 - (UIViewController *)selectedViewController
 {
 	if (self.selectedIndex != NSNotFound)
-		return [self.viewControllers objectAtIndex:self.selectedIndex];
+		return (self.viewControllers)[self.selectedIndex];
 	else
 		return nil;
 }

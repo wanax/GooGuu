@@ -108,11 +108,11 @@
 
 -(void)addGooGuuNews{
     
-    NSString *arId=[[self.arrList lastObject] objectForKey:@"articleid"];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:arId,@"articleid", nil];
+    NSString *arId=[self.arrList lastObject][@"articleid"];
+    NSDictionary *params=@{@"articleid": arId};
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:params besidesBlock:^(id resObj){
 
-        NSMutableArray *exNews=[resObj objectForKey:@"data"];
+        NSMutableArray *exNews=resObj[@"data"];
         NSMutableArray *temp=[NSMutableArray arrayWithArray:self.arrList];
         for(id obj in exNews){
             [temp addObject:obj];
@@ -130,7 +130,7 @@
     
     [Utiles getNetInfoWithPath:@"NewesAnalysereportURL" andParams:nil besidesBlock:^(id news){
        
-        self.arrList=[news objectForKey:@"data"];
+        self.arrList=news[@"data"];
        
         [self.customTableView reloadData];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -140,8 +140,8 @@
     
     [Utiles getNetInfoWithPath:@"DailyStock" andParams:nil besidesBlock:^(id obj){
         
-        self.imageUrl=[NSString stringWithFormat:@"%@",[obj objectForKey:@"comanylogourl"]];
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[obj objectForKey:@"stockcode"],@"stockcode", nil];
+        self.imageUrl=[NSString stringWithFormat:@"%@",obj[@"comanylogourl"]];
+        NSDictionary *params=@{@"stockcode": obj[@"stockcode"]};
         [Utiles getNetInfoWithPath:@"QueryCompany" andParams:params besidesBlock:^(id resObj){
            
             self.companyInfo=resObj;
@@ -193,7 +193,7 @@
         
         if (cell == nil) {
             NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"DailyStockCell" owner:self options:nil];//加载自定义cell的xib文件
-            cell = [array objectAtIndex:0];
+            cell = array[0];
         }
         if(self.imageUrl){
             [cell.dailyStockImg setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.imageUrl]]
@@ -213,13 +213,13 @@
             [formatter setPositiveFormat:@"##0.##"];
         }
         
-        NSNumber *marketPrice=[self.companyInfo objectForKey:@"marketprice"];
-        NSNumber *ggPrice=[self.companyInfo objectForKey:@"googuuprice"];
+        NSNumber *marketPrice=(self.companyInfo)[@"marketprice"];
+        NSNumber *ggPrice=(self.companyInfo)[@"googuuprice"];
         float outLook=([ggPrice floatValue]-[marketPrice floatValue])/[marketPrice floatValue];
         cell.marketPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:marketPrice]];
-        cell.companyNameLabel.text=[NSString stringWithFormat:@"%@\n(%@.%@)",[self.companyInfo objectForKey:@"companyname"],[self.companyInfo objectForKey:@"stockcode"],[self.companyInfo objectForKey:@"marketname"]];
+        cell.companyNameLabel.text=[NSString stringWithFormat:@"%@\n(%@.%@)",(self.companyInfo)[@"companyname"],(self.companyInfo)[@"stockcode"],(self.companyInfo)[@"marketname"]];
         cell.gooGuuPriceLabel.text=[NSString stringWithFormat:@"%@",[formatter stringFromNumber:ggPrice]];
-        cell.tradeLabel.text=[self.companyInfo objectForKey:@"trade"];
+        cell.tradeLabel.text=(self.companyInfo)[@"trade"];
         cell.outLookLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         
         NSString *riseColorStr=[NSString stringWithFormat:@"RiseColor%@",[Utiles getConfigureInfoFrom:@"userconfigure" andKey:@"stockColorSetting" inUserDomain:YES]];
@@ -260,16 +260,16 @@
         }
         
         int row=[indexPath row];
-        id model=[arrList objectAtIndex:row];
+        id model=arrList[row];
         
-        cell.title=[model objectForKey:@"title"];
-        [self setReadingMark:cell andTitle:[model objectForKey:@"title"]];
-        cell.contentLabel.text=[model objectForKey:@"concise"];
-        cell.timeDiferLabel.text=[Utiles intervalSinceNow:[model objectForKey:@"updatetime"]];
+        cell.title=model[@"title"];
+        [self setReadingMark:cell andTitle:model[@"title"]];
+        cell.contentLabel.text=model[@"concise"];
+        cell.timeDiferLabel.text=[Utiles intervalSinceNow:model[@"updatetime"]];
         
         UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,71)];
         if(readingMarksDic){
-            if ([[readingMarksDic allKeys] containsObject:[model objectForKey:@"title"]]) {
+            if ([[readingMarksDic allKeys] containsObject:model[@"title"]]) {
                 [bgImgView setImage:nil];
             }else{
                 [bgImgView setImage:[UIImage imageNamed:@"newscellbackground.png"]];
@@ -322,10 +322,10 @@
         [self presentViewController:com animated:YES completion:nil];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else if(indexPath.section==1){
-        NSString *artId=[NSString stringWithFormat:@"%@",[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"articleid"]];
+        NSString *artId=[NSString stringWithFormat:@"%@",(self.arrList)[indexPath.row][@"articleid"]];
         GooGuuArticleViewController *articleViewController=[[GooGuuArticleViewController alloc] init];
         //articleViewController.view.frame=CGRectMake(0,0,SCREEN_WIDTH,440);
-        articleViewController.articleTitle=[[arrList objectAtIndex:indexPath.row] objectForKey:@"title"];
+        articleViewController.articleTitle=arrList[indexPath.row][@"title"];
         articleViewController.articleId=artId;
         articleViewController.title=@"研究报告";
         ArticleCommentViewController *articleCommentViewController=[[ArticleCommentViewController alloc] init];
@@ -333,10 +333,10 @@
         articleCommentViewController.title=@"评论";
         articleCommentViewController.type=News;
         container=[[MHTabBarController alloc] init];
-        NSArray *controllers=[NSArray arrayWithObjects:articleViewController,articleCommentViewController, nil];
+        NSArray *controllers=@[articleViewController,articleCommentViewController];
         container.viewControllers=controllers;
         
-        [Utiles setConfigureInfoTo:@"readingmarks" forKey:[[self.arrList objectAtIndex:indexPath.row] objectForKey:@"title"] andContent:@"1"];
+        [Utiles setConfigureInfoTo:@"readingmarks" forKey:(self.arrList)[indexPath.row][@"title"] andContent:@"1"];
         self.readingMarksDic=[Utiles getConfigureInfoFrom:@"readingmarks" andKey:nil inUserDomain:YES];
         
         [self.navigationController pushViewController:container animated:YES];

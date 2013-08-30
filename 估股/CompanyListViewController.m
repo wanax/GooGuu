@@ -82,7 +82,7 @@
    
     table=[[UITableView alloc] initWithFrame:CGRectMake(0,62,SCREEN_WIDTH,320)];
     search=[[UISearchBar alloc] initWithFrame:CGRectMake(0,0,SCREEN_WIDTH,35)];
-    [[self.search.subviews objectAtIndex:0] removeFromSuperview];
+    [(self.search.subviews)[0] removeFromSuperview];
     self.search.backgroundColor = [UIColor grayColor];
     [self.search setPlaceholder:@"输入股票代码/名称"];
     search.delegate=self;
@@ -128,8 +128,8 @@
 
 -(void)addCompany{
 
-    NSString *updateTime=[[self.comList lastObject] objectForKey:@"updatetime"];   
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:type],@"market",updateTime,@"updatetime", nil];
+    NSString *updateTime=[self.comList lastObject][@"updatetime"];   
+    NSDictionary *params=@{@"market": [NSNumber numberWithInt:type],@"updatetime": updateTime};
     
     [Utiles getNetInfoWithPath:@"QueryAllCompany" andParams:params besidesBlock:^(id resObj){
         
@@ -149,7 +149,7 @@
 
 -(void)getCompanyList{
  
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:type],@"market", nil];
+    NSDictionary *params=@{@"market": [NSNumber numberWithInt:type]};
     [Utiles getNetInfoWithPath:@"QueryAllCompany" andParams:params besidesBlock:^(id resObj){
         
         self.comList=resObj;
@@ -161,17 +161,17 @@
      
 -(void)getConcernStocksCode{
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from", nil];
+    NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu"};
     [Utiles postNetInfoWithPath:@"AttentionData" andParams:params besidesBlock:^(id resObj){
-        if(![[resObj objectForKey:@"status"] isEqualToString:@"0"]){
+        if(![resObj[@"status"] isEqualToString:@"0"]){
             self.concernStocksCodeArr=[[NSMutableArray alloc] init];
-            NSArray *temp=[resObj objectForKey:@"data"];
+            NSArray *temp=resObj[@"data"];
             for(id obj in temp){
-                [concernStocksCodeArr addObject:[NSString stringWithFormat:@"%@",[obj objectForKey:@"stockcode"]]];
+                [concernStocksCodeArr addObject:[NSString stringWithFormat:@"%@",obj[@"stockcode"]]];
             }
             [self.table reloadData];
         }else{
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+            [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
             self.concernStocksCodeArr=[[NSMutableArray alloc] init];
         }        
     }];
@@ -243,11 +243,11 @@
     NSUInteger row;
     row = [indexPath row];
     @try{
-        NSDictionary *comInfo=[comList objectAtIndex:row];
-        cell.stockNameLabel.text=[comInfo objectForKey:@"companyname"]==nil?@"":[comInfo objectForKey:@"companyname"];
+        NSDictionary *comInfo=comList[row];
+        cell.stockNameLabel.text=comInfo[@"companyname"]==nil?@"":comInfo[@"companyname"];
 
         if([Utiles isLogin]){
-            if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]]]){
+            if([self.concernStocksCodeArr containsObject:[NSString stringWithFormat:@"%@",comInfo[@"stockcode"]]]){
                 [cell.concernBt setTitle:@"取消关注" forState:UIControlStateNormal];
                 [cell.concernBt setBackgroundImage:[UIImage imageNamed:@"cancelConcernBt"] forState:UIControlStateNormal];
                 [cell.concernBt setTag:row+1];
@@ -263,13 +263,13 @@
         }else{
             [cell.concernBt setHidden:YES];
         }
-        NSNumber *gPriceStr=[comInfo objectForKey:@"googuuprice"];
+        NSNumber *gPriceStr=comInfo[@"googuuprice"];
         float g=[gPriceStr floatValue];
         cell.gPriceLabel.text=[NSString stringWithFormat:@"%.2f",g];
-        NSNumber *priceStr=[comInfo objectForKey:@"marketprice"];
+        NSNumber *priceStr=comInfo[@"marketprice"];
         float p = [priceStr floatValue];
         cell.priceLabel.text=[NSString stringWithFormat:@"%.2f",p];
-        cell.belongLabel.text=[NSString stringWithFormat:@"%@.%@",[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]];
+        cell.belongLabel.text=[NSString stringWithFormat:@"%@.%@",comInfo[@"stockcode"],comInfo[@"marketname"]];
         float outLook=(g-p)/p;
         cell.percentLabel.text=[NSString stringWithFormat:@"%.2f%%",outLook*100];
         
@@ -299,7 +299,7 @@
     
     UIButton *cellBt=(UIButton *)sender;
     NSString *title=[cellBt currentTitle];
-    NSString *stockCode=[[self.comList objectAtIndex:cellBt.tag-1] objectForKey:@"stockcode"];
+    NSString *stockCode=(self.comList)[cellBt.tag-1][@"stockcode"];
     if([title isEqualToString:@"取消关注"]){
      
         [self NetAction:@"DeleteAttention" andCode:stockCode withBt:cellBt];
@@ -315,13 +315,13 @@
 -(Boolean)NetAction:(NSString *)url andCode:(NSString *)stockCode withBt:(UIButton *)cellBt{
     __block Boolean tag;
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[Utiles getUserToken],@"token",@"googuu",@"from",stockCode,@"stockcode", nil];
+    NSDictionary *params=@{@"token": [Utiles getUserToken],@"from": @"googuu",@"stockcode": stockCode};
     
     [Utiles postNetInfoWithPath:url andParams:params besidesBlock:^(id resObj){
 
-        if(![[resObj objectForKey:@"status"] isEqualToString:@"1"]){
-            [Utiles ToastNotification:[resObj objectForKey:@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
-        }else if([[resObj objectForKey:@"status"] isEqualToString:@"1"]){
+        if(![resObj[@"status"] isEqualToString:@"1"]){
+            [Utiles ToastNotification:resObj[@"msg"] andView:self.view andLoading:NO andIsBottom:NO andIsHide:YES];
+        }else if([resObj[@"status"] isEqualToString:@"1"]){
             if([url isEqualToString:@"AddAttention"]){
                 [self.concernStocksCodeArr addObject:stockCode];
                 [cellBt setTitle:@"取消关注" forState:UIControlStateNormal];
@@ -358,7 +358,7 @@
   
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     int row=indexPath.row;
-    delegate.comInfo=[self.comList objectAtIndex:row];
+    delegate.comInfo=(self.comList)[row];
     
     com=[[ComFieldViewController alloc] init];
     com.browseType=ValuationModelType;
@@ -392,7 +392,7 @@
 }
 -(void)handleSearchForTerm:(NSString *)searchTerm
 {
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:searchTerm,@"q", nil];
+    NSDictionary *params=@{@"q": searchTerm};
     [Utiles postNetInfoWithPath:@"Query" andParams:params besidesBlock:^(id resObj){
         
         self.comList=resObj;

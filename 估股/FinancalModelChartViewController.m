@@ -77,7 +77,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     [super viewDidLoad];
     [self.view setBackgroundColor:[Utiles colorWithHexString:@"#F2EFE1"]];
     
-    colorArr=[NSArray arrayWithObjects:@"e92058",@"b700b7",@"216dcb",@"13bbca",@"65d223",@"f09c32",@"f15a38",nil];
+    colorArr=@[@"e92058",@"b700b7",@"216dcb",@"13bbca",@"65d223",@"f09c32",@"f15a38"];
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     comInfo=delegate.comInfo;
@@ -109,7 +109,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     DrawChartTool *tool=[[DrawChartTool alloc] init];
     tool.standIn=self;
     
-    UILabel *nameLabel=[tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",[comInfo objectForKey:@"companyname"],[comInfo objectForKey:@"stockcode"],[comInfo objectForKey:@"marketname"]] Tag:11 frame:CGRectMake(65,0,100, 40) fontSize:12.0 color:nil textColor:@"#3e2000" location:NSTextAlignmentCenter];
+    UILabel *nameLabel=[tool addLabelToView:self.view withTitle:[NSString stringWithFormat:@"%@\n(%@.%@)",comInfo[@"companyname"],comInfo[@"stockcode"],comInfo[@"marketname"]] Tag:11 frame:CGRectMake(65,0,100, 40) fontSize:12.0 color:nil textColor:@"#3e2000" location:NSTextAlignmentCenter];
     nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
     nameLabel.numberOfLines = 0;
     
@@ -196,15 +196,15 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
     id temp=[self getObjectDataFromJsFun:@"returnChartData" byData:driverId];
     NSMutableArray *tempHisPoints=[[NSMutableArray alloc] init];
-    for(id obj in [temp objectForKey:@"array"]){
-        if([[obj objectForKey:@"h"] boolValue]){
+    for(id obj in temp[@"array"]){
+        if([obj[@"h"] boolValue]){
             [tempHisPoints addObject:obj];
         }
     }
     self.points=tempHisPoints;
-    self.yAxisUnit=[temp objectForKey:@"unit"];
-    NSDictionary *pointData=[Utiles unitConversionData:[[[self.points objectAtIndex:0] objectForKey:@"v"] stringValue] andUnit:self.yAxisUnit];
-    self.financalTitleLabel.text=[NSString stringWithFormat:@"%@(单位:%@)",[temp objectForKey:@"title"],[pointData objectForKey:@"unit"]];
+    self.yAxisUnit=temp[@"unit"];
+    NSDictionary *pointData=[Utiles unitConversionData:[(self.points)[0][@"v"] stringValue] andUnit:self.yAxisUnit];
+    self.financalTitleLabel.text=[NSString stringWithFormat:@"%@(单位:%@)",temp[@"title"],pointData[@"unit"]];
     [self setXYAxis];
     barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
     [graph reloadData];
@@ -218,7 +218,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     
     [MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
     //[MBProgressHUD showHUDAddedTo:self.hostView animated:YES];
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockCode", nil];
+    NSDictionary *params=@{@"stockCode": comInfo[@"stockcode"]};
     [Utiles getNetInfoWithPath:@"CompanyModel" andParams:params besidesBlock:^(id resObj){
         
         self.jsonForChart=[resObj JSONString];
@@ -235,7 +235,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         self.modelChartViewController.indicator=@"listChart";
         self.modelOtherViewController.indicator=@"listOther";
         
-        [self modelClassChanged:[[[transObj objectForKey:@"listRatio"] objectAtIndex:0] objectForKey:@"id"]];
+        [self modelClassChanged:transObj[@"listRatio"][0][@"id"]];
         barPlot.baseValue=CPTDecimalFromFloat(XORTHOGONALCOORDINATE);
         [MBProgressHUD hideHUDForView:self.hostView animated:YES];
 
@@ -264,12 +264,12 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     if([self.yAxisUnit isEqualToString:@"%"]){
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-        numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] floatValue]]];
+        numberString = [formatter stringFromNumber:@([(self.points)[index][@"v"] floatValue])];
         SAFE_RELEASE(formatter);
     }else{
-        numberString=[[[self.points objectAtIndex:index] objectForKey:@"v"] stringValue];
+        numberString=[(self.points)[index][@"v"] stringValue];
         NSDictionary *pointData=[Utiles unitConversionData:numberString andUnit:self.yAxisUnit];
-        numberString=[pointData objectForKey:@"result"];
+        numberString=pointData[@"result"];
     }
     newLayer=[[CPTTextLayer alloc] initWithText:numberString style:whiteText];
     return [newLayer autorelease];
@@ -288,9 +288,9 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
         NSString *key=(fieldEnum==CPTScatterPlotFieldX?@"x":@"y");
         
         if([key isEqualToString:@"x"]){
-            num=[NSNumber numberWithInt:[[[self.points objectAtIndex:index] objectForKey:@"y"] intValue]];
+            num=@([(self.points)[index][@"y"] intValue]);
         }else if([key isEqualToString:@"y"]){
-            num=[NSNumber numberWithFloat:[[[self.points objectAtIndex:index] objectForKey:@"v"] floatValue]];
+            num=@([(self.points)[index][@"v"] floatValue]);
         }
         
     }
@@ -355,7 +355,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     barPlot. dataSource = self ;
     barPlot.delegate=self;
     barPlot.lineStyle=lineStyle;
-    barPlot.fill=[CPTFill fillWithColor:[Utiles cptcolorWithHexString:[colorArr objectAtIndex:arc4random()%7] andAlpha:0.6]];
+    barPlot.fill=[CPTFill fillWithColor:[Utiles cptcolorWithHexString:colorArr[arc4random()%7] andAlpha:0.6]];
     // 图形向右偏移： 0.25
     barPlot.barOffset = CPTDecimalFromFloat(0.0f) ;
     // 在 SDK 中， barCornerRadius 被 cornerRadius 替代
@@ -371,7 +371,7 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     fadeInAnimation.duration            = 3.0f;
     fadeInAnimation.removedOnCompletion = NO;
     fadeInAnimation.fillMode            = kCAFillModeForwards;
-    fadeInAnimation.toValue             = [NSNumber numberWithFloat:1.0];
+    fadeInAnimation.toValue             = @1.0f;
     [barPlot addAnimation:fadeInAnimation forKey:@"shadowOffset"];
     // 添加图形到绘图空间
     [graph addPlot :barPlot toPlotSpace :plotSpace];
@@ -381,18 +381,18 @@ static NSString * BAR_IDENTIFIER =@"bar_identifier";
     NSMutableArray *xTmp=[[NSMutableArray alloc] init];
     NSMutableArray *yTmp=[[NSMutableArray alloc] init];
     for(id obj in self.points){
-        [xTmp addObject:[obj objectForKey:@"y"]];
-        [yTmp addObject:[obj objectForKey:@"v"]];
+        [xTmp addObject:obj[@"y"]];
+        [yTmp addObject:obj[@"v"]];
     }
     NSDictionary *xyDic=[DrawChartTool getXYAxisRangeFromxArr:xTmp andyArr:yTmp fromWhere:FinancalModel];
-    XRANGEBEGIN=[[xyDic objectForKey:@"xBegin"] floatValue];
-    XRANGELENGTH=[[xyDic objectForKey:@"xLength"] floatValue];
-    XORTHOGONALCOORDINATE=[[xyDic objectForKey:@"xOrigin"] floatValue];
-    XINTERVALLENGTH=[[xyDic objectForKey:@"xInterval"] floatValue];
-    YRANGEBEGIN=[[xyDic objectForKey:@"yBegin"] floatValue];
-    YRANGELENGTH=[[xyDic objectForKey:@"yLength"] floatValue];
-    YORTHOGONALCOORDINATE=[[xyDic objectForKey:@"yOrigin"] floatValue];
-    YINTERVALLENGTH=[[xyDic objectForKey:@"yInterval"] floatValue];
+    XRANGEBEGIN=[xyDic[@"xBegin"] floatValue];
+    XRANGELENGTH=[xyDic[@"xLength"] floatValue];
+    XORTHOGONALCOORDINATE=[xyDic[@"xOrigin"] floatValue];
+    XINTERVALLENGTH=[xyDic[@"xInterval"] floatValue];
+    YRANGEBEGIN=[xyDic[@"yBegin"] floatValue];
+    YRANGELENGTH=[xyDic[@"yLength"] floatValue];
+    YORTHOGONALCOORDINATE=[xyDic[@"yOrigin"] floatValue];
+    YINTERVALLENGTH=[xyDic[@"yInterval"] floatValue];
     DrawXYAxisWithoutYAxis;
     SAFE_RELEASE(xTmp);
     SAFE_RELEASE(yTmp);

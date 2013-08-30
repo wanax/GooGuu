@@ -145,7 +145,7 @@
 
 -(void)getComment{
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:self.articleId,@"articleid", nil];
+    NSDictionary *params=@{@"articleid": self.articleId};
     [Utiles getNetInfoWithPath:@"Commentary" andParams:params besidesBlock:^(id resObj){
         self.commentArr=resObj;
         
@@ -187,16 +187,16 @@
     
     NSUInteger row = [indexPath row];
     NSAssert([self.commentArr count]>=row,@"index bound");
-    id model=[self.commentArr objectAtIndex:row];
+    id model=(self.commentArr)[row];
     
-    cell.name = [model objectForKey:@"author"];
-    cell.dec = [model objectForKey:@"content"];
-    cell.loc = [model objectForKey:@"updatetime"];
+    cell.name = model[@"author"];
+    cell.dec = model[@"content"];
+    cell.loc = model[@"updatetime"];
     
     @try {
-        if([[NSString stringWithFormat:@"%@",[model objectForKey:@"headerpicurl"]] length]>7){
+        if([[NSString stringWithFormat:@"%@",model[@"headerpicurl"]] length]>7){
             //异步加载cell图片
-        [cell.imageView setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[model objectForKey:@"headerpicurl"]]]
+        [cell.imageView setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model[@"headerpicurl"]]]
           placeholderImage:[UIImage imageNamed:@"pumpkin.png"]
                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
                        cell.image = image;

@@ -296,7 +296,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	[self updateNavigation];
     
     // Navigation buttons
-    if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
+    if ((self.navigationController.viewControllers)[0] == self) {
         // We're first on stack so show done button
         UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)] autorelease];
         // Set appearance
@@ -305,13 +305,13 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
             [doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
             [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
             [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
+            [doneButton setTitleTextAttributes:@{} forState:UIControlStateNormal];
+            [doneButton setTitleTextAttributes:@{} forState:UIControlStateHighlighted];
         }
         self.navigationItem.rightBarButtonItem = doneButton;
     } else {
         // We're not first so show back button
-        UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+        UIViewController *previousViewController = (self.navigationController.viewControllers)[self.navigationController.viewControllers.count-2];
         NSString *backButtonTitle = previousViewController.navigationItem.backBarButtonItem ? previousViewController.navigationItem.backBarButtonItem.title : previousViewController.title;
         UIBarButtonItem *newBackButton = [[[UIBarButtonItem alloc] initWithTitle:backButtonTitle style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
         // Appearance
@@ -320,8 +320,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
             [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
             [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
             [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-            [newBackButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-            [newBackButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
+            [newBackButton setTitleTextAttributes:@{} forState:UIControlStateNormal];
+            [newBackButton setTitleTextAttributes:@{} forState:UIControlStateHighlighted];
         }
         self.previousViewControllerBackButton = previousViewController.navigationItem.backBarButtonItem; // remember previous
         previousViewController.navigationItem.backBarButtonItem = newBackButton;
@@ -364,7 +364,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     }
     
     // Navigation bar appearance
-    if (!_viewIsActive && [self.navigationController.viewControllers objectAtIndex:0] != self) {
+    if (!_viewIsActive && (self.navigationController.viewControllers)[0] != self) {
         [self storePreviousNavBarAppearance];
     }
     [self setNavBarAppearance:animated];
@@ -377,7 +377,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (void)viewWillDisappear:(BOOL)animated {
     
     // Check that we're being popped for good
-    if ([self.navigationController.viewControllers objectAtIndex:0] != self &&
+    if ((self.navigationController.viewControllers)[0] != self &&
         ![self.navigationController.viewControllers containsObject:self]) {
         
         // State
@@ -557,15 +557,15 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (id<MWPhoto>)photoAtIndex:(NSUInteger)index {
     id <MWPhoto> photo = nil;
     if (index < _photos.count) {
-        if ([_photos objectAtIndex:index] == [NSNull null]) {
+        if (_photos[index] == [NSNull null]) {
             if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
                 photo = [_delegate photoBrowser:self photoAtIndex:index];
             } else if (_depreciatedPhotoData && index < _depreciatedPhotoData.count) {
-                photo = [_depreciatedPhotoData objectAtIndex:index];
+                photo = _depreciatedPhotoData[index];
             }
-            if (photo) [_photos replaceObjectAtIndex:index withObject:photo];
+            if (photo) _photos[index] = photo;
         } else {
-            photo = [_photos objectAtIndex:index];
+            photo = _photos[index];
         }
     }
     return photo;
@@ -744,10 +744,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     if (index > 0) {
         // Release anything < index - 1
         for (i = 0; i < index-1; i++) { 
-            id photo = [_photos objectAtIndex:i];
+            id photo = _photos[i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
+                _photos[i] = [NSNull null];
                 MWLog(@"Released underlying image at index %i", i);
             }
         }
@@ -755,10 +755,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     if (index < [self numberOfPhotos] - 1) {
         // Release anything > index + 1
         for (i = index + 2; i < _photos.count; i++) {
-            id photo = [_photos objectAtIndex:i];
+            id photo = _photos[i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
+                _photos[i] = [NSNull null];
                 MWLog(@"Released underlying image at index %i", i);
             }
         }

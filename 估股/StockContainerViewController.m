@@ -72,7 +72,7 @@
     szListViewController.isSearchList=NO;
     shListViewController.isSearchList=NO;
   
-	NSArray *viewControllers = [NSArray arrayWithObjects:hkListViewController, usListViewController,szListViewController,shListViewController, nil];
+	NSArray *viewControllers = @[hkListViewController, usListViewController,szListViewController,shListViewController];
 	tabBarController = [[MHTabBarController alloc] init];
     
 	tabBarController.viewControllers = viewControllers;

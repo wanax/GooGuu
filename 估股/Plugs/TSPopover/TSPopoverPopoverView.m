@@ -124,11 +124,10 @@
 
     
     //// Gradient Declarations
-    NSArray* bgGradientColors = [NSArray arrayWithObjects: 
-                                 (id)gradientBottomColor.CGColor, 
+    NSArray* bgGradientColors = @[(id)gradientBottomColor.CGColor, 
                                  (id)gradientBottomColor.CGColor, 
                                  (id)gradientMiddleColor.CGColor, 
-                                 (id)gradientTopColor.CGColor, nil];
+                                 (id)gradientTopColor.CGColor];
     CGFloat bgGradientLocations[] = {0,0.4, 0.5, 1};
     CGGradientRef bgGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)bgGradientColors, bgGradientLocations);
     

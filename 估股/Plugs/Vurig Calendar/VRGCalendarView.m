@@ -326,7 +326,7 @@
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:@"0x383838"].CGColor);
     for (int i =0; i<[weekdays count]; i++) {
-        NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
+        NSString *weekdayValue = (NSString *)weekdays[i];
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12];
         [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), 40, kVRGCalendarViewDayWidth+2, 20) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
     }
@@ -485,7 +485,7 @@
     if (!self.markedDates || isSelectedDatePreviousMonth || isSelectedDateNextMonth) return;
     
     for (int i = 0; i<[self.markedDates count]; i++) {
-        id markedDateObj = [self.markedDates objectAtIndex:i];
+        id markedDateObj = (self.markedDates)[i];
         
         int targetDate;
         if ([markedDateObj isKindOfClass:[NSNumber class]]) {
@@ -515,7 +515,7 @@
         }  else if (todayBlock==targetBlock) {
             color = [UIColor whiteColor];
         } else {
-            color  = (UIColor *)[markedColors objectAtIndex:i];
+            color  = (UIColor *)markedColors[i];
         }
         
         

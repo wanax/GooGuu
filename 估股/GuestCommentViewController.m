@@ -90,7 +90,7 @@
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
     id comInfo=delegate.comInfo;
     
-    NSString *code=[NSString stringWithFormat:@"%@",[comInfo objectForKey:@"stockcode"]];
+    NSString *code=[NSString stringWithFormat:@"%@",comInfo[@"stockcode"]];
     
     AddCommentViewController *addCommentViewController=[[AddCommentViewController alloc] initWithNibName:@"AddCommentView" bundle:nil];
     addCommentViewController.articleId=code;
@@ -144,9 +144,9 @@
 -(void)getComments{
     
     XYZAppDelegate *delegate=[[UIApplication sharedApplication] delegate];
-    NSString *stockCode=[NSString stringWithFormat:@"%@",[delegate.comInfo objectForKey:@"stockcode"]];
+    NSString *stockCode=[NSString stringWithFormat:@"%@",(delegate.comInfo)[@"stockcode"]];
 
-    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:stockCode,@"stockcode", nil];
+    NSDictionary *params=@{@"stockcode": stockCode};
     [Utiles postNetInfoWithPath:@"CompanyArticleURL" andParams:params besidesBlock:^(id obj){
         if([obj JSONString].length>5){
             self.commentList=obj;
@@ -188,16 +188,16 @@
     }
     
     NSUInteger row = [indexPath row];
-    id model=[self.commentList objectAtIndex:row];
+    id model=(self.commentList)[row];
     
-    cell.name = [model objectForKey:@"author"];
-    cell.dec = [model objectForKey:@"content"];
-    cell.loc = [model objectForKey:@"updatetime"];
+    cell.name = model[@"author"];
+    cell.dec = model[@"content"];
+    cell.loc = model[@"updatetime"];
     
     @try {
-        if([[NSString stringWithFormat:@"%@",[model objectForKey:@"headerpicurl"]] length]>7){
+        if([[NSString stringWithFormat:@"%@",model[@"headerpicurl"]] length]>7){
             //异步加载cell图片
-            [cell.imageView setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[model objectForKey:@"headerpicurl"]]]
+            [cell.imageView setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model[@"headerpicurl"]]]
               placeholderImage:[UIImage imageNamed:@"pumpkin.png"]
                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
                            cell.image = image;

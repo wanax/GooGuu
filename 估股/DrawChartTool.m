@@ -26,7 +26,7 @@
     id dragChartChangedData=nil;
     
     if(isChanged){
-        NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:[comInfo objectForKey:@"stockcode"],@"stockcode",[comInfo objectForKey:@"companyname"],@"companyname",ggPrice,@"price", nil];
+        NSDictionary *params=@{@"stockcode": comInfo[@"stockcode"],@"companyname": comInfo[@"companyname"],@"price": ggPrice};
         NSString *paramStr=[[params JSONString] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
         disCountChangedData=[Utiles getObjectDataFromJsFun:webView funName:@"returnSaveDicountData" byData:paramStr shouldTrans:YES];
     }
@@ -42,17 +42,17 @@
     
     NSMutableArray *tmpModelData=[[NSMutableArray alloc] init];
     if(disCountChangedData){
-        for(id obj in [disCountChangedData objectForKey:@"modeldata"]){
+        for(id obj in disCountChangedData[@"modeldata"]){
             [tmpModelData addObject:obj];
         }
     }
     if(dragChartChangedData){
-        for(id obj in [dragChartChangedData objectForKey:@"modeldata"]){
+        for(id obj in dragChartChangedData[@"modeldata"]){
             [tmpModelData addObject:obj];
         }
     }
     
-    returnData=[NSDictionary dictionaryWithObjectsAndKeys:tmpModelData,@"modeldata",ggPrice,@"price",[comInfo objectForKey:@"companyname"],@"companyname",[comInfo objectForKey:@"stockcode"],@"stockcode", nil];
+    returnData=@{@"modeldata": tmpModelData,@"price": ggPrice,@"companyname": comInfo[@"companyname"],@"stockcode": comInfo[@"stockcode"]};
     SAFE_RELEASE(tmpModelData);
     return returnData;
     
@@ -129,9 +129,9 @@ NSComparator cmptr = ^(id obj1, id obj2){
 +(NSDictionary *)getMaxMinMidFromArr:(NSArray *)arr{
     NSArray *sortArr=[arr sortedArrayUsingComparator:cmptr];
     double max=[[sortArr lastObject] doubleValue];
-    double min=[[sortArr objectAtIndex:0] doubleValue];
+    double min=[sortArr[0] doubleValue];
     double mid=(max+min)/2;
-    NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:max],@"max",[NSNumber numberWithDouble:min],@"min",[NSNumber numberWithDouble:mid],@"mid", nil];
+    NSDictionary *dic=@{@"max": @(max),@"min": @(min),@"mid": @(mid)};
     return dic;
 }
 
@@ -145,7 +145,7 @@ NSComparator cmptr = ^(id obj1, id obj2){
     @try {
         if(tag==DragabelModel){
             int n=0;
-            if([[sortXArr objectAtIndex:0] intValue]<10){
+            if([sortXArr[0] intValue]<10){
                 for(id year in sortXArr){
                     n++;
                     if([year intValue]==10){
@@ -153,9 +153,9 @@ NSComparator cmptr = ^(id obj1, id obj2){
                     }
                 }
             }
-            xMin=[[sortXArr objectAtIndex:n] floatValue];
+            xMin=[sortXArr[n] floatValue];
         }else{
-            xMin=[[sortXArr objectAtIndex:0] floatValue];
+            xMin=[sortXArr[0] floatValue];
         }
     }
     @catch (NSException *exception) {
@@ -163,12 +163,12 @@ NSComparator cmptr = ^(id obj1, id obj2){
     }
     //NSInteger xTap=1;
     double yMax=[[sortYArr lastObject] doubleValue];
-    double yMin=[[sortYArr objectAtIndex:0] doubleValue];
+    double yMin=[sortYArr[0] doubleValue];
     double yTap=0.0;
     if(tag==DahonModel){
        yTap=(yMax-yMin);
     }else{
-       yTap=(yMax-yMin)/[sortYArr count]; 
+        yTap=(yMax-(yMin<0?yMin:0))*1.4/210;
     }
     
     float xLowBound=xMin-1.5;
@@ -179,22 +179,22 @@ NSComparator cmptr = ^(id obj1, id obj2){
         if(tag==DahonModel){
             yLowBound=yMin-0.2*(yMax-yMin);
         }else if(tag==DragabelModel){
-            yLowBound=0-6*yTap;
+            yLowBound=0-0.2*210*yTap;
         }else
-            yLowBound=0-4*yTap;
+            yLowBound=0-0.2*210*yTap;
     }else{
         if(tag==DahonModel){
             yLowBound=yMin-0.2*(yMax-yMin);
         }else if(tag==DragabelModel){
-           yLowBound=yMin-6*yTap;
+           yLowBound=yMin-0.2*210*yTap;
         }else
-            yLowBound=yMin-4*yTap;
+            yLowBound=yMin-0.2*210*yTap;
     }
     double yUpBound=0.0;
     if(tag==DahonModel){
         yUpBound=yMax+0.2*yTap;
     }else 
-        yUpBound=yMax+4*yTap;
+        yUpBound=yMax+0.2*210*yTap;
     
     float xBegin=xLowBound;
     float xLength=xUpBound-xLowBound;
@@ -214,16 +214,14 @@ NSComparator cmptr = ^(id obj1, id obj2){
         yOrigin=xBegin;
     }
    
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithFloat:xBegin],@"xBegin",
-            [NSNumber numberWithFloat:xLength],@"xLength",
-            [NSNumber numberWithFloat:xInterval],@"xInterval",
-            [NSNumber numberWithDouble:xOrigin],@"xOrigin",
-            [NSNumber numberWithDouble:yBegin],@"yBegin",
-            [NSNumber numberWithDouble:yLength],@"yLength",
-            [NSNumber numberWithDouble:yInterval],@"yInterval",
-            [NSNumber numberWithDouble:yOrigin],@"yOrigin",
-            nil];
+    return @{@"xBegin": @(xBegin),
+            @"xLength": @(xLength),
+            @"xInterval": @(xInterval),
+            @"xOrigin": @(xOrigin),
+            @"yBegin": @(yBegin),
+            @"yLength": @(yLength),
+            @"yInterval": @(yInterval),
+            @"yOrigin": @(yOrigin)};
     
 }
 

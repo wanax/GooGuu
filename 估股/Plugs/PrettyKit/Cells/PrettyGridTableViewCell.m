@@ -458,8 +458,8 @@
     
     for (int i = 0; i < self.numberOfElements; i++) 
     {
-        NSNumber *index = [NSNumber numberWithInt:i];
-        id object = [dictionary objectForKey:index];
+        NSNumber *index = @(i);
+        id object = dictionary[index];
         if (object != nil) {
             [sortedArray addObject:object];
         }
@@ -481,31 +481,31 @@
 
 - (void) setText:(NSString *)text atIndex:(int)iindex 
 {
-    NSNumber *index = [NSNumber numberWithInt:iindex];
+    NSNumber *index = @(iindex);
     
-    [_texts setObject:text forKey:index];
+    _texts[index] = text;
 }
 
 - (NSString *)textAtIndex:(int)iindex 
 {
-    NSNumber *index = [NSNumber numberWithInt:iindex];
+    NSNumber *index = @(iindex);
     
-    return [_texts objectForKey:index];
+    return _texts[index];
 }
 
 - (void) setDetailText:(NSString *)detailText atIndex:(int)iindex 
 {
-    NSNumber *index = [NSNumber numberWithInt:iindex];
+    NSNumber *index = @(iindex);
     
-    [_detailTexts setObject:detailText forKey:index];
+    _detailTexts[index] = detailText;
 }
 
 
 - (NSString *)detailTextAtIndex:(int)iindex 
 {
-    NSNumber *index = [NSNumber numberWithInt:iindex];
+    NSNumber *index = @(iindex);
     
-    return [_detailTexts objectForKey:index];
+    return _detailTexts[index];
 }
 
 

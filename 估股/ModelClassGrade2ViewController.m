@@ -51,11 +51,11 @@
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:classTitle];
-    self.indicatorClass=[jsonData objectForKey:indicator];
+    self.indicatorClass=jsonData[indicator];
     NSMutableArray *tmpName=[[NSMutableArray alloc] init];
     if(savedData){
         for(id obj in savedData){
-            [tmpName addObject:[obj objectForKey:@"itemname"]];
+            [tmpName addObject:obj[@"itemname"]];
         }
     }
     self.savedDataName=tmpName;
@@ -70,7 +70,7 @@
 #pragma mark -
 #pragma mark UITableViewController
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell  forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([self.savedDataName containsObject:[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"name"]]){
+    if([self.savedDataName containsObject:(self.indicatorClass)[indexPath.row][@"name"]]){
       [cell setBackgroundColor:[Utiles colorWithHexString:@"#BABABA"]];
     }
 }
@@ -90,7 +90,7 @@
 									   reuseIdentifier:ClassGrade2CellIdentifier] autorelease];
 	}
 
-	NSString *text =[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"name"];
+	NSString *text =(self.indicatorClass)[indexPath.row][@"name"];
 	[cell.textLabel setText:text];
     cell.textLabel.font=[UIFont fontWithName:@"Heiti SC" size:13.0f];
     cell.textLabel.textColor=[Utiles colorWithHexString:@"#9f3c0b"];
@@ -105,7 +105,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
 	
-    [delegate modelClassChanged:[[self.indicatorClass objectAtIndex:indexPath.row] objectForKey:@"id"]];
+    [delegate modelClassChanged:(self.indicatorClass)[indexPath.row][@"id"]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CQMFloatingController *floatingController = [CQMFloatingController sharedFloatingController];
     [floatingController dismissAnimated:YES];
