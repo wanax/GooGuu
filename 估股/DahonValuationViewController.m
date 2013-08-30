@@ -227,47 +227,13 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
             self.daHonDataDic=[resObj objectForKey:@"dahonData"];
             self.gooGuuDataDic=[resObj objectForKey:@"googuuData"];
             
-            NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
-            for(int i=0;i<[self.dateArr count];i++){
-                [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
-            }
-            NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
-            NSMutableArray *scoreCounter=[[NSMutableArray alloc] init];
-            for(id key in self.daHonDataDic){
-                if([tempDic objectForKey:key]){
-                    [tempMap setValue:key forKey:[tempDic objectForKey:key]];
-                    [scoreCounter addObject:[tempDic objectForKey:key]];
-                }else{
-                    [tempMap setValue:key forKey:[NSString stringWithFormat:@"%d",[[scoreCounter lastObject] integerValue]+1]];
-                }
-                
-            }
-            self.daHonIndexDateMap=tempMap;
-            self.daHonIndexSets=[self.daHonIndexDateMap allKeys];
-            
-            NSMutableDictionary *tempMap2=[[NSMutableDictionary alloc] init];
-            NSMutableArray *scoreCounter2=[[NSMutableArray alloc] init];
-            for(id key in self.gooGuuDataDic){
-                if([tempDic objectForKey:key]){
-                    [tempMap2 setValue:key forKey:[tempDic objectForKey:key]];
-                    [scoreCounter2 addObject:[tempDic objectForKey:key]];
-                }else{
-                    [tempMap2 setValue:key forKey:[NSString stringWithFormat:@"%d",[[scoreCounter2 lastObject] integerValue]+1]];
-                }
-                
-            }
-            self.gooGuuIndexDateMap=tempMap2;
-            self.gooGuuIndexSets=[self.gooGuuIndexDateMap allKeys];
+            [self setDateMap];
             
             int count=[self.dateArr count];
             XRANGEBEGIN=count-269;
             XRANGELENGTH=269;
             XINTERVALLENGTH=50;
-            SAFE_RELEASE(tempDic);
-            SAFE_RELEASE(tempMap);
-            SAFE_RELEASE(scoreCounter);
-            SAFE_RELEASE(tempMap2);
-            SAFE_RELEASE(scoreCounter2);
+            
             SAFE_RELEASE(formatter);
     }
     @catch (NSException *exception) {
@@ -283,6 +249,53 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
     [MBProgressHUD hideHUDForView:self.hostView animated:YES];
         
     }];
+}
+
+-(void)setDateMap{
+    
+    NSMutableDictionary *tempDic=[[NSMutableDictionary alloc] init];
+    for(int i=0;i<[self.dateArr count];i++){
+        [tempDic setValue:[NSNumber numberWithInt:i] forKey:[self.dateArr objectAtIndex:i]];
+    }
+    
+    self.daHonIndexDateMap=[self dateRestruct:tempDic keys:[Utiles sortDateArr:[self.daHonDataDic allKeys]]];
+    self.daHonIndexSets=[self.daHonIndexDateMap allKeys];
+    
+    self.gooGuuIndexDateMap=[self dateRestruct:tempDic keys:[Utiles sortDateArr:[self.gooGuuDataDic allKeys]]];
+    self.gooGuuIndexSets=[self.gooGuuIndexDateMap allKeys];
+    
+    SAFE_RELEASE(tempDic);
+
+}
+
+-(NSMutableDictionary *)dateRestruct:(NSMutableDictionary *)tempDic keys:(NSArray *)keys{
+    NSMutableDictionary *tempMap=[[NSMutableDictionary alloc] init];
+    NSMutableArray *scoreCounter=[[NSMutableArray alloc] init];
+    NSArray *dates=[Utiles sortDateArr:[tempDic allKeys]];
+    BOOL isAdd=NO;
+    for(id key in keys){
+        if([dates containsObject:key]){
+            [tempMap setValue:key forKey:[NSString stringWithFormat:@"%@",[tempDic objectForKey:key]]];
+            [scoreCounter addObject:[tempDic objectForKey:key]];
+        }else{            
+            for(int n=[scoreCounter count]==0?0:[[scoreCounter lastObject] intValue];n<[dates count];n++){
+                if([Utiles isDate1:[dates objectAtIndex:n] beforeThanDate2:key]){
+                    continue;
+                }else{
+                    [tempMap setValue:key forKey:[NSString stringWithFormat:@"%d",n]];
+                    [scoreCounter addObject:[NSNumber numberWithInt:n-1]];
+                    isAdd=YES;
+                    break;
+                }
+            }
+            if(!isAdd){
+                [tempMap setValue:key forKey:[NSString stringWithFormat:@"%d",[dates count]-1]];
+            }
+        }
+        
+    }
+    SAFE_RELEASE(scoreCounter);
+    return [tempMap autorelease];    
 }
 
 -(void)setXYAxis{
@@ -408,18 +421,41 @@ static NSString * HISTORY_DATALINE_IDENTIFIER =@"history_dataline_identifier";
 
 #pragma mark -
 #pragma mark Scatter Plot Methods Delegate
--(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx{
-    NSNumber *trueIndex=[NSNumber numberWithInt:[[self.daHonIndexSets objectAtIndex:idx] intValue]];
-    NSString *date=[self.daHonIndexDateMap objectForKey:trueIndex];
-    id data=[self.daHonDataDic objectForKey:date];
+-(NSDictionary *)getDataFromDic:(NSDictionary *)dic dateMap:(NSMutableDictionary *)map andArr:(NSArray *)sets byIndex:(NSUInteger)idx{
+    
     NSString *msg=[[NSString alloc] init];
+    NSString *title=[[NSString alloc] init];
+    NSNumber *trueIndex=[NSNumber numberWithInt:[[sets objectAtIndex:idx] intValue]];
+    NSString *date=[map objectForKey:[NSString stringWithFormat:@"%@",trueIndex]];
+    id data=[dic objectForKey:date];
+    title=[NSString stringWithFormat:@"%@",date];
     for(id obj in data){
         msg=[msg stringByAppendingFormat:@"%@:%@\n",[obj objectForKey:@"dahonName"],[obj objectForKey:@"desc"]];
     }
+    return [NSDictionary dictionaryWithObjectsAndKeys:msg,@"msg",title,@"title", nil];
+}
+
+-(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)idx{
+    NSDictionary *info=nil;
+    NSDictionary *info2=nil;
+    if(plot.identifier==GOOGUU_DATALINE_IDENTIFIER){
+        info=[self getDataFromDic:self.gooGuuDataDic dateMap:self.gooGuuIndexDateMap andArr:self.gooGuuIndexSets byIndex:idx];
+        if([self.daHonIndexSets containsObject:[self.gooGuuIndexSets objectAtIndex:idx]]){
+            info2=[self getDataFromDic:self.daHonDataDic dateMap:self.daHonIndexDateMap andArr:self.daHonIndexSets byIndex:idx];
+        }
+    }else if(plot.identifier==DAHON_DATALINE_IDENTIFIER){
+        info=[self getDataFromDic:self.daHonDataDic dateMap:self.daHonIndexDateMap andArr:self.daHonIndexSets byIndex:idx];
+    }
+    NSString *msg=nil;
+    if(info2){
+        msg=[NSString stringWithFormat:@"%@%@",[info objectForKey:@"msg"],[info2 objectForKey:@"msg"]];
+    }else{
+        msg=[NSString stringWithFormat:@"%@",[info objectForKey:@"msg"]];
+    }
     [self.view makeToast:msg
-                duration:2.0
+                duration:1.5
                 position:@"center"
-                   title:[[data objectAtIndex:0] objectForKey:@"date"]
+                   title:[info objectForKey:@"title"]
      ];
     
 }

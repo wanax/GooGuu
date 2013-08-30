@@ -346,6 +346,18 @@ static NSDateFormatter *formatter;
   
 }
 
++(BOOL)isDate1:(NSString *)date1 beforeThanDate2:(NSString *)date2{
+
+    date1=[date1 stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    date2=[date2 stringByReplacingOccurrencesOfString:@"-" withString:@""];
+  
+    if([date1 intValue]<[date2 intValue]){
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
 +(NSArray *)sortDateArr:(NSArray *)dateArr{
     
     NSComparator cmptr = ^(id obj1, id obj2){

@@ -48,6 +48,8 @@
 +(double)dateToSecond:(NSString *)date;
 +(NSString *)secondToDate:(double)second;
 
++(BOOL)isDate1:(NSString *)date1 beforeThanDate2:(NSString *)date2;
+
 +(NSArray *)sortDateArr:(NSArray *)dateArr;
 
 +(NSString *)dataRecombinant:(NSArray *)chartDatas comInfo:(id)comInfo driverIds:(NSArray *)driverIds price:(NSString *)price;
